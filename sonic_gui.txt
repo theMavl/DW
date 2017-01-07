@@ -22,7 +22,7 @@ jf @1
 
 0AF2: 0@ = get_float_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "SONIC" key "LEN"
 0390: load_txd_dictionary 'CROSS' 
-while 02D8:   actor $PLAYER_ACTOR current_weapon == 7
+while call_scm_func @guiConds 0
     wait 0
     if
         00DF:  actor $PLAYER_ACTOR driving 
@@ -84,6 +84,19 @@ jump @1
 2@ *= 640.0
 3@ *= 448.0
 0AB2: ret 2 2@ 3@
+
+:guiConds
+0AB4: 0@ = var 51
+if or
+    0@ == 1
+    02D8:   actor $PLAYER_ACTOR current_weapon == 7
+then
+    0485: return_true
+else
+    059A: return_false
+end
+0AB2: ret 0
+
 
 //////////////////////////////
 :second 
