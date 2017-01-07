@@ -1,0 +1,156 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+wait 1000
+
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+thread "srepair"
+
+wait 2000
+Model.load(18673)
+Model.load(18674)
+038B: load_requested_models
+
+var
+    $95: array 5 of Integer
+end
+
+0AB3: var 15 = 0 // Set Self-Repair to 0
+
+wait 1000
+
+while true
+    wait 100
+    0AB1: call @get_all 0 to 0@ 1@ 2@ 3@ 4@ 5@ 6@ 7@ 8@ 9@
+    if and
+        0@ == 1
+        1@ == 1
+        2@ == 0
+        3@ == 0
+        9@ == 1
+    then
+        0AAA: 0@ = thread 'INT_CHK' pointer
+        0D2F: 20@ = get_thread 0@ var 1
+        0AAC: 21@ = load_audiostream "dws\console_shutd.mp3"
+        Audiostream.PerformAction(21@,Play)
+        wait 2500
+        0AB4: 4@ = var 0
+        0AB3: var 42 = 0 // disable top light
+        03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_ROOF to #LIG_ROOF_OFF
+        0AB3: var 0 = 10
+        0ABC: set_audiostream 20@ volume 0.0
+        03E5: show_text_box "SRPTXT"
+        while true
+            wait 0
+            0AB4: 0@ = var 19
+            if and
+                0@ == 0
+                $93 == 0
+                $94 == 0
+            then
+                break
+            end
+        end
+        03E6: remove_text_box
+        0227: 4@ = car $111 health
+        5@ = 2000
+        0062: 5@ -= 4@
+        5@ *= 3000
+        5@ /= 85
+        0085: 6@ = 5@
+        6@ /= 1000
+        0A91: 7@ = 6@ / 60
+        0B14: 6@ = 6@ MOD 60
+        
+        wait 500
+        095F: get_car $111 door 2 angle_to 0@
+        095F: get_car $111 door 3 angle_to 1@
+        2@ = 0.0
+        if or
+            8045:  NOT 0@ == 2@
+            8045:  NOT 1@ == 2@
+        then
+            0A92: create_custom_thread "psi\doorc.cs"
+            while true
+                wait 0
+                095F: get_car $111 door 2 angle_to 0@
+                095F: get_car $111 door 3 angle_to 1@
+                0AB4: 2@ = var 19 // going in/out sequence
+                if and
+                    0@ == 0.0
+                    1@ == 0.0
+                    $93 == 0
+                    2@ == 0
+                then
+                    break
+                end
+            end    
+        end 
+        0750: set_object $95[0] visibility 0 
+        0750: set_object $95[1] visibility 0
+        0750: set_object $95[3] visibility 0 
+        008B: 15@ = $95[2]
+        008B: 16@ = $95[3] 
+        $95[2] = Object.Create(18673, 0.0, 0.0, 0.0)
+        $95[3] = Object.Create(18674, 0.0, 0.0, 0.0)
+        0D11: set_object $95[2] alpha 255  
+        0D11: set_object $95[3] alpha 255  
+        0382: set_object $95[2] collision_detection 0
+        0382: set_object $95[3] collision_detection 0
+        0681: attach_object $95[2] to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0   //united tdoors
+        0681: attach_object $95[3] to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 90.0
+        
+        if 6@ > 9
+        then
+            0ACE: show_formatted_text_box "Self-Repair Initiated~n~Time left %d:%d" 7@ 6@
+        else
+            0ACE: show_formatted_text_box "Self-Repair Initiated~n~Time left %d:0%d" 7@ 6@
+        end
+        0AB3: var 15 = 1
+        
+        //wait 5000
+        wait 5@
+        
+        Audiostream.Release(21@)
+        0AC1: 21@ = load_audiostream_with_3d_support "dws\srepairf.mp3"
+        if Car.Defined($111)
+        then
+            0AC5: link_3d_audiostream 21@ to_vehicle $111
+        end
+        
+        0224: set_car $111  health_to 2000
+        09BB:   car $111 recieved_heavy_damage 0 
+        054F: clear_car $111 damage 
+        0ACE: show_formatted_text_box "Self-Repair Accomplished"
+        Audiostream.PerformAction(21@,Play)
+        0AB3: var 42 = 1 // set top light  to white
+        03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_ROOF_OFF to #LIG_ROOF 
+        0AB3: var 0 = 1 
+        Car.SetImmunities($111 , 0, 0, 0, 0, 0)
+        Car.DoorStatus($111) = 0
+        0AB3: var 13 = 0 // disable HADS
+        0AB1: call @move_toggle 2 id 1 value 0
+        0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 1
+        0A92: create_custom_thread "toggles.cs" 10 0  
+        0AB3: var 15 = 0
+        0AB3: var 28 = 0
+        wait 2000
+        0AB3: var 0 = 0
+        0AB3: var 10 = 1 // remove energy
+        Object.Destroy($95[2]) 
+        Object.Destroy($95[3])
+        008A: $95[2] = 15@
+        008A: $95[3] = 16@
+        0750: set_object $95[0] visibility 1 
+        0750: set_object $95[1] visibility 1
+        0750: set_object $95[3] visibility 1
+        wait 3000
+        Audiostream.Release(21@)
+    end 
+end
+{$INCLUDE move_set_get}

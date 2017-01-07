@@ -1,0 +1,17 @@
+{$CLEO .cs}
+
+/*
+Piloting progress system
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+*/
+
+//-------------MAIN---------------
+0000: NOP
+0A95: enable_thread_saving
+
+:save
+wait 3000
+008B: 12@ = $12
+008A: $12 = 12@
+jump @save

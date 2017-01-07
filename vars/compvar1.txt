@@ -1,0 +1,8 @@
+{$cleo .s}
+0000:
+thread "compvar"
+wait 0
+
+while true
+wait 10000
+end

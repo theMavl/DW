@@ -1,0 +1,58 @@
+{$cleo .s}
+
+0000:
+
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+thread "hndlig"
+wait 1000
+
+0AAA: 0@ = thread "TCONTR" pointer
+0D2F: 1@ = get_thread 0@ var 1 
+if 83CA:   not object 1@ exists 
+then
+    repeat
+    wait 0
+    0D2F: 1@ = get_thread 0@ var 1
+    until Object.Exists(1@)
+end
+
+22@ = -1
+repeat
+    wait 0
+    0176: 2@ = object 1@ Z_angle
+    if 2@ < 200.0
+    jf continue
+    if 2@ > 4.748
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 215 215 255 255 on_entity 0 at 0.237 0.995 1024.384 size 0.015 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0 
+    end
+    if 2@ >= 23.448
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 215 215 255 255 on_entity 0 at 0.227 0.963 1024.398 size 0.015 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+    if 2@ >= 42.148
+    then 
+        0D54: draw_corona_with_extra_params_texture 0 color 215 215 255 255 on_entity 0 at 0.228 0.929 1024.411 size 0.015 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+    if 2@ >= 60.848
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 215 215 255 255 on_entity 0 at 0.241 0.898 1024.424 size 0.015 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+    if 2@ >= 79.548
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 215 215 255 255 on_entity 0 at 0.264 0.872 1024.434 size 0.015 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+    if 2@ >= 98.248
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 215 215 255 255 on_entity 0 at 0.294 0.854 1024.441 size 0.015 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+    if    2@ >= 100.0
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 215 215 255 255 on_entity 0 at 0.330 0.846 1024.445 size 0.015 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+until 2@ == 100
+0A93: end_custom_thread

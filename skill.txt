@@ -1,0 +1,38 @@
+{$CLEO .cs}
+
+/*
+Piloting skill system
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+*/
+
+//-------------MAIN---------------
+0000: NOP
+thread 'tskill'
+
+wait 3400
+
+:def
+wait 100
+if
+056D:   actor $PLAYER_ACTOR defined
+jf @def 
+
+:load
+wait 0
+008B: 12@ = $12
+//008A: $12 = 12@
+
+:skill_1
+wait 10
+    02E3: 10@ = car $111 speed
+if and
+    00DB:   actor $PLAYER_ACTOR in_car $111
+    10@ >= 10
+then
+    $12 += 1
+    wait 5000
+end
+jump @skill_1
+
+

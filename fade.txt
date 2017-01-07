@@ -1,0 +1,584 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+
+thread "fade"
+
+var
+$95: array 5 of Integer
+end
+
+wait 0
+if 03CA: $110
+then
+    //0566: link_object $110 to_interior $ACTIVE_INTERIOR
+    0750: set_object $110 visibility 1
+else
+    0AD1: show_formatted_text_highpriority "~r~Error: ~w~Miss object 110. Fade effect disabled" time 2000
+    0A93: end_custom_thread
+end
+//0681: attach_object $110 to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+0871: init_jump_table 0@ total_jumps 12 0 @end jumps 0 @tnormal 1 @demat 2 @mat 3 @tshort 4 @crash1 5 @crash2 6 @hadsdem 
+0872: jump_table_jumps 7 @matshort 8 @crash2m 9 @cloak 10 @cloak2 11 @fland -1 @end -1 @end -1 @end -1 @end
+
+:mat
+    0AB3: var 16 = 1
+    0382: set_object $95[0] collision_detection 0
+    0382: set_object $95[1] collision_detection 0
+    0750: set_object $95[0] visibility 1 
+    0750: set_object $95[1] visibility 1
+    0750: set_object $95[3] visibility 1 
+    0750: set_object $110 visibility 1
+    0@ = 1 
+    1@ = 50 
+    2@ = 1383
+    gosub @fade
+    0@ = 50 
+    1@ = 10 
+    2@ = 774  
+    gosub @fade
+    0@ = 10 
+    1@ = 60 
+    2@ = 1097
+    gosub @fade
+    0@ = 60 
+    1@ = 30 
+    2@ = 678
+    gosub @fade
+    0@ = 30 
+    1@ = 80 
+    2@ = 839
+    gosub @fade
+    0@ = 80 
+    1@ = 30 
+    2@ = 903                                    
+    gosub @fade
+    0@ = 30
+    1@ = 90 
+    2@ = 1063                                   
+    gosub @fade
+    0@ = 90 
+    1@ = 40 
+    2@ = 744                                    
+    gosub @fade
+    0@ = 40 
+    1@ = 100 
+    2@ = 1226                                   
+    gosub @fade
+    0382: set_object $95[0] collision_detection 1
+    0382: set_object $95[1] collision_detection 1
+    0750: set_object $110 visibility 0
+    0338: set_car $111 visibility 1
+    0AB4: 0@ = var 0
+    if 0@ == 8
+    then
+        0AB3: var 0 = 3    
+    else
+        0AB3: var 0 = 0
+    end
+    0AB3: var 16 = 0
+jump @end
+
+:tnormal
+    0AB3: var 16 = 2
+    0338: set_car $111 visibility 0
+    0750: set_object $110 visibility 1
+    //0AAC: 10@ = load_audiostream "dws\ful.wav" //IF and SET
+    //audiostream.PerformAction(10@,play)
+    0@ = 100 
+    1@ = 40 
+    2@ = 932
+    gosub @fade
+    0@ = 40 
+    1@ = 80 
+    2@ = 540
+    gosub @fade
+    0@ = 80 
+    1@ = 30 
+    2@ = 1102
+    gosub @fade
+    0@ = 30 
+    1@ = 70 
+    2@ = 740
+    gosub @fade
+    0@ = 70 
+    1@ = 30 
+    2@ = 1000
+    gosub @fade
+    0@ = 30 
+    1@ = 60 
+    2@ = 751
+    gosub @fade
+    0@ = 60
+    1@ = 20 
+    2@ = 1082
+    gosub @fade
+    0@ = 20 
+    1@ = 1 
+    2@ = 546
+    gosub @fade
+    /*0@ = 40 
+    1@ = 1 
+    2@ = 1219
+    gosub @fade */
+    //audiostream.PerformAction(10@,stop)
+    0750: set_object $95[0] visibility 1 
+    0750: set_object $95[1] visibility 1
+    0750: set_object $95[3] visibility 1
+    0AB3: var 16 = 1
+    0@ = 1 
+    1@ = 50 
+    2@ = 1383
+    gosub @fade
+    0@ = 50 
+    1@ = 10 
+    2@ = 774
+    gosub @fade
+    0@ = 10 
+    1@ = 60 
+    2@ = 1097
+    gosub @fade
+    0@ = 60 
+    1@ = 30 
+    2@ = 678
+    gosub @fade
+    0@ = 30 
+    1@ = 80 
+    2@ = 839
+    gosub @fade
+    0@ = 80 
+    1@ = 30 
+    2@ = 903
+    gosub @fade
+    0@ = 30
+    1@ = 90 
+    2@ = 1063
+    gosub @fade
+    0@ = 90 
+    1@ = 40 
+    2@ = 744
+    gosub @fade
+    0@ = 40 
+    1@ = 100 
+    2@ = 1226
+    gosub @fade
+    0750: set_object $110 visibility 0
+    0338: set_car $111 visibility 1
+    0AB3: var 0 = 0
+    0AB3: var 16 = 0
+jump @end
+
+:demat
+    0AB3: var 16 = 2
+    0750: set_object $110 visibility 1
+    0338: set_car $111 visibility 0
+    0@ = 100 
+    1@ = 40 
+    2@ = 932
+    gosub @fade
+    0@ = 40 
+    1@ = 80 
+    2@ = 540
+    gosub @fade
+    0@ = 80 
+    1@ = 30 
+    2@ = 1102
+    gosub @fade
+    0@ = 30 
+    1@ = 70 
+    2@ = 740
+    gosub @fade
+    0@ = 70 
+    1@ = 30 
+    2@ = 1000
+    gosub @fade
+    0@ = 30 
+    1@ = 60 
+    2@ = 751
+    gosub @fade
+    0@ = 60
+    1@ = 20 
+    2@ = 1082
+    gosub @fade
+    0@ = 20 
+    1@ = 1 
+    2@ = 546
+    gosub @fade
+    
+    0AB4: 17@ = var 17 // If spinning ÊÎÑÒÛËÜ
+    if 17@ == 1
+    then 
+        0338: set_car $111 visibility 0
+        0750: set_object $110 visibility 1
+        0D11: set_object $110 alpha 255
+        0750: set_object $95[2] visibility 0 
+        0750: set_object $95[3] visibility 0
+    else
+        0750: set_object $110 visibility 0
+        0750: set_object $95[0] visibility 0 
+        0750: set_object $95[1] visibility 0
+        0750: set_object $95[2] visibility 0 
+        0750: set_object $95[3] visibility 0
+    end
+    0AB3: var 16 = 3
+jump @end
+
+:tshort
+    0AB3: var 16 = 2
+    0750: set_object $110 visibility 1
+    0338: set_car $111 visibility 0
+    0@ = 100 
+    1@ = 20 
+    2@ = 974  
+    gosub @fade
+    0@ = 20 
+    1@ = 50 
+    2@ = 633
+    gosub @fade
+    0@ = 50 
+    1@ = 10 
+    2@ = 1101
+    gosub @fade
+    wait 600
+    0750: set_object $95[0] visibility 1 
+    0750: set_object $95[1] visibility 1
+    0750: set_object $95[3] visibility 1
+    0AB3: var 16 = 1
+    0@ = 10 
+    1@ = 70 
+    2@ = 689
+    gosub @fade
+    0@ = 70 
+    1@ = 30 
+    2@ = 1000
+    gosub @fade
+    0@ = 30 
+    1@ = 100 
+    2@ = 1271
+    gosub @fade
+    0750: set_object $110 visibility 0
+    0338: set_car $111 visibility 1
+    0AB3: var 16 = 0
+jump @end
+
+:crash1
+    0AB3: var 16 = 2
+    0750: set_object $110 visibility 1
+    0338: set_car $111 visibility 0
+    0@ = 100 
+    1@ = 50 
+    2@ = 194  
+    gosub @fade
+    0@ = 50 
+    1@ = 95 
+    2@ = 182
+    gosub @fade
+    0@ = 95 
+    1@ = 45 
+    2@ = 146
+    gosub @fade
+    0@ = 45 
+    1@ = 90
+    2@ = 158
+    gosub @fade
+    0@ = 90 
+    1@ = 40 
+    2@ = 158
+    gosub @fade
+    0@ = 40 
+    1@ = 85 
+    2@ = 352
+    gosub @fade
+    0@ = 85 
+    1@ = 35 
+    2@ = 289
+    gosub @fade
+    0@ = 35 
+    1@ = 80
+    2@ = 244
+    gosub @fade
+    0AB3: var 16 = 1
+    0@ = 80 
+    1@ = 30 
+    2@ = 279
+    gosub @fade
+    0@ = 30 
+    1@ = 75 
+    2@ = 348
+    gosub @fade
+    0@ = 75 
+    1@ = 25 
+    2@ = 146
+    gosub @fade
+    0@ = 25 
+    1@ = 70 
+    2@ = 678
+    gosub @fade
+    0@ = 70 
+    1@ = 20 
+    2@ = 443
+    gosub @fade
+    0@ = 20 
+    1@ = 65 
+    2@ = 342
+    gosub @fade
+    0@ = 65 
+    1@ = 15 
+    2@ = 270
+    gosub @fade
+    0@ = 15 
+    1@ = 65 
+    2@ = 296
+    gosub @fade
+    0@ = 65 
+    1@ = 25 
+    2@ = 331
+    gosub @fade
+    0@ = 25 
+    1@ = 80 
+    2@ = 792
+    gosub @fade
+    0@ = 80 
+    1@ = 55 
+    2@ = 1167
+    gosub @fade
+    0@ = 55 
+    1@ = 100 
+    2@ = 920
+    gosub @fade
+    0AB3: var 16 = 0
+    0AB4: 17@ = var 17 // If spinning ÊÎÑÒÛËÜ
+    if 17@ == 1
+    then
+        0750: set_object $110 visibility 1
+        0338: set_car $111 visibility 0
+        0D11: set_object $110 alpha 255
+    else
+        0750: set_object $110 visibility 0
+        0338: set_car $111 visibility 1
+    end
+jump @end
+
+:crash2
+    0AB3: var 16 = 2
+    0750: set_object $110 visibility 1
+    0338: set_car $111 visibility 0
+    0@ = 100 
+    1@ = 20 
+    2@ = 522  
+    gosub @fade
+    0@ = 80 
+    1@ = 10 
+    2@ = 267
+    gosub @fade
+    0@ = 10 
+    1@ = 70 
+    2@ = 859
+    gosub @fade
+    0@ = 70 
+    1@ = 5 
+    2@ = 557
+    gosub @fade
+    0@ = 5 
+    1@ = 60 
+    2@ = 1010
+    gosub @fade
+    0@ = 60 
+    1@ = 20 
+    2@ = 639
+    gosub @fade
+    0@ = 20 
+    1@ = 0 
+    2@ = 1074
+    gosub @fade
+    0750: set_object $110 visibility 0
+    0750: set_object $95[0] visibility 0 
+    0750: set_object $95[1] visibility 0
+    0750: set_object $95[2] visibility 0 
+    0750: set_object $95[3] visibility 0
+jump @end
+
+:crash2m
+    0750: set_object $110 visibility 1
+    0338: set_car $111 visibility 0
+    0AB3: var 16 = 1
+    0@ = 1 
+    1@ = 45 
+    2@ = 800  
+    gosub @fade
+    0@ = 45 
+    1@ = 0 
+    2@ = 300  
+    gosub @fade
+    0@ = 0 
+    1@ = 0 
+    2@ = 312  
+    gosub @fade
+    0@ = 0 
+    1@ = 90 
+    2@ = 212  
+    gosub @fade
+    0@ = 90 
+    1@ = 0 
+    2@ = 372   
+    gosub @fade
+    0@ = 0 
+    1@ = 50 
+    2@ = 300   
+    gosub @fade
+    0@ = 0 
+    1@ = 0 
+    2@ = 200   
+    gosub @fade
+    0@ = 0 
+    1@ = 0 
+    2@ = 200   
+    gosub @fade
+    0@ = 1 
+    1@ = 50 
+    2@ = 200   
+    gosub @fade
+    0@ = 1 
+    1@ = 60 
+    2@ = 372   
+    gosub @fade
+    0@ = 60 
+    1@ = 5  
+    2@ = 872   
+    gosub @fade
+    0@ = 5 
+    1@ = 80 
+    2@ = 1645
+    gosub @fade
+    0@ = 1 
+    1@ = 50 
+    2@ = 500
+    gosub @fade
+    0@ = 1 
+    1@ = 50 
+    2@ = 500
+    gosub @fade
+    0@ = 1 
+    1@ = 100 
+    2@ = 900
+    gosub @fade
+    0AB3: var 16 = 0
+    0750: set_object $110 visibility 0
+    0338: set_car $111 visibility 1
+jump @end
+
+:hadsdem
+    0AB3: var 16 = 2
+    0750: set_object $110 visibility 1
+    0338: set_car $111 visibility 0
+    0@ = 100 
+    1@ = 20 
+    2@ = 702  
+    gosub @fade
+    0@ = 20 
+    1@ = 80 
+    2@ = 593
+    gosub @fade
+    0@ = 80 
+    1@ = 10 
+    2@ = 947
+    gosub @fade
+    0@ = 10 
+    1@ = 70 
+    2@ = 752
+    gosub @fade
+    0@ = 70 
+    1@ = 1 
+    2@ = 1183
+    gosub @fade
+    0750: set_object $110 visibility 0
+    0750: set_object $95[0] visibility 0
+    0750: set_object $95[1] visibility 0 
+    0750: set_object $95[3] visibility 0
+    0AB3: var 16 = 3
+jump @end
+
+:matshort
+    0AB3: var 16 = 1
+    0750: set_object $110 visibility 1
+    0338: set_car $111 visibility 0
+    0750: set_object $95[0] visibility 1
+    0750: set_object $95[1] visibility 1 
+    0750: set_object $95[3] visibility 1
+    0@ = 1 
+    1@ = 50 
+    2@ = 837  
+    gosub @fade
+    0@ = 50 
+    1@ = 30 
+    2@ = 805
+    gosub @fade
+    0@ = 30 
+    1@ = 100 
+    2@ = 1164
+    gosub @fade
+    0750: set_object $110 visibility 0
+    0338: set_car $111 visibility 1
+    0AB3: var 16 = 0
+jump @end
+
+:cloak
+    0@ = 1 
+    1@ = 90 
+    2@ = 1000
+    0750: set_object $95[2] visibility 1 
+    0750: set_object $95[3] visibility 1
+    gosub @fade       
+jump @end
+
+:cloak2
+    0@ = 90 
+    1@ = 1 
+    2@ = 1000
+    0750: set_object $95[2] visibility 0 
+    0750: set_object $95[3] visibility 0
+    gosub @fade       
+jump @end 
+
+:fland
+    0750: set_object $110 visibility 1
+    0338: set_car $111 visibility 0
+    0@ = 100 
+    1@ = 20 
+    2@ = 700  
+    gosub @fade
+    0@ = 20 
+    1@ = 100 
+    2@ = 300
+    gosub @fade
+    0750: set_object $110 visibility 0
+    0338: set_car $111 visibility 1
+jump @end
+
+:fade
+0085: 3@ = 0@ //START 20
+0085: 4@ = 1@ //FINISH 90
+0085: 5@ = 2@ //TIME 2000
+3@ *= 7
+3@ /= 5 
+3@ += 100 //CONVERTED START  128
+4@ *= 7
+4@ /= 5 
+4@ += 100 //CONVERTED FINISH  226
+0085: 7@ = 4@
+0062: 7@ -= 3@ //DELTA CONVERTED 98
+32@ = 0
+//0566: link_object $110 to_interior $ACTIVE_INTERIOR
+repeat
+    0085: 8@ = 32@ // 100
+    006A: 8@ *= 7@ //9800
+    0072: 8@ /= 5@ //5
+    005A: 8@ += 3@ //133
+    0D11: set_object $110 alpha 8@
+    0AB3: var 46 = 8@
+    wait 0
+until 002B: 32@ >= 5@
+return
+
+:end
+0A93: end_custom_thread

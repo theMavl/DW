@@ -1,0 +1,96 @@
+{$CLEO .cs}
+
+//-------------MAIN---------------
+thread 'DORCL' 
+
+var
+    $95: array 5 of Integer
+end
+
+0AB4: 0@ = var 41
+if 0@ == 1
+then
+    end_custom_thread
+end
+0AB3: var 41 = 1
+
+repeat
+wait 0
+    0AB4: 0@ = var 19
+    if or
+        0@ == 1
+        00DB:   actor $PLAYER_ACTOR in_car $111
+    then    
+        break 
+    end
+until 8202:   NOT actor $PLAYER_ACTOR near_car $111 radius 0.8 0.8 flag 0 
+
+
+
+
+wait 100
+
+095F: get_car $111 door 2 angle_to 1@
+095F: get_car $111 door 3 angle_to 2@
+21@ = 0.0
+if or
+8045:  NOT 1@ == 21@
+8045:  NOT 2@ == 21@
+then
+    0AC1: 18@ = load_audiostream_with_3d_support "DWS\DC.MP3"
+    0AC5: link_3d_audiostream 18@ to_vehicle $111
+    wait 100
+    Audiostream.PerformAction(18@, PLAY)
+    095F: get_car $111 componentA 2 rotation_to 6@
+    095F: get_car $111 componentA 3 rotation_to 16@
+    0097: make 6@ absolute_float
+    0097: make 16@ absolute_float 
+    if 6@ > 1.25
+    then
+        6@ = 1.0
+        08A6: set_car $111 componentA 2 rotation_to -1.0
+    end 
+    if 16@ > 1.25
+    then
+        16@ = 1.0
+        08A6: set_car $111 componentA 3 rotation_to -1.0
+    end 
+    0087: 5@ = 6@ //0.99
+    0087: 15@ = 16@ //0.99
+    32@ = 0
+    repeat
+        wait 0
+        0087: 7@ = 6@
+        0087: 8@ = 16@
+        0087: 5@ = 6@ //0.99
+        0087: 15@ = 16@ //0.99
+        0093: 10@ = integer 32@ to_float //600.0
+        006B: 5@ *= 10@ // 0.99*600.0 = 594.0
+        5@ /= 784.0 // 0.7576
+        006B: 15@ *= 10@ // 99.0
+        15@ /= 784.0 //0.1262
+        0063: 7@ -= 5@ // 0.99 - 0.7576 = 0.2324
+        0063: 8@ -= 15@ // 0.99 - 0.1262 = 0.8638
+        7@ *= -1.0
+        8@ *= -1.0
+        08A6: set_car $111 componentA 2 rotation_to 7@
+        08A6: set_car $111 componentA 3 rotation_to 8@
+        095F: get_car $111 componentA 2 rotation_to 7@
+        095F: get_car $111 componentA 3 rotation_to 8@
+        8@ *= 72.0
+        8@ /= 1.26
+        0681: attach_object $95[0] to_car $111 with_offset 0.566 -0.698 0.314 rotation 0.0 0.0 8@
+        7@ *= 72.0
+        7@ /= 1.26
+        0681: attach_object $95[1] to_car $111 with_offset -0.566 -0.698 0.314 rotation 0.0 0.0 7@
+    until 32@ >= 784
+    0508: car $111 close_all_doors
+    0681: attach_object $95[0] to_car $111 with_offset 0.566 -0.698 0.314 rotation 0.0 0.0 0.0
+    0681: attach_object $95[1] to_car $111 with_offset -0.566 -0.698 0.314 rotation 0.0 0.0 0.0
+    wait 500
+    Audiostream.Release(18@)
+end
+
+0AB3: var 41 = 0
+
+0A93: end_custom_thread

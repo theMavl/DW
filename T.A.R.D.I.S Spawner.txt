@@ -1,0 +1,568 @@
+{$CLEO .cs}
+
+//-------------MAIN---------------
+thread 'TSPAWN'
+wait 0
+
+//Erase all variables (helps a lot if user will start new game without restarting the game)
+0AB3: var 0 = 0
+0AB3: var 1 = 0.0
+0AB3: var 2 = 0.0
+0AB3: var 3 = 0.0
+0AB3: var 4 = 0
+0AB3: var 5 = 0.0
+//0AB3: var 6 = 0
+0AB3: var 8 = 1
+0AB3: var 9 = 0
+0AB3: var 10 = 0
+0AB3: var 11 = 0
+0AB3: var 12 = 0
+0AB3: var 13 = 0
+0AB3: var 14 = 0
+0AB3: var 15 = 0
+0AB3: var 16 = 0
+0AB3: var 17 = 0
+0AB3: var 18 = 1 // Default spinning direction 
+0AB3: var 19 = 0
+//0AB3: var 20 = 0
+//0AB3: var 21 = 0.0
+//0AB3: var 22 = 0.0
+//0AB3: var 23 = 0.0
+0AB3: var 24 = 0
+0AB3: var 25 = 0
+0AB3: var 26 = 0
+0AB3: var 27 = 0
+0AB3: var 28 = 0
+0AB3: var 29 = 0
+0AB3: var 30 = -1 // destination X and input coords flag (-1 = no coords)
+0AB3: var 31 = 0.0
+0AB3: var 32 = 0.0
+0AB3: var 33 = 0
+0AB3: var 34 = 0.0
+0AB3: var 35 = 0
+//0AB3: var 36 = 0
+0AB3: var 37 = 0
+0AB3: var 38 = 0
+0AB3: var 39 = 0
+0AB3: var 40 = 1 // scripts were reloaded FLAG
+0AB3: var 41 = 0 // doorc status
+0AB3: var 42 = 0
+0AB3: var 43 = 0
+0AB3: var 44 = 0
+0AB3: var 45 = 0
+0AB3: var 46 = 0
+0AB3: var 47 = 0
+0AB3: var 48 = 0
+0AB3: var 50 = 0
+$94 = 0
+$93 = 0
+$111 = -1
+$110 = -1
+$112 = -1
+$95 = -1
+$96 = -1
+$97 = -1
+$98 = -1
+$99 = -1
+
+if
+    $Mission_Intro_Passed == 0
+then
+    jump @def // skip cleaning objects if new game
+end
+
+//Destroy interior objects if found
+2@ = 0
+32@ = 0
+10@ = 0 // errors counter
+while 0AE3: 1@ = random_object_near_point 0.0 0.0 1024.0 in_radius 10.0 find_next 0 //IF and SET
+    object.Destroy(1@)
+    if and
+        Player.Defined($PLAYER_CHAR)
+        Player.Controllable($PLAYER_CHAR)
+        2@ == 0
+        $Mission_Intro_Passed == 1
+    then
+        2@ = 1
+        01B4: set_player $PLAYER_CHAR can_move 0
+        04D7: set_actor $PLAYER_ACTOR locked 1  
+        0390: load_txd_dictionary 'dwload' 
+        038F: load_texture "loadsc1" as 1
+        0826: enable_hud 0
+        0581: enable_radar 0
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 1 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 255
+    end
+    if 32@ > 10000
+    then
+        10@ += 1 // error level +
+        break
+    end
+    //0750: set_object 1@ visibility 0 
+    wait 0
+end
+0AB4: 0@ = var 21
+0AB4: 1@ = var 22
+0AB4: 2@ = var 23
+32@ = 0
+wait 100
+while 0AE3: 4@ = random_object_near_point 0@ 1@ 2@ in_radius 10.0 find_next 0 //IF and SET
+    object.Destroy(4@)
+    {3@ += 1
+    show_text "NVC: [%d] %d" 100 3@ 4@}
+    if 32@ > 10000
+    then
+        10@ += 1 // error level +
+        break
+    end
+    wait 0
+end
+if 10@ > 0
+then
+    0ACE: show_formatted_text_box "~r~[ERROR] #COB: Time Out~n~Code: %d" 10@   
+end
+0AB3: var 39 = 1 // Cleaned up  
+//end of Destroy interior objects
+
+var
+    $95: array 5 of Integer
+end
+
+:def
+wait 100
+if //and
+Player.Defined($PLAYER_CHAR)
+//Player.Controllable($PLAYER_CHAR)
+jf @def 
+
+:FIRST
+wait 0
+04ED: load_animation "DW" 
+Model.Load(#SPARROW)
+Model.Load(18631)
+Model.Load(#BRASSKNUCKLE)
+Model.Load(18667)
+Model.Load(18668)
+Model.Load(18669)
+Model.Load(18670)
+Model.Load(18675)
+038B: load_requested_models
+
+if and
+   model.Available(#SPARROW)
+   model.Available(#BRASSKNUCKLE)
+   model.Available(18631)
+   model.Available(18667)
+   model.Available(18668)
+   model.Available(18669)
+   Model.Available(18670)
+   04EE:   animation "DW" loaded
+jf @FIRST
+wait 100
+00A5: $111 = create_car #SPARROW at 0.0 0.0 0.0
+0574: set_car $111 keep_position 1 // Protect from falling out of map
+0852: set_car_can_be_visibly_damaged $111 to 0 // Don't show damage (protect from knocking off doors)
+
+{0AB3: var 21 = 0.0
+0AB3: var 22 = 0.0
+0AB3: var 23 = 0.0  //Set exterior coords
+0AB3: var 20 = 0
+0AB3: var 6 = 0.0 }
+
+0AB4: 0@ = var 21
+0AB4: 1@ = var 22
+0AB4: 2@ = var 23
+0AB4: 3@ = var 20
+0AB4: 4@ = var 6
+
+Car.PutAt($111, 0@, 1@, 2@)
+0175: set_car $111 Z_angle_to 4@ 
+0840: link_car $111 to_interior 3@
+if and
+    8202: NOT actor $PLAYER_ACTOR near_car $111 radius 150.0 150.0 flag 0
+    80FE: NOT actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 15.0 15.0 15.0
+then
+    run "exterior_calibration.s" 0@ 1@ 2@
+end
+ 
+
+Object.Create($110, 18631, 2.0, 0.0, 0.0)
+Object.Create($95[0], 18667, 2.0, 0.0, 0.0) //doorl
+Object.Create($95[1], 18668, 2.0, 0.0, 0.0) //doorr
+Object.Create($95[2], 18669, 2.0, 0.0, 0.0) //doors
+Object.Create($95[3], 18670, 2.0, 0.0, 0.0) //main
+Object.Create($95[4], 18675, 2.0, 0.0, 0.0) //interior texture
+0750: set_object $110 visibility 0
+//0681: attach_object $110 to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+09CA: set_object $110 immunities BP 1 FP 1 EP 1 CP 1 MP 1 
+for 0@ = 0 to 4
+wait 0
+    09CA: set_object $95[0@] immunities BP 1 FP 1 EP 1 CP 1 MP 1
+    0382: set_object $95[0@] collision_detection 0
+end
+0382: set_object $95[0] collision_detection 1
+0382: set_object $95[1] collision_detection 1
+0681: attach_object $95[0] to_car $111 with_offset 0.566 -0.698 0.314 rotation 0.0 0.0 0.0 
+0681: attach_object $95[1] to_car $111 with_offset -0.566 -0.698 0.314 rotation 0.0 0.0 0.0
+0681: attach_object $95[2] to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0 
+0681: attach_object $95[3] to_car $111 with_offset 0.0 0.0 0.651 rotation 0.0 0.0 90.0
+0681: attach_object $95[4] to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0
+0750: set_object $95[2] visibility 0 
+0382: set_object $110 collision_detection 0
+0224: set_car $111 health_to 2000
+0AB3: var 11 = 1
+wait 100 
+Model.Destroy(#SPARROW)
+if 0AAB:  file_exists "CLEO\nv_doors.s"
+then
+    0A92: create_custom_thread "nv_doors.s" //Windows attaching thread
+else
+    0ACE: show_formatted_text_box "~r~[ERROR]~w~ File nv_doors.s not found! Windows objects unavailable"
+end
+if 0AAB:  file_exists "CLEO\back_texture.s"
+then
+    0A92: create_custom_thread "back_texture.s"  //Hide background texture if doors are closed
+else
+    0ACE: show_formatted_text_box "~r~[ERROR]~w~ File back_texture.s not found! TARDIS interior texture unavailable"
+end
+while  fading
+    wait 0
+end
+wait 1000
+if $Mission_Intro_Passed == 0
+then
+    while true
+        wait 0
+        if and
+            0256:   player $PLAYER_CHAR defined 
+            03EE:   player $PLAYER_CHAR controllable
+            00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 2239.3425 -1261.9398 23.9375 radius 1.0 1.0 1.0 
+        then
+            //0AD1: show_formatted_text_highpriority "Texture" time 20000
+            while fading
+                wait 0
+            end
+            wait 5000 
+            break
+        end
+    end
+end
+0AB3: var 39 = 1 // Cleaned up 
+0390: load_txd_dictionary 'dwload' 
+038F: load_texture "loadsc1" as 5
+0826: enable_hud 0
+0581: enable_radar 0
+03E3: set_texture_to_be_drawn_antialiased 1
+0750: set_object $110 visibility 1
+038D: draw_texture 5 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 255
+01B4: set_player $PLAYER_CHAR can_move 0
+04D7: set_actor $PLAYER_ACTOR locked 1
+04C4: store_coords_to 0@ 1@ 2@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.0 
+01BC: put_object $110 at 0@ 1@ 2@
+//0566: link_object $110 to_interior $ACTIVE_INTERIOR
+wait 1000
+0681: attach_object $110 to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+0750: set_object $110 visibility 0
+01B4: set_player $PLAYER_CHAR can_move 1
+04D7: set_actor $PLAYER_ACTOR locked 0
+03F0: enable_text_draw 0
+0391: release_textures 
+0826: enable_hud 1
+if $93 == 0
+then
+    0581: enable_radar 1
+end
+
+while true
+    :TSPAWN_11
+    
+    wait 0
+    
+    if    03EE:   player $PLAYER_CHAR controllable
+    jf continue
+     
+    0AB4: 0@ = var 0
+    0AB4: 1@ = var 19 
+    if and 
+        00E1: key_pressed 0 6
+        0AB0:  key_pressed 84
+        //0185: car $111 health > 400
+        80DF:   NOT actor $PLAYER_ACTOR driving
+        02D8:   actor $PLAYER_ACTOR current_weapon == 0 
+        0@ == 0  // var 0
+        84AD:   not actor $PLAYER_ACTOR in_water
+        $93 == 0
+        1@ == 0 // fade flag
+    then
+        jump @TSPAWN_57
+    end
+    
+    if and 
+        0ADC:   test_cheat "givemebluebox"
+        80DB:  NOT actor $PLAYER_ACTOR in_car $111
+        //0185: car $111 health > 400
+    then
+        jump @TSPAWN2_57
+    end
+    
+    if 
+        0491:   actor $PLAYER_ACTOR has_weapon 1 
+    then
+        0555: remove_weapon 1 from_actor $PLAYER_ACTOR 
+    end
+    
+    if and
+        0AB0:  key_pressed 71
+        0185: car $111 health > 400
+        047A:   actor $PLAYER_ACTOR driving_bike
+        0205: actor $PLAYER_ACTOR near_car $111 radius 20.0 20.0 20.0 flag 0 
+        1@ == 0 // fade flag
+    then
+        jump @SNAP2
+    end 
+    if and 
+        0AB0:  key_pressed 71
+        0185: car $111 health > 400
+        80DF:   not actor $PLAYER_ACTOR driving 
+        02D8:   actor $PLAYER_ACTOR current_weapon == 0
+        0205: actor $PLAYER_ACTOR near_car $111 radius 20.0 20.0 20.0 flag 0
+        816B:   not fading
+        1@ == 0  // fade flag
+    then
+        jump @SNAP2
+    end
+end
+
+:SNAP2
+wait 0
+0AB4: 3@ = var 15 // self repair flag
+0AB4: 14@ = var 0
+
+if 3@ == 0   // self repair flag
+jf @TSPAWN_11
+
+if or
+    14@ == 0    // var 0 status
+    14@ == 3
+jf @TSPAWN_11
+ 
+0AB4: 3@ = var 41
+if 3@ == 0        // If doorc.cs is not activated
+then
+    0A92: create_custom_thread "fingsnap.s"
+    wait 50
+    0AAA: 3@ = thread 'fclick' pointer
+    repeat
+        wait 0
+        0D2F: 27@ = get_thread 3@ var 30 
+    until 27@ == 1
+end
+jump @TSPAWN_11 
+
+:TSPAWN_57
+wait 0
+IF 
+    0119:   car $111 wrecked
+then
+    01C3: remove_references_to_car $111
+    Model.Load(#sparrow)
+    038B: load_requested_models
+    repeat
+        wait 100
+    until model.Available(#SPARROW)
+    00A5: $111 = create_car #SPARROW at 0.0 0.0 0.0
+    0574: set_car $111 keep_position 1
+    0852: set_car_can_be_visibly_damaged $111 to 0 // Don't show damage (protect from knocking off doors)
+    
+    0AB3: var 21 = 0.0
+    0AB3: var 22 = 0.0
+    0AB3: var 23 = 0.0  //Set exterior coords
+    0AB3: var 20 = 0
+    0AB3: var 6 = 0.0
+     
+    0681: attach_object $110 to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+    0224: set_car $111 health_to 2000
+    0681: attach_object $95[0] to_car $111 with_offset 0.566 -0.698 0.314 rotation 0.0 0.0 0.0 
+    0681: attach_object $95[1] to_car $111 with_offset -0.566 -0.698 0.314 rotation 0.0 0.0 0.0
+    0681: attach_object $95[2] to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0 
+    0681: attach_object $95[3] to_car $111 with_offset 0.0 0.0 0.651 rotation 0.0 0.0 90.0
+    0681: attach_object $95[4] to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0
+    0750: set_object $95[2] visibility 0
+    0ABA: end_custom_thread_named "LIG3"
+    0A92: create_custom_thread "lig3.cs"  
+    wait 100
+    Model.Destroy(#SPARROW)
+    3@ = 1
+    0AB3: var 11 = 3@
+end
+
+0ABA: end_custom_thread_named 'extcalb' // Kill exterior calibration
+
+04ED: load_animation "DW"
+wait 100 
+01B2: give_actor $PLAYER_ACTOR weapon 1 ammo 1E38
+Object.Create(0@, #BRASSKNUCKLE, 0.0, 0.0, 0.0)
+09CA: set_object 0@ immunities BP 1 FP 1 EP 1 CP 1 MP 1 
+070A: AS_actor  $PLAYER_ACTOR attach_to_object 0@ offset 0.0 0.0 0.0 on_bone 6 16 perform_animation "NULL" IFP_file "NULL" time 1
+//0A1A: actor $PLAYER_ACTOR perform_animation "KEY" IFP "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 1 -1 ms // versionC  
+0605: actor $PLAYER_ACTOR perform_animation "KEY" IFP "DW" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1
+if
+    0205: actor $PLAYER_ACTOR near_car $111 radius 90.0 90.0 90.0 flag 0
+then
+    marker.CreateAboveCar(31@,$111)
+    0165: set_marker 31@ color_to 2
+    wait 850
+    0A92: create_custom_thread "keylight.s"
+    32@ = 0
+    repeat
+        wait 0
+        if 32@ >= 3450
+        then
+            0164: disable_marker 31@
+        end
+    until 8611:   NOT actor $PLAYER_ACTOR performing_animation "KEY"
+    01B2: give_actor $PLAYER_ACTOR weapon 0 ammo 1E38
+    Object.Destroy(0@)
+    if 075C:   marker 31@ enabled
+    then
+        while 32@ < 3450
+            wait 0
+        end
+        0164: disable_marker 31@
+    end 
+    jump @TSPAWN_11  
+end  
+04C4: store_coords_to 3@ 4@ 5@ from_actor $PLAYER_ACTOR with_offset 0.0 9.8 0.0
+0508: car $111 close_all_doors
+run "toggles.cs" 1 3 //throttle to ON AND LOCKED 
+run "toggles.cs" 2 2 //handbrake to OFF AND LOCKED  
+0AC1: 17@ = load_audiostream_with_3d_support "dws\LND1.MP3" //IF and SET
+wait 200 
+Audiostream.PerformAction(17@, PLAY)
+0AC2: set_3d_audiostream 17@ position 3@ 4@ 5@
+0ABC: set_audiostream 17@ volume 5.0
+wait 1000
+0A92: create_custom_thread "keylight.s"
+wait 350
+0612: set_actor $PLAYER_ACTOR animation "KEY" paused 0
+wait 6650
+0750: set_object $95[0] visibility 0 
+0750: set_object $95[1] visibility 0 
+0750: set_object $95[3] visibility 0 
+0AB3: var 0 = 2
+if $ACTIVE_INTERIOR == 0
+then
+00AB: put_car $111 at 3@ 4@ -100.0
+else
+00AB: put_car $111 at 3@ 4@ 5@
+end
+0840: link_car $111 to_interior $ACTIVE_INTERIOR
+0338: set_car $111 visibility 0
+0A1C: set_helicopter $111 play_engine_sounds 0
+0574: freeze_car_position_and_dont_load_collision $111 to 1
+0918: set_car $111 engine_operation 0
+099A: set_car $111 collision_detection 0
+wait 2840
+0AB3: var 0 = 2
+0AB3: var 28 = 1 // lock console
+0612: set_actor $PLAYER_ACTOR animation "KEY" paused 1
+0AB3: var 12 = 0
+00AA: store_car $111 position_to 3@ 4@ 5@
+0174: 6@ = car $111 Z_angle 
+
+0AB3: var 21 = 3@
+0AB3: var 22 = 4@
+0AB3: var 23 = 5@  //Set exterior coords
+0AB3: var 20 = $ACTIVE_INTERIOR
+0AB3: var 6 = 6@
+
+5@ -= 0.030 
+01BC: put_object $110 at 3@ 4@ 5@
+0750: set_object $110 visibility 0
+0AB3: var 16 = 1
+0A92: create_custom_thread "fade.s" 2
+32@ = 0
+1@ = 0
+repeat
+    wait 0
+    if and
+        Object.Exists(0@) 
+        8611:   NOT actor $PLAYER_ACTOR performing_animation "KEY" 
+    then
+        01B2: give_actor $PLAYER_ACTOR weapon 0 ammo 1E38
+        Object.Destroy(0@)
+    end
+    if and
+        $93 == 1
+        1@ == 0
+    then
+        1@ = 1
+        0AC2: set_3d_audiostream 17@ position 0.0 0.0 1024.0
+    end
+until 32@ >= 8800
+0681: attach_object $110 to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0  
+if $93 == 0
+then
+    0AC5: link_3d_audiostream 17@ to_vehicle $111
+end
+0338: set_car $111 visibility 1 
+0AB3: var 11 = 1
+00AA: store_car $111 position_to 3@ 4@ 5@
+if and
+80DF: NOT actor $PLAYER_ACTOR driving  
+00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 3@ 4@ 5@ radius 1.0 1.0 2.0
+then
+    072A: put_actor $PLAYER_ACTOR into_car $111 driverseat 
+end
+099A: set_car $111 collision_detection 1
+0AB3: var 0 = 0
+if or
+    $93 == 1
+    $94 == 1
+then
+    052C: set_player $PLAYER_CHAR drunk_visuals 0
+    0003: shake_camera 150
+end
+run "toggles.cs" 1 0  // throttle to OFF
+call_scm_func @set_toggle 2 toggle 2 to 0 // handbrake to off 
+0AB3: var 28 = 0 // unlock console
+wait 1000 
+04EF: release_animation "DW" 
+//wait 1500 
+0AB4: 23@ = var 10
+23@ -= 10
+0AB3: var 10 = 23@
+0AB3: var 16 = 0   
+jump @TSPAWN_11 
+
+
+:TSPAWN2_57
+wait 0 
+03E5: show_text_box 'CHEAT1'  
+04C4: store_coords_to 3@ 4@ 5@ from_actor $PLAYER_ACTOR with_offset 0.0 2.5 0.0
+0840: link_car $111 to_interior $ACTIVE_INTERIOR  
+0A1C: set_helicopter $111 play_engine_sounds 0
+0ABA: end_custom_thread_named 'extcalb' // Kill exterior calibration
+
+00AB: put_car $111 at 3@ 4@ 5@
+
+0174: 6@ = car $111 Z_angle 
+0AB3: var 21 = 3@
+0AB3: var 22 = 4@
+0AB3: var 23 = 5@  //Set exterior coords
+0AB3: var 20 = $ACTIVE_INTERIOR
+0AB3: var 6 = 6@
+
+call_scm_func @get_toggle 1 toggle 2 to 3@
+if or
+    3@ == 1
+    3@ == 3
+then
+    0574: freeze_car_position_and_dont_load_collision $111 to 1
+end
+0918: set_car $111 engine_operation 0
+0AB3: var 11 = 1 
+wait 3000
+jump @TSPAWN_11 
+
+{$INCLUDE move_set_get}

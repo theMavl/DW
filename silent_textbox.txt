@@ -1,0 +1,18 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+{
+    Silent textbox
+    Just because Tommy doesn't like the sound >.<
+    Ladies and gentlemen, please welcome
+    Another one useless thread in your fucking RAM!!
+    Enjoy
+}                      
+thread "stexts"
+
+0512: show_permanent_text_box 0@v
+wait 1@
+03D6: remove_styled_text 0@v
+
+0A93: end_custom_thread
+

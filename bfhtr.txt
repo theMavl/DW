@@ -1,0 +1,32 @@
+{$CLEO .s}
+
+/*
+TARDIS basic flight hovering trick
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+*/
+//-------------MAIN---------------
+0000: NOP
+thread "bfhtr"
+0560: create_random_actor_in_car $111 handle_as 0@
+0337: set_actor 0@ visibility 0
+0446: set_actor 0@ immune_to_headshots 1
+02AB: set_actor 0@ immunities BP 1 FP 1 EP 1 CP 1 MP 1 
+0526: set_actor 0@ stay_in_car 1
+0A09: set_actor 0@ muted 1 // versionB  
+0619: enable_actor 0@ collision_detection 0 
+ 
+
+repeat
+wait 0
+    0AB4: 1@ = var 44
+    if $93 == 1
+    then
+        break
+    end
+until 1@ == 0 
+Actor.DestroyInstantly(0@)
+0AB3: var 44 = 0
+end_custom_thread
+
+

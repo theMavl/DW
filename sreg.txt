@@ -1,0 +1,82 @@
+//this badass is written by Mavl
+{$CLEO .cs}
+
+/*
+TARDIS shield system.
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+*/
+
+//-------------MAIN---------------
+0000: NOP
+thread 'sreg'
+
+wait 1000
+
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+:def
+wait 100
+if
+056D:   actor $PLAYER_ACTOR defined
+jf @def 
+
+wait 1000
+
+//MAX = 100
+//0AB3: var 10 = MAX
+
+:show
+wait 200
+0AB4: 0@ = var 0
+0AB4: 10@ = var 10
+0AB4: 11@ = var 11
+0227: 1@ = car $111 health
+call_scm_func @get_toggle 1 2 12@
+if or
+    12@ == 1   // Check if handbrake enabled or enabled and locked
+    12@ == 3
+then
+    12@ = 1
+else
+    12@ = 0
+end 
+if and
+    0@ == 0
+    11@ == 1
+    10@ >= 20
+    8039: NOT 1@ == 2000
+    0029: 1@ >= 1500
+    12@ == 1
+then
+    while 8029: 1@ >= 2000
+        0AB4: 11@ = var 11
+        0AB4: 10@ = var 10
+        0AB4: 0@ = var 0
+        if or
+            11@ == 0
+            8039: NOT 0@ == 0
+            8029: 10@ >= 20
+        then
+            break
+        end
+        1@ += 10
+        if 1@ > 2000
+        then
+            1@ = 2000
+        end
+        0224: set_car $111 health_to 1@
+        0227: 1@ = car $111 health
+        wait 200
+    end
+    if 1@ > 2000
+        then
+            1@ = 2000
+        end 
+end   
+jump @show
+
+{$INCLUDE move_set_get}

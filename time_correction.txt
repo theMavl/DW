@@ -1,0 +1,90 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+:main
+if 0@ == 0
+jf @restore
+
+thread "timecor"
+wait 0
+
+    
+{while true
+    wait 0
+    if or
+        $93 == 0
+        $94 == 1
+    then
+        break
+    end
+end
+
+0085: 2@ = 32@
+0A91: 2@ = 2@ / 1000 // int
+
+//0092: 2@ = float 2@ to_integer 
+
+005A: 1@ += 2@
+00C0: set_current_time_hours_to 0@ minutes_to 1@
+0AD1: show_formatted_text_highpriority "%d %d %d %d" time 2000 32@ 0@ 1@ 2@}
+
+while true
+    32@ = 0
+    if or
+        $93 == 0
+        $94 == 1
+    then
+        0AB4: 11@ = var 9
+        if 11@ == 0 //Not in Vortex
+        then
+            00BF: 3@ = current_time_hours, 4@ = current_time_minutes
+            3@ *= 100
+            005A: 3@ += 4@
+            0AB3: var 36 = 3@
+
+        end            
+    else
+        0AB4: 10@ = var 36
+        0A91: 3@ = 10@ / 100 // int
+        0B14: 4@ = 10@ MOD 100
+        0AB4: 11@ = var 9
+        if 11@ == 0 //Not in Vortex
+        then
+            if 4@ == 59
+            then
+                4@ = 0
+                if 3@ == 23
+                then
+                    3@ = 0
+                else
+                    3@ += 1
+                end
+            else
+                4@ += 1
+            end
+        end
+        3@ *= 100
+        005A: 3@ += 4@
+        0AB3: var 36 = 3@
+        //0AD1: show_formatted_text_highpriority "%d" time 2000 3@
+    end
+    repeat
+        wait 0
+    until 32@ >= 1000
+end
+0A93: end_custom_thread 
+
+:restore
+wait 0
+if 0@ == 1
+jf @main
+
+thread "timeres"
+wait 0
+0AB4: 5@ = var 36
+0A91: 3@ = 5@ / 100 // int
+0B14: 4@ = 5@ MOD 100
+00C0: set_current_time_hours_to 3@ minutes_to 4@
+//0ACE: show_formatted_text_box "Restored to %d:%d" 3@ 4@
+0A93: end_custom_thread 

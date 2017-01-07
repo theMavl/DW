@@ -1,0 +1,64 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+const
+MULT = 5@
+end
+
+var
+5@ : Float
+1@ : Float
+2@ : Float
+3@ : Float
+end
+
+Model.Load(1598)
+wait 100
+0@ = Object.Create(1598, 0.0, 0.0, 1024.0)
+1@ = 0.0
+2@ = 0.0
+3@ = 1024.0
+01B4: set_player $PLAYER_CHAR can_move 0
+08D2: object 0@ scale_model 0.1 
+015F: set_camera_position 0.0 0.0 1026.0 rotation 0.0 0.0 0.0 
+repeat
+wait 0
+if 0AB0: 17
+then
+MULT = 0.01
+else
+MULT = 0.1
+end
+if 0AB0: 37
+then
+    1@ -= MULT
+end
+if 0AB0: 39
+then
+    1@ += MULT
+end
+if 0AB0: 38
+then
+    2@ += MULT
+end
+if 0AB0: 40
+then
+    2@ -= MULT
+end
+if 0AB0: 33
+then
+    3@ += MULT
+end
+if 0AB0: 34
+then
+    3@ -= MULT
+end
+Object.PutAt(0@, 1@, 2@, 3@)
+Camera.PointAt(1@, 2@, 3@, 2)
+0AD1: show_formatted_text_highpriority "%f %f %f" time 2 1@ 2@ 3@
+until 0ab0: 56
+Model.Destroy(1598)
+Object.Destroy(0@)
+Camera.Restore()
+01B4: set_player $PLAYER_CHAR can_move 1 
+0A93: end_custom_thread

@@ -1,0 +1,116 @@
+TMC ~g~In-game Timecyc Editor 1.8~s~ by ~r~fastman92
+TCINITR TimecycEditor.Ini has been read
+TCINIFL TimecycEditor.Ini has not been read
+TCYCOPT Options
+
+TWTH0 ~g~Weather: ~r~0 (EXTRASUNNY LA)
+TWTH1 ~g~Weather: ~r~1 (SUNNY LA)
+TWTH2 ~g~Weather: ~r~2 (EXTRASUNNY SMOG LA)
+TWTH3 ~g~Weather: ~r~3 (SUNNY SMOG LA)
+TWTH4 ~g~Weather: ~r~4 (CLOUDY LA)
+TWTH5 ~g~Weather: ~r~5 (SUNNY SF)
+TWTH6 ~g~Weather: ~r~6 (EXTRASUNNY SF)
+TWTH7 ~g~Weather: ~r~7 (CLOUDY SF)
+TWTH8 ~g~Weather: ~r~8 (RAINY SF)
+TWTH9 ~g~Weather: ~r~9 (FOGGY SF)
+TWTH10 ~g~Weather: ~r~10 (SUNNY VEGAS)
+TWTH11 ~g~Weather: ~r~11 (EXTRASUNNY VEGAS)
+TWTH12 ~g~Weather: ~r~12 (CLOUDY VEGAS)
+TWTH13 ~g~Weather: ~r~13 (EXTRASUNNY COUNTRYSIDE)
+TWTH14 ~g~Weather: ~r~14 (SUNNY COUNTRYSIDE)
+TWTH15 ~g~Weather: ~r~15 (CLOUDY COUNTRYSIDE)
+TWTH16 ~g~Weather: ~r~16 (RAINY COUNTRYSIDE)
+TWTH17 ~g~Weather: ~r~17 (EXTRASUNNY DESERT)
+TWTH18 ~g~Weather: ~r~18 (SUNNY DESERT)
+TWTH19 ~g~Weather: ~r~19 (SANDSTORM DESERT)
+TWTH20 ~g~Weather: ~r~20 (UNDERWATER)
+TWTH21 ~g~Weather: ~r~21 (EXTRACOLORS 1)
+TWTH22 ~g~Weather: ~r~22 (EXTRACOLORS 2)
+
+TTCL0 ~g~Intensity of current cycle Midnight: ~r~~1~%
+TTCL1 ~g~Intensity of current cycle 5AM: ~r~~1~%
+TTCL2 ~g~Intensity of current cycle 6AM: ~r~~1~%
+TTCL3 ~g~Intensity of current cycle 7AM: ~r~~1~%
+TTCL4 ~g~Intensity of current cycle Midday: ~r~~1~%
+TTCL5 ~g~Intensity of current cycle 7PM: ~r~~1~%
+TTCL6 ~g~Intensity of current cycle 8PM: ~r~~1~%
+TTCL7 ~g~Intensity of current cycle 7PM: ~r~~1~%
+TTCL8 ~g~Intensity of current cycle 10PM: ~r~~1~%
+
+TNCL0 ~g~Intensity of next cycle Midnight: ~r~~1~%
+TNCL1 ~g~Intensity of next cycle 5AM: ~r~~1~%
+TNCL2 ~g~Intensity of next cycle 6AM: ~r~~1~%
+TNCL3 ~g~Intensity of next cycle 7AM: ~r~~1~%
+TNCL4 ~g~Intensity of next cycle Midday: ~r~~1~%
+TNCL5 ~g~Intensity of next cycle 7PM: ~r~~1~%
+TNCL6 ~g~Intensity of next cycle 8PM: ~r~~1~%
+TNCL7 ~g~Intensity of next cycle 7PM: ~r~~1~%
+TNCL8 ~g~Intensity of next cycle 10PM: ~r~~1~%
+
+TCYCLE0 ~g~Cycle: ~r~1 (Midnight)
+TCYCLE1 ~g~Cycle: ~r~2 (5AM)
+TCYCLE2 ~g~Cycle: ~r~3 (6AM)
+TCYCLE3 ~g~Cycle: ~r~4 (7AM)
+TCYCLE4 ~g~Cycle: ~r~5 (Midday)
+TCYCLE5 ~g~Cycle: ~r~6 (7PM)
+TCYCLE6 ~g~Cycle: ~r~7 (8PM)
+TCYCLE7 ~g~Cycle: ~r~8 (10PM)
+
+TOP_AMB Static ambience color
+TOP_AMD Dynamic ambience color
+TOP_SKT Sky top color
+TOP_SKB Sky bottom color
+TOP_SCE Sun core color
+TOP_SCA Sun corona color
+
+TOP_SPR Sun properties
+TOP_SPG ~g~Sun properties
+
+TOP_SZE Sun core size
+COP_SZE ~g~Core size
+TOP_SZA Sun corona size
+COP_SZA ~g~Corona size
+TOP_SPB Sprite brightness
+COP_SPB ~g~Sprite brightness
+
+TOP_SHP Shadow properties
+COP_SHP ~g~Shadow properties
+COP_SHD ~g~Shadow intensity
+COP_LSH ~g~Light shading value
+COP_POL ~g~Pole shading value
+TOP_WRP World properties
+COP_WRP ~g~World properties
+
+TOP_SHD Shadow intensity
+TOP_LSH Light shading value
+TOP_POL Pole shading value
+TOP_FCL Far clipping offset
+COP_FCL ~g~Far clipping offset
+TOP_FST Fog start offset
+COP_FST ~g~Fog start offset
+TOP_LOG Light on ground
+COP_LOG ~g~Light on ground
+COP_LBM ~g~Sky fog
+TOP_LCL Lower clouds
+TOP_BCL Upper bottom clouds
+TOP_WTR Water RGBA
+TOP_CO1 Colour correction 1
+TOP_CO2 Colour correction 2
+TOP_ILU Illumination
+COP_ILU ~g~Illumination
+
+TCPRVPG Previous page
+TCNXTPG Next page
+TCSAVE Generate new timecyc.dat
+TCSVSC New timecyc.dat has been saved
+TSSVFL Unable to save timecyc.dat
+TCRELO Timecyc.dat data have been successfully loaded
+TCTERM In-game Timecyc Editor: terminating
+TCWRNV In-game Timecyc Editor: incompatible with loaded gta_sa.exe version. Press S to continue
+TCINMS In-game Timecyc Editor: missing info in TimecycEditor.ini. Press S to continue.
+
+TCFNUM ~r~~1~
+TCFLT ~r~~1~.~1~
+TCFLTN ~r~-~1~.~1~
+TCDNUM ~r~~1~
+TCPNUM ~r~~1~%

@@ -1,0 +1,82 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+
+:load
+wait 100
+model.Load(2010)
+if model.Available(2010)
+jf @load
+
+:1
+wait 0
+04C4: store_coords_to 10@ 20@ 30@ from_actor $Player_ACTOR with_offset 5.0 5.0 0.0 
+0107: 11@ = create_object 2010 at 10@ 20@ 30@
+//01BC: put_object 11@ at 10@ 20@ 20.0
+0750: set_object 11@ visibility 0  
+0382: set_object 11@ collision_detection 1
+Object.SetImmunities(11@,1,1,1,1,1)
+model.Destroy(2010)
+Audiostream.Load3D(12@,"DWS\mastertardis.mp3")
+Audiostream.LinkToObject(12@,11@)
+Audiostream.PerformAction(12@,Play)
+wait 1551
+
+:cloak2
+    0750: set_object 11@ visibility 1
+    0@ = 0 
+    1@ = 30 
+    2@ = 782
+    gosub @fade 
+    0@ = 30
+    1@ = 10 
+    2@ = 837
+    gosub @fade 
+    0@ = 10 
+    1@ = 80 
+    2@ = 903
+    gosub @fade
+    0@ = 80 
+    1@ = 50 
+    2@ = 782
+    gosub @fade 
+    0@ = 50 
+    1@ = 100 
+    2@ = 1173
+    gosub @fade
+    0D11: set_object 11@ alpha 255   
+jump @end 
+
+
+:fade
+0085: 3@ = 0@ //START 20
+0085: 4@ = 1@ //FINISH 90
+0085: 5@ = 2@ //TIME 2000
+3@ *= 7
+3@ /= 5 
+3@ += 100 //CONVERTED START  128
+4@ *= 7
+4@ /= 5 
+4@ += 100 //CONVERTED FINISH  226
+0085: 7@ = 4@
+0062: 7@ -= 3@ //DELTA CONVERTED 98
+32@ = 0
+0566: link_object 11@ to_interior $ACTIVE_INTERIOR
+repeat
+    0085: 8@ = 32@ // 100
+    006A: 8@ *= 7@ //9800
+    0072: 8@ /= 5@ //5
+    005A: 8@ += 3@ //133
+    0D11: set_object 11@ alpha 8@
+    wait 0
+until 002B: 32@ >= 5@
+return
+
+:end
+wait 500
+repeat
+wait 10
+until 0ab0: 57
+Audiostream.Release(12@)
+Object.Destroy(11@)
+0A93: end_custom_thread

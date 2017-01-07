@@ -1,0 +1,315 @@
+{$CLEO}
+0000: NOP
+0A93: end_custom_thread
+
+
+wait 500
+:main_toggles
+wait 0
+if 
+0@ == 0               
+jf @int_switch
+
+thread "tcontogg"
+
+const
+    PANEL = 1@
+end
+PANEL = 0
+0A92: create_custom_thread "int_toggles.cs" 1
+while true
+    wait 250
+    if
+        80FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 2.0 2.0 2.0    
+    then
+        PANEL = 0
+        0AB3: var 27 = PANEL
+        Continue
+    end
+    if
+    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 1.2886 -0.7176 1024.375 radius 0.5 0.5 0.5
+    then
+        PANEL = 1
+    end
+    if
+    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 1.2853 0.75 1024.375 radius 0.5 0.5 0.5
+    then
+        PANEL = 2
+    end
+    if
+    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0179 1.4789 1024.375 radius 0.5 0.5 0.5
+    then
+        PANEL = 3
+    end
+    if
+    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere -1.2609 0.7614 1024.375 radius 0.5 0.5 0.5
+    then
+        PANEL = 4
+    end
+    if
+    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere -1.2918 -0.7311 1024.375 radius 0.5 0.5 0.5
+    then
+        PANEL = 5
+    end
+    if
+    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere -0.0314 -1.4752 1024.375 radius 0.5 0.5 0.5
+    then
+        PANEL = 6
+    end
+    0AB3: var 27 = PANEL
+end
+
+
+//                       //
+// ** Switcher thread ** //
+//                       //
+
+:int_switch
+if 0@ == 1
+jf @main_toggles
+thread "tconswitch"
+
+const
+    U_KEY = 85 
+    H_KEY = 72
+    J_KEY = 74
+    K_KEY = 75
+    
+    U_ACT = 4@
+    H_ACT = 5@
+    J_ACT = 6@
+    K_ACT = 7@
+    
+    //Switchers ID
+    STT = 1
+    TRH = 2
+    LDM = 3
+    DEM_LEV = 4
+    KEYBOARD = 5
+    HELMIC = 6 
+    STABIL = 7
+    VORT_LOOP = 8
+    VORT_BF = 9
+    FRET = 10
+    TEL_CIR = 11
+    
+    SWITCHERS = 10@
+    PANEL = 1@
+    PPANEL = 3@
+    TEMP_STATUS = 7@
+end
+
+var
+PANEL : integer
+PPANEL : integer
+end
+
+0AC8: SWITCHERS = allocate_memory_size 11
+008A: $112 = SWITCHERS
+0A8C: write_memory SWITCHERS size 11 value 0 virtual_protect 0
+0AB3: var 26 = SWITCHERS
+//0A92: create_custom_thread "toggles_listener.s" SWITCHERS
+if 0AAB:  file_exists "CLEO\interior_togg_gebug.s"
+then
+    //0A92: create_custom_thread "interior_togg_gebug.s" SWITCHERS
+end
+0AD1: show_formatted_text_highpriority "launched" time 2000
+wait 3000
+PANEL = 0
+PPANEL = 0
+while true
+    wait 0
+    if $93 == 0
+    then
+        continue
+    end
+    PPANEL = PANEL
+    0AB4: PANEL = var 27
+    if PANEL == PPANEL
+    then
+        gosub @check_press
+        Continue
+    end
+    if 
+        PANEL == 0
+    then
+        03E6: remove_text_box
+        Continue
+    end
+    //Bind swtichers to their buttons
+    if PANEL == 1
+    then
+        U_ACT = @HELMIC
+        H_ACT = @VORT_BF
+        J_ACT = @VORT_LOOP
+        K_ACT = @nothing    
+    end
+    if PANEL == 2
+    then
+        U_ACT = @KEYBOARD
+        H_ACT = @STABIL
+        J_ACT = @nothing
+        K_ACT = @nothing    
+    end   
+    if PANEL == 3
+    then
+        U_ACT = @STT
+        H_ACT = @TRH
+        J_ACT = @LDM
+        K_ACT = @FRET    
+    end
+    if PANEL == 4
+    then
+        U_ACT = @TEL_CIR
+        H_ACT = @nothing
+        J_ACT = @nothing
+        K_ACT = @nothing    
+    end
+    if PANEL == 5
+    then
+        U_ACT = @nothing
+        H_ACT = @nothing
+        J_ACT = @nothing
+        K_ACT = @nothing    
+    end
+    if PANEL == 6
+    then
+        U_ACT = @DEM_LEV
+        H_ACT = @nothing
+        J_ACT = @nothing
+        K_ACT = @nothing    
+    end
+    
+    0AD3: string 2@s format 'TCON%d' PANEL
+    0512: show_permanent_text_box 2@s
+    
+    gosub @check_press
+end
+
+:check_press
+//Check if button pressed
+    if 0AB0: U_KEY
+    then
+        gosub U_ACT
+    end
+    if 0AB0: H_KEY
+    then
+        gosub H_ACT
+    end
+    if 0AB0: J_KEY
+    then
+        gosub J_ACT
+    end
+    if 0AB0: K_KEY
+    then
+        gosub K_ACT
+    end
+return
+
+//Action block
+:helmic
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher HELMIC
+return
+
+:VORT_BF
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher VORT_BF
+return
+
+:VORT_LOOP
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher VORT_LOOP
+return
+
+:KEYBOARD
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher KEYBOARD
+return
+
+:STABIL
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher STABIL
+return
+
+:STT
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher STT
+return
+
+:TRH
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher TRH
+return
+
+:LDM
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher LDM
+return
+
+:FRET
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher FRET
+return
+
+:DEM_LEV
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher DEM_LEV
+return
+
+:TEL_CIR
+wait 0
+0AB1: call @toggle 2 array SWITCHERS switcher TEL_CIR
+return
+
+:nothing
+wait 0
+return
+//End of Action block
+
+
+//                         //
+// *** Functions block *** //
+//                         //
+
+
+:toggle
+{
+Change selected switcher to opposite state
+0@ - Array, 1@ - SWITCHER ID
+}
+0AB1: call @get_switcher 3 array 0@ element 1@ size 1 to 2@
+if 2@ == 0
+then
+    2@ = 1
+else
+    2@ = 0
+end
+0AB1: call @set_switcher 4 array 0@ element 1@ value 2@ size 1
+0AD1: show_formatted_text_highpriority "set %d to %d" time 2000 1@ 2@
+0AB2: ret 0
+
+:set_switcher
+{
+Set selected switcher state to 
+0@ - array, 1@ - element, 2@ - value, 3@ = size 
+Example: 0AB1: call @writeArray 4 array 0@ element 1 value 1 size 1
+} 
+wait 0
+1@ -= 1 
+005A: 0@ += 1@ // (int)   
+0A8C: write_memory 0@ size 3@ value 2@ virtual_protect 0 
+0AB2: ret 0 
+
+:get_switcher 
+{
+Get selecteed switcher state
+0@ - array, 1@ - element, 2@ - value, 3@ = size 
+Example: 0AB1: call @readArray 3 array 0@ element 1 size 1 to 2@
+} 
+wait 0
+dec(1@) 
+005A: 0@ += 1@ // (int) 
+0A8D: 3@ = read_memory 0@ size 2@ virtual_protect 0 
+0AB2: ret 1 3@
+

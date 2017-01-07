@@ -1,0 +1,37 @@
+{$CLEO .cs}
+
+/*
+TARDIS Misc script
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+Version: 1.0
+*/
+//-------------MAIN---------------
+thread 'cloakr' 
+
+wait 6800
+
+:def
+wait 100
+if
+056D:   actor $PLAYER_ACTOR defined
+jf @def 
+
+:cloakr
+wait 500
+0AB4: 1@ = var 12
+if and
+    00DB:   actor $PLAYER_ACTOR in_car $111
+    1@ == 1
+then
+    01F7: set_player $PLAYER_CHAR ignored_by_cops 1 
+    03BF: set_player $PLAYER_CHAR ignored_by_everyone 1 
+end
+if and
+    80DB:   NOT actor $PLAYER_ACTOR in_car $111
+    1@ == 1
+then
+    01F7: set_player $PLAYER_CHAR ignored_by_cops 0 
+    03BF: set_player $PLAYER_CHAR ignored_by_everyone 0 
+end
+jump @cloakr

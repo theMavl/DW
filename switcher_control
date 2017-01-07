@@ -1,0 +1,23 @@
+:get_switcher 
+{
+Get selecteed switcher state
+0@ - array, 1@ - element, 2@ - value, 3@ = size 
+Example: 0AB1: call @readArray 3 array 0@ element 1 size 1 to 2@
+} 
+wait 0
+dec(1@) 
+005A: 0@ += 1@ // (int) 
+0A8D: 3@ = read_memory 0@ size 1 virtual_protect 0 
+0AB2: ret 1 3@
+
+:set_switcher
+{
+Set selected switcher state to 
+0@ - array, 1@ - element, 2@ - value, 3@ = size 
+Example: 0AB1: call @writeArray 4 array 0@ element 1 value 1 size 1
+} 
+wait 0
+1@ -= 1 
+005A: 0@ += 1@ // (int)   
+0A8C: write_memory 0@ size 3@ value 2@ virtual_protect 0 
+0AB2: ret 0 

@@ -1,0 +1,112 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+wait 0
+Model.load(18679)
+Model.Load(18692)
+Model.Load(18680)
+
+038B: load_requested_models
+
+0@ = object.Create(18679, 0.0, 0.0, 0.0)
+1@ = object.Create(18692, 0.0, 0.0, 0.0)
+10@ = object.Create(18692, 0.0, 0.0, 0.0)
+2@ = object.Create(18680, 0.0, 0.0, 0.0)
+
+Object.PutAt(0@, 0.0, 0.0, 1024.0)
+Object.PutAt(1@, 0.0, 0.0, 1023.99)
+Object.PutAt(10@, 0.0, 0.0, 1023.99)
+Object.PutAt(2@, 0.0, 0.0, 1024.0)
+
+0382: set_object 0@ collision_detection 0 
+0382: set_object 10@ collision_detection 0
+0382: set_object 2@ collision_detection 0 
+ 
+0750: set_object 0@ visibility 0 
+0750: set_object 2@ visibility 0 
+
+{repeat
+    wait 0
+    0AB4: 30@ = var 0
+until 30@ > 0 }
+
+03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_ROOF to #LIG_ROOF_OFF
+
+15@ = 1000 //Time
+16@ = 0.0
+repeat
+    wait 0
+    16@ -= 20.0
+    if 16@ < -360.0
+    then
+    16@ += 360.0
+    end 
+    if or 
+        16@ == -180.0
+        16@ == -360.0
+    then
+        0750: set_object 0@ visibility 1
+        gosub @effect0
+        0750: set_object 0@ visibility 0
+        0750: set_object 2@ visibility 1
+        gosub @effect2
+        0750: set_object 2@ visibility 0
+        16@ -= 20.0    
+    end
+    0087: 17@ = 16@
+    17@ += 180.0
+    0177: set_object 1@ Z_angle_to 16@
+    0177: set_object 10@ Z_angle_to 17@
+    0AD1: show_formatted_text_highpriority "%f %f" time 2000 16@ 17@
+    gosub @effect
+until 0ab0: 56
+
+03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from  to #LIG_ROOF_OFF        #LIG_ROOF
+Object.Destroy(0@)
+Object.Destroy(1@)
+Object.Destroy(10@)
+Object.Destroy(2@)
+0A93: end_custom_thread
+
+:effect
+32@ = 0
+repeat
+    0085: 12@ = 32@ // 100
+    12@ *= 255
+    0072: 12@ /= 15@
+    12@ -= 255
+    0095: make 12@ absolute_integer 
+    0D11: set_object 1@ alpha 12@
+    wait 0
+until 002B: 32@ >= 15@
+return
+
+:effect0
+32@ = 0
+repeat
+    0085: 12@ = 32@ // 100
+    12@ *= 255
+    0072: 12@ /= 15@
+    12@ -= 255
+    0095: make 12@ absolute_integer 
+    0D11: set_object 0@ alpha 12@
+    wait 0
+until 002B: 32@ >= 15@
+return
+
+:effect2
+32@ = 0
+repeat
+    0085: 12@ = 32@ // 100
+    12@ *= 255
+    0072: 12@ /= 15@
+    12@ -= 255
+    0095: make 12@ absolute_integer 
+    0D11: set_object 2@ alpha 12@
+    wait 0
+until 002B: 32@ >= 15@
+return
+
+0A93: end_custom_thread
+
+

@@ -1,0 +1,185 @@
+{$CLEO .cs}
+{
+Don't ask why, but there is SONIC and PAPER pickups
+}
+//-------------MAIN---------------
+0000: NOP
+//0A93: end_custom_thread
+
+:main
+if 0@ == 0
+jf @opend
+
+thread "hallway"
+wait 1000
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+Model.Load(18649)
+Model.Load(18650)
+038B: load_requested_models 
+repeat
+    wait 0
+until Model.Available(18650)
+Object.Create(1@, 18649, -0.003, 0.003, 1024.003)     
+Object.Create(2@, 18650, -0.003, -0.003, 1024.003)
+Object.PutAt(1@, -0.003, 0.003, 1024.003)
+Object.PutAt(2@, -0.003, -0.003, 1024.003)
+0566: link_object 1@ to_interior 3
+0566: link_object 2@ to_interior 3
+00A0: store_actor $PLAYER_ACTOR position_to 4@ 5@ 6@
+gosub @weap_pickups
+while true
+    wait 1
+    if or
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 1.6648 -4.1851 1022.6484 radius 2.0 2.0 1.0 on_foot 
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -1.4763 -4.397 1022.6484 radius 2.0 2.0 1.0 on_foot
+    then
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 // Set weapon to 0 if player took pickup
+    end   
+    if and
+        $93 == 1
+        $ONMISSION == 0
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 9.1063 1.7505 1023.7109 radius 2.0 2.0 1.0 on_foot 
+        //00ED:   actor $PLAYER_ACTOR 0 near_point 9.1063 1.7505 radius 2.0 2.0 on_foot
+        //6@ == 1023.7109
+    then
+        0209: 3@ = random_int_in_ranges 0 2
+        0460: set_camera_transverse_delay 0.0 time 700 
+        if 3@ == 0
+        then 
+            015F: set_camera_position 5.3812 1.5214 1024.2266 rotation 0.0 0.0 0.0
+        else
+            015F: set_camera_position 5.0621 0.9945 1024.2266 rotation 0.0 0.0 0.0
+        end
+        0159: camera_on_ped $PLAYER_ACTOR 15 1
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+        0992: set_player $PLAYER_CHAR weapons_scrollable 0
+        
+        0AB4: 3@ = var 0
+        if 8039: NOT 3@ == 0
+        then
+            repeat
+                wait 0
+                0AB4: 3@ = var 0
+                if 3@ == 0
+                then
+                    jump @sav_text
+                end
+            until 80ED:   NOT actor $PLAYER_ACTOR 0 near_point 9.1063 1.7505 radius 2.0 2.0 on_foot
+            03E6: remove_text_box 
+            camera.Restore()
+            032A: set_behind_camera_mode_to 0
+            continue
+        end
+        
+        :sav_text
+        0512: show_permanent_text_box 'TARSAV'
+        
+        0215: destroy_pickup 29@  //Destroy sonic and paper pickups to avoid their saving
+        0215: destroy_pickup 30@    
+ 
+        repeat
+            wait 0
+            if and
+                00ED:   actor $PLAYER_ACTOR 0 near_point 8.8334 1.5046 radius 0.5 0.5 on_foot
+                0ab0: 69
+            then
+                0A92: create_custom_thread "hallway.cs" 1 1@ 2@ //Open the doors
+                01B4: set_player $PLAYER_CHAR can_move 0
+                wait 1000
+                05D3: AS_actor $PLAYER_ACTOR goto_point 10.7895 1.9504 1023.6797 mode 4 1500 ms // versionA
+                wait 1000
+                if 3@ == 0
+                then
+                    05D3: AS_actor $PLAYER_ACTOR goto_point 11.2376 -0.4537 1023.6797 mode 4 1500 ms // versionA
+                else
+                    05D3: AS_actor $PLAYER_ACTOR goto_point 10.282 3.794 1023.6797 mode 4 1500 ms // versionA
+                end
+                wait 1000
+                fade 0 100
+                wait 500
+                0AB4: 10@ = var 36
+                00BF: 12@ = current_time_hours, 13@ = current_time_minutes 
+                0ABA: end_custom_thread_named "timecor"
+                0A92: create_custom_thread "time_correction.cs" 1 // SYNC TIME
+                0A8C: write_memory 0xBA68A5 size 1 value 41 virtual_protect 0
+                0A8D: 11@ = read_memory 0xBA68A5 size 1 virtual_protect 0 //Check if game were actually saved
+                //0ACE: show_formatted_text_box "%d" 11@
+                if 11@ == 19
+                then
+                    00BF: 10@ = current_time_hours, 11@ = current_time_minutes
+                    10@ *= 100
+                    005A: 10@ += 11@
+                    0AB3: var 36 = 10@ // Time
+                    0A92: create_custom_thread "time_correction.cs" 
+                else
+                    00C0: set_current_time_hours_to 12@ minutes_to 13@ 
+                    0AB3: var 36 = 10@ // Time
+                    0A92: create_custom_thread "time_correction.cs"
+                end
+                
+ 
+                wait 100
+                01B4: set_player $PLAYER_CHAR can_move 1 
+                09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 7.3718 1.3162 1023.7266
+                0173: set_actor $PLAYER_ACTOR Z_angle_to 90.0
+                03D8: show_save_screen
+            end
+        until 80ED:   NOT actor $PLAYER_ACTOR 0 near_point 9.1063 1.7505 radius 2.0 2.0 on_foot
+        03E6: remove_text_box 
+        camera.Restore()
+        032A: set_behind_camera_mode_to 0
+        //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+        gosub @weap_pickups   
+    end
+    if and
+        $93 == 1   
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -0.0854 6.1923 1022.6484 radius 0.5 0.5 1.0 on_foot                                      
+        //00ED:   actor $PLAYER_ACTOR 0 near_point 0.137 7.9193 radius 1.0 1.0 on_foot
+        //6@ == 1022.6484 
+    then
+        0512: show_permanent_text_box 'NOHUMAN'
+        0460: set_camera_transverse_delay 0.0 time 700 
+        015F: set_camera_position 0.0749 3.7604 1023.5557 rotation 0.0 0.0 0.0
+        0159: camera_on_ped $PLAYER_ACTOR 15 1 
+        repeat
+            wait 250
+        until 80FF:   NOT actor $PLAYER_ACTOR sphere 0 in_sphere 0.137 7.9193 1022.6484 radius 2.3 2.3 1.0 on_foot
+        03E6: remove_text_box
+        camera.Restore()
+        032A: set_behind_camera_mode_to 0    
+    end 
+end
+
+:opend
+wait 0
+if 0@ == 1
+jf @main
+0AAC: 3@ = load_audiostream "dws\hall_door_open.mp3" //IF and SET
+Audiostream.PerformAction(3@, 1)
+repeat
+    wait 0
+    034E: move_object 1@ to -0.003 0.503 1024.003 speed 0.04 0.04 0.0 flag 0 
+    034E: move_object 2@ to -0.003 -0.503 1024.003 speed 0.04 0.04 0.0 flag 0
+until fading //00ED:   actor $PLAYER_ACTOR 0 near_point 11.2376 -0.4537 radius 0.5 0.5 on_foot 
+wait 100
+Object.PutAt(1@, -0.003, 0.003, 1024.003)
+Object.PutAt(2@, -0.003, -0.003, 1024.003)
+Audiostream.Release(3@)
+0A93: end_custom_thread
+
+:weap_pickups
+wait 0
+Model.Load(#poolcue)
+Model.Load(#GUN_DILDO1)
+032B: 30@ = create_weapon_pickup #poolcue type 2 ammo 1 at 1.0498 -4.7474 1022.2484
+032B: 29@ = create_weapon_pickup #GUN_DILDO1 type 2 ammo 1 at -1.4554 -4.7398 1022.2484
+Model.Destroy(#poolcue)
+Model.Destroy(#GUN_DILDO1)
+return
+
+
+

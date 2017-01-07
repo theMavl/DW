@@ -1,0 +1,178 @@
+//this badass is written by Mavl
+{$CLEO .cs}
+
+//-------------MAIN---------------
+thread 'psi'
+
+:load
+wait 0
+if 0256:   player $PLAYER_CHAR defined
+jf @load
+Model.Load(#rccam)
+038B: load_requested_models
+if Model.Available(#rccam)
+jf @load
+ 
+jump @show
+ 
+:show
+wait 500
+0581: toggle_radar 0
+3@ = 0
+01B4: toggle_player $PLAYER_CHAR can_move 0
+08D4: 1@ = create_panel_with_title 'TDMENU' position 29.0 170.0 width 200.0 columns 1 interactive 1 background 1 alignment 0  
+08DB: set_panel 1@ column 0 header '50' data 'TLOCK' 'INVCON' 'HADS' 'SYSR' 'SHBAR' 'EXTI' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY'  
+if 
+    8185: NOT car $111 health >= 400 
+then
+    08D9: set_panel 1@ row 0 enable 0
+    08D9: set_panel 1@ row 1 enable 0
+    08D9: set_panel 1@ row 2 enable 0 
+end
+jump @psi_2
+
+:psi_2
+wait 0
+if 
+0AB0:   key_pressed 32
+jf @psi_ent
+08D7: 3@ = panel 1@ active_row
+if 
+    3@ == 0
+    //LOCK
+then
+    03C0: 21@ = actor $PLAYER_ACTOR car
+    09B3: get_car 21@ door_status 0@
+    if 0@ > 1 
+    then
+        Car.DoorStatus(21@) = 0
+        00BA: show_text_styled GXT 'TUNLCK' time 2000 style 2
+    else
+        Car.DoorStatus(21@) = 2
+        00BA: show_text_styled GXT 'TLCK' time 2000 style 2
+    end
+    wait 1000   
+end
+if
+    3@ == 1
+    //INV
+then
+    0AAC: 17@ = load_audiostream "DWS\INVIS.WAV"
+    wait 100
+    0AB4: 4@ = var 12
+    if 
+    4@ == 1 
+    then
+        0AB3: var 0 = 2
+        Audiostream.PerformAction(17@, PLAY)
+        2@ = Car.Create(#rccam, 0.0, 0.0, -100.0)
+        0840: link_car 2@ to_interior $ACTIVE_INTERIOR
+        Car.SetImmunities(2@, 1, 1, 1, 1, 1)
+        0338: set_car $111 visibility 0
+        067A: put_camera_on_car $111 with_offset 0.0 -6.5 1.0 point_to_car $111 tilt 0.0 1 
+        0683: attach_car 2@ to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0 
+        wait 1000
+        00A6: destroy_car 2@
+        0338: set_car $111 visibility 1
+        03BF: set_player $PLAYER_CHAR ignored_by_everyone 0
+        015A: restore_camera   
+        0AB3: var 12 = 0
+        0AB3: var 0 = 0
+    else
+        0AB4: 2@ = var 10
+        if
+        2@ >= 50
+        then 
+            0AB3: var 0 = 2
+            Audiostream.PerformAction(17@, PLAY)
+            00A5: 2@ = create_car #rccam at 0.0 0.0 0.0
+            0840: link_car 2@ to_interior $ACTIVE_INTERIOR
+            Car.SetImmunities(2@, 1, 1, 1, 1, 1)
+            0338: set_car $111 visibility 0
+            067A: put_camera_on_car $111 with_offset 0.0 -6.5 1.0 point_to_car $111 tilt 0.0 1 
+            0683: attach_car 2@ to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0 
+            wait 1000
+            00A6: destroy_car 2@
+            03BF: set_player $PLAYER_CHAR ignored_by_everyone 1
+            010D: set_player $PLAYER_CHAR wanted_level_to 0
+            015A: restore_camera  
+            0AB3: var 12 = 1
+            0AB3: var 0 = 0
+        else
+            0AD1: show_formatted_text_highpriority "~r~Not enough power" time 1500
+        end
+    end
+end
+if
+    3@ == 2
+    //HADS
+then
+    0AB4: 22@ = var 13
+    0AB4: 10@ = var 10 
+    if 22@ == 1
+    then
+        0AB3: var 13 = 0
+        0AD1: show_formatted_text_highpriority "HADS ~r~deactivated" time 1500
+        wait 1000
+    else
+        if 10@ > 25
+        then
+            0AB3: var 13 = 1
+            0AD1: show_formatted_text_highpriority "HADS ~g~activated" time 1500
+            Car.DoorStatus($111) = 2
+        else
+            0AD1: show_formatted_text_highpriority "~r~Not enough power" time 1500
+        end
+        wait 1000
+    end                    
+end
+if
+    3@ == 3
+    //sysr
+then
+        0A92: create_custom_thread "psi\readouts.cs"
+        wait 100
+end
+if
+    3@ == 4
+    //BARS
+then
+    0AB4: 22@ = var 8 
+    if 22@ == 1
+    then
+        0AB3: var 8 = 0
+    else
+        0AB3: var 8 = 1
+    end
+    wait 500            
+end
+if
+    3@ == 5
+    //ext
+then 
+    0581: toggle_radar 1
+    03E6: remove_text_box
+    08DA: remove_panel 1@
+    01B4: toggle_player $PLAYER_CHAR can_move 1
+    0A93: end_custom_thread        
+end
+0AB4: 12@ = var 12
+if 12@ == 1
+then
+03BF: set_player $PLAYER_CHAR ignored_by_everyone 1
+01F7: set_player $PLAYER_CHAR ignored_by_cops 1 
+end
+jump @psi_2
+
+:psi_Ent
+wait 0
+if
+    0AB0:   key_pressed 13
+jf @psi_2
+    0581: toggle_radar 1
+    03E6: remove_text_box
+    08DA: remove_panel 1@
+    wait 500
+    020A: set_car $111 door_status_to 8@
+    01B4: toggle_player $PLAYER_CHAR can_move 1
+    0A93: end_custom_thread

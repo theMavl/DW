@@ -1,0 +1,47 @@
+{$cleo .s}
+
+0000:
+
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+thread "levlig"
+wait 0
+
+while true
+    wait 0
+    0AB1: call @get_all 0 to 0@ 1@ 2@ 3@ 4@ 5@ 6@ 7@ 8@ 9@
+    if or
+        8@ == 1
+        8@ == 3
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 46 204 113 255 on_entity 0 at 0.134 0.57 1024.551 size 0.02 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+    if or
+        7@ == 1
+        7@ == 3
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 46 204 113 255 on_entity 0 at 0.0665 0.57 1024.551 size 0.02 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+    if or
+        6@ == 1
+        6@ == 3
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 46 204 113 255 on_entity 0 at 0.0 0.57 1024.551 size 0.02 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+    if or
+        5@ == 1
+        5@ == 3
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 46 204 113 255 on_entity 0 at -0.0665 0.57 1024.551 size 0.02 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+    if or
+        4@ == 1
+        4@ == 3
+    then
+        0D54: draw_corona_with_extra_params_texture 0 color 46 204 113 255 on_entity 0 at -0.134 0.57 1024.551 size 0.02 far_clip 150.0 near_clip 0.0000001 flare 0 enable_reflection 0 check_obstacles 0 flash_while_fading 0 fade_speed 50.0 only_from_below 0
+    end
+end
+{$INCLUDE move_set_get}

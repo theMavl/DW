@@ -1,0 +1,2284 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+:tpanch
+wait 0
+if 0@ == -1
+jf @tcontr
+
+thread "tpanch"
+const
+    PANEL = 1@
+end
+while true
+    wait 250
+    if
+        80FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 2.5 2.5 2.5    
+    then
+        PANEL = 0
+        0AB3: var 27 = PANEL
+        if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 200.5 200.5 200.5
+        then
+            07CC: set_player_enter_car_button $PLAYER_CHAR to 1 // toggle enter button only if player is actually in interior area
+        end
+        Continue
+    end
+    if
+    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 1.2886 -0.7176 1024.375 radius 0.25 0.25 0.25
+    then
+        07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+        PANEL = 1
+    else
+        if
+        00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 1.2853 0.75 1024.375 radius 0.25 0.25 0.25
+        then
+            07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+            PANEL = 2
+        else
+            if
+            00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0179 1.4789 1024.375 radius 0.25 0.25 0.25
+            then
+                07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+                PANEL = 3
+            else
+                if
+                00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere -1.2609 0.7614 1024.375 radius 0.25 0.25 0.25
+                then
+                    PANEL = 4
+                    07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+                else
+                    if
+                    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere -1.2918 -0.7311 1024.375 radius 0.25 0.25 0.25
+                    then
+                        PANEL = 5
+                        07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+                    else
+                        if
+                        00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere -0.0314 -1.4752 1024.375 radius 0.25 0.25 0.25
+                        then
+                            PANEL = 6
+                            07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+                        else
+                            if
+                            00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 1.7148 -1.8575 1024.375 radius 0.25 0.25 0.25
+                            then
+                                PANEL = 7
+                                07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+                            else
+                                if
+                                00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere -0.9774 2.3717 1024.375 radius 0.25 0.25 0.25
+                                then
+                                    PANEL = 8
+                                    07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+                                else
+                                    PANEL = 0
+                                    07CC: set_player_enter_car_button $PLAYER_CHAR to 1
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    0AB3: var 27 = PANEL
+end
+
+:tcontr
+wait 0
+if 0@ == 0
+jf @switch
+thread "TCONTR"
+
+const
+    PANEL = 9@
+    STT = 10@
+    TMP_VAL = 11@
+    RED_L = 12@
+    RED_R = 13@
+    LEV_1 = 14@
+    LEV_2 = 15@
+    LEV_3 = 16@
+    LEV_4 = 17@
+    LEV_5 = 18@
+    SWITCHERS = $112
+end
+
+wait 1000
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+Model.Load(18703) //SPACE-TIME THROTTLE
+Model.Load(18704) //HANDBRAKE
+Model.Load(18705) //LEFT RED LEVER
+Model.Load(18706) //RIGHT RED LEVER
+Model.Load(18770) //1st (the rightest)
+Model.Load(18771) //2nd
+Model.Load(18772) //3rd
+Model.Load(18773) //4th
+Model.Load(18774) //5th (the leftest)
+Model.Load(18745) //STT light
+Model.Load(18755) //RED LEFT LIGHT
+Model.Load(18756) //RED RIGHT LIGHT
+
+038B: load_requested_models 
+wait 100                                 {NAME                    ID}
+0@ = object.Create(18703, 0.0, 0.0, 0.0) //SPACE-TIME THROTTLE    1
+1@ = object.Create(18704, 0.0, 0.0, 0.0) //HANDBRAKE              2
+2@ = object.Create(18705, 0.0, 0.0, 0.0) //LEFT RED LEVER         3
+3@ = object.Create(18706, 0.0, 0.0, 0.0) //RIGHT RED LEVER        4
+4@ = object.Create(18770, 0.0, 0.0, 0.0) //1st (the rightest)     5
+5@ = object.Create(18771, 0.0, 0.0, 0.0) //2nd                    6
+6@ = object.Create(18772, 0.0, 0.0, 0.0) //3rd                    7
+7@ = object.Create(18773, 0.0, 0.0, 0.0) //4th                    8
+8@ = object.Create(18774, 0.0, 0.0, 0.0) //5th (the leftest)      9
+22@ = object.Create(18775, 0.0, 0.0, 0.0) //Self-Repair lever     10
+{                                         //Violet Switchers      11
+CREATED BY                                //Right SubPanel up     12
+sub_toggles.cs                            //Right Subpanel down   13
+DON'T NEED HANDLES                        //Left Subpanel up      14
+                                          //Left Subpanel down    15
+                                          //HADS Switch           16
+}                                         //Cloak Switch          17
+
+
+19@ = object.Create(18745, 0.0, 0.0, 0.0) //STT light
+20@ = object.Create(18755, 0.0, 0.0, 0.0) //RED LEFT LIGHT
+21@ = object.Create(18756, 0.0, 0.0, 0.0) //RED RIGHT LIGHT
+
+Object.PutAt(0@, -0.295, 0.921, 1024.42)
+Object.PutAt(1@, 0.343, 0.959, 1024.412)
+Object.PutAt(2@, -0.275, -0.933, 1024.436)
+Object.PutAt(3@, 0.275, -0.933, 1024.436)
+Object.PutAt(4@, -0.134, 0.65, 1024.48)
+Object.PutAt(5@, -0.067, 0.65, 1024.48)
+Object.PutAt(6@, 0.0, 0.65, 1024.48)
+Object.PutAt(7@, 0.067, 0.65, 1024.48)
+Object.PutAt(8@, 0.134, 0.65, 1024.48)
+Object.PutAt(22@, 0.255, -0.756, 1024.472)
+
+Object.PutAt(19@, 0.0, 0.0, 1024.0)
+Object.PutAt(20@, 0.0, 0.0, 1024.0)
+Object.PutAt(21@, 0.0, 0.0, 1024.0)
+
+0382: set_object 0@ collision_detection 0
+0382: set_object 1@ collision_detection 0
+0382: set_object 2@ collision_detection 0
+0382: set_object 3@ collision_detection 0
+0382: set_object 4@ collision_detection 0
+0382: set_object 5@ collision_detection 0
+0382: set_object 6@ collision_detection 0
+0382: set_object 7@ collision_detection 0
+0382: set_object 8@ collision_detection 0
+0382: set_object 22@ collision_detection 0
+
+0382: set_object 19@ collision_detection 0
+0382: set_object 20@ collision_detection 0
+0382: set_object 21@ collision_detection 0
+
+0D11: set_object 19@ alpha 50
+0D11: set_object 20@ alpha 50 
+0D11: set_object 21@ alpha 50 
+
+0453: set_object 0@ XY_rotation 90.0 0.0 angle 0.0 
+0453: set_object 1@ XY_rotation -24.0 0.0 angle 0.0  
+
+
+0AC8: SWITCHERS = allocate_memory_size 18
+0A8C: write_memory SWITCHERS size 18 value 0 virtual_protect 0
+
+10@ = 0
+11@ = 0
+12@ = 0
+13@ = 0
+14@ = 0
+15@ = 0
+16@ = 0
+17@ = 0
+18@ = 0
+
+0A92: create_custom_thread "toggles.cs" -1
+0A92: create_custom_thread "vars\toghand.s" 0@ 1@ 2@ 3@ 4@ 5@ 6@ 7@ 8@ 19@ 20@ 21@ 22@ //store handles to external script
+0A92: create_custom_thread "toggles.cs" 1 0
+0A92: create_custom_thread "toggles.cs" 2 1
+0A92: create_custom_thread "toggles.cs" 3 0
+0A92: create_custom_thread "toggles.cs" 4 0
+0A92: create_custom_thread "hnd_light.s"
+0A92: create_custom_thread "lev_light.s"
+0A92: create_custom_thread "drift.s"
+//0A92: create_custom_thread "handles_lig.s" 19@ 20@ 21@
+
+30@ = 0 
+04ED: load_animation "TARDIS" 
+while true
+    wait 0
+    // Œ—“€À‹: set alpha level 50 to lights when we enter interior at the first time. 30@ - indicator of this "first time"
+    if and
+        30@ == 0
+        $93 == 1
+    then
+        wait 500
+        30@ = 1
+        if 10@ == 0
+        then
+            0D11: set_object 19@ alpha 50
+        end
+        if 12@ == 0
+        then
+            0D11: set_object 20@ alpha 50
+        end
+        if 13@ == 0
+        then 
+            0D11: set_object 21@ alpha 50
+        end 
+    end
+    0AB4: 9@ = var 28
+    if or 
+        9@ == 1
+        83EE: NOT  player $PLAYER_CHAR controllable 
+    then
+        continue
+    end
+    0AB4: 9@ = var 27
+    if and
+        9@ == 3
+        0AB0: 90 // Z
+    then
+        0AB1: call @get_toggle 1 id 2 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            //0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375
+            0AB1: call @put_at_s 3 0.01 1.4 1024.375
+            gosub @turn_to_console
+             0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            0687: clear_actor $PLAYER_ACTOR task   
+            if TMP_VAL == 0
+            then
+                0812: AS_actor $PLAYER_ACTOR perform_animation "handbrake_on" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            else
+                0812: AS_actor $PLAYER_ACTOR perform_animation "handbrake_off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+                wait 60
+            end
+            0AB1: call_scm_func @tog_tog 4  1@ id 2 to -1 light -1 fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set
+            //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+        end
+    end
+    if and
+        9@ == 3
+        0AB0: 70 // F
+    then
+        0AB1: call @get_toggle 1 id 1 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            0AB1: call @put_at_s 3 0.01 1.4 1024.375
+            gosub @turn_to_console
+            0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            0687: clear_actor $PLAYER_ACTOR task   
+            if TMP_VAL == 0
+            then
+                0812: AS_actor $PLAYER_ACTOR perform_animation "throttle_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            else
+                0812: AS_actor $PLAYER_ACTOR perform_animation "throttle_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            end
+            0AB1: call_scm_func @tog_tog 4 0@ 1 -1 19@ TMP_VAL  //object handle ; toggle id (1-9) ; switch to ; light object to set
+            //0992: set_player $PLAYER_CHAR weapons_scrollable 1 
+        end
+    end
+    if and
+        9@ == 6
+        0AB0: 81 // Q
+    then
+        0AB1: call @get_toggle 1 id 3 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            0AB1: call @put_at_s 3 -0.003 -1.43 1024.375
+            gosub @turn_to_console
+            0972: put_actor $PLAYER_ACTOR at -0.003 -1.43 1024.375
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            0687: clear_actor $PLAYER_ACTOR task 
+            if TMP_VAL == 0
+            then
+                0812: AS_actor $PLAYER_ACTOR perform_animation "redLevL_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            else
+                0812: AS_actor $PLAYER_ACTOR perform_animation "redLevL_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            end
+            0AB1: call_scm_func @tog_tog 4 handle 2@ id 3 to -1 light 20@ fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set
+            //0992: set_player $PLAYER_CHAR weapons_scrollable 1   
+        end
+    end
+    if and
+        9@ == 6
+        0AB0: 69 // E
+    then
+        0AB1: call @get_toggle 1 id 4 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            0AB1: call @put_at_s 3 -0.003 -1.43 1024.375
+            gosub @turn_to_console
+            0972: put_actor $PLAYER_ACTOR at -0.003 -1.43 1024.375
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            0687: clear_actor $PLAYER_ACTOR task 
+            if TMP_VAL == 0
+            then
+                0812: AS_actor $PLAYER_ACTOR perform_animation "redLevR_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            else
+                0812: AS_actor $PLAYER_ACTOR perform_animation "redLevR_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            end
+            0AB1: call_scm_func @tog_tog 4 handle 3@ id 4 to -1 light 21@ fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set
+            //0992: set_player $PLAYER_CHAR weapons_scrollable 1 
+        end   
+    end
+    if and
+        9@ == 6
+        0AB0: 82 // R
+    then
+        0AB1: call @get_toggle 1 id 10 to TMP_VAL // lever
+        0AB1: call @get_toggle 1 id 1 to 15@  // throttle
+        0AB1: call @get_toggle 1 id 2 to 16@  // handbrake
+        0AB1: call @get_toggle 1 id 3 to 17@  // red lever
+        0AB1: call @get_toggle 1 id 4 to 18@  // bred lever
+        0AB1: call @get_toggle 1 id 6 to 23@  // basic flight
+        0AB1: call @get_toggle 1 id 12 to 24@ // allocator
+        0AB1: call @get_toggle 1 id 13 to 25@ // allocator
+        if and
+            TMP_VAl < 2
+            15@ == 1
+            16@ == 1
+            17@ == 0
+            18@ == 0
+            23@ == 0
+            24@ == 0
+            25@ == 0
+        then
+            if 0185: car $111 health > 1500
+            then
+                03E5: show_text_box "SRNODAM"  // ~r~No Critical Damage Detected
+                wait 1000
+                continue
+            end
+            0AB1: call @put_at_s 3 -0.003 -1.4 1024.375
+            gosub @turn_to_console
+            0972: put_actor $PLAYER_ACTOR at -0.003 -1.4 1024.375
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            0687: clear_actor $PLAYER_ACTOR task 
+            if TMP_VAL == 0
+            then
+                0812: AS_actor $PLAYER_ACTOR perform_animation "lev_Selfrepair" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            end
+            0AB1: call_scm_func @tog_tog 4 handle 22@ id 10 to 1 light -1 fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set
+            //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+            0AB3: var 28 = 1 
+        end   
+    end
+    if and
+        9@ == 6
+        0AB0: 70 // F
+    then
+        0AB1: call @get_toggle 1 id 3 to 12@
+        0AB1: call @get_toggle 1 id 4 to TMP_VAL
+        if and 
+            TMP_VAl < 2
+            12@ < 2
+        then
+            if and
+                TMP_VAL == 0
+                12@ == 0
+            then
+                0AB1: call @put_at_s 3 -0.003 -1.43 1024.375
+                gosub @turn_to_console
+                0972: put_actor $PLAYER_ACTOR at -0.003 -1.43 1024.375
+                0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
+                01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+                0992: set_player $PLAYER_CHAR weapons_scrollable 0
+                0687: clear_actor $PLAYER_ACTOR task 
+                0812: AS_actor $PLAYER_ACTOR perform_animation "redLevS_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+                0A92: create_custom_thread "toggles.cs" 3 -1
+                0A92: create_custom_thread "toggles.cs" 4 -1
+                while 0611:   actor $PLAYER_ACTOR performing_animation "redLevS_on"
+                    wait 0
+                end
+                //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+            else
+                if and
+                    TMP_VAL == 1
+                    12@ == 1
+                then
+                    0AB1: call @put_at_s 3 -0.003 -1.43 1024.375
+                    gosub @turn_to_console
+                    0972: put_actor $PLAYER_ACTOR at -0.003 -1.43 1024.375
+                    0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
+                    01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+                    0992: set_player $PLAYER_CHAR weapons_scrollable 0
+                    0687: clear_actor $PLAYER_ACTOR task 
+                    0812: AS_actor $PLAYER_ACTOR perform_animation "redLevS_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+                    0A92: create_custom_thread "toggles.cs" 3 -1
+                    0A92: create_custom_thread "toggles.cs" 4 -1
+                    while 0611:   actor $PLAYER_ACTOR performing_animation "redLevS_off"
+                        wait 0
+                    end
+                    //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+                end                
+            end
+            //0AB1: call_scm_func @tog_tog 4 handle 2@ id 3 to -1 light 20@ fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set
+        end
+    end
+    {if and
+        9@ == 3
+        0AB0: 53 // 5
+    then
+        0AB1: call @get_toggle 1 id 5 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            0AB1: call_scm_func @tog_tog 4 handle 4@ id 5 to -1 light -1 fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set 
+        end   
+    end}
+    {if and
+        9@ == 3
+        0AB0: 52 // 4
+    then
+        0AB1: call @get_toggle 1 id 6 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            0AB1: call_scm_func @tog_tog 4 handle 5@ id 6 to -1 light -1 fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set
+        end
+    end}
+    if and
+        9@ == 3
+        0AB0: 84 // T
+    then
+        0AB1: call @get_toggle 1 id 7 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            0AB1: call @put_at_s 3 0.01 1.4 1024.375 
+            gosub @turn_to_console
+            0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375 
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            0687: clear_actor $PLAYER_ACTOR task 
+            if TMP_VAL == 0
+            then
+                0812: AS_actor $PLAYER_ACTOR perform_animation "toggles_Time_on" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            else
+                0812: AS_actor $PLAYER_ACTOR perform_animation "toggles_Time_off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            end
+            0A92: create_custom_thread "toggles.cs" 5 -1
+            0A92: create_custom_thread "toggles.cs" 7 -1
+            wait 1000
+            //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+            0AB4: 10@ = var 9
+            0AB4: 11@ = var 38
+            if and
+                10@ == 1
+                11@ == 1
+            then
+                wait 1000
+                0AB3: var 38 = 0
+                wait 1000
+            else
+                if 10@ == 1
+                then
+                    wait 2000
+                end
+            end 
+        end
+    end
+    if and
+        9@ == 3
+        0AB0: 82 // R
+    then
+        0AB1: call @get_toggle 1 id 6 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            0AB1: call @put_at_s 3 0.01 1.4 1024.375 
+            gosub @turn_to_console
+            0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375 
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            0687: clear_actor $PLAYER_ACTOR task
+            //0AB1: call @get_toggle 1 id 6 to TMP_VAL 
+            if TMP_VAL == 0
+            then
+                0812: AS_actor $PLAYER_ACTOR perform_animation "toggles_Basic_on" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            else
+                0812: AS_actor $PLAYER_ACTOR perform_animation "toggles_Basic_off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            end
+            0A92: create_custom_thread "toggles.cs" 6 -1
+            0A92: create_custom_thread "toggles.cs" 8 -1
+            //end
+            //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+        end
+    end
+    {if and
+        9@ == 3
+        0AB0: 49 // 1
+    then
+        0AB1: call @get_toggle 1 id 9 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            0AB1: call_scm_func @tog_tog 4 handle 8@ id 9 to -1 light -1 fuck_this TMP_VAL  //object handle ; toggle id (1-9) ; switch to ; light object to set
+            0AB4: 10@ = var 9
+            0AB4: 11@ = var 38
+            if and
+                10@ == 1
+                11@ == 1
+            then
+                0AB3: var 38 = 0
+            end
+        end
+    end }
+    if and
+        9@ == 7
+        0AB0: 82 // R
+    then
+        0AB1: call @get_toggle 1 id 12 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            if TMP_VAL == 0
+            then
+                0AB4: 18@ = var 10
+                if 18@ < 50
+                then
+                    00BC: show_text_highpriority GXT 'ENERLA' time 1500 flag 1
+                    continue
+                end
+            end
+            0AB4: 18@ = var 12
+            if 18@ == 1
+            then
+                00BC: show_text_highpriority GXT 'CL_FIR' time 1500 flag 1
+                continue
+            end
+            0AB1: call @put_at_s 3 1.76 -2.03 1024.37 
+            gosub @turn_to_sub 
+            0972: put_actor $PLAYER_ACTOR at 1.76 -2.03 1024.37
+            04D7: set_actor $PLAYER_ACTOR locked 1 
+            0173: set_actor $PLAYER_ACTOR Z_angle_to -130.0
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            0687: clear_actor $PLAYER_ACTOR task 
+            if TMP_VAL == 0
+            then
+                0812: AS_actor $PLAYER_ACTOR perform_animation "allocator_cloak_off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            else
+                0812: AS_actor $PLAYER_ACTOR perform_animation "allocator_cloak_on" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            end
+            0AB1: call_scm_func @tog_tog 4 handle -1 id 12 to -1 light -1 fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set
+            04D7: set_actor $PLAYER_ACTOR locked 0
+            //0992: set_player $PLAYER_CHAR weapons_scrollable 1  
+        end
+    end
+    if and
+        9@ == 7
+        0AB0: 70 // F
+    then
+        0AB1: call @get_toggle 1 id 13 to TMP_VAL
+        if
+            TMP_VAl < 2
+        then
+            if TMP_VAL == 0
+            then
+                0AB4: 18@ = var 10
+                if 18@ < 25
+                then
+                    00BC: show_text_highpriority GXT 'ENERLA' time 1500 flag 1
+                    continue
+                end
+            end
+            0AB1: call @get_toggle 1 id 16 to 18@
+            if 18@ == 1
+            then
+                00BC: show_text_highpriority GXT 'HS_FIR' time 1500 flag 1
+                continue
+            end
+            0AB1: call @put_at_s 3 1.76 -2.03 1024.37
+            gosub @turn_to_sub
+            0972: put_actor $PLAYER_ACTOR at 1.76 -2.03 1024.37
+            04D7: set_actor $PLAYER_ACTOR locked 1 
+            0173: set_actor $PLAYER_ACTOR Z_angle_to -130.0
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            0687: clear_actor $PLAYER_ACTOR task 
+            if TMP_VAL == 0
+            then
+                0812: AS_actor $PLAYER_ACTOR perform_animation "allocator_hads_off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            else
+                0812: AS_actor $PLAYER_ACTOR perform_animation "allocator_hads_on" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+            end
+            0AB1: call_scm_func @tog_tog 4 handle -1 id 13 to -1 light -1 fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set
+            04D7: set_actor $PLAYER_ACTOR locked 0
+            //0992: set_player $PLAYER_CHAR weapons_scrollable 1 
+        end
+    end
+    {if and
+        9@ == 8
+        0AB0: 82 // R
+    then
+        0AB1: call @get_toggle 1 id 14 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            0AB1: call_scm_func @tog_tog 4 handle -1 id 14 to -1 light -1 fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set 
+        end
+    end
+    if and
+        9@ == 8
+        0AB0: 70 // F
+    then
+        0AB1: call @get_toggle 1 id 15 to TMP_VAL
+        if TMP_VAl < 2
+        then
+            0AB1: call_scm_func @tog_tog 4 handle -1 id 15 to -1 light -1 fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set 
+        end
+    end }
+    if and
+        9@ == 1
+        0AB0: 81 // Q
+    then
+        0AB1: call @get_toggle 1 id 16 to TMP_VAL
+        if and
+            0185:   car $111 health >= 300 
+            TMP_VAl < 2
+        then
+            0AB1: call @get_toggle 1 id 13 to 18@
+            if 18@ == 1
+            then
+                0AB1: call @put_at_s 3 1.2 -0.7 1024.37
+                gosub @turn_to_console
+                0972: put_actor $PLAYER_ACTOR at 1.2 -0.7 1024.37
+                04D7: set_actor $PLAYER_ACTOR locked 1 
+                0173: set_actor $PLAYER_ACTOR Z_angle_to 60.0
+                01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+                0992: set_player $PLAYER_CHAR weapons_scrollable 0
+                0687: clear_actor $PLAYER_ACTOR task 
+                if TMP_VAL == 0
+                then
+                    0812: AS_actor $PLAYER_ACTOR perform_animation "switcher_hads_on" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+                else
+                    0812: AS_actor $PLAYER_ACTOR perform_animation "switcher_hads_off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+                end
+                0AB1: call_scm_func @tog_tog 4 handle -1 id 16 to -1 light -1 fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set
+                04D7: set_actor $PLAYER_ACTOR locked 0
+            else
+                if 0185:   car $111 health >= 400
+                then 
+                    00BC: show_text_highpriority GXT 'ENSUPD' time 1500 flag 1
+                end
+                continue
+            end 
+        end
+    end
+    
+    if and
+        9@ == 3
+        0AB0: 81 // Q
+    then
+        0AB1: call @get_toggle 1 id 12 to TMP_VAL
+        if TMP_VAL == 1
+        then
+            0AB1: call @get_toggle 1 id 17 to TMP_VAL
+            0AB4: 18@ = var 0
+            0AB4: 23@ = var 10
+            if and
+                TMP_VAl < 2
+                18@ == 0
+                23@ > 10
+            then
+                0AB1: call @put_at_s 3 0.01 1.4 1024.375
+                gosub @turn_to_console
+                0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375  
+                0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+                if TMP_VAL == 0
+                then
+                    0812: AS_actor $PLAYER_ACTOR perform_animation "switcher_Cloak_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+                else
+                    0812: AS_actor $PLAYER_ACTOR perform_animation "switcher_Cloak_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+                end
+                0AB1: call_scm_func @tog_tog 4 handle -1 id 17 to -1 light -1 fuck_this TMP_VAL //object handle ; toggle id (1-9) ; switch to ; light object to set 
+            end
+        else
+            if 0185:   car $111 health >= 400
+            then 
+                00BC: show_text_highpriority GXT 'ENSUPD' time 1500 flag 1
+            end
+            continue
+        end
+    end
+    {if and        FAST RETURN
+        9@ == 2
+        0AB0: 70 // F
+    then
+        0AB4: 9@ = var 1
+        0AB3: var 21 = 9@
+        0AB4: 9@ = var 2
+        0AB3: var 22 = 9@
+        0AB4: 9@ = var 3
+        0AB3: var 23 = 9@
+        0AB4: 9@ = var 4
+        0AB3: var 20 = 9@
+        0AB4: 9@ = var 5
+        0AB3: var 6 = 9@ 
+        0AD1: show_formatted_text_highpriority "last" time 2000
+        wait 500
+    end}
+end
+
+
+
+:tog_tog
+wait 0
+0AB3: var 28 = 1
+{
+    Toggle procedure. Input: 0@ Object handle (0-8), 1@ Toggle ID, 2@ switch to [0 - off, 1 - on, 2 - off and lock, 3 - on and lock], 3@ light object to set
+}   
+    //if input SWITCH TO == -1, then select direction automatically 
+    if 2@ == -1
+    then
+        0AB1: call @get_toggle 1 id 1@ to 2@
+        if 2@ == 0
+        then
+            2@ = 1
+        else
+            2@ = 0
+        end
+    end
+    if 1@ == 1 //STT
+    then
+        if
+            $94 == 0
+        then
+            0AC1: 13@ = load_audiostream_with_3d_support "dws\throttle.mp3" //IF and SET
+            0AC3: link_3d_audiostream 13@ to_object 0@
+        else
+            0AAC: 13@ = load_audiostream "dws\throttle.mp3" //IF and SET
+            0ABC: set_audiostream 13@ volume 0.5
+        end
+        if or 
+            2@ == 1
+            2@ == 3
+        then
+            32@ = 0
+            if 0611:   actor $PLAYER_ACTOR performing_animation "throttle_off"
+            then
+                repeat
+                    wait 0 
+                    0613: 10@ = actor $PLAYER_ACTOR animation "throttle_off" time
+                    if and
+                        10@ >= 0.2857
+                        10@ <= 0.5238
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        if 32@ > 6000
+                        then
+                            10@ = 0.5238
+                        end
+                        11@ *= -377.992
+                        11@ += 192.992
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if 8611:   not actor $PLAYER_ACTOR performing_animation "throttle_off" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                        break            
+                    end
+                until 10@ >= 0.5238 
+            else
+                0AAD: set_audiostream 13@ perform_action 1
+                repeat
+                    wait 0
+                    10@ = -0.258
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    10@ += 90.0
+                    if 10@ <= 0.0
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                        break
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0
+                    end 
+                until 32@ >= 350
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 255
+            end
+            0AAE: release_audiostream 13@
+        else
+            32@ = 0
+            if 0611:   actor $PLAYER_ACTOR performing_animation "throttle_on"
+            then
+                repeat
+                    wait 0
+                    0613: 10@ = actor $PLAYER_ACTOR animation "throttle_on" time
+                    if and
+                        10@ >= 0.2857
+                        10@ <= 0.5238
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        if 32@ > 6000
+                        then
+                            10@ = 0.5238
+                        end
+                        11@ *= 377.992
+                        11@ -= 112.992
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if 8611:   not actor $PLAYER_ACTOR performing_animation "throttle_on" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation 90.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.5238   
+            else
+                0AAD: set_audiostream 13@ perform_action 1
+                repeat
+                    wait 0
+                    10@ = 0.258
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    if 10@ >= 90.0
+                    then
+                        0453: set_object 0@ XY_rotation 90.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0 
+                    end
+                until 32@ >= 350
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 50
+            end
+            0AAE: release_audiostream 13@
+        end
+        jump @end_tog   
+    end
+    
+    if 1@ == 2 //HND
+    then
+        0AB4: 14@ = var 0
+        if or
+            14@ == 0
+            14@ == 3
+        then
+            if
+                $94 == 0
+            then
+                0AC1: 13@ = load_audiostream_with_3d_support "dws\handbrake.mp3" //IF and SET
+                0AC3: link_3d_audiostream 13@ to_object 0@
+            else
+                0AAC: 13@ = load_audiostream "dws\handbrake.mp3" //IF and SET
+                0ABC: set_audiostream 13@ volume 0.5
+            end
+        else
+            0AB1: call @set_toggle 2 id 2 value 1
+            if
+                $94 == 0
+            then
+                0AC1: 13@ = load_audiostream_with_3d_support "dws\break_demat.mp3" //IF and SET
+                0AC3: link_3d_audiostream 13@ to_object 0@
+            else
+                0AAC: 13@ = load_audiostream "dws\break_demat.mp3" //IF and SET
+                0ABC: set_audiostream 13@ volume 0.5
+            end
+        end
+        if or 
+            2@ == 1
+            2@ == 3
+        then
+            32@ = 0
+            if 0611:   actor $PLAYER_ACTOR performing_animation "handbrake_on"
+            then
+                21@ = 1
+                repeat
+                    wait 0
+                    0613: 15@ = actor $PLAYER_ACTOR animation "handbrake_on" time
+                    if and
+                        15@ >= 0.2481
+                        15@ <= 0.6263
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 15@ // (float)
+                        if 32@ > 6000
+                        then
+                            15@ = 0.6263
+                        end
+                        11@ *= 71.3908
+                        11@ -= 17.7121
+                        0092: 11@ = float 11@ to_integer
+                        if 11@ > 27
+                        then
+                            11@ = 27
+                        end
+                        if 801D: NOT 11@ > 21@
+                        then
+                            0085: 11@ = 21@
+                        else
+                            0085: 21@ = 11@
+                        end
+                        0AB1: call_scm_func @Get_hnd_pos 1 11@ XYZ 10@ 11@ 12@
+                        0453: set_object 0@ XY_rotation 10@ 11@ angle 12@
+                    end
+                    if 8611:   not actor $PLAYER_ACTOR performing_animation "handbrake_on" // if something went wrong
+                    then
+                        break            
+                    end
+                until 15@ >= 0.6263
+                0AB1: call_scm_func @Get_hnd_pos 1 27 XYZ 10@ 11@ 12@
+                0453: set_object 0@ XY_rotation 10@ 11@ angle 12@ 
+            else
+                0AAD: set_audiostream 13@ perform_action 1
+                repeat
+                    wait 0
+                    0093: 15@ = integer 32@ to_float
+                    15@ *= 27.0
+                    15@ /= 750.0
+                    0092: 15@ = float 15@ to_integer 
+                    if 15@ > 27
+                    then
+                        break
+                    end
+                    if 15@ == 0
+                    then
+                        15@ = 1
+                    end
+                    0AB1: call_scm_func @Get_hnd_pos 1 15@ XYZ 10@ 11@ 12@
+                    0453: set_object 0@ XY_rotation 10@ 11@ angle 12@ 
+                until 32@ >= 900
+                0AB1: call_scm_func @Get_hnd_pos 1 27 XYZ 10@ 11@ 12@
+                0453: set_object 0@ XY_rotation 10@ 11@ angle 12@ 
+            end
+            if and
+                8039: NOT 14@ == 0
+                8039: NOT 14@ == 3
+            then
+                wait 2500
+                0AAE: release_audiostream 13@
+                0AB3: var 28 = 0
+                0AB2: ret 1 1
+            end  
+            0AAE: release_audiostream 13@
+        else
+            32@ = 0
+            if 0611:   actor $PLAYER_ACTOR performing_animation "handbrake_off"
+            then
+                21@ = 27
+                repeat
+                    wait 0
+                    0613: 15@ = actor $PLAYER_ACTOR animation "handbrake_off" time
+                    if and
+                        15@ >= 0.2757
+                        15@ <= 0.6517
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 15@ // (float)
+                        if 32@ > 6000
+                        then
+                            15@ = 0.6517
+                        end
+                        11@ *= -71.8085
+                        11@ += 46.7976
+                        0092: 11@ = float 11@ to_integer
+                        if 11@ < 1
+                        then 
+                            11@ = 1
+                        end
+                        if 001D: 11@ > 21@
+                        then
+                            0085: 11@ = 21@
+                        else
+                            0085: 21@ = 11@
+                        end
+                        0AB1: call_scm_func @Get_hnd_pos 1 11@ XYZ 10@ 11@ 12@
+                        0453: set_object 0@ XY_rotation 10@ 11@ angle 12@
+                    end
+                    if 8611:   not actor $PLAYER_ACTOR performing_animation "handbrake_off" // if something went wrong
+                    then
+                        break            
+                    end
+                until 15@ >= 0.6517
+                0AB1: call_scm_func @Get_hnd_pos 1 1 XYZ 10@ 11@ 12@
+                0453: set_object 0@ XY_rotation 10@ 11@ angle 12@
+            else
+                0AAD: set_audiostream 13@ perform_action 1
+                repeat
+                    wait 0
+                    0093: 15@ = integer 32@ to_float
+                    15@ *= 27.0
+                    15@ /= 750.0
+                    0092: 15@ = float 15@ to_integer
+                    15@ -= 27
+                    15@ *= -1 
+                    if 15@ > -1
+                    jf break
+                    if 15@ == 0
+                    then
+                        15@ = 1
+                    end
+                    0AB1: call_scm_func @Get_hnd_pos 1 15@ XYZ 10@ 11@ 12@
+                    0453: set_object 0@ XY_rotation 10@ 11@ angle 12@ 
+                until 32@ >= 900
+                0AB1: call_scm_func @Get_hnd_pos 1 1 XYZ 10@ 11@ 12@
+                0453: set_object 0@ XY_rotation 10@ 11@ angle 12@
+            end 
+            0AAE: release_audiostream 13@
+        end
+        jump @end_tog
+    end
+    
+    if
+        1@ == 3 //RED L
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\red_lever.mp3" //IF and SET
+        0AC3: link_3d_audiostream 13@ to_object 0@
+
+        if or 
+            2@ == 1
+            2@ == 3
+        then
+            32@ = 0
+            if or 
+                0611:   actor $PLAYER_ACTOR performing_animation "redLevL_on"
+                0611:   actor $PLAYER_ACTOR performing_animation "redLevS_on"
+            then
+                repeat
+                    wait 0
+                    if 
+                        0611:   actor $PLAYER_ACTOR performing_animation "redLevL_on"
+                    then
+                        0613: 10@ = actor $PLAYER_ACTOR animation "redLevL_on" time
+                    else
+                        0613: 10@ = actor $PLAYER_ACTOR animation "redLevS_on" time
+                    end
+                    if and
+                        10@ >= 0.2286
+                        10@ <= 0.4286
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= -450.0
+                        11@ += 102.87
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if and
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevL_on" // if something went wrong
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevS_on" // if something went wrong
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevR_on" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation -90.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.4286   
+            else
+                repeat
+                    wait 0
+                    0AAD: set_audiostream 13@ perform_action 1
+                    10@ = -0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    if 10@ <= -90.0
+                    then
+                        0453: set_object 0@ XY_rotation -90.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0
+                    end 
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 255
+            end
+        else
+            32@ = 0
+            if or 
+                0611:   actor $PLAYER_ACTOR performing_animation "redLevL_off"
+                0611:   actor $PLAYER_ACTOR performing_animation "redLevS_off"
+            then
+                repeat
+                    wait 0
+                    if 
+                        0611:   actor $PLAYER_ACTOR performing_animation "redLevL_off"
+                    then
+                        0613: 10@ = actor $PLAYER_ACTOR animation "redLevL_off" time
+                    else
+                        0613: 10@ = actor $PLAYER_ACTOR animation "redLevS_off" time
+                    end
+                    if and
+                        10@ >= 0.3429
+                        10@ <= 0.5714
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= 393.873
+                        11@ -= 225.059
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if and
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevL_off" // if something went wrong
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevS_off" // if something went wrong
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevR_off" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.5714    
+            else
+                repeat
+                    wait 0
+                    0AAD: set_audiostream 13@ perform_action 1
+                    10@ = 0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    10@ -= 90.0
+                    if 10@ >= 0.0
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0
+                    end 
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 50
+            end
+            
+        end
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end    
+    if
+        1@ == 4 //RED R
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\red_lever.mp3" //IF and SET
+        0AC3: link_3d_audiostream 13@ to_object 0@
+        if or 
+            2@ == 1
+            2@ == 3
+        then
+            32@ = 0
+            if or 
+                0611:   actor $PLAYER_ACTOR performing_animation "redLevR_on"
+                0611:   actor $PLAYER_ACTOR performing_animation "redLevS_on"
+            then
+                repeat
+                    wait 0
+                    if 
+                        0611:   actor $PLAYER_ACTOR performing_animation "redLevR_on"
+                    then
+                        0613: 10@ = actor $PLAYER_ACTOR animation "redLevR_on" time
+                    else
+                        0613: 10@ = actor $PLAYER_ACTOR animation "redLevS_on" time
+                    end
+                    if and
+                        10@ >= 0.2286
+                        10@ <= 0.4286
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= -450.0
+                        11@ += 102.87
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if and
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevL_on" // if something went wrong
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevS_on" // if something went wrong
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevR_on" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation -90.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.4286    
+            else
+                repeat
+                    wait 0
+                    10@ = -0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    if 10@ <= -90.0
+                    then
+                        0453: set_object 0@ XY_rotation -90.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0 
+                    end
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 255
+            end 
+        else
+            32@ = 0
+            if or 
+                0611:   actor $PLAYER_ACTOR performing_animation "redLevR_off"
+                0611:   actor $PLAYER_ACTOR performing_animation "redLevS_off"
+            then
+                repeat
+                    wait 0
+                    if 
+                        0611:   actor $PLAYER_ACTOR performing_animation "redLevR_off"
+                    then
+                        0613: 10@ = actor $PLAYER_ACTOR animation "redLevR_off" time
+                    else
+                        0613: 10@ = actor $PLAYER_ACTOR animation "redLevS_off" time
+                    end
+                    if and
+                        10@ >= 0.3429
+                        10@ <= 0.5714
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= 393.873
+                        11@ -= 225.059
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if and
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevL_off" // if something went wrong
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevS_off" // if something went wrong
+                        8611:   not actor $PLAYER_ACTOR performing_animation "redLevR_off" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.5714    
+            else
+                repeat
+                    wait 0
+                    //0AAD: set_audiostream 13@ perform_action 1
+                    10@ = 0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    10@ -= 90.0
+                    if 10@ >= 0.0
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0
+                    end 
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 50
+            end
+        end
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end
+    if
+        1@ == 10 //Self-Repair lever
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\red_lever.mp3" //IF and SET
+        0AC3: link_3d_audiostream 13@ to_object 0@
+        if or 
+            2@ == 1
+            2@ == 3
+        then
+            32@ = 0
+            if
+                0611:   actor $PLAYER_ACTOR performing_animation "lev_Selfrepair"
+            then
+                repeat
+                    wait 0
+                    0613: 10@ = actor $PLAYER_ACTOR animation "lev_Selfrepair" time
+                    if and
+                        10@ >= 0.375
+                        10@ <= 0.5
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= -720.0
+                        11@ += 270.0
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if
+                        8611:   not actor $PLAYER_ACTOR performing_animation "lev_Selfrepair" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation -90.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.5    
+            else
+                repeat
+                    wait 0
+                    10@ = -0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    if 10@ <= -90.0
+                    then
+                        0453: set_object 0@ XY_rotation -90.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0 
+                    end
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 255
+            end 
+        else
+            0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+        end
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end
+    {if or
+        1@ == 6 //LEV_2
+        1@ == 8 //LEV_4 
+    then
+        if or 
+            2@ == 1
+            2@ == 3
+        then
+            32@ = 0
+            repeat
+                wait 0
+                10@ = -0.129
+                0093: 11@ = integer 32@ to_float 
+                006b: 10@ *= 11@
+                if 10@ <= -90.0
+                then
+                    0453: set_object 0@ XY_rotation -90.0 0.0 angle 0.0
+                    break
+                else
+                    0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0
+                end 
+            until 32@ >= 700
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 255
+            end 
+        else
+            32@ = 0
+            repeat
+                wait 0
+                10@ = 0.129
+                0093: 11@ = integer 32@ to_float 
+                006b: 10@ *= 11@
+                10@ -= 90.0
+                if 10@ >= 0.0
+                then
+                    0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                    break
+                else
+                    0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0
+                end 
+            until 32@ >= 700
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 50
+            end
+        end
+        jump @end_tog    
+    end}
+    if
+        1@ == 7 //LEV 3
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\5_lever.mp3" //IF and SET
+        0AC3: link_3d_audiostream 13@ to_object 0@
+        if or 
+            2@ == 1
+            2@ == 3
+        then
+            32@ = 0
+            if
+                0611:   actor $PLAYER_ACTOR performing_animation "toggles_Time_on"
+            then
+                repeat
+                    wait 0
+                    0613: 10@ = actor $PLAYER_ACTOR animation "toggles_Time_on" time
+                    if and
+                        10@ >= 0.5
+                        10@ <= 0.5833
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= -903.614
+                        11@ += 451.807
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if
+                        8611:   not actor $PLAYER_ACTOR performing_animation "toggles_Time_on" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation -75.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.5833    
+            else
+                0AAD: set_audiostream 13@ perform_action 1
+                repeat
+                    wait 0
+                    10@ = -0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    if 10@ <= -75.0
+                    then
+                        0453: set_object 0@ XY_rotation -75.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0 
+                    end
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 255
+            end 
+        else
+            32@ = 0
+            if 
+                0611:   actor $PLAYER_ACTOR performing_animation "toggles_Time_off"
+            then
+                repeat
+                    wait 0
+                    0613: 10@ = actor $PLAYER_ACTOR animation "toggles_Time_off" time
+                    if and
+                        10@ >= 0.3333
+                        10@ <= 0.4167
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= 899.281
+                        11@ -= 374.73
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if
+                        8611:   not actor $PLAYER_ACTOR performing_animation "toggles_Time_off" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.4167   
+            else
+                0AAD: set_audiostream 13@ perform_action 1
+                repeat
+                    wait 0
+                    10@ = 0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    10@ -= 75.0
+                    if 10@ >= 0.0
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0
+                    end 
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 50
+            end
+        end
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end
+    if
+        1@ == 5 //LEV 1
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\5_lever.mp3" //IF and SET
+        0AC3: link_3d_audiostream 13@ to_object 0@
+        if or 
+            2@ == 1
+            2@ == 3
+        then
+            32@ = 0
+            if
+                0611:   actor $PLAYER_ACTOR performing_animation "toggles_Time_on"
+            then
+                repeat
+                    wait 0
+                    0613: 10@ = actor $PLAYER_ACTOR animation "toggles_Time_on" time
+                    if and
+                        10@ >= 0.3333
+                        10@ <= 0.4167
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= -899.281
+                        11@ += 299.73
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if
+                        8611:   not actor $PLAYER_ACTOR performing_animation "toggles_Time_on" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation -75.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.4167    
+            else
+                0AAD: set_audiostream 13@ perform_action 1
+                repeat
+                    wait 0
+                    10@ = -0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    if 10@ <= -75.0
+                    then
+                        0453: set_object 0@ XY_rotation -75.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0 
+                    end
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 255
+            end 
+        else
+            32@ = 0
+            if 
+                0611:   actor $PLAYER_ACTOR performing_animation "toggles_Time_off"
+            then
+                repeat
+                    wait 0
+                    0613: 10@ = actor $PLAYER_ACTOR animation "toggles_Time_off" time
+                    if and
+                        10@ >= 0.5
+                        10@ <= 0.5833
+
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= 903.614
+                        11@ -= 526.807
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if
+                        8611:   not actor $PLAYER_ACTOR performing_animation "toggles_Time_off" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.5833   
+            else
+                0AAD: set_audiostream 13@ perform_action 1
+                repeat
+                    wait 0
+                    10@ = 0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    10@ -= 75.0
+                    if 10@ >= 0.0
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0
+                    end 
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 50
+            end
+        end
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end
+    if
+        1@ == 8 //LEV 4
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\5_lever.mp3" //IF and SET
+        0AC3: link_3d_audiostream 13@ to_object 0@
+        if or 
+            2@ == 1
+            2@ == 3
+        then
+            32@ = 0
+            if
+                0611:   actor $PLAYER_ACTOR performing_animation "toggles_basic_on"
+            then
+                repeat
+                    wait 0
+                    0613: 10@ = actor $PLAYER_ACTOR animation "toggles_basic_on" time
+                    if and
+                        10@ >= 0.3833
+                        10@ <= 0.4667
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= -899.281
+                        11@ += 344.694
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if
+                        8611:   not actor $PLAYER_ACTOR performing_animation "toggles_basic_on" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation -75.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.4667    
+            else
+                repeat
+                    wait 0
+                    10@ = -0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    if 10@ <= -75.0
+                    then
+                        0453: set_object 0@ XY_rotation -75.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0 
+                    end
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 255
+            end 
+        else
+            32@ = 0
+            if 
+                0611:   actor $PLAYER_ACTOR performing_animation "toggles_basic_off"
+            then
+                repeat
+                    wait 0
+                    0613: 10@ = actor $PLAYER_ACTOR animation "toggles_basic_off" time
+                    if and
+                        10@ >= 0.4667
+                        10@ <= 0.55
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= 900.36
+                        11@ -= 495.198
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if
+                        8611:   not actor $PLAYER_ACTOR performing_animation "toggles_basic_off" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.55   
+            else
+                repeat
+                    wait 0
+                    10@ = 0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    10@ -= 75.0
+                    if 10@ >= 0.0
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0
+                    end 
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 50
+            end
+        end
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end
+    if
+        1@ == 6 //LEV 2
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\5_lever.mp3" //IF and SET
+        0AC3: link_3d_audiostream 13@ to_object 0@
+        if or 
+            2@ == 1
+            2@ == 3
+        then
+            32@ = 0
+            if
+                0611:   actor $PLAYER_ACTOR performing_animation "toggles_basic_on"
+            then
+                repeat
+                    wait 0
+                    0613: 10@ = actor $PLAYER_ACTOR animation "toggles_basic_on" time
+                    if and
+                        10@ >= 0.55
+                        10@ <= 0.6333
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= -900.36
+                        11@ += 495.198
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if
+                        8611:   not actor $PLAYER_ACTOR performing_animation "toggles_basic_on" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation -75.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.6333    
+            else
+                repeat
+                    wait 0
+                    10@ = -0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    if 10@ <= -75.0
+                    then
+                        0453: set_object 0@ XY_rotation -75.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0 
+                    end
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 255
+            end 
+        else
+            32@ = 0
+            if 
+                0611:   actor $PLAYER_ACTOR performing_animation "toggles_basic_off"
+            then
+                repeat
+                    wait 0
+                    0613: 10@ = actor $PLAYER_ACTOR animation "toggles_basic_off" time
+                    if and
+                        10@ >= 0.3
+                        10@ <= 0.3833
+
+                    then
+                        0AB9: get_audiostream 13@ state_to 20@
+                        if 8039: 20@ == 1
+                        then
+                            0AAD: set_audiostream 13@ perform_action 1
+                        end
+                        0087: 11@ = 10@ // (float)
+                        11@ *= 900.36
+                        11@ -= 345.108
+                        0453: set_object 0@ XY_rotation 11@ 0.0 angle 0.0
+                    end
+                    if
+                        8611:   not actor $PLAYER_ACTOR performing_animation "toggles_basic_off" // if something went wrong
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                        break            
+                    end 
+                until 10@ >= 0.3833   
+            else
+                repeat
+                    wait 0
+                    10@ = 0.129
+                    0093: 11@ = integer 32@ to_float 
+                    006b: 10@ *= 11@
+                    10@ -= 75.0
+                    if 10@ >= 0.0
+                    then
+                        0453: set_object 0@ XY_rotation 0.0 0.0 angle 0.0
+                    else
+                        0453: set_object 0@ XY_rotation 10@ 0.0 angle 0.0
+                    end 
+                until 32@ >= 700
+            end
+            if Object.Exists(3@)
+            then
+                0D11: set_object 3@ alpha 50
+            end
+        end
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end
+    if
+        1@ == 12 //Right subpanel top
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\alloc_switch.mp3" //IF and SET
+        0AC2: set_3d_audiostream 13@ position 2.2614 -2.4941 1024.4843
+        if or
+            0611:   actor $PLAYER_ACTOR performing_animation "allocator_Cloak_on"
+            0611:   actor $PLAYER_ACTOR performing_animation "allocator_Cloak_off"
+        then
+            repeat
+                wait 0
+                if 
+                    0611:   actor $PLAYER_ACTOR performing_animation "allocator_Cloak_on"
+                then
+                    0613: 10@ = actor $PLAYER_ACTOR animation "allocator_Cloak_on" time
+                else
+                    0613: 10@ = actor $PLAYER_ACTOR animation "allocator_Cloak_off" time    
+                end
+                if and
+                    8611:   not actor $PLAYER_ACTOR performing_animation "allocator_Cloak_on" // if something went wrong
+                    8611:   not actor $PLAYER_ACTOR performing_animation "allocator_Cloak_off"
+                then
+                    break            
+                end
+            until 10@ >= 0.451
+        end
+        0AAD: set_audiostream 13@ perform_action 1
+        0AAA: 10@ = thread 'subtogg' pointer
+        0D2E: set_thread 10@ var 11 to 2@
+        while true
+            wait 0
+            if and
+                8611: NOT  actor $PLAYER_ACTOR performing_animation "allocator_Cloak_on"
+                8611: NOT  actor $PLAYER_ACTOR performing_animation "allocator_Cloak_off"
+            then
+                break
+            end
+        end
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end
+    if
+        1@ == 13 //Right subpanel top
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\alloc_switch.mp3" //IF and SET
+        0AC2: set_3d_audiostream 13@ position 2.2614 -2.4941 1024.4843
+        if or
+            0611:   actor $PLAYER_ACTOR performing_animation "allocator_hads_on"
+            0611:   actor $PLAYER_ACTOR performing_animation "allocator_hads_off"
+        then
+            repeat
+                wait 0
+                if 
+                    0611:   actor $PLAYER_ACTOR performing_animation "allocator_hads_on"
+                then
+                    0613: 10@ = actor $PLAYER_ACTOR animation "allocator_hads_on" time
+                else
+                    0613: 10@ = actor $PLAYER_ACTOR animation "allocator_hads_off" time    
+                end
+                if and
+                    8611:   not actor $PLAYER_ACTOR performing_animation "allocator_hads_on" // if something went wrong
+                    8611:   not actor $PLAYER_ACTOR performing_animation "allocator_hads_off"
+                then
+                    break            
+                end
+            until 10@ >= 0.451
+        end
+        0AAD: set_audiostream 13@ perform_action 1
+        0AAA: 10@ = thread 'subtogg' pointer
+        0D2E: set_thread 10@ var 12 to 2@
+        while true
+            wait 0
+            if and
+                8611: NOT  actor $PLAYER_ACTOR performing_animation "allocator_hads_on"
+                8611: NOT  actor $PLAYER_ACTOR performing_animation "allocator_hads_off"
+            then
+                break
+            end
+        end
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end
+    if
+        1@ == 14 //Left subpanel top
+    then
+        0AAA: 10@ = thread 'subtogg' pointer
+        0D2E: set_thread 10@ var 13 to 2@
+        jump @end_tog
+    end
+    if
+        1@ == 15 //Left subpanel top
+    then
+        0AAA: 10@ = thread 'subtogg' pointer
+        0D2E: set_thread 10@ var 14 to 2@
+        jump @end_tog
+    end
+    if
+        1@ == 16 //HADS Switch
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\hads_key.mp3" //IF and SET
+        0AC2: set_3d_audiostream 13@ position 0.24 0.73 1024.489
+        if or
+            0611:   actor $PLAYER_ACTOR performing_animation "switcher_hads_on"
+            0611:   actor $PLAYER_ACTOR performing_animation "switcher_hads_off"
+        then
+            repeat
+                wait 0
+                if 
+                    0611:   actor $PLAYER_ACTOR performing_animation "switcher_hads_on"
+                then
+                    0613: 10@ = actor $PLAYER_ACTOR animation "switcher_hads_on" time
+                else
+                    0613: 10@ = actor $PLAYER_ACTOR animation "switcher_hads_off" time    
+                end
+                if and
+                    8611:   not actor $PLAYER_ACTOR performing_animation "switcher_hads_on" // if something went wrong
+                    8611:   not actor $PLAYER_ACTOR performing_animation "switcher_hads_off"
+                then
+                    break            
+                end
+            until 10@ >= 0.54
+        end
+        0AAD: set_audiostream 13@ perform_action 1
+        0AAA: 10@ = thread 'subtogg' pointer
+        0D2E: set_thread 10@ var 10 to 2@
+        while true
+            wait 0
+            if and
+                8611: NOT  actor $PLAYER_ACTOR performing_animation "switcher_hads_on"
+                8611: NOT  actor $PLAYER_ACTOR performing_animation "switcher_hads_off"
+            then
+                break
+            end
+        end
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end
+    if
+        1@ == 17 //Violet Switch
+    then
+        0AC1: 13@ = load_audiostream_with_3d_support "dws\violet_switch.mp3" //IF and SET
+        0AC2: set_3d_audiostream 13@ position 0.24 0.73 1024.489
+        if or
+            0611:   actor $PLAYER_ACTOR performing_animation "switcher_Cloak_on"
+            0611:   actor $PLAYER_ACTOR performing_animation "switcher_Cloak_off"
+        then
+            repeat
+                wait 0
+                if 
+                    0611:   actor $PLAYER_ACTOR performing_animation "switcher_Cloak_on"
+                then
+                    0613: 10@ = actor $PLAYER_ACTOR animation "switcher_Cloak_on" time
+                else
+                    0613: 10@ = actor $PLAYER_ACTOR animation "switcher_Cloak_off" time    
+                end
+                if and
+                    8611:   not actor $PLAYER_ACTOR performing_animation "switcher_Cloak_on" // if something went wrong
+                    8611:   not actor $PLAYER_ACTOR performing_animation "switcher_Cloak_off"
+                then
+                    break            
+                end
+            until 10@ >= 0.46
+        end
+        0AAD: set_audiostream 13@ perform_action 1
+        0AAA: 10@ = thread 'subtogg' pointer
+        0D2E: set_thread 10@ var 15 to 2@
+        0A92: create_custom_thread "cloak.s"
+        wait 2000
+        0AAE: release_audiostream 13@
+        jump @end_tog
+    end
+:end_tog
+0AB1: call @set_toggle 2 id 1@ value 2@
+0AB3: var 28 = 0
+0AB2: ret 1 1
+
+:Get_hnd_pos
+wait 0
+if 0@ == 1
+then
+    0AB2: ret 3 -21.319 -5.564 -13.952
+end
+if 0@ == 2
+then
+    0AB2: ret 3 -21.697 -3.73 -9.285
+end
+if 0@ == 3
+then
+    0AB2: ret 3 -21.924 -1.871 -4.638
+end
+if 0@ == 4
+then
+    0AB2: ret 3 -22.0 0.0 0.0
+end
+if 0@ == 5
+then
+    0AB2: ret 3 -21.924 1.871 4.638
+end
+if 0@ == 6
+then
+    0AB2: ret 3 -21.697 3.73 9.285
+end
+if 0@ == 7
+then
+    0AB2: ret 3 -21.319 5.564 13.952
+end
+if 0@ == 8
+then
+    0AB2: ret 3 -20.79 7.361 18.648
+end
+if 0@ == 9
+then
+    0AB2: ret 3 -20.111 9.109 23.381
+end
+if 0@ == 10
+then
+    0AB2: ret 3 -19.285 10.795 28.161
+end
+if 0@ == 11
+then
+    0AB2: ret 3 -18.312 12.408 32.992
+end
+if 0@ == 12
+then
+    0AB2: ret 3 -17.197 13.933 37.883
+end
+if 0@ == 13
+then
+    0AB2: ret 3 -15.944 15.36 42.836
+end
+if 0@ == 14
+then
+    0AB2: ret 3 -14.558 16.676 47.855
+end
+if 0@ == 15
+then
+    0AB2: ret 3 -13.047 17.87 52.94
+end
+if 0@ == 16
+then
+    0AB2: ret 3 -11.421 18.93 58.09
+end
+if 0@ == 17
+then
+    0AB2: ret 3 -9.69 19.847 63.301
+end
+if 0@ == 18
+then
+    0AB2: ret 3 -7.868 20.611 68.567
+end
+if 0@ == 19
+then
+    0AB2: ret 3 -5.97 21.213 73.881
+end
+if 0@ == 20
+then
+    0AB2: ret 3 -4.013 21.649 79.232
+end
+if 0@ == 21
+then
+    0AB2: ret 3 -2.017 21.912 84.61
+end
+if 0@ == 22
+then
+    0AB2: ret 3 0.0 22.0 90.0
+end
+if 0@ == 23
+then
+    0AB2: ret 3 2.017 21.912 95.39
+end
+if 0@ == 24
+then
+    0AB2: ret 3 4.013 21.649 100.768
+end
+if 0@ == 25
+then
+    0AB2: ret 3 5.97 21.213 106.119
+end
+if 0@ == 26
+then
+    0AB2: ret 3 7.868 20.611 111.433
+end
+if 0@ == 27
+then
+    0AB2: ret 3 9.69 19.847 116.699
+end
+0AB2: ret 1 0
+
+:switch
+wait 0
+{
+INPUT: ID, to
+}
+0AAA: 3@ = thread "toghand" pointer
+0085: 2@ = 0@ // (int)
+2@ -= 1
+0D2F: 2@ = get_thread 3@ var 2@
+if 0@ == 1
+then
+    0D2F: 20@ = get_thread 3@ var 9
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light 20@ new_pos 10@
+    jump @end
+end
+if 0@ == 2
+then
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light -1 new_pos 10@
+    jump @end
+end
+if 0@ == 3
+then
+    0D2F: 20@ = get_thread 3@ var 10
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light 20@ new_pos 10@
+    jump @end
+end
+if 0@ == 4
+then
+    0D2F: 20@ = get_thread 3@ var 11
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light 20@ new_pos 10@
+    jump @end
+end
+if 0@ == 5
+then
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light -1 new_pos 10@
+    jump @end
+end
+if 0@ == 6
+then
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light -1 new_pos 10@
+    jump @end
+end
+if 0@ == 7
+then
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light -1 new_pos 10@
+    jump @end 
+end
+if 0@ == 8
+then
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light -1 new_pos 10@
+    jump @end 
+end
+if 0@ == 9
+then
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light -1 new_pos 10@
+    jump @end
+end
+if 0@ == 10
+then
+    0D2F: 2@ = get_thread 3@ var 12
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light -1 new_pos 10@
+    jump @end
+end
+
+if 0@ == 17
+then
+    0AB1: call_scm_func @tog_tog 4 handle 2@ id 0@ to 1@ light -1 new_pos 10@
+    jump @end
+end
+:end
+0A93: end_custom_thread
+
+
+:turn_to_console
+//04D7: set_actor $PLAYER_ACTOR locked 1 
+06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at 0.0 0.0 1024.0 
+while true
+    wait 0
+    0172: 23@ = actor $PLAYER_ACTOR Z_angle 
+    if 0045: 23@ == 24@
+    then
+        break
+    end
+    0087: 24@ = 23@
+end                                   
+04D7: set_actor $PLAYER_ACTOR locked 0
+return
+
+:put_at_s
+00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@
+ 
+0087: 9@ = 3@ // cur X
+0087: 5@ = 0@ // in X
+0063: 9@ -= 5@
+9@ /= 1000.0 // Transition time. 9@ is now 'a' in y=ax+b for X
+
+0087: 7@ = 4@ // cur Y
+0087: 5@ = 1@ // in Y
+0063: 7@ -= 5@
+7@ /= 1000.0 // Transition time. 7@ is now 'a' in y=ax+b for Y
+32@ = 0
+repeat
+    wait 0
+    0093: 12@ = integer 32@ to_float
+    12@ -= 1000.0
+    12@ *= -1.0 
+    0087: 5@ = 9@ // store 'a' X
+    0087: 6@ = 7@ // store 'a' Y
+    
+    006B: 5@ *= 12@
+    005B: 5@ += 0@
+    
+    006B: 6@ *= 12@
+    005B: 6@ += 1@
+    //show_text "%f %f %f | %f %f %f %f" 100 0@ 1@ 2@ 5@ 6@ 2@ 12@
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 5@ 6@ 2@
+until 32@ >= 200
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0@ 1@ 2@ 
+0AB2: ret 0
+
+:turn_to_sub
+//04D7: set_actor $PLAYER_ACTOR locked 1 
+06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at 2.1909 -2.5238 1025.4781 
+while true
+    wait 0
+    0172: 23@ = actor $PLAYER_ACTOR Z_angle 
+    if 0045: 23@ == 24@
+    then
+        break
+    end
+    0087: 24@ = 23@
+end                                   
+04D7: set_actor $PLAYER_ACTOR locked 0
+return
+
+{$INCLUDE move_set_get}

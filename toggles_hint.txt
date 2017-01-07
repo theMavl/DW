@@ -1,0 +1,101 @@
+{$CLEO}
+thread "toghlp"
+wait 5000
+0ADF: add_dynamic_GXT_entry "sthr" text "Space-Time~n~Throttle~n~~g~F" 
+0ADF: add_dynamic_GXT_entry "hndb" text "Handbrake~n~~g~Z"
+0ADF: add_dynamic_GXT_entry "red_l" text "Space~n~Lever~n~~g~Q" 
+0ADF: add_dynamic_GXT_entry "red_r" text "Time~n~Lever~n~~g~E" 
+0ADF: add_dynamic_GXT_entry "sreplev" text "Self-Repairer~n~~g~R"
+0ADF: add_dynamic_GXT_entry "kboard" text "Keyboard~n~~g~E~w~/~g~R"
+0ADF: add_dynamic_GXT_entry "slid" text "Sliders~n~~g~T"
+0ADF: add_dynamic_GXT_entry "clcksw" text "Cloak~n~Switcher~n~~g~Q"
+0ADF: add_dynamic_GXT_entry "scanhnt" text "Scanner~n~~g~E"
+0ADF: add_dynamic_GXT_entry "hadshnt" text "H.A.D.S.~n~Switcher~n~~g~Q"
+0ADF: add_dynamic_GXT_entry "alochnt" text "Energy~n~Allocators~n~~g~R~w~/~g~F"
+0ADF: add_dynamic_GXT_entry "5toghnt" text "Toggles~n~~g~R~w~/~g~T"
+
+:get
+wait 0
+while true
+    wait 100
+    if
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 -4.8784 1022.6484 radius 2.5 2.5 0.5 on_foot
+    then
+        0512: show_permanent_text_box 'HPRTXT'
+        while 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 -4.8784 1022.6484 radius 2.5 2.5 0.5 on_foot 
+            wait 0
+            if 0AB0: 123 // F12
+            then
+                break
+            end
+        end
+        03E6: remove_text_box    
+    end 
+    if and
+        $93 == 1
+        $94 == 0
+        0AB0: 123 // F12
+        03EE:   player $PLAYER_CHAR controllable 
+    then
+        while 0AB0: 123 // F12
+            wait 0
+            if or
+                83EE:  NOT player $PLAYER_CHAR controllable
+                $93 == 0
+                $94 == 1
+            then
+                break
+            end 
+            03F0: enable_text_draw 1  
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X -0.3 Y 0.93 Z 1024.449 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'sthr'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 0.219 Y 0.9247 Z 1024.3725 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'hndb'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X -0.28 -0.929 1024.44 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'red_l'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 0.28 -0.92 1024.429 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'red_r'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 0.26 -0.77 1024.479 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'sreplev'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 0.849 0.42 1024.41 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'kboard'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 0.65 0.3 1024.489 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'slid'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 0.24 0.73 1024.489 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'clcksw'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X -0.73 -0.45 1024.369 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'scanhnt'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 0.4543 -0.489 1024.54 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'hadshnt'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 2.2614 -2.4941 1024.4843 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT 'alochnt'  // Push
+            
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 0.0 0.66 1024.479980 store_screen_X_to 3@ Y_to 4@
+            033E: set_draw_text_position 3@ 4@ GXT '5toghnt'  // Push
+        end
+    end
+end
+0A93: end_custom_thread
+
+:getScreenXYFrom3DCoords
+0AA7: call_function 0x70CE30 num_params 6 pop 6 clipNear 1 clipFar 1 yMult 7@s xMult 6@s outVector 2@s inVector 0@s result 29@
+0073: 2@ /= 6@
+0073: 2@ /= 4@
+0073: 3@ /= 7@
+0073: 3@ /= 4@
+2@ *= 527.0592
+3@ *= 368.94144
+0342: set_text_draw_centered 1
+081C: draw_text_outline 1 RGBA 0 0 0 255
+033F: set_text_draw_letter_size 0.25 1.05
+0AB2: ret 2 2@ 3@

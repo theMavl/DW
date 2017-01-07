@@ -1,0 +1,387 @@
+//this badass is written by Mavl
+{$CLEO .cs}
+
+//-------------MAIN---------------
+thread 'psi'
+
+var
+    $95: array 5 of Integer
+end
+
+:load
+wait 0
+if 0256:   player $PLAYER_CHAR defined
+jf @load
+ 
+jump @show
+ 
+:show
+wait 0
+01B4: toggle_player $PLAYER_CHAR can_move 0
+wait 500
+0581: toggle_radar 0
+3@ = 0
+08D4: 1@ = create_panel_with_title 'TDMENU' position 29.0 170.0 width 200.0 columns 1 interactive 1 background 1 alignment 0  
+08DB: set_panel 1@ column 0 header '50' data {'TLOCK'} 'HADS' 'INVCON' 'SREPT' 'SYSR' 'SHBAR' 'EXTI' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY'  
+if 
+    8185: NOT car $111 health >= 400 
+then
+    08D9: set_panel 1@ row 0 enable 0
+    08D9: set_panel 1@ row 1 enable 0
+    08D9: set_panel 1@ row 2 enable 0
+    08D9: set_panel 1@ row 3 enable 0 
+end
+jump @psi_2
+
+:psi_2
+wait 0
+if 
+0AB0:   key_pressed 32
+jf @psi_ent
+08D7: 3@ = panel 1@ active_row
+{if 
+    3@ == 0
+    //LOCK
+then
+    03C0: 21@ = actor $PLAYER_ACTOR car
+    09B3: get_car 21@ door_status 0@
+    if 0@ > 1 
+    then
+        Car.DoorStatus(21@) = 0
+        0AD1: show_formatted_text_highpriority "Doors ~g~Unlocked" time 2000
+
+    else
+        Car.DoorStatus(21@) = 2
+        0A92: create_custom_thread "psi/doorc.cs"
+        wait 500
+        0AD1: show_formatted_text_highpriority "Doors ~r~Locked" time 2000
+    end
+    wait 1000   
+end }
+if
+    3@ == 0
+    //HADS
+then
+    08DA: remove_panel 1@
+    wait 500
+    jump @hadsp              
+end
+if
+    3@ == 1
+    //INV
+then
+    wait 100
+    0AB4: 4@ = var 12
+    if 
+        4@ == 1 
+    then
+        0AAC: 17@ = load_audiostream "DWS\uncloak_2d.mp3"
+        0AB3: var 0 = 2
+        Model.Load(18637)
+        038B: load_requested_models
+        repeat
+        wait 0
+        until Model.Available(18637)
+        Audiostream.PerformAction(17@, PLAY)
+        2@ = Object.Create(18637, 0.0, 0.0, -100.0)
+        09CA: set_object 2@ immunities BP 1 FP 1 EP 1 CP 1 MP 1 
+        Model.Destroy(18637)
+        0382: set_object 2@ collision_detection 0
+        0566: link_object 2@ to_interior $ACTIVE_INTERIOR
+        067A: put_camera_on_car $111 with_offset -3.5 -6.5 0.0 point_to_car $111 tilt 0.0 1 
+        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset -3.5 -6.5 0.0
+        Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+        Camera.OnVehicle($111, 15, 1)
+        wait 356
+        0681: attach_object 2@ to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+        wait 500
+        0338: set_car $111 visibility 1
+        0750: set_object $95[0] visibility 1
+        0750: set_object $95[1] visibility 1 
+        0750: set_object $95[3] visibility 1 
+        wait 500
+        Object.Destroy(2@)
+        015A: restore_camera
+        03BF: set_player $PLAYER_CHAR ignored_by_everyone 0
+        01F7: set_player $PLAYER_CHAR ignored_by_cops 0
+        01C0: 20@ = player $PLAYER_CHAR wanted_level
+        if 001E: $20 > 20@
+        then 
+            010D: set_player $PLAYER_CHAR wanted_level_to $20
+        end 
+        0AB3: var 12 = 0
+        0AB3: var 0 = 0
+        wait 700
+        Audiostream.Release(17@)
+    else
+        0AB4: 2@ = var 10
+        if
+            2@ >= 50
+        then
+            0AAC: 17@ = load_audiostream "DWS\cloak.mp3" 
+            0AB3: var 0 = 2
+            Model.Load(18632)
+            038B: load_requested_models
+            repeat
+            wait 0
+            until Model.Available(18632)
+            Audiostream.PerformAction(17@, PLAY)
+            2@ = Object.Create(18632, 0.0, 0.0, -100.0)
+            09CA: set_object 2@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+            Model.Destroy(18632)
+            Audiostream.PerformAction(17@, PLAY)
+            0382: set_object 2@ collision_detection 0
+            0566: link_object 2@ to_interior $ACTIVE_INTERIOR
+            0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset -3.5 -6.5 0.0
+            Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+            Camera.OnVehicle($111, 15, 1)
+            0681: attach_object 2@ to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+            wait 500
+            0338: set_car $111 visibility 0
+            0750: set_object $95[0] visibility 0
+            0750: set_object $95[1] visibility 0 
+            0750: set_object $95[3] visibility 0 
+            wait 500
+            Object.Destroy(2@)
+            015A: restore_camera
+            03BF: set_player $PLAYER_CHAR ignored_by_everyone 1
+            01F7: set_player $PLAYER_CHAR ignored_by_cops 1 
+            01C0: $20 = player $PLAYER_CHAR wanted_level 
+            //0AD1: show_formatted_text_highpriority "wl: %d" time 2000 20@
+            0110: clear_player $PLAYER_CHAR wanted_level  
+            0AB3: var 12 = 1
+            0AB3: var 0 = 0
+            wait 650
+            Audiostream.Release(17@)
+        else
+            0AD1: show_formatted_text_highpriority "~r~Initial Energy Lacking" time 1500
+        end
+    end
+end
+if
+    3@ == 2
+    //self-repair
+then
+        03E6: remove_text_box
+        08DA: remove_panel 1@
+        0A92: create_custom_thread "psi\selfrepair.cs"
+        repeat
+            0AB4: 22@ = var 15
+            if 22@ == 2
+            then
+                0AB3: var 15 = 0
+                jump @show
+                break
+            end
+            wait 100
+        until 22@ == 1
+        0581: toggle_radar 1
+        01B4: toggle_player $PLAYER_CHAR can_move 1
+        Model.Destroy(18632)
+        0A93: end_custom_thread
+end 
+if
+    3@ == 3
+    //sysr
+then
+        0A92: create_custom_thread "psi\readouts.cs"
+        wait 100
+end
+if
+    3@ == 4
+    //BARS
+then
+    0AB4: 22@ = var 8 
+    if 22@ == 1
+    then
+        0AB3: var 8 = 0
+    else
+        0AB3: var 8 = 1
+    end
+    
+    wait 500            
+end
+/*if
+    3@ == 6
+    //spin settings
+then 
+    08DA: remove_panel 1@
+    wait 1000
+    0AF0: 10@ = get_int_from_ini_file "cleo\DW_CUSTOM_SETTINGS.ini" section "Spin" key "Speed"
+    0512: show_permanent_text_box 'SPINM'
+    repeat
+    wait 100
+    if 0AB0: 38
+    then
+        10@ += 1
+    end
+    if 0AB0: 40
+    then
+        10@ -= 1
+    end
+    if 0AB0: 48
+    then
+        10@ = 0
+    end
+    if 0AB0: 68
+    then
+        10@ = 40
+    end
+    0AD1: show_formatted_text_highpriority "Speed: %d" time 2000 10@
+    until 0AB0:   key_pressed 32
+    03E6: remove_text_box
+    0AF1: write_int 10@ to_ini_file "cleo\DW_CUSTOM_SETTINGS.ini" section "Spin" key "Speed"
+    jump @show
+end */
+if
+    3@ == 5
+    //ext
+then 
+    //0581: toggle_radar 1
+    03E6: remove_text_box
+    08DA: remove_panel 1@
+//    01B4: toggle_player $PLAYER_CHAR can_move 1
+    0AB3: var 14 = 0
+    Model.Destroy(18632)
+    0A93: end_custom_thread        
+end
+0AB4: 12@ = var 12
+if 12@ == 1
+then
+03BF: set_player $PLAYER_CHAR ignored_by_everyone 1
+01F7: set_player $PLAYER_CHAR ignored_by_cops 1 
+end
+jump @psi_2
+
+:psi_Ent
+wait 0
+if
+    0AB0:   key_pressed 13
+jf @psi_2
+//0581: toggle_radar 1
+03E6: remove_text_box
+08DA: remove_panel 1@
+wait 500
+//    020A: set_car $111 door_status_to 8@
+//    01B4: toggle_player $PLAYER_CHAR can_move 1
+0AB3: var 14 = 0
+Model.Destroy(18632)   
+0A93: end_custom_thread
+
+:hadsp
+wait 0
+    0AB4: 5@ = var 13
+    0AF0: 6@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "FIRE"
+    0AF0: 7@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "WATER"
+    if 5@ == 0
+    then
+        0ADF: add_dynamic_GXT_entry "HADSED" text "System ~g~Enabled"
+    else
+        0ADF: add_dynamic_GXT_entry "HADSED" text "System ~r~Disabled"
+    end
+    if 6@ == 0
+    then
+        0ADF: add_dynamic_GXT_entry "HADSF" text "Enable Fire Reaction"
+    else
+        0ADF: add_dynamic_GXT_entry "HADSF" text "Disable Fire Reaction"
+    end
+    if 7@ == 0
+    then
+        0ADF: add_dynamic_GXT_entry "HADSW" text "Enable Water Reaction"
+    else
+        0ADF: add_dynamic_GXT_entry "HADSW" text "Disable Water Reaction"
+    end
+    3@ = 0
+    08D4: 1@ = create_panel_with_title 'HADS' position 29.0 170.0 width 200.0 columns 1 interactive 1 background 1 alignment 0  
+    08DB: set_panel 1@ column 0 header '50' data 'HADSED' 'HADSF' 'HADSW' 'EXT' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY'
+    08D9: set_panel 1@ row 0 enable 0  
+jump @hadsc
+    
+:hadsc
+wait 0
+if 
+0AB0:   key_pressed 32
+jf @hads_ent
+08D7: 3@ = panel 1@ active_row
+{if 
+    3@ == 0
+    //enable/disable hads
+then
+    0AB4: 22@ = var 13
+    0AB4: 10@ = var 10 
+    if 22@ == 1
+    then
+        0AB3: var 13 = 0
+        0AD1: show_formatted_text_highpriority "H.A.D.S. ~r~Deactivated" time 1500
+    else
+        if 10@ > 25
+        then
+            0AB3: var 13 = 1
+            0AD1: show_formatted_text_highpriority "H.A.D.S. ~g~Activated" time 1500
+            Car.DoorStatus($111) = 2
+            095F: get_car $111 door 2 angle_to 18@
+            095F: get_car $111 door 3 angle_to 14@
+            16@ = 0.0
+            if or
+                8045:  NOT 18@ == 16@
+                8045:  NOT 14@ == 16@
+            then
+                0A92: create_custom_thread "psi\doorc.cs"
+                wait 1500
+            end
+        else
+            0AD1: show_formatted_text_highpriority "~r~Initial Energy Lacking" time 1500
+        end
+    end
+    08DA: remove_panel 1@
+    wait 500
+    jump @hadsp     
+end} 
+if 
+    3@ == 1
+then
+    //fire reaction
+    if 6@ == 1
+    then
+        0AF1: write_int 0 to_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "FIRE"
+        0AD1: show_formatted_text_highpriority "Fire Reaction ~r~Disabled" time 2000
+    else
+        0AF1: write_int 1 to_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "FIRE"
+        0AD1: show_formatted_text_highpriority "Fire Reaction ~g~Enabled" time 2000
+    end
+    08DA: remove_panel 1@
+    wait 500
+    jump @hadsp
+end
+if 
+    3@ == 2
+then
+    //water reaction
+    if 7@ == 1
+    then
+        0AF1: write_int 0 to_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "WATER"
+        0AD1: show_formatted_text_highpriority "Water Reaction ~r~Disabled" time 2000
+    else
+        0AF1: write_int 1 to_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "WATER"
+        0AD1: show_formatted_text_highpriority "Water Reaction ~g~Enabled" time 2000
+    end
+    08DA: remove_panel 1@
+    wait 500
+    jump @hadsp
+end
+if
+    3@ == 3
+    //ext
+then 
+    08DA: remove_panel 1@
+    jump @show     
+end
+jump @hadsc
+        
+:hads_Ent
+wait 0
+if
+    0AB0:   key_pressed 13
+jf @hadsc
+08DA: remove_panel 1@
+jump @show

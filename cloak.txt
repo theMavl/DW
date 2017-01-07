@@ -1,0 +1,183 @@
+//this badass is written by Mavl
+{$CLEO .s}
+
+//-------------MAIN---------------
+thread 'cloak'
+
+0AB4: 11@ = var 19
+if 11@ == 1
+then
+    repeat
+        wait 0
+        0AB4: 11@ = var 19
+    until 11@ == 0
+end
+
+while true
+wait 0
+    095F: get_car $111 door 2 angle_to 20@
+    095F: get_car $111 door 3 angle_to 21@
+    22@ = 0.0
+    if or
+        8045:  NOT 20@ == 22@
+        8045:  NOT 21@ == 22@
+    then
+        0A92: create_custom_thread "psi\doorc.cs"
+        wait 1500
+    else
+        break
+    end
+end
+
+0AB4: 4@ = var 12
+0AB4: 14@ = var 11 // lock on space state
+
+0AB3: var 11 = 1
+    if 
+        4@ == 1 
+    then
+        if or
+            $94 == 1
+            $93 == 1
+        then 
+            0AAC: 17@ = load_audiostream "DWS\uncloak.wav"
+        else
+            0AC1: 17@ = load_audiostream_with_3d_support "DWS\uncloak.mp3"
+            0AC5: link_3d_audiostream 17@ to_vehicle $111
+        end
+        0AB3: var 0 = 1
+        Model.Load(18637)
+        038B: load_requested_models
+        repeat
+            wait 0
+        until Model.Available(18637)
+        
+        0AAA: 10@ = thread 'subtogg' pointer
+        0D2E: set_thread 10@ var 15 to 0
+        call_scm_func @set_toggle 2 id 17 to 0
+        
+        Audiostream.PerformAction(17@, PLAY)
+        2@ = Object.Create(18637, 0.0, 0.0, -100.0)
+        09CA: set_object 2@ immunities BP 1 FP 1 EP 1 CP 1 MP 1 
+        Model.Destroy(18637)
+        0382: set_object 2@ collision_detection 0
+        {0AAA: 2@ = thread 'clvis' pointer
+        0D2F: 2@ = get_thread 2@ var 10}
+        0750: set_object 2@ visibility 1 
+        if
+            $93 == 1
+        then
+            0AB4: 4@ = var 20
+            0566: link_object 2@ to_interior 4@    
+        else
+            if 00DB:   actor $PLAYER_ACTOR in_car $111
+            then
+                0566: link_object 2@ to_interior $ACTIVE_INTERIOR
+                0209: 12@ = random_int_in_ranges 0 2
+                    if 12@ == 0
+                    then 
+                        067A: put_camera_on_car $111 with_offset -3.5 -6.5 0.0 point_to_car $111 tilt 0.0 1 
+                        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset -3.5 -6.5 0.0
+                    else
+                        067A: put_camera_on_car $111 with_offset 3.5 -6.5 0.0 point_to_car $111 tilt 0.0 1 
+                        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset 3.5 -6.5 0.0
+                    end
+                Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+                Camera.OnVehicle($111, 15, 1)
+            end
+        end
+        wait 356
+        0681: attach_object 2@ to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+        wait 500
+        0338: set_car $111 visibility 1
+        0750: set_object $95[0] visibility 1
+        0750: set_object $95[1] visibility 1 
+        0750: set_object $95[3] visibility 1 
+        wait 500
+        Object.Destroy(2@)
+        if $94 == 1
+            then
+                015A: restore_camera
+            end
+        03BF: set_player $PLAYER_CHAR ignored_by_everyone 0
+        01F7: set_player $PLAYER_CHAR ignored_by_cops 0
+        01C0: 20@ = player $PLAYER_CHAR wanted_level
+        if 001E: $20 > 20@
+        then 
+            010D: set_player $PLAYER_CHAR wanted_level_to $20
+        end 
+        0AB3: var 12 = 0
+        0AB3: var 0 = 0
+        wait 700
+        Audiostream.Release(17@)
+        wait 1000
+        
+    else
+            0AAA: 10@ = thread 'subtogg' pointer
+            0D2E: set_thread 10@ var 15 to 1
+            call_scm_func @set_toggle 2 id 17 to 1
+            
+            0AAC: 17@ = load_audiostream "DWS\cloak.mp3" 
+            0AB3: var 0 = 1
+            Model.Load(18632)
+            038B: load_requested_models
+            repeat
+            wait 0
+            until Model.Available(18632)
+            Audiostream.PerformAction(17@, PLAY)
+            2@ = Object.Create(18632, 0.0, 0.0, -100.0)
+            09CA: set_object 2@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+            Model.Destroy(18632)
+            Audiostream.PerformAction(17@, PLAY)
+            0382: set_object 2@ collision_detection 0
+            if
+                $93 == 1
+            then
+                0AB4: 4@ = var 20
+                0566: link_object 2@ to_interior 4@    
+            else
+                if 00DB:   actor $PLAYER_ACTOR in_car $111
+                then
+                    0566: link_object 2@ to_interior $ACTIVE_INTERIOR
+                    0209: 12@ = random_int_in_ranges 0 2
+                    if 12@ == 0
+                    then 
+                        067A: put_camera_on_car $111 with_offset -3.5 -6.5 0.0 point_to_car $111 tilt 0.0 1 
+                        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset -3.5 -6.5 0.0
+                    else
+                        067A: put_camera_on_car $111 with_offset 3.5 -6.5 0.0 point_to_car $111 tilt 0.0 1 
+                        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset 3.5 -6.5 0.0
+                    end
+                    Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+                    Camera.OnVehicle($111, 15, 1)
+                end
+            end
+            0681: attach_object 2@ to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+            wait 500
+            0338: set_car $111 visibility 0
+            0750: set_object $95[0] visibility 0
+            0750: set_object $95[1] visibility 0 
+            0750: set_object $95[3] visibility 0 
+            wait 500
+            //0A92: create_custom_thread "cloak_vis.s" 2@
+            Object.Destroy(2@)
+            if $94 == 1
+            then
+                015A: restore_camera
+            end
+            03BF: set_player $PLAYER_CHAR ignored_by_everyone 1
+            01F7: set_player $PLAYER_CHAR ignored_by_cops 1 
+            01C0: $20 = player $PLAYER_CHAR wanted_level 
+            //0AD1: show_formatted_text_highpriority "wl: %d" time 2000 20@
+            0110: clear_player $PLAYER_CHAR wanted_level  
+            0AB3: var 12 = 1
+            0AB3: var 0 = 0
+            wait 650
+            Audiostream.Release(17@)
+            wait 1000
+            
+    end
+0AB3: var 11 = 14@
+0A93: end_custom_thread
+
+{$INCLUDE move_set_get}

@@ -1,0 +1,240 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+thread "subtogg"
+wait 1000
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+ 
+
+Model.Load(18776) //HADS ON
+Model.Load(18777) //HADS OFF
+Model.Load(18778) //FIRE ON
+Model.Load(18779) //FIRE OFF
+Model.Load(18780) //WATER ON
+Model.Load(18771) //WATER OFF
+038B: load_requested_models 
+wait 100 
+wait 100                                 {NAME          ID}
+0@ = object.Create(18776, 0.0, 0.0, 0.0) //HADS ON      1
+1@ = object.Create(18777, 0.0, 0.0, 0.0) //HADS OFF     
+2@ = object.Create(18778, 0.0, 0.0, 0.0) //FIRE ON      2
+3@ = object.Create(18779, 0.0, 0.0, 0.0) //FIRE OFF     
+4@ = object.Create(18780, 0.0, 0.0, 0.0) //WATER ON     3
+5@ = object.Create(18781, 0.0, 0.0, 0.0) //WATER OFF    
+6@ = object.Create(18778, 0.0, 0.0, 0.0) //FIRE ON      4
+7@ = object.Create(18779, 0.0, 0.0, 0.0) //FIRE OFF     
+8@ = object.Create(18780, 0.0, 0.0, 0.0) //WATER ON     5
+9@ = object.Create(18781, 0.0, 0.0, 0.0) //WATER OFF
+16@ = object.Create(18783, 0.0, 0.0, 0.0) //Cloak       6  
+
+Object.PutAt(0@, 0.0, 0.0, 1024.0)
+Object.PutAt(1@, 0.0, 0.0, 1024.0)
+Object.PutAt(2@, 0.0, 0.0, 1024.0)
+Object.PutAt(3@, 0.0, 0.0, 1024.0)
+Object.PutAt(4@, 0.0, 0.0, 1024.0)
+Object.PutAt(5@, 0.0, 0.0, 1024.0)
+Object.PutAt(6@, 0.0, 0.0, 1024.0)
+Object.PutAt(7@, 0.0, 0.0, 1024.0)
+Object.PutAt(8@, 0.0, 0.0, 1024.0)
+Object.PutAt(9@, 0.0, 0.0, 1024.0)
+Object.PutAt(16@, 0.246, 0.732, 1024.475)
+
+0566: link_object 0@ to_interior 3
+0566: link_object 1@ to_interior 3 
+0566: link_object 2@ to_interior 3 
+0566: link_object 3@ to_interior 3 
+0566: link_object 4@ to_interior 3 
+0566: link_object 5@ to_interior 3 
+0566: link_object 6@ to_interior 3 
+0566: link_object 7@ to_interior 3
+0566: link_object 8@ to_interior 3 
+0566: link_object 9@ to_interior 3 
+0566: link_object 16@ to_interior 3 
+
+0177: set_object 6@ Z_angle_to 160.0
+0177: set_object 7@ Z_angle_to 160.0 
+0177: set_object 8@ Z_angle_to 160.0 
+0177: set_object 9@ Z_angle_to 160.0  
+
+0382: set_object 0@ collision_detection 0
+0382: set_object 1@ collision_detection 0
+0382: set_object 2@ collision_detection 0
+0382: set_object 3@ collision_detection 0
+0382: set_object 4@ collision_detection 0
+0382: set_object 5@ collision_detection 0
+0382: set_object 6@ collision_detection 0
+0382: set_object 7@ collision_detection 0
+0382: set_object 8@ collision_detection 0
+0382: set_object 9@ collision_detection 0
+0382: set_object 16@ collision_detection 0
+
+0750: set_object 0@ visibility 0 
+0750: set_object 2@ visibility 0
+0750: set_object 4@ visibility 0
+0750: set_object 6@ visibility 0
+0750: set_object 8@ visibility 0  
+
+10@ = 0 //Current values
+11@ = 0
+12@ = 0
+13@ = 0
+14@ = 0
+15@ = 0 //Violet switchers (wth are they doing here?)
+
+20@ = 0 //Previous values
+21@ = 0
+22@ = 0
+23@ = 0
+24@ = 0
+25@ = 0
+
+while true
+    wait 0
+    if 8039: NOT 10@ == 20@
+    then
+        if 20@ == 0
+        then
+            0AB3: var 13 = 1
+            
+            //00BC: show_text_highpriority GXT 'HADSON' time 1500 flag 1
+            0750: set_object 0@ visibility 1
+            0750: set_object 1@ visibility 0
+            wait 500
+            if 0185:   car $111 health >= 400
+            then 
+                03E5: show_text_box "HADSON"
+            else
+                call_scm_func @rand_bdtext 0 17@
+                03E5: show_text_box 17@v
+            end
+                
+        else
+            0AB3: var 13 = 0 // Disable HADS
+            
+            //00BC: show_text_highpriority GXT 'HADSOF' time 1500 flag 1
+            0750: set_object 0@ visibility 0
+            0750: set_object 1@ visibility 1
+            wait 500
+            if 0185:   car $111 health >= 400
+            then
+                03E5: show_text_box "HADSOF"
+            else
+                call_scm_func @rand_bdtext 0 17@
+                03E5: show_text_box 17@v
+            end
+        end
+        0085: 20@ = 10@
+    end
+    if 8039: NOT 11@ == 21@
+    then
+        if or 
+            21@ == 0
+            21@ == 2
+        then
+            0750: set_object 2@ visibility 1
+            0750: set_object 3@ visibility 0
+            wait 500
+            if 0185:   car $111 health >= 400
+            then
+                03E5: show_text_box "ALOCCLO"
+            else
+                call_scm_func @rand_bdtext 0 17@
+                03E5: show_text_box 17@v
+            end
+        else
+            0750: set_object 2@ visibility 0
+            0750: set_object 3@ visibility 1
+            wait 500
+            if 0185:   car $111 health >= 400
+            then
+                03E5: show_text_box "REMECLO"
+            else
+                call_scm_func @rand_bdtext 0 17@
+                03E5: show_text_box 17@v
+            end
+        end
+        0085: 21@ = 11@
+    end
+    if 8039: NOT 12@ == 22@
+    then
+        if or  
+            22@ == 0
+            22@ == 2
+        then
+            0750: set_object 4@ visibility 1
+            0750: set_object 5@ visibility 0
+            wait 500
+            if 0185:   car $111 health >= 400
+            then
+                03E5: show_text_box  "ALOCHAD"
+            else
+                call_scm_func @rand_bdtext 0 17@
+                03E5: show_text_box 17@v
+            end
+        else
+            0750: set_object 4@ visibility 0
+            0750: set_object 5@ visibility 1
+            wait 500
+            if 0185:   car $111 health >= 400
+            then
+                03E5: show_text_box  "REMEHAD"
+            else
+                call_scm_func @rand_bdtext 0 17@
+                03E5: show_text_box 17@v
+            end
+        end
+        0085: 22@ = 12@
+    end
+    if 8039: NOT 13@ == 23@
+    then
+        if or 
+            23@ == 0
+            23@ == 2
+        then
+            0750: set_object 6@ visibility 1
+            0750: set_object 7@ visibility 0
+        else
+            0750: set_object 6@ visibility 0
+            0750: set_object 7@ visibility 1
+        end
+        0085: 23@ = 13@
+    end
+    if 8039: NOT 14@ == 24@
+    then
+        if or
+            24@ == 0
+            24@ == 2
+        then
+            0750: set_object 8@ visibility 1
+            0750: set_object 9@ visibility 0
+        else
+            0750: set_object 8@ visibility 0
+            0750: set_object 9@ visibility 1
+        end
+        0085: 24@ = 14@
+    end
+    if 8039: NOT 15@ == 25@
+    then
+        if or
+            25@ == 0
+            25@ == 2
+        then
+            0453: set_object 16@ XY_rotation 70.0 0.0 angle 0.0
+        else
+            0453: set_object 16@ XY_rotation 0.0 0.0 angle 0.0
+        end
+        0085: 25@ = 15@
+    end
+end
+
+
+:rand_bdtext
+0209: 26@ = random_int_in_ranges 1 16
+17@v = ""
+0AD3: string 17@v format "BT%d" 26@
+0AB2: ret 1 17@
+
+{$INCLUDE move_set_get}

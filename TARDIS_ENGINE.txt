@@ -1,0 +1,1833 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+wait 1000
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+thread "tengine"
+const
+    STT = 0@
+    HND = 1@
+    RED_L = 2@
+    RED_R = 3@
+    LEV_1 = 4@
+    LEV_2 = 5@
+    LEV_3 = 6@
+    LEV_4 = 7@
+    LEV_5 = 8@
+    {X = $90[0]
+    Y = $90[1]
+    Z = $90[2] }
+    X = 16@
+    Y = 17@
+    Z = 18@
+    ANG = 9@
+    INT = 10@
+    FX = 11@
+    FY = 12@
+    FZ = 13@
+    FInt = 14@
+    FAng = 15@
+end
+
+var
+    $95: array 5 of Integer
+end
+
+wait 2000
+while true
+    wait 0
+    0AB1: call @get_all 0 to 0@ 1@ 2@ 3@ 4@ 5@ 6@ 7@ 8@ 9@
+    0AB4: 29@ = var 29  //Fast return indicator
+    
+    if and
+        8185: NOT  car $111 health >= 400
+        STT == 1
+        HND == 0
+        RED_L == 1
+        RED_R == 1
+        {LEV_3 == 1
+        LEV_1 == 1} 
+    then
+        0AB4: 29@ = var 10
+        //energy check
+        if 8019: NOT 29@ > 3
+        then
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        0208: X = random_float_in_ranges -2999.9 2999.9
+        0208: Y = random_float_in_ranges -2999.9 2999.9
+        Z = -100.0
+        Int = 0
+        0208: ANG = random_float_in_ranges -180.0 180.0
+        
+        0AB1: call_scm_func @set_toggle 2 set_toggle 1 to 3
+        0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 2 
+        0AB1: call_scm_func @set_toggle 2 set_toggle 3 to 3
+        0AB1: call_scm_func @set_toggle 2 set_toggle 4 to 3
+        
+        0AB1: call_scm_func @get_toggle 1 set_toggle 5 to 7@
+        0AB1: call_scm_func @get_toggle 1 set_toggle 7 to 8@
+        
+        0AB1: call_scm_func @set_toggle 2 set_toggle 5 to 3
+        0AB1: call_scm_func @set_toggle 2 set_toggle 7 to 3
+
+        0AB1: call_scm_func @vortex_teleport 7 X Y Z ANG INT mode 3 time 1 result 29@
+        0AB1: call_scm_func @set_toggle 2 set_toggle 1 to 0
+        0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 0
+        0AB1: call_scm_func @set_toggle 2 set_toggle 3 to 1
+        0AB1: call_scm_func @set_toggle 2 set_toggle 4 to 1
+        
+        0AB1: call_scm_func @set_toggle 2 set_toggle 5 to 7@
+        0AB1: call_scm_func @set_toggle 2 set_toggle 7 to 8@
+        continue
+    end
+
+    
+    if and
+        STT == 1
+        HND == 0
+        RED_L == 1
+        RED_R == 0
+    then
+        0AB4: 29@ = var 10
+        //energy check
+        if 8019: NOT 29@ > 10
+        then
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        //hp check
+        if 8185: NOT  car $111 health >= 400
+        then
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        0AB4: 28@ = var 30 // Check if player input coords
+        if 28@ == -1 
+        then
+            continue
+        end
+        
+        0AB4: X = var 30
+        0AB4: Y = var 31
+        0AB4: Z = var 32
+        0AB4: Int = var 33
+        0AB4: ANG = var 34
+        
+        // TARDIS-inside-TARDIS check
+        050A: 29@ = distance_between_XYZ X Y Z and_XYZ 0.0 0.0 1024.0
+        if 8021: NOT 29@ > 50.0
+        then
+            show_text "~r~Space Loop Alert" 5000
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+             
+        0AB4: 28@ = var 12  // cloaking check
+        if 28@ == 1 
+        then
+            00BC: show_text_highpriority GXT 'FAILCL' time 5000 flag 1
+            wait 500
+            0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+            wait 1000
+            continue
+        end
+        
+        
+        
+        0AB1: call_scm_func @set_toggle 2 set_toggle 1 to 3 
+        0AB1: call_scm_func @set_toggle 2 set_toggle 3 to 3
+        0AB1: call_scm_func @set_toggle 2 set_toggle 4 to 2
+               
+        //deviations
+        0AB4: 29@ = var 10
+        if 
+            8019: NOT 29@ > 50
+        then
+            0209: 29@ = random_int_in_ranges 0 2
+            if 29@ == 0
+            then
+                0208: 29@ = random_float_in_ranges -150.0 150.0
+                005B: X += 29@
+                0208: 29@ = random_float_in_ranges -150.0 150.0
+                005B: Y += 29@ 
+            end
+        end 
+        0AB1: call_scm_func @teleport 6 X Y Z ANG INT mode 1 result 29@
+        if 29@ == 10
+        then    
+            0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+            0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 1
+            //0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+        else
+            0AB1: call_scm_func @change_energy 1 delta -10
+            0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 0
+        end
+        0AB1: call_scm_func @set_toggle 2 set_toggle 3 to 1
+        0AB1: call_scm_func @set_toggle 2 set_toggle 4 to 0
+    end
+    0AB4: 29@ = var 29  //Fast return indicator
+    if and
+        STT == 1
+        HND == 0
+        RED_L == 0
+        RED_R == 0
+        29@ == 1
+    then
+        0AB4: 29@ = var 10
+        //energy check
+        if 8019: NOT 29@ > 5
+        then
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        //hp check
+        if 8185: NOT  car $111 health >= 400
+        then
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        0AB4: X = var 1
+        0AB4: Y = var 2
+        0AB4: Z = var 3
+        0AB4: INT = var 4
+        0AB4: Ang = var 5
+        0AB4: 19@ = var 35
+        
+        {0AB4: X = var 30
+        0AB4: Y = var 31
+        0AB4: Z = var 32
+        0AB4: Int = var 33
+        0AB4: ANG = var 34
+        0AB4: 19@ = var 35}
+        
+        // TARDIS-inside-TARDIS check
+        050A: 29@ = distance_between_XYZ X Y Z and_XYZ 0.0 0.0 1024.0
+        if 8021: NOT 29@ > 50.0
+        then
+            show_text "~r~Space Loop Alert" 5000
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        0AB4: 28@ = var 12
+        if 28@ == 1 
+        then
+            00BC: show_text_highpriority GXT 'FAILCL' time 5000 flag 1
+            wait 500
+            0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+            wait 1000
+            continue
+        end
+        0AB1: call_scm_func @set_toggle 2 set_toggle 1 to 3
+        0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 3 
+        0AB1: call_scm_func @set_toggle 2 set_toggle 3 to 2
+        0AB1: call_scm_func @set_toggle 2 set_toggle 4 to 2
+        
+        0AB1: call_scm_func @teleport 7 X Y Z ANG INT mode 2 time 19@ result 29@
+        
+        0AB1: call_scm_func @change_energy 1 delta -5
+        
+        0AB1: call_scm_func @set_toggle 2 set_toggle 3 to 0
+        0AB1: call_scm_func @set_toggle 2 set_toggle 4 to 0
+        0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 0
+    end
+    if and
+        STT == 1
+        HND == 0
+        RED_L == 1
+        RED_R == 1
+    then
+        0AB4: 29@ = var 10
+        //energy check
+        if 8019: NOT 29@ > 30
+        then
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        
+        0AB4: 28@ = var 30 // Check if player input coords
+        if 28@ == -1 
+        then
+            continue
+        end
+        
+         //hp check
+        if 8185: NOT  car $111 health >= 400
+        then
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        0AB4: X = var 30
+        0AB4: Y = var 31
+        0AB4: Z = var 32
+        0AB4: Int = var 33
+        0AB4: ANG = var 34
+        0AB4: 19@ = var 37
+        
+        // TARDIS-inside-TARDIS check
+        050A: 29@ = distance_between_XYZ X Y Z and_XYZ 0.0 0.0 1024.0
+        if 8021: NOT 29@ > 50.0
+        then
+            show_text "~r~Space Loop Alert" 5000
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        0AB4: 28@ = var 12
+        if 28@ == 1 
+        then
+            00BC: show_text_highpriority GXT 'FAILCL' time 5000 flag 1
+            0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+            wait 1000
+            continue
+        end
+        0AB1: call_scm_func @set_toggle 2 set_toggle 1 to 3 
+        0AB1: call_scm_func @set_toggle 2 set_toggle 3 to 3
+        0AB1: call_scm_func @set_toggle 2 set_toggle 4 to 3
+        
+        
+        //deviations
+        0AB4: 29@ = var 10
+        if 
+            8019: NOT 29@ > 50
+        then
+            0209: 29@ = random_int_in_ranges 0 2
+            if 29@ == 0
+            then
+                0208: 29@ = random_float_in_ranges -150.0 150.0
+                005B: X += 29@
+                0208: 29@ = random_float_in_ranges -150.0 150.0
+                005B: Y += 29@ 
+            end
+        end
+         
+        0AB1: call_scm_func @vortex_teleport 7 X Y Z ANG INT mode 2 time 19@ result 29@
+        if 29@ == 10
+        then    
+            0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+            0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 1
+            //0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+        else
+            0AB1: call_scm_func @change_energy 1 delta -30
+            //0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 0
+        end
+        0AB1: call_scm_func @set_toggle 2 set_toggle 3 to 1
+        0AB1: call_scm_func @set_toggle 2 set_toggle 4 to 1
+    end
+    if and
+        STT == 1
+        HND == 0
+        RED_L == 0
+        RED_R == 1
+    then
+        0AB4: 29@ = var 10
+        //energy check
+        if 8019: NOT 29@ > 20
+        then
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        //hp check
+        if 8185: NOT  car $111 health >= 400
+        then
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        0AB4: X = var 21
+        0AB4: Y = var 22
+        0AB4: Z = var 23
+        0AB4: Int = var 20
+        0AB4: ANG = var 6
+        0AB4: 19@ = var 37
+        
+        // TARDIS-inside-TARDIS check
+        050A: 29@ = distance_between_XYZ X Y Z and_XYZ 0.0 0.0 1024.0
+        if 8021: NOT 29@ > 50.0
+        then
+            show_text "~r~Space Loop Alert" 5000
+            0AB1: call_scm_func @crash 0
+            continue
+        end
+        
+        0AB4: 28@ = var 12
+        if 28@ == 1 
+        then
+            00BC: show_text_highpriority GXT 'FAILCL' time 5000 flag 1
+            wait 500
+            0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+            wait 1000
+            continue
+        end
+        0AB1: call_scm_func @set_toggle 2 set_toggle 1 to 3 
+        0AB1: call_scm_func @set_toggle 2 set_toggle 3 to 3
+        0AB1: call_scm_func @set_toggle 2 set_toggle 4 to 3
+         
+        0AB1: call_scm_func @vortex_teleport 7 X Y Z ANG INT mode 2 time 19@ result 29@
+        if 29@ == 10
+        then    
+            0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+            0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 1
+            //0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+        else
+            0AB1: call_scm_func @change_energy 1 delta -20
+            //0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 0
+        end
+        0AB1: call_scm_func @set_toggle 2 set_toggle 3 to 0
+        0AB1: call_scm_func @set_toggle 2 set_toggle 4 to 1
+    end   
+end
+
+:teleport
+wait 0
+{
+input: 0@-2@ XYZ ; 3@ ANG ; 4@ INT ; 5@ MODE (1 - long, 2 - short) ; 6@ TIME
+}
+
+0AB3: var 0 = 1
+
+gosub @doorc
+
+
+
+0AB3: var 11 = 1
+00AA: store_car $111 position_to 27@ 28@ 29@
+0174: 30@ = car $111 Z_angle
+0AB4: 31@ = var 20
+
+//предохранитель
+//#1 - same coords
+0509: 7@ = distance_between_XY 0@ 1@ and_XY 27@ 28@
+0087: 8@ = 30@
+0063: 8@ -= 3@
+if 8@ < 0.0 
+then
+    8@ *= -1.0
+end 
+if 8@ > 350.0 // If instead of 1.0 degree it shows 359.0
+then
+    8@ -= 360.0
+    8@ *= -1.0
+end    
+if and 
+    7@ < 0.1 // X and Y are the same
+    //8@ < 10.0 // Angle delta less than 10 degree
+    003B: 31@ == 4@ // Same interior     
+then
+    0087: 7@ = 29@
+    0063: 7@ -= 2@
+    if 7@ < 0.0 
+    then
+        7@ *= -1.0
+    end 
+    if 7@ < 3.0 // if Z delta less than 3.0 (GTA deviations, fuck them)
+    then 
+        7@ = 1
+    else
+        if 2@ == -100.0 // if using default Z value 
+        then
+            7@ = 1
+        else
+            7@ = 0
+        end
+    end            
+end 
+if 
+    7@ == 1
+then
+    gosub @cancel_sequence
+    
+    0AB2: ret 1 0
+end
+
+//fast return
+0AB3: var 1 = 27@
+0AB3: var 2 = 28@
+0AB3: var 3 = 29@
+0AB3: var 5 = 30@
+0AB3: var 4 = 31@
+0AB4: 7@ = var 36
+0AB3: var 35 = 7@
+
+0085: 31@ = 6@ // Save input time to 31@. DON'T CHANGE IT
+
+if 5@ == 1
+then
+//Long mode
+    if or
+        $94 == 1
+        $93 == 1
+    then
+        0AAC: 7@ = load_audiostream "dws/int_tp.mp3"
+    else
+        0AC1: 7@ = load_audiostream_with_3d_support "dws/int_tp.mp3"
+        0AC2: set_3d_audiostream 7@ position 0.0 0.0 1024.0
+    end
+    0AC1: 8@ = load_audiostream_with_3d_support "dws/int_circ.mp3"
+    0AC2: set_3d_audiostream 8@ position 0.0 0.0 1026.0
+    0ABC: set_audiostream 8@ volume 3.0
+    0AC0: loop_audiostream 8@ flag 1
+    0AC1: 9@ = load_audiostream_with_3d_support "dws/out_demat.mp3"
+    0AC2: set_3d_audiostream 9@ position 27@ 28@ 29@
+    0AC1: 10@ = load_audiostream_with_3d_support "dws/out_mat.mp3"
+    0AC2: set_3d_audiostream 10@ position 0@ 1@ 2@
+    0AB3: var 0 = 1
+    0AAD: set_audiostream 7@ perform_action 1
+    0AAD: set_audiostream 9@ perform_action 1
+    0AAD: set_audiostream 10@ perform_action 1
+    0AB1: call_scm_func @wait_n_follow 2 9@ 1000 6@
+    gosub @hnd_check
+    
+    0AB1: call_scm_func @wait_n_follow 2 9@ 500 6@
+    gosub @hnd_check
+    0A92: create_custom_thread "audio_fade.s" 8@ 1 500
+    0AAD: set_audiostream 8@ perform_action 1
+    0AB1: call_scm_func @wait_n_follow 2 9@ 1500 6@
+    gosub @hnd_check
+    0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 2
+    0A1C: set_helicopter $111 play_engine_sounds 0
+    0A92: create_custom_thread "fade.s" 0
+    
+    0A8D: 6@ = read_memory 0xBA6794 size 1 virtual_protect 1
+    if or
+        $93 == 1
+        $94 == 1
+    then
+        if 6@ == 0
+        then
+            0AF0: 6@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "N_LIM_OFF"
+            052C: set_player $PLAYER_CHAR drunk_visuals 6@
+        else
+            0AF0: 6@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "N_LIM_ON"
+            052C: set_player $PLAYER_CHAR drunk_visuals 6@
+        end
+    end
+    
+    0AB1: call_scm_func @camera 0
+    0AB1: call_scm_func @wait_n_follow 2 9@ 2000 6@
+    0AB3: var 0 = 2
+    0AB1: call_scm_func @wait_n_follow 2 9@ 4613 6@
+    00AA: store_car $111 position_to 27@ 28@ 29@
+    0AC2: set_3d_audiostream 9@ position 27@ 28@ 29@
+    0AC5: link_3d_audiostream 10@ to_vehicle $111
+    if $94 == 1
+    then
+        select_interior 4@
+        0860: link_actor $PLAYER_ACTOR to_interior 4@
+        04E4: unknown_refresh_game_renderer_at 0@ 1@ 
+    end
+    0840: link_car $111 to_interior 4@
+    //0566: link_object $110 to_interior 4@
+    0175: set_car $111 Z_angle_to 3@
+    00AB: put_car $111 at 0@ 1@ 2@
+    wait 50
+    {if 4@ == 0
+    then
+        2@ = -100.0
+    end }
+    00AB: put_car $111 at 0@ 1@ 2@
+    0AB3: var 21 = 0@ // X
+    0AB3: var 22 = 1@ // Y
+    0AB3: var 23 = 2@ // Z
+    0AB3: var 20 = 4@  // INT
+    0AB3: var 6 = 3@ // ANG
+    {00AA: store_car $111 position_to 0@ 1@ 2@ 
+    0AB3: var 21 = 0@
+    0AB3: var 22 = 1@
+    0AB3: var 23 = 2@}
+    if $94 == 0
+    then 
+        0AB3: var 24 = 1
+        0574: freeze_car_position_and_dont_load_collision $111 to 1
+    else
+        0AB3: var 24 = 0
+        0574: freeze_car_position_and_dont_load_collision $111 to 0
+        0915: sync_weather_with_time_and_location_instantly
+    end
+    0918: set_car $111 engine_operation 0
+    0AB1: call_scm_func @camera 0
+    //0574: freeze_car_position_and_dont_load_collision $111 to 1
+    wait 1000
+    0AB3: var 0 = 1
+    repeat
+        wait 0
+        0AB4: 6@ = var 0
+    until 6@ == 0
+    0A92: create_custom_thread "audio_fade.s" 8@ 0 100
+    052C: set_player $PLAYER_CHAR drunk_visuals 0
+    if or
+        $93 == 1
+        $94 == 1
+    then
+        0003: shake_camera 150
+    end
+    if $94 == 1
+    then
+        Camera.Restore()
+    end
+    0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+    if $94 == 1
+    then
+        0AB3: var 11 = 0
+        run "atbfl.s" // After-demat basic flight locker
+    end
+    wait 1500
+    0AAE: release_audiostream 8@
+    0AAE: release_audiostream 7@
+    0AAE: release_audiostream 9@
+    0AAE: release_audiostream 10@
+    //end of Long mode
+else
+    //Short mode
+    if or
+        $94 == 1
+        $93 == 1
+    then
+        0AAC: 7@ = load_audiostream "dws/int_fasttp.mp3"
+    else
+        0AC1: 7@ = load_audiostream_with_3d_support "dws/int_fasttp.mp3"
+        0AC2: set_3d_audiostream 7@ position 0.0 0.0 1024.0
+    end
+    {0AC1: 7@ = load_audiostream_with_3d_support "dws/int_fasttp.mp3"
+    0AC2: set_3d_audiostream 7@ position 0.0 0.0 1024.0 }
+    0AC1: 8@ = load_audiostream_with_3d_support "dws/int_circ.mp3"
+    0AC2: set_3d_audiostream 8@ position 0.0 0.0 1026.0
+    0ABC: set_audiostream 8@ volume 3.0
+    0AC0: loop_audiostream 8@ flag 1
+    0AC1: 9@ = load_audiostream_with_3d_support "dws/out_fastdemat.mp3"
+    0AC2: set_3d_audiostream 9@ position 27@ 28@ 29@
+    0AC1: 10@ = load_audiostream_with_3d_support "dws/out_fastmat.mp3"
+    0AC2: set_3d_audiostream 10@ position 0@ 1@ 2@
+    
+    0AB3: var 0 = 1
+    0AAD: set_audiostream 7@ perform_action 1
+    0AAD: set_audiostream 9@ perform_action 1
+    0AAD: set_audiostream 10@ perform_action 1
+    0AB1: call_scm_func @wait_n_follow 2 9@ 600 6@
+    gosub @hnd_check
+    0AAD: set_audiostream 8@ perform_action 1
+    0AB1: call_scm_func @wait_n_follow 2 9@ 600 6@
+    gosub @hnd_check
+    0A1C: set_helicopter $111 play_engine_sounds 0
+    0A92: create_custom_thread "fade.s" 3
+    
+    0A8D: 6@ = read_memory 0xBA6794 size 1 virtual_protect 1
+    if or
+        $93 == 1
+        $94 == 1
+    then
+        if 6@ == 0
+        then
+            0AF0: 6@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "N_LIM_OFF"
+            052C: set_player $PLAYER_CHAR drunk_visuals 6@
+        else
+            0AF0: 6@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "N_LIM_ON"
+            052C: set_player $PLAYER_CHAR drunk_visuals 6@
+        end
+    end
+    
+    0AB1: call_scm_func @camera 0
+    0AB1: call_scm_func @wait_n_follow 2 9@ 3000 6@
+    00AA: store_car $111 position_to 27@ 28@ 29@
+    0AC2: set_3d_audiostream 9@ position 27@ 28@ 29@
+    0AC5: link_3d_audiostream 10@ to_vehicle $111
+    if $94 == 1
+    then
+        select_interior 4@
+        0860: link_actor $PLAYER_ACTOR to_interior 4@
+        04E4: unknown_refresh_game_renderer_at 0@ 1@
+    end
+    0840: link_car $111 to_interior 4@
+    //0566: link_object $110 to_interior 4@
+    0175: set_car $111 Z_angle_to 3@
+    00AB: put_car $111 at 0@ 1@ 2@
+    
+    wait 50
+    {if 4@ == 0
+    then
+        2@ = -100.0
+    end }
+    00AB: put_car $111 at 0@ 1@ 2@
+    0AB3: var 21 = 0@ // X
+    0AB3: var 22 = 1@ // Y
+    0AB3: var 23 = 2@ // Z
+    0AB3: var 20 = 4@  // INT
+    0AB3: var 6 = 3@ // ANG
+    {0B14: 1@ = 31@ MOD 100
+    0A91: 0@ = 31@ / 100 // DIV }
+    0ABA: end_custom_thread_named "timecor"
+    0AB3: var 36 = 31@ // Time
+    0A92: create_custom_thread "time_correction.cs"
+    //00C0: set_current_time_hours_to 0@ minutes_to 1@ 
+    {00AA: store_car $111 position_to 0@ 1@ 2@ 
+    0AB3: var 21 = 0@
+    0AB3: var 22 = 1@
+    0AB3: var 23 = 2@}
+    if $94 == 0
+    then 
+        0AB3: var 24 = 1
+        0574: freeze_car_position_and_dont_load_collision $111 to 1
+    else
+        0AB3: var 24 = 0
+        0574: freeze_car_position_and_dont_load_collision $111 to 0
+        0915: sync_weather_with_time_and_location_instantly
+    end
+    0918: set_car $111 engine_operation 0
+    0AB1: call_scm_func @camera 0
+    //0574: freeze_car_position_and_dont_load_collision $111 to 1
+    //0AB3: var 11 = 1
+    wait 3500
+    0AB3: var 0 = 0
+    0AAE: release_audiostream 8@
+    052C: set_player $PLAYER_CHAR drunk_visuals 0
+    if or
+        $93 == 1
+        $94 == 1
+    then
+        0003: shake_camera 150
+    end
+    if $94 == 1
+    then
+        Camera.Restore()
+    end
+    0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+    if $94 == 1
+    then
+        0AB3: var 11 = 0
+        run "atbfl.s" // After-demat basic flight locker
+    end
+    wait 2500
+    0AAE: release_audiostream 7@
+    0AAE: release_audiostream 9@
+    0AAE: release_audiostream 10@
+    0AB3: var 29 = 0
+    //0AB3: var 11 = 0
+    //end of Short mode
+end
+0AB3: var 30 = -1 // unset destination coords 
+0AB2: ret 1 0
+
+
+:vortex_teleport
+wait 0
+{
+input: 0@-2@ XYZ ; 3@ ANG ; 4@ INT ; 5@ MODE (1 - time shift, 2 - time and space shift, 3 - emergency) ; 6@ TIME(int);
+}
+0AB3: var 11 = 1
+00AA: store_car $111 position_to 27@ 28@ 29@
+0174: 30@ = car $111 Z_angle
+0AB4: 31@ = var 20
+
+//fast return
+0AB3: var 1 = 27@
+0AB3: var 2 = 28@
+0AB3: var 3 = 29@
+0AB3: var 5 = 30@
+0AB3: var 4 = 31@
+0AB4: 7@ = var 36
+0AB3: var 35 = 7@
+
+0AB4: 31@ = var 38
+if 31@ == 1
+then
+    0085: 31@ = 6@ // Save input time to 31@. DON'T CHANGE IT
+else
+    31@ = -1
+end
+
+call_scm_func @get_toggle 1 12 to 8@ //allocators
+call_scm_func @get_toggle 1 13 to 9@
+
+//Lock allocators during vortex flight
+if 8@ == 0
+then
+    call_scm_func @set_toggle 2 12 to 2        
+else
+    call_scm_func @set_toggle 2 12 to 3
+end
+
+if 9@ == 0
+then
+    call_scm_func @set_toggle 2 13 to 2        
+else
+    call_scm_func @set_toggle 2 13 to 3
+end
+
+
+if or 
+    5@ == 1 // Time Travel
+    5@ == 2 // Vortex Flight
+then 
+    0AAC: 7@ = load_audiostream "dws/2d_demat.mp3"
+    //0AC2: set_3d_audiostream 7@ position 0.0 0.0 1024.0
+    0AC1: 8@ = load_audiostream_with_3d_support "dws/int_circ.mp3"
+    0AC2: set_3d_audiostream 8@ position 0.0 0.0 1026.0
+    0ABC: set_audiostream 8@ volume 3.0
+    0AC0: loop_audiostream 8@ flag 1
+    0AC1: 9@ = load_audiostream_with_3d_support "dws/out_demat.mp3"
+    //0AC1: 10@ = load_audiostream_with_3d_support "dws/engine_loop.mp3" //IF and SET
+    //0AC2: set_3d_audiostream 10@ position 0.0 0.0 1024.0
+    0AAC: 10@ = load_audiostream "dws/engine_loop.wav" //IF and SET
+    0AC0: loop_audiostream 10@ flag 1
+    0ABC: set_audiostream 10@ volume 0.0
+    
+    0AB3: var 0 = 6
+    0AAD: set_audiostream 7@ perform_action 1
+    //0AAD: set_audiostream 9@ perform_action 1
+    0AB1: call_scm_func @wait_n_follow 2 9@ 1000 6@
+    gosub @hnd_check
+    0AB1: call_scm_func @wait_n_follow 2 9@ 500 6@
+    gosub @hnd_check
+    0A92: create_custom_thread "audio_fade.s" 8@ 1 500
+    0AAD: set_audiostream 8@ perform_action 1
+    0AB1: call_scm_func @wait_n_follow 2 9@ 2000 6@
+    gosub @hnd_check
+    0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 2
+    0A1C: set_helicopter $111 play_engine_sounds 0
+    02AC: set_car $111 immunities BP 1 FP 1 EP 1 CP 1 MP 1
+    0A92: create_custom_thread "fade.s" 1
+    
+    
+    0A8D: 6@ = read_memory 0xBA6794 size 1 virtual_protect 1
+    if or
+        $93 == 1
+        $94 == 1
+    then
+        if 6@ == 0
+        then
+            0AF0: 6@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "N_LIM_OFF"
+            052C: set_player $PLAYER_CHAR drunk_visuals 6@
+        else
+            0AF0: 6@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "N_LIM_ON"
+            052C: set_player $PLAYER_CHAR drunk_visuals 6@
+        end
+    end
+    
+    0AB1: call_scm_func @camera 0
+    0AB1: call_scm_func @wait_n_follow 2 9@ 2000 6@
+    0AB3: var 0 = 7
+    0AB1: call_scm_func @wait_n_follow 2 9@ 4613 6@
+    0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 0
+    0AAD: set_audiostream 10@ perform_action 1
+    0A92: create_custom_thread "audio_fade.s" 7@ 0 5000 1
+    //0A92: create_custom_thread "audio_fade.s" 10@ 1 1000
+    0ABC: set_audiostream 10@ volume 0.4
+    if $94 == 1
+    then
+        0826: enable_hud 0
+        0581: enable_radar 0
+    end
+    {repeat
+        wait 0
+        0AB4: 17@ = var 16  // wait until fade.s done
+    until 17@ == 0}
+    //IN-VORTEX
+    0AB3: var 9 = 1 //SET in_vortex flag
+    0AB1: call_scm_func @vortex 1 time 31@ result 17@ // time in minutes, result 0 - destination reached (AP), 1 - break by user command (AP), 2 - break by user command (MP)
+    0AB3: var 9 = 0 //SET in_vortex flag
+    if $94 == 1
+    then
+        {0407: store_coords_to 27@ 28@ 29@ from_car $111 with_offset 0.0 -60.0 0.0
+        Camera.SetPosition(27@,28@,29@,0.0,0.0,0.0)
+        Camera.OnVehicle($111, 15, 1) }
+        0826: enable_hud 1
+        0581: enable_radar 1
+    end 
+    //end of IN-VORTEX
+    02AC: set_car $111 immunities BP 0 FP 0 EP 0 CP 0 MP 0
+    00AA: store_car $111 position_to 27@ 28@ 29@
+    0AC2: set_3d_audiostream 9@ position 27@ 28@ 29@
+    if $94 == 1
+    then
+        select_interior 4@
+        0860: link_actor $PLAYER_ACTOR to_interior 4@
+        04E4: unknown_refresh_game_renderer_at 0@ 1@
+        04FA: reset_interior 0 colors
+    end
+    04BA: set_car $111 speed_to 0.0
+    0574: freeze_car_position_and_dont_load_collision $111 to 1 
+    0840: link_car $111 to_interior 4@
+    //0566: link_object $110 to_interior 4@
+    0175: set_car $111 Z_angle_to 3@
+    00AB: put_car $111 at 0@ 1@ 2@
+    wait 50
+    {if 4@ == 0
+    then
+        2@ = -100.0
+    end }
+    00AB: put_car $111 at 0@ 1@ 2@
+    0AB3: var 21 = 0@ // X
+    0AB3: var 22 = 1@ // Y
+    0AB3: var 23 = 2@ // Z
+    0AB3: var 20 = 4@  // INT
+    0AB3: var 6 = 3@ // ANG
+    {0B14: 1@ = 31@ MOD 100
+    0A91: 0@ = 31@ / 100 // DIV
+    0AD1: show_formatted_text_highpriority "%d %d" time 5000 0@ 1@
+    0A92: create_custom_thread "time_correction.s" 0@ 1@ }
+    {00AA: store_car $111 position_to 0@ 1@ 2@ 
+    0AB3: var 21 = 0@
+    0AB3: var 22 = 1@
+    0AB3: var 23 = 2@}
+    if $94 == 0
+    then 
+        0AB3: var 24 = 1
+    else
+        0AB3: var 24 = 0
+        0915: sync_weather_with_time_and_location_instantly
+    end
+    0918: set_car $111 engine_operation 0
+    //0574: freeze_car_position_and_dont_load_collision $111 to 1
+    0A92: create_custom_thread "audio_fade.s" 10@ 0 500 1
+    0AB3: var 11 = 1
+    if 17@ == 1
+    then
+        0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 3
+        0A92: create_custom_thread "fade.s" 7
+        0AB3: var 0 = 6
+        0AAC: 7@ = load_audiostream "dws\mat_short.mp3"
+        //0AC2: set_3d_audiostream 7@ position 0.0 0.0 1024.0
+        0AAD: set_audiostream 7@ perform_action 1
+        //wait 1000
+        
+        if $94 == 1
+        then
+            //Camera.Restore()
+            0AB1: call_scm_func @camera 0
+        end
+        Object.Destroy($109)
+        0AB3: var 28 = 1 // lock console
+        if $93 == 1
+        then
+            04ED: load_animation "TARDIS"
+            //01B4: set_player $PLAYER_CHAR can_move 0
+            32@ = 0
+            repeat
+                wait 0
+            until 8611:   not actor $PLAYER_ACTOR performing_animation "handbrake_on"
+            0AB4: 17@ = var 27 // current panel
+            if 17@ == 3
+            then
+            //wait 10 
+            //wait 2000
+                0AB1: call @put_at_s 3 0.0 1.377 1024.375
+                0972: put_actor $PLAYER_ACTOR at 0.0 1.377 1024.375
+                0AB1: call @turn_to_console 0
+                0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+                01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+                0992: set_player $PLAYER_CHAR weapons_scrollable 0 
+                0812: AS_actor $PLAYER_ACTOR perform_animation "throttle_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+                wait 10
+                0612: set_actor $PLAYER_ACTOR animation "throttle_On" paused 0
+            end
+            repeat
+                wait 0
+            until 32@ >= 2500 
+            //wait 500
+        else
+            wait 2500
+        end
+        0612: set_actor $PLAYER_ACTOR animation "throttle_On" paused 1
+        0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+        0A92: create_custom_thread "audio_fade.s" 8@ 0 100
+        wait 500
+        052C: set_player $PLAYER_CHAR drunk_visuals 0
+        if or
+            $93 == 1
+            $94 == 1
+        then
+            0003: shake_camera 150
+        end
+        0AB3: var 0 = 0
+        0AB3: var 28 = 0 // unlock console
+        wait 1000
+        if $93 == 1
+        then
+            04EF: release_animation "TARDIS"
+            //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+            01B4: set_player $PLAYER_CHAR can_move 1
+        end
+        if $94 == 1
+        then 
+            Camera.Restore()
+        end
+        0AAE: release_audiostream 8@
+        0AAE: release_audiostream 7@
+        0AAE: release_audiostream 9@
+        0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 1
+        0574: freeze_car_position_and_dont_load_collision $111 to 1
+        0AB3: var 11 = 1
+    else
+        0AB3: var 28 = 1
+        0AAC: 7@ = load_audiostream "dws\mat_long.mp3"
+        0AAD: set_audiostream 7@ perform_action 1
+        0460: set_camera_transverse_delay 0.0 time 3000 
+        0AB1: call_scm_func @camera 0
+        //0AC2: set_3d_audiostream 7@ position 0.0 0.0 1024.0
+        if $ACTIVE_INTERIOR == 0
+        then
+            wait 1000
+            Object.Destroy($109)
+        else
+            Object.Destroy($109)
+            0750: set_object $110 visibility 0
+            0750: set_object $95[0] visibility 0 
+            0750: set_object $95[1] visibility 0
+            0750: set_object $95[2] visibility 0 
+            0750: set_object $95[3] visibility 0
+            wait 1000
+        end
+        
+        wait 1200  
+        0A92: create_custom_thread "fade.s" 2
+        //0AB1: call_scm_func @camera 0
+        wait 3500
+        0AB3: var 0 = 6
+        0A92: create_custom_thread "audio_fade.s" 8@ 0 100 1
+        wait 5800
+        0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+        //0AB3: var 11 = 0
+        052C: set_player $PLAYER_CHAR drunk_visuals 0
+        if or
+            $93 == 1
+            $94 == 1
+        then
+            0003: shake_camera 150
+        end
+        if $94 == 1
+        then
+            0AB3: var 11 = 0
+            run "atbfl.s" // After-demat basic flight locker
+            Camera.Restore()
+            0574: freeze_car_position_and_dont_load_collision $111 to 0 
+        end
+        wait 2000
+        0AB3: var 28 = 0 
+        0AAE: release_audiostream 7@
+    end
+    //end of TT/VF 
+else
+    //Emergency Flight
+    0AAC: 7@ = load_audiostream "dws/emergency_2d.mp3"
+    //0AC2: set_3d_audiostream 7@ position 0.0 0.0 1024.0
+    0AC1: 8@ = load_audiostream_with_3d_support "dws/int_circ.mp3"
+    0AC2: set_3d_audiostream 8@ position 0.0 0.0 1026.0
+    0ABC: set_audiostream 8@ volume 3.0
+    0AC0: loop_audiostream 8@ flag 1
+    0AC1: 9@ = load_audiostream_with_3d_support "dws/out_demat.mp3"
+    //0AC1: 10@ = load_audiostream_with_3d_support "dws/engine_loop.mp3" //IF and SET
+    //0AC2: set_3d_audiostream 10@ position 0.0 0.0 1024.0
+    0AAC: 10@ = load_audiostream "dws/engine_loop.wav" //IF and SET
+    0AC0: loop_audiostream 10@ flag 1
+    0ABC: set_audiostream 10@ volume 0.0
+    0AB3: var 0 = 8
+    0A1C: set_helicopter $111 play_engine_sounds 0
+    0AAD: set_audiostream 7@ perform_action 1
+    0A92: create_custom_thread "audio_fade.s" 8@ 1 500
+    0AAD: set_audiostream 8@ perform_action 1
+    0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 2
+    0A92: create_custom_thread "fade.s" 5
+    0A8D: 6@ = read_memory 0xBA6794 size 1 virtual_protect 1
+    if or
+        $93 == 1
+        $94 == 1
+    then
+        if 6@ == 0
+        then
+            0AF0: 6@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "C_LIM_OFF"
+            052C: set_player $PLAYER_CHAR drunk_visuals 6@
+        else
+            0AF0: 6@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "C_LIM_ON"
+            052C: set_player $PLAYER_CHAR drunk_visuals 6@
+        end
+        0003: shake_camera 500
+    end 
+    0AB1: call_scm_func @camera 0
+    wait 6000
+    0AB3: var 0 = 9
+    //IN-VORTEX
+    0AB3: var 9 = 1 //SET in_vortex flag
+    0AB3: var 38 = 1  // Set autopilot flag
+    if $94 == 1
+    then
+        0826: enable_hud 0
+        0581: enable_radar 0
+        camera.Restore() 
+    end
+    0AB1: call_scm_func @vortex 1 time 1 result 17@ // HERE time in minutes, result 0 - destination reached (AP), 1 - break by user command (AP), 2 - break by user command (MP)
+    0AB3: var 9 = 0 //SET in_vortex flag
+    
+    
+    Object.Destroy($109)
+    
+    if $94 == 1
+    then
+        0407: store_coords_to 27@ 28@ 29@ from_car $111 with_offset 0.0 -60.0 0.0
+        Camera.SetPosition(27@,28@,29@,0.0,0.0,0.0)
+        Camera.OnVehicle($111, 15, 1)
+        0826: enable_hud 1
+        0581: enable_radar 1
+    end
+    //end of IN-VORTEX
+    00AA: store_car $111 position_to 27@ 28@ 29@
+    0AC2: set_3d_audiostream 9@ position 27@ 28@ 29@
+    if $94 == 1
+    then
+        select_interior 4@
+        0860: link_actor $PLAYER_ACTOR to_interior 4@
+        04E4: unknown_refresh_game_renderer_at 0@ 1@
+    end
+    04BA: set_car $111 speed_to 0.0
+    0574: freeze_car_position_and_dont_load_collision $111 to 1 
+    0840: link_car $111 to_interior 4@
+    //0566: link_object $110 to_interior 4@
+    0175: set_car $111 Z_angle_to 3@
+    00AB: put_car $111 at 0@ 1@ 2@
+    wait 50
+    00AB: put_car $111 at 0@ 1@ 2@
+    0AB3: var 21 = 0@ // X
+    0AB3: var 22 = 1@ // Y
+    0AB3: var 23 = 2@ // Z
+    0AB3: var 20 = 4@  // INT
+    0AB3: var 6 = 3@ // ANG
+    if $94 == 0
+    then 
+        0AB3: var 24 = 1
+    else
+        0AB3: var 24 = 0
+        0915: sync_weather_with_time_and_location_instantly
+    end
+    0918: set_car $111 engine_operation 0
+    wait 1000
+    0A92: create_custom_thread "fade.s"  2
+    0AB1: call_scm_func @camera 0
+    wait 3500
+    0AB3: var 0 = 8
+    wait 7000
+    0A92: create_custom_thread "audio_fade.s" 8@ 0 100 1
+    if or
+        $93 == 1
+        $94 == 1
+    then
+        0003: shake_camera 150
+        052C: set_player $PLAYER_CHAR drunk_visuals 0
+    end
+    if $94 == 1
+    then 
+        Camera.Restore()
+    end
+    0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+    Player.SetDrunkVisuals($PLAYER_CHAR, 0)
+    0574: freeze_car_position_and_dont_load_collision $111 to 1
+    0AB3: var 11 = 1
+    0AB3: var 10 = 1
+    0AB3: var 28 = 0
+    0AB3: var 48 = 1 // set suspence flag
+    wait 1500 
+    0AAE: release_audiostream 7@
+end
+0AB3: var 30 = -1 // unset destination coords
+
+call_scm_func @get_toggle 1 12 to 8@ //allocators
+call_scm_func @get_toggle 1 13 to 9@
+
+//Unlock allocators after vortex flight
+if 8@ == 2
+then
+    call_scm_func @set_toggle 2 12 to 0        
+else
+    call_scm_func @set_toggle 2 12 to 1
+end
+
+if 9@ == 2
+then
+    call_scm_func @set_toggle 2 13 to 0        
+else
+    call_scm_func @set_toggle 2 13 to 1
+end
+0AB2: ret 1 0
+
+
+:wait_n_follow
+    wait 0
+    32@ = 0
+    repeat
+        wait 0
+        0AB1: call_scm_func @get_toggle 1 get_toggle 2 to 11@
+        if 11@ == 1
+        then
+            0AB1: call_scm_func @set_toggle 2 set_toggle 2 to 3
+            0AB2: ret 1 1
+        end 
+        00AA: store_car $111 position_to 27@ 28@ 29@
+        0AC2: set_3d_audiostream 0@ position 27@ 28@ 29@
+    until 002D: 32@ >= 1@
+    0AB2: ret 1 0
+
+:hnd_check
+wait 0
+if 6@ == 1
+then
+    wait 500
+    0AAE: release_audiostream 7@
+    0AAE: release_audiostream 9@
+    0AAE: release_audiostream 10@
+    0AB3: var 0 = 0
+    0AAE: release_audiostream 8@
+    wait 500
+    0AB2: ret 1 10   
+end
+return
+
+:vortex
+{Input: 0@ - how long in minutes, -1 - without aitopilot}
+
+if or
+    $94 == 1
+    $93 == 1
+then       
+    0110: clear_player $PLAYER_CHAR wanted_level
+end
+
+if $94 == 1
+then
+    if 8038: NOT $ACTIVE_INTERIOR == 0
+    then
+        0407: store_coords_to 29@ 30@ 31@ from_car $111 with_offset 0.0 -60.0 0.0
+        Camera.SetPosition(29@, 30@, 31@ ,0.0,0.0,0.0)
+        Camera.OnVehicle($111, 15, 2)
+    end
+    00AA: store_car $111 position_to 29@ 30@ 31@
+    0160: set_camera_point_at 29@ 30@ 31@ mode 2  
+    00AB: put_car $111 at 29@ 30@ 500.0
+end
+0574: set_car $111 keep_position 1 
+0338: set_car $111 visibility 1
+
+
+0A92: create_custom_thread "vortex.s"
+if 0185:   car $111 health >= 300
+then
+    wait 1400
+else
+    wait 200
+end
+0AB1: call @get_toggle 1 id 5 to 7@ // Check direction levers (no need in checking both, they are the same)
+if or
+    7@ == 1
+    7@ == 3
+then
+    18@ = 1    //Vortex direction: 1 - future, 0 - past
+    if $94 == 1
+    then
+        04F9: set_extra_colours 15 fade 0
+        00C0: set_current_time_hours_to 20 minutes_to 0
+    end
+else
+    18@ = 0
+    if $94 == 1
+    then
+        04F9: set_extra_colours 16 fade 0
+        00C0: set_current_time_hours_to 22 minutes_to 0
+    end
+end
+wait 1000
+
+run "vortex_clock.s"
+27@ = 0 // total counter
+if 0@ == -1
+then
+    :are_you_stupid
+    3@ = 0
+    4@ = 0
+    while true
+        wait 1
+        04BA: set_car $111 speed_to 150.0
+        0AB1: call @get_toggle 1 id 5 to 7@
+        0209: 17@ = random_int_in_ranges 1 20
+        if
+            7@ == 1
+        then
+            if 18@ == 0
+            then
+                //TRANSITION
+                if $94 == 1
+                then
+                    0AB3: var 28 = 1 // Lock console
+                    0574: freeze_car_position_and_dont_load_collision $111 to 1
+                    0174: 28@ = car $111 Z_angle
+                    0175: set_car $111 Z_angle_to 28@
+                    if 18@ == 1   //Change camera position relatively transition direction
+                    then
+                        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset -7.0 -2.0 1.5
+                    else
+                        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset 7.0 -2.0 1.5
+                    end
+                    Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+                    Camera.OnVehicle($111, 15, 1)
+                    0460: set_camera_pointing_time 0.0 1000
+                    wait 1000
+                    wait 250
+                    wait 250
+                    28@ -= 180.0
+                    {if 8021: NOT 28@ > 0.0
+                    then
+                        28@ *= -1.0
+                    end }
+                    0175: set_car $111 Z_angle_to 28@
+                    0AB4: 28@ = var 18
+                    28@ *= -1
+                    0AB3: var 18 = 28@   //Reverse spinning direction
+                    0574: freeze_car_position_and_dont_load_collision $111 to 0
+                    camera.Restore()
+                    0AB3: var 28 = 0 // unlock console
+                else
+                    if
+                        $93 == 1
+                    then
+                        wait 250
+                        03E5: show_text_box 'VRTREV' // Vortex ~g~Reversed
+                    end
+                end
+                18@ = 1
+            end
+            if $94 == 1
+            then
+                04F9: set_extra_colours 15 fade 0
+                00C0: set_current_time_hours_to 20 minutes_to 0
+            end
+            005A: 4@ += 17@
+            005A: 27@ += 17@ // Total counter
+        else
+            if 18@ == 1
+            then
+                //TRANSITION
+                if $94 == 1
+                then
+                    0AB3: var 28 = 1 // Lock console
+                    0574: freeze_car_position_and_dont_load_collision $111 to 1
+                    0174: 28@ = car $111 Z_angle
+                    0175: set_car $111 Z_angle_to 28@
+                    if 18@ == 1   //Change camera position relatively transition direction
+                    then
+                        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset -7.0 -2.0 1.5
+                    else
+                        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset 7.0 -2.0 1.5
+                    end
+                    Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+                    Camera.OnVehicle($111, 15, 1)
+                    0460: set_camera_pointing_time 0.0 1000
+                    wait 1000
+                    wait 250
+                    wait 250
+                    28@ -= 180.0
+                    {if 8021: NOT 28@ > 0.0
+                    then
+                        28@ *= -1.0
+                    end}
+                    0175: set_car $111 Z_angle_to 28@
+                    0AB4: 28@ = var 18
+                    28@ *= -1
+                    0AB3: var 18 = 28@   //Reverse spinning direction
+                    0574: freeze_car_position_and_dont_load_collision $111 to 0
+                    camera.Restore()
+                    0AB3: var 28 = 0 // unLock console
+                else
+                    if
+                        $93 == 1
+                    then
+                        03E5: show_text_box 'VRTREV' // Vortex ~g~Reversed
+                    end
+                end
+                18@ = 0
+            end
+            if $94 == 1
+            then
+                04F9: set_extra_colours 16 fade 0
+                00C0: set_current_time_hours_to 22 minutes_to 0
+            end
+            0062: 4@ -= 17@
+            0062: 27@ -= 17@ // Total counter
+        end
+            //008E: 4@ = float 4@ to_integer
+        if and
+            4@ > 0
+            3@ < 0
+        then
+            4@ = -59
+            3@ += 1
+        else
+            if and
+                4@ < 0
+                3@ > 0
+            then
+                4@ = 59
+                3@ -= 1
+            else
+                if 4@ > 59
+                then
+                    4@ = 0
+                    3@ += 1
+                end
+                if 4@ < -59
+                then
+                    4@ = 0
+                    3@ -= 1
+                end
+            end
+        end
+        gosub @send_to_clock
+        //0AD1: show_formatted_text_highpriority "[MP] %d:%d" time 2000 3@ 4@
+        gosub @vortex_break
+    end
+else
+    // Autopilot
+    32@ = 0
+    0AB4: 30@ = var 0
+    if 30@ == 9 
+    then
+        // emergency
+        21@ = 9403{10403} //CONSTANT EMERGENCY FLIGHT TIME (in ms)
+        31@ = 0
+        repeat
+            //wait 0
+            //04BA: set_car $111 speed_to 150.0
+                       
+            0AB4: 11@ = var 17
+            if 11@ == 0
+            then
+                0A92: create_custom_thread "spin.s"
+            end
+            if
+                $94 == 1
+            then
+                00C0: set_current_time_hours_to 20 minutes_to 0
+                04F9: set_extra_colours 15 fade 0
+            end
+            if 001d: 32@ > 31@
+            then
+                0085: 31@ = 32@
+                31@ += 1000
+                0209: 11@ = random_int_in_ranges 0 4
+                if 11@ == 0
+                then
+                    0208: 9@ = random_float_in_ranges -299.0 299.0
+                    0208: 10@ = random_float_in_ranges -299.0 299.0
+                    9@ += 9000.0
+                    10@ += 9000.0
+                    0208: 11@ = random_float_in_ranges 1000.0 2000.0
+                    0743: heli $111 fly_to 9@ 10@ 11@ altitude 700.0 11@
+                    07BB: set_heli $111 horizontal_thrust_power 300
+                    04BA: set_car $111 speed_to 100.0
+                else
+                    if 11@ == 1
+                    then
+                        04BA: set_car $111 speed_to 100.0
+                    else
+                        04BA: set_car $111 speed_to 40.0
+                    end    
+                end
+            end
+            wait 1
+            0209: 3@ = random_int_in_ranges 0 24
+            0209: 4@ = random_int_in_ranges 0 60 
+            gosub @send_to_clock
+            //0AD1: show_formatted_text_highpriority "[AP] %d:%d" time 2000 3@ 4@
+        until 002D: 32@ >= 21@
+        // end emergency
+    else 
+        // not emergency
+        21@ = 10000 //CONSTANT AUTOPILOT FLIGHT TIME (in ms)
+        repeat
+            wait 0
+            04BA: set_car $111 speed_to 150.0
+            0AB4: 20@ = var 38
+            if 20@ == 0
+            then
+                03E5: show_text_box 'APDIS'  // Autopilot ~r~Disabled    
+                //TRANSITION
+                if $94 == 1
+                    then
+                        0AB3: var 28 = 1 // Lock console
+                        0574: freeze_car_position_and_dont_load_collision $111 to 1
+                        0174: 28@ = car $111 Z_angle
+                        0175: set_car $111 Z_angle_to 28@
+                        if 18@ == 1   //Change camera position relatively transition direction
+                        then
+                            0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset -7.0 -2.0 1.5
+                        else
+                            0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset 7.0 -2.0 1.5
+                        end
+                        Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+                        Camera.OnVehicle($111, 15, 1)
+                        0460: set_camera_pointing_time 0.0 1000
+                        wait 1000
+                        wait 250
+                        wait 250
+                        28@ -= 180.0
+                        if 8021: NOT 28@ > 0.0
+                        then
+                            28@ *= -1.0
+                        end
+                        0175: set_car $111 Z_angle_to 28@
+                        0AB4: 28@ = var 18
+                        28@ *= -1
+                        0AB3: var 18 = 28@   //Reverse spinning direction
+                        0574: freeze_car_position_and_dont_load_collision $111 to 0
+                        camera.Restore()
+                        0AB3: var 28 = 0 // unLock console
+                    end
+                0085: 27@ = 3@
+                27@ *= 60
+                005A: 27@ += 4@
+                if 18@ == 0
+                then
+                    27@ *= -1   
+                    3@ *= -1
+                    4@ *= -1
+                    18@ = 1 // reverse vortex
+                else
+                    18@ = 0 // reverse vortex
+                end
+                jump @are_you_stupid
+            end
+            0085: 1@ = 32@
+            IF 001d: 1@ > 21@
+            then
+                0085: 1@ = 21@
+            end  
+            006A: 1@ *= 0@
+            0072: 1@ /= 21@
+            0A91: 3@ = 1@ / 60 // int
+            0B14: 4@ = 1@ MOD 60
+            gosub @send_to_clock
+            //0AD1: show_formatted_text_highpriority "[AP] %d:%d" time 2000 3@ 4@
+            gosub @vortex_break
+        until 002D: 32@ >= 21@
+        // end not emergency
+    end
+    
+    if $94 == 1
+    then
+        04BA: set_car $111 speed_to 900.0
+        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset 0.0 -60.0 0.0
+        Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+        Camera.OnVehicle($111, 15, 1)
+        wait 1000
+    end
+    0AB1: call_scm_func @get_toggle 1 get_toggle 5 to 20@
+    0AB1: call_scm_func @get_toggle 1 get_toggle 7 to 21@
+    if or 
+        8039: 20@ == 1
+        8039: 21@ == 1
+    then
+        3@ *= -1
+        4@ *= -1    
+    end
+    0AB4: 10@ = var 36
+    0A91: 5@ = 10@ / 100 // int
+    0B14: 6@ = 10@ MOD 100
+         
+    005A: 5@ += 3@
+    005A: 6@ += 4@
+        
+    0A91: 3@ = 6@ / 60 // int
+        
+    005A: 5@ += 3@
+    0B14: 5@ = 5@ MOD 24
+        
+    0B14: 6@ = 6@ MOD 60
+        
+    while 5@ < 0
+        wait 0
+        5@ += 24
+    end
+        
+    while 6@ < 0
+        wait 0
+        6@ += 60
+    end
+    if or
+    $93 == 0
+    $94 == 1
+    then
+        00C0: set_current_time_hours_to 5@ minutes_to 6@ 
+    else
+        5@ *= 100
+        005A: 5@ += 6@ 
+        0ABA: end_custom_thread_named "timecor"
+        0A92: create_custom_thread "time_correction.cs"
+        0AB3: var 36 = 5@
+    end
+end
+0AB3: var 37 = -1 // Unset destination time
+0ABA: end_custom_thread_named 'vrtclk' 
+0AB2: ret 1 0
+
+:send_to_clock
+0AAA: 19@ = thread 'vrtclk' pointer
+0D2E: set_thread 19@ var 0 to 3@
+0D2E: set_thread 19@ var 1 to 4@ 
+0D2E: set_thread 19@ var 2 to 18@
+return
+
+:vortex_break
+    0AB4: 9@ = var 27
+    if
+        0185:   car $111 health >= 400
+    then 
+        0AB1: call @get_toggle 1 id 2 to 9@
+    else
+        9@ = 0 // bypass handbrake check if in emergency
+    end
+    if or
+        0118:   actor $PLAYER_ACTOR dead 
+        0741:   actor $PLAYER_ACTOR busted 
+        9@ == 1
+        27@ >= 5999
+        27@ <= -5999
+    then
+        if $94 == 1
+        then
+            //04BA: set_car $111 speed_to 900.0
+            0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset 0.0 -60.0 0.0
+            Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+            Camera.OnVehicle($111, 15, 1)
+        end
+        wait 1000
+        0AB4: 10@ = var 36
+        0A91: 5@ = 10@ / 100 // int
+        0B14: 6@ = 10@ MOD 100
+         
+        005A: 5@ += 3@
+        005A: 6@ += 4@
+        
+        0A91: 3@ = 6@ / 60 // int
+        
+        005A: 5@ += 3@
+        0B14: 5@ = 5@ MOD 24
+        
+        0B14: 6@ = 6@ MOD 60
+        
+        while 5@ < 0
+            wait 0
+            5@ += 24
+        end
+        
+        while 6@ < 0
+            wait 0
+            6@ += 60
+        end
+        if or
+        $93 == 0
+        $94 == 1
+        then
+            00C0: set_current_time_hours_to 5@ minutes_to 6@ 
+        else
+            5@ *= 100
+            005A: 5@ += 6@ 
+            0ABA: end_custom_thread_named "timecor"
+            0A92: create_custom_thread "time_correction.cs"
+            0AB3: var 36 = 5@
+        end
+        
+        0AB3: var 37 = -1 // Unset destination time
+        0ABA: end_custom_thread_named 'vrtclk'
+        if 27@ > 5999
+        then
+            0AB2: ret 1 2    
+        else 
+            0AB2: ret 1 1
+        end
+    end
+return
+
+:camera
+if and
+    $94 == 1
+    $ACTIVE_INTERIOR == 0 
+then
+    0209: 9@ = random_int_in_ranges 0 2
+    if 9@ == 0
+    then 
+        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset -3.5 -6.5 0.0
+    else
+        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset 3.5 -6.5 0.0
+    end
+    Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+    Camera.OnVehicle($111, 15, 1)
+else
+    if and
+        8038: NOT $ACTIVE_INTERIOR == 0
+        $94 == 1
+    then
+        Camera.Restore()
+    end
+end
+0AB2: ret 0
+
+:change_energy
+0AB4: 1@ = var 10
+005A: 1@ += 0@
+0AB3: var 10 = 1@
+0AB2: ret 0
+
+:doorc
+wait 0
+//09B3: get_car $111 door_status 8@
+020A: set_car $111 door_status_to 2
+//07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+095F: get_car $111 door 2 angle_to 20@
+095F: get_car $111 door 3 angle_to 21@
+22@ = 0.0
+if or
+    8045:  NOT 20@ == 22@
+    8045:  NOT 21@ == 22@
+then
+    0A92: create_custom_thread "psi\doorc.cs"
+    wait 500
+    repeat
+        wait 0
+        0AB4: 22@ = var 41
+    until 22@ == 0
+end
+return
+
+:crash
+wait 0
+wait 100
+0AAC: 13@ = load_audiostream "DWS\crash1.WAV" 
+0AB4: 5@ = var 11
+0AB4: 30@ = var 0
+0AB3: var 11 = 1 // enable lock on space to prevent energy wasting
+0AB3: var 28 = 1 // lock console
+0AB3: var 0 = 11 // fail interior effects
+wait 100
+0AAD: set_audiostream 13@ perform_action 1
+if
+8185:  NOT car $111 health >= 400
+then
+    0AB4: 1@ = var 11
+    if 
+        1@ == 1
+    then
+        0AB1: @camera 0
+    end    
+else
+    0AB1: @camera 0
+end
+0A92: create_custom_thread "fade.s" 4
+wait 7740
+0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0 
+0AB3: var 0 = 30@
+0AB3: var 28 = 0 // unlock console
+0AB3: var 11 = 5@
+if $94 == 1
+then
+    Camera.Restore()
+end
+wait 1000
+0AB2: ret 0
+
+:cancel_sequence
+    if or
+        $94 == 1
+        $94 == 1
+    then
+        0AAC: 7@ = load_audiostream "dws/mat_short.wav"
+    else
+        0AC1: 7@ = load_audiostream_with_3d_support "dws/mat_short.mp3"
+        0AC2: set_3d_audiostream 7@ position 0.0 0.0 1024.0
+    end
+    0AC1: 8@ = load_audiostream_with_3d_support "dws/int_circ.mp3"
+    0AC2: set_3d_audiostream 8@ position 0.0 0.0 1026.0
+    0ABC: set_audiostream 8@ volume 3.0
+    0AC0: loop_audiostream 8@ flag 1
+    0AAD: set_audiostream 7@ perform_action 1
+    0AAD: set_audiostream 8@ perform_action 1
+    0AB1: call_scm_func @camera 0
+    run "fade.s" 7
+    0AB3: var 28 = 1
+    0AB3: var 0 = 1
+    wait 2500
+    0AB3: var 0 = 0
+    0AB3: var 28 = 0
+    if $94 == 1
+    then
+        Camera.Restore()
+    end
+    0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+    if $94 == 1
+    then
+        0AB3: var 11 = 0
+    end
+    0AAE: release_audiostream 8@
+    0AAC: 8@ = load_audiostream "dws/reached.mp3"
+    0AAD: set_audiostream 8@ perform_action 1 
+    wait 1500
+    run "audio_fade.s" 8@ 0 1000 1
+    0AAE: release_audiostream 7@
+return
+
+:put_at_s
+00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@
+ 
+0087: 9@ = 3@ // cur X
+0087: 5@ = 0@ // in X
+0063: 9@ -= 5@
+9@ /= 1000.0 // Transition time. 9@ is now 'a' in y=ax+b for X
+
+0087: 7@ = 4@ // cur Y
+0087: 5@ = 1@ // in Y
+0063: 7@ -= 5@
+7@ /= 1000.0 // Transition time. 7@ is now 'a' in y=ax+b for Y
+32@ = 0
+repeat
+    wait 0
+    0093: 12@ = integer 32@ to_float
+    12@ -= 1000.0
+    12@ *= -1.0 
+    0087: 5@ = 9@ // store 'a' X
+    0087: 6@ = 7@ // store 'a' Y
+    
+    006B: 5@ *= 12@
+    005B: 5@ += 0@
+    
+    006B: 6@ *= 12@
+    005B: 6@ += 1@
+    //show_text "%f %f %f | %f %f %f %f" 100 0@ 1@ 2@ 5@ 6@ 2@ 12@
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 5@ 6@ 2@
+until 32@ >= 200
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0@ 1@ 2@ 
+0AB2: ret 0
+
+:turn_to_console
+//04D7: set_actor $PLAYER_ACTOR locked 1 
+06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at 0.0 0.0 1024.0 
+while true
+    wait 0
+    0172: 23@ = actor $PLAYER_ACTOR Z_angle 
+    if 0045: 23@ == 24@
+    then
+        break
+    end
+    0087: 24@ = 23@
+end                                   
+04D7: set_actor $PLAYER_ACTOR locked 0
+0AB2: ret 0
+
+{$INCLUDE move_set_get}

@@ -1,0 +1,125 @@
+{$CLEO .cs}
+0000: NOP
+//-------------MAIN---------------
+thread 'K9'
+
+const
+    EARS = 1000  //Ears rotation speed. 1000 - default. Less value - bigger speed
+end
+
+:a
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @a
+wait 0
+Model.Load(#UTILTR1)
+Model.Load(#ARMY)
+Model.Load(18635)
+038B: load_requested_models
+if
+0AB0:   key_pressed 57//9
+jf @a
+if
+056E:  car 11@ defined
+else_jump @c
+jump @b
+
+:c
+wait 0
+Audiostream.Load3D(4@, "DWS/k9.mp3")
+00A0: store_actor $PLAYER_ACTOR position_to 6@ 7@ 8@
+04C4: store_coords_to 22@ 23@ 24@ from_actor $PLAYER_ACTOR with_offset 5.0 5.0 1.0
+0208: 9@ = random_float_in_ranges 6@ 22@
+0208: 10@ = random_float_in_ranges 7@ 23@
+064B: 0@ = create_particle "carwashspray" at 9@ 10@ 8@ type 1
+064C: make_particle 0@ visible
+wait 1000
+19@ = Object.Create(18635, 0, 0, -100.0)
+20@ = Object.Create(18635, 0, 0, -100.0)
+11@ = Car.Create(#UTILTR1, 9@, 10@, 8@)
+Car.SetImmunities(11@, 1, 1, 1, 1, 1)
+0129: 17@ = create_actor_pedtype 38 model #ARMY in_car 11@ driverseat 
+0489: set_actor 17@ muted 1
+//0337: set_actor 17@ visibility 0
+0619: enable_actor 17@ collision_detection 0
+Car.DoorStatus(11@) = 2
+Actor.Health(17@) = 1E38
+Car.SetDriverBehaviour(11@, KillThePlayer)
+0423: set_car 11@ improved_handling_to 2.0 // (float) 
+054A: set_actor 17@ can_be_shot_in_a_car 0 
+053F: set_car 11@ tires_vulnerability 0 
+09C4: set_car 11@ gas_tank_explosion_enabled 0
+0852: set_car 11@ damages_visible 0 
+0526: set_actor 17@ stay_in_car_when_jacked 1
+0982: set_actor 17@ stay_in_car_when_dead 1
+0681: attach_object 19@ to_car 11@ with_offset -0.049 0.52 0.54 rotation 90.0 0.0 180.0
+0681: attach_object 20@ to_car 11@ with_offset 0.049 0.52 0.54 rotation 90.0 0.0 180.0
+Object.SetImmunities(19@, 1, 1, 1, 1, 1)
+Object.SetImmunities(20@, 1, 1, 1, 1, 1)
+0AC5: link_3d_audiostream 4@ to_vehicle 11@
+Audiostream.PerformAction(4@, PLAY)
+wait 1000
+064E: stop_particle 0@
+12@ = -1 
+jump @d
+
+:d
+wait 100
+32@ = 0
+repeat
+    wait 0
+    0093: 2@ = integer 32@ to_float 
+    2@ *= 0.09
+    0681: attach_object 19@ to_car 11@ with_offset -0.049 0.52 0.54 rotation 90.0 2@ 180.0
+    2@ *= -1.0
+    0681: attach_object 20@ to_car 11@ with_offset 0.049 0.52 0.54 rotation 90.0 2@ 180.0    
+until 32@ >= EARS
+15@ = Actor.Angle($PLAYER_ACTOR)
+12@ += 1 
+Car.Angle(11@) = 15@ 
+wait 100
+32@ = 0
+repeat
+    wait 0
+    0093: 2@ = integer 32@ to_float 
+    2@ *= 0.09
+    2@ -= 90.0
+    0681: attach_object 20@ to_car 11@ with_offset 0.049 0.52 0.54 rotation 90.0 2@ 180.0
+    2@ *= -1.0
+    0681: attach_object 19@ to_car 11@ with_offset -0.049 0.52 0.54 rotation 90.0 2@ 180.0
+until 32@ >= EARS
+if
+12@ == 14  
+jf @e
+jump @b
+
+:e 
+Actor.StorePos($PLAYER_ACTOR, 1@, 2@, 3@)
+08E5: get_actor_in_sphere 1@ 2@ 3@ radius 15.0 handle_as 5@
+if
+056D:   actor 5@ defined
+jf @d
+wait 0
+04C4: store_coords_to 31@ 32@ 33@ from_actor 5@ with_offset 0.0 0.0 0.0
+0407: store_coords_to 28@ 29@ 30@ from_car 11@ with_offset 0.0 0.0 0.0
+06BC: create_M4_shoot_from 28@ 29@ 30@ target 31@ 32@ 33@ energy 200
+//020C: create_explosion_with_radius 12 at 31@ 32@ 33@
+wait 0
+jump @d 
+
+:b
+wait 0
+00AA: store_car 11@ position_to 1@ 2@ 3@
+064B: 0@ = create_particle "carwashspray" at 1@ 2@ 3@ type 1
+064C: make_particle 0@ visible
+wait 1000
+009B: destroy_actor 17@
+00A6: destroy_car 11@
+0108: destroy_object 19@
+0108: destroy_object 20@
+wait 1000
+064E: stop_particle 0@
+wait 30000
+03E5: show_text_box 'K9'
+jump @a

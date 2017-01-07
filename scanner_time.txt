@@ -1,0 +1,35 @@
+{$CLEO}
+thread "scantim"
+
+0ADF: add_dynamic_GXT_entry "c_left" text "What's~n~going on here?" 
+0ADF: add_dynamic_GXT_entry "c_right" text "J" 
+repeat
+    wait 0      
+    03F0: enable_text_draw 1  
+    0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 0.219 Y 0.9247 Z 1024.3725 store_screen_X_to 3@ Y_to 4@
+    0342: set_text_draw_centered 1
+    081C: draw_text_outline 1 RGBA 0 0 0 255
+    033F: set_text_draw_letter_size 0.3 1.1
+    //045A: draw_text_1number 3@ 4@ GXT 'NUMBER' number 0
+                  
+    033E: set_draw_text_position 3@ 4@ GXT 'c_left'  // Push
+    0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X -0.419 Y 0.9247 Z 1024.3725 store_screen_X_to 3@ Y_to 4@
+    0342: set_text_draw_centered 1
+    081C: draw_text_outline 1 RGBA 0 0 0 255
+    033F: set_text_draw_letter_size 0.3 1.1
+    //045A: draw_text_1number 3@ 4@ GXT 'NUMBER' number 0
+                  
+    033E: set_draw_text_position 3@ 4@ GXT 'c_left'  // Push
+until 0ab0: 56
+
+0A93: end_custom_thread
+
+:getScreenXYFrom3DCoords
+0AA7: call_function 0x70CE30 num_params 6 pop 6 clipNear 1 clipFar 1 yMult 7@s xMult 6@s outVector 2@s inVector 0@s result 29@
+0073: 2@ /= 6@
+0073: 2@ /= 4@
+0073: 3@ /= 7@
+0073: 3@ /= 4@
+2@ *= 527.0592
+3@ *= 368.94144
+0AB2: ret 2 2@ 3@

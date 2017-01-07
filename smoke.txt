@@ -1,0 +1,35 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+:1
+wait 0
+095F: get_car $111 door 2 angle_to 18@
+095F: get_car $111 door 3 angle_to 17@
+21@ = 0.0
+if or
+    8045:  NOT 18@ == 21@
+    8045:  NOT 17@ == 21@
+then
+    066B: 4@ = attach_particle "prt_smokeII_3_expand" to_car $111  offset 0.0 -1.0 0.5 1 
+    064C: make_particle 4@ visible
+    while true
+        wait 0
+        095F: get_car $111 door 2 angle_to 18@
+        095F: get_car $111 door 3 angle_to 17@
+        21@ = 0.0
+        if and
+            0045:  18@ == 21@
+            0045:  17@ == 21@
+        then
+            break
+        end
+    end
+    0650: destroy_particle 4@
+    064F: remove_references_to_particle 4@             
+end
+0AB4: 0@ = var 15
+if 0@ == 1
+then
+    0A93: end_custom_thread
+end
+jump @1

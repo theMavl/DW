@@ -1,0 +1,39 @@
+{$cleo .s}
+0000:
+{
+    Exterior calibration
+}
+thread "extcalb"
+
+repeat
+    wait 0
+until 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0@ 1@ 2@ radius 150.0 150.0 150.0
+
+if $ACTIVE_INTERIOR == 0
+then
+    00AA: store_car $111 position_to 3@ 4@ 5@ 
+
+    02CE: 20@ = ground_z_at 3@ 4@ 5@
+    if 20@ == 0.0
+    then
+        20@ = -100.0
+    end
+    Car.PutAt($111,0@, 1@, 20@)
+    wait 100
+    Car.PutAt($111,0@, 1@, 20@)
+    //show_text "%f" 2000 20@
+    00AA: store_car $111 position_to 3@ 4@ 5@ 
+    092E: get_water_height_at 3@ 4@ flag 0 store_to 20@ 
+    if 0025: 20@ > 5@
+    then
+        20@ += 5.0
+        Car.PutAt($111,3@ ,4@, 20@)
+        wait 100
+        Car.PutAt($111,3@ ,4@, 20@)
+    end
+
+    
+else
+    Car.PutAt($111,0@,1@,2@)
+end
+end_custom_thread

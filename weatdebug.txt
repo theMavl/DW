@@ -1,0 +1,44 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+wait 5000
+
+:debug_2
+wait 0
+if 0ADC: test_cheat "wego"
+jf @debug_2
+jump @start
+
+:start
+wait 0
+0AD1: show_formatted_text_highpriority "starting..." time 2000
+00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@
+00AB: put_car $111 at 3@ 4@ 5@
+072A: put_actor $PLAYER_ACTOR into_car $111 driverseat
+00AB: put_car $111 at 9000.0 9000.0 1000.0
+0574: set_car $111 keep_position 1  
+wait 5000
+for 1@ = 1 to 50
+    01B6: set_weather 1@ 
+    01B5: force_weather 1@
+    for 2@ = 0 to 23
+        00C0: set_current_time_hours_to 2@ minutes_to 0
+        0AD1: show_formatted_text_highpriority "weather: %d, hour: %d" time 2000 1@ 2@
+        wait 1000
+        0A1E: dump_screen 1
+        wait 500
+        if 0AB0:  key_pressed 57
+        then
+            30@ = 1         
+            break
+        end
+    end
+    wait 100
+    if 30@ == 1
+    then
+        30@ = 0
+        break
+    end
+end
+jump @debug_2

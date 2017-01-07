@@ -1,0 +1,29 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+:main
+wait 0
+    0AB4: 1@ = var 10
+    0AB4: 13@ = var 13
+    0227: 3@ = car $111 health
+    0A91: 3@ = 3@ / 20
+    if 13@ == 1
+    then
+        06D2: 4@v = "On"
+    else
+        06D2: 4@v = "Off"
+    end
+    /*if 0019: 3@ > 600
+    then
+    06D2: 5@v = "~g~"
+    else
+        if 0019: 3@ > 400
+        then
+            06D2: 5@v = "~y~"
+        else
+            06D2: 5@v = "~r~"
+        end     
+    end*/
+    0ACE: show_formatted_text_box "~y~System Readouts~n~~w~Endurance: %d~n~~w~Energy: %d~n~H.A.D.S. %s" 3@ 1@ 4@v
+0A93: end_custom_thread

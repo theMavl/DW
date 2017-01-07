@@ -1,0 +1,25 @@
+SPEED ~1~.
+SPEED1 0~1~.
+DAY ~1~
+YEAR ~1~
+HOUR ~1~
+MINUTE ~1~
+AM :    AM
+AM1 AM
+PM :    PM
+PM1 PM
+MONTH01 Jan
+MONTH02 Feb
+MONTH03 Mar
+MONTH04 Apr
+MONTH05 May
+MONTH06 Jun
+MONTH07 Jul
+MONTH08 Aug
+MONTH09 Sep
+MONTH10 Oct
+MONTH11 Nov
+MONTH12 Dec
+ERR Err
+MODE1 Instant Time Travel Mode
+MODE2 Cutscene Time Travel Mode

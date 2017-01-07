@@ -1,0 +1,53 @@
+{$CLEO .cm}
+0000:
+:HEAD
+thread 'MIS'
+gosub @MISSION_START
+if
+wasted_or_busted
+jf @MISSION_CLEANUP
+gosub @MISSION_FAILED
+
+:MISSION_START
+gosub @MISSION_PASSED
+return
+
+:MISSION
+increment_mission_attempts
+fade 0 1000
+wait 1000
+$ONMISSION = 1
+Model.Load(#BALLAS2)
+Model.Load(#AK47)
+
+:MODELS_CHECK
+if and
+Model.Available(#BALLAS2)
+Model.Available(#AK47)
+jf @MODELS_CHECK
+Actor.Create(0@, 7, #BALLAS2, 0.0, 0.0, 0.0)
+01B2: give_actor 0@ weapon 31 ammo 2000
+05E2: AS_actor 0@ kill_actor $PLAYER_ACTOR
+Marker.CreateAboveActor(1@, 0@)
+
+:BALLAS_KILLED
+wait 0
+if
+Actor.Dead(0@)
+jf @BALLAS_KILLED
+0164: disable_marker 1@
+jump @MISSION_PASSED 
+return
+
+:MISSION_PASSED
+01E3: text_1number_styled 'M_PASSD' 0 5000 ms 1
+return
+
+:MISSION_FAILED
+00BA: text_styled 'M_FAIL' 5000 ms 1
+return
+
+:MISSION_CLEANUP
+$ONMISSION = 0
+mission_cleanup
+return

@@ -1,0 +1,333 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+var
+    12@ : Int
+    1@ : Int
+    2@ : Int
+    3@ : Int
+    4@ : Int
+    5@ : Int
+    6@ : Int
+    10@ : Int
+    
+end
+
+
+if 0AAB:  file_exists "cleo\dw_custom_settings.ini"
+then
+    0AF0: 30@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "INTERIOR" key "DETAILS"
+    if 30@ == 0
+    then
+        end_custom_thread
+    end
+end
+
+:1
+wait 0
+if 0@ == 0
+jf @SL
+
+wait 1000
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+if 
+    0AAB:  file_exists "CLEO\lig_flash.cs"
+then
+    0A92: create_custom_thread "lig_flash.cs" 1
+    0A92: create_custom_thread "lig_flash.cs" 2
+else
+    0ACE: show_formatted_text_box "~r~[ERROR]~w~ File lig_flash.cs not found! Do not rename files." 
+end
+wait 0
+Model.load(18748)
+Model.Load(18749)
+Model.Load(18750)
+Model.Load(18751)
+Model.Load(18752)
+//Model.Load(18753)
+Model.Load(18754)
+Model.load(#lig_off_s)
+Model.Load(#lig_On_S)
+038B: load_requested_models
+wait 5000
+12@ = Object.Create(18748, 0.0, 0.0, 0.0)
+1@ = Object.Create(18749, 0.0, 0.0, 0.0)
+2@ = Object.Create(18750, 0.0, 0.0, 0.0)
+3@ = Object.Create(18751, 0.0, 0.0, 0.0)
+4@ = Object.Create(18752, 0.0, 0.0, 0.0)
+
+//7@ = Object.Create(18753, 0.0, 0.0, 0.0)
+//8@ = Object.Create(18754, 0.0, 0.0, 0.0)
+
+9@ = Object.Create(#lig_On_S, 0.0, 0.0, 0.0)
+11@ = Object.Create(#lig_On_S, 0.0, 0.0, 0.0)
+13@ = Object.Create(#lig_Off_S, 0.0, 0.0, 0.0)
+14@ = Object.Create(#lig_Off_S, 0.0, 0.0, 0.0)
+
+0566: link_object 12@ to_interior 3
+0566: link_object 1@ to_interior 3 
+0566: link_object 2@ to_interior 3 
+0566: link_object 3@ to_interior 3 
+0566: link_object 4@ to_interior 3 
+0566: link_object 9@ to_interior 3 
+0566: link_object 11@ to_interior 3 
+0566: link_object 13@ to_interior 3
+0566: link_object 14@ to_interior 3
+
+Object.PutAt(12@, 0.0, 0.0, 1024.0)
+Object.PutAt(1@, 0.0, 0.0, 1024.0)
+Object.PutAt(2@, 0.0, 0.0, 1024.0)
+Object.PutAt(3@, 0.0, 0.0, 1024.0)
+Object.PutAt(4@, 0.0, 0.0, 1024.0)
+
+//Object.PutAt(7@, 0.0, 0.0, 1024.0)
+//Object.PutAt(8@, 0.0, 0.0, 1024.0)
+
+Object.PutAt(9@, 0.0, 0.0, 1024.0)
+Object.PutAt(11@, 0.0, 0.0, 1024.0)
+Object.PutAt(13@, 0.0, 0.0, 1024.0)
+Object.PutAt(14@, 0.0, 0.0, 1024.0)
+
+0177: set_object 11@ Z_angle_to 160.0
+0177: set_object 14@ Z_angle_to 160.0
+
+0382: set_object 12@ collision_detection 0
+0382: set_object 1@ collision_detection 0 
+0382: set_object 2@ collision_detection 0 
+0382: set_object 3@ collision_detection 0 
+0382: set_object 4@ collision_detection 0 
+
+//0382: set_object 7@ collision_detection 0 
+//0382: set_object 8@ collision_detection 0 
+0382: set_object 9@ collision_detection 0 
+0382: set_object 11@ collision_detection 0 
+0382: set_object 13@ collision_detection 0 
+0382: set_object 14@ collision_detection 0 
+
+{0750: set_object 12@ visibility 0
+0750: set_object 1@ visibility 0
+0750: set_object 2@ visibility 0
+0750: set_object 3@ visibility 0
+0750: set_object 4@ visibility 0 }
+0D11: set_object 12@ alpha 50
+0D11: set_object 1@ alpha 50 
+0D11: set_object 2@ alpha 50 
+0D11: set_object 3@ alpha 50 
+0D11: set_object 4@ alpha 50   
+
+while true
+    wait 0
+    0209: 10@ = random_int_in_ranges 0 5
+    if Object.Exists(5@)
+    then
+        0D11: set_object 5@ alpha 50 
+        //0750: set_object 5@ visibility 0    
+    end
+    if 10@ == 0
+    then
+        0D11: set_object 12@ alpha 255 
+        //0750: set_object 12@ visibility 1
+        5@ = 12@    
+    end
+    if 10@ == 1
+    then
+        0D11: set_object 1@ alpha 255
+        //0750: set_object 1@ visibility 1
+        5@ = 1@    
+    end
+    if 10@ == 2
+    then
+        0D11: set_object 2@ alpha 255
+        //0750: set_object 2@ visibility 1
+        5@ = 2@    
+    end
+    if 10@ == 3
+    then
+        0D11: set_object 3@ alpha 255
+        //0750: set_object 3@ visibility 1
+        5@ = 3@    
+    end
+    if 10@ == 4
+    then
+        0D11: set_object 4@ alpha 255
+        //0750: set_object 4@ visibility 1
+        5@ = 4@   
+    end
+    
+    0209: 10@ = random_int_in_ranges 0 5
+    if Object.Exists(6@)
+    then
+        0D11: set_object 6@ alpha 50
+        //0750: set_object 6@ visibility 0    
+    end
+    if 10@ == 0
+    then
+        0D11: set_object 12@ alpha 255
+        //0750: set_object 12@ visibility 1
+        6@ = 12@    
+    end
+    if 10@ == 1
+    then
+        0D11: set_object 1@ alpha 255
+        //0750: set_object 1@ visibility 1
+        6@ = 1@    
+    end
+    if 10@ == 2
+    then
+        0D11: set_object 2@ alpha 255
+        //0750: set_object 2@ visibility 1
+        6@ = 2@    
+    end
+    if 10@ == 3
+    then
+        0D11: set_object 3@ alpha 255
+        //0750: set_object 3@ visibility 1
+        6@ = 3@    
+    end
+    if 10@ == 4
+    then
+        0D11: set_object 4@ alpha 255
+        //0750: set_object 4@ visibility 1
+        6@ = 4@   
+    end
+wait 500
+end
+
+:SL
+wait 0
+if 0@ == 1
+jf @SN
+Model.load(18765)
+Model.Load(18746)
+Model.Load(18747)
+038B: load_requested_models 
+wait 5000
+1@ = Object.Create(18765, 0.0, 0.0, 0.0)
+2@ = Object.Create(18765, 0.0, 0.0, 0.0)
+3@ = object.Create(18746, 0.0, 0.0, 0.0)
+4@ = object.Create(18747, 0.0, 0.0, 0.0)
+
+Object.PutAt(1@, 0.0, 0.0, 1024.0)
+Object.PutAt(2@, 0.0, 0.0, 1024.0)
+Object.PutAt(3@, 0.0, 0.0, 1024.0)
+Object.PutAt(4@, 0.0, 0.0, 1024.0)
+
+0382: set_object 1@ collision_detection 0 
+0382: set_object 2@ collision_detection 0
+0382: set_object 3@ collision_detection 0 
+0382: set_object 4@ collision_detection 0
+
+0177: set_object 2@ Z_angle_to 160.0
+0D11: set_object 4@ alpha 50 
+5@ = 3
+
+while true
+    wait 0
+    0D11: set_object 1@ alpha 255
+    0D11: set_object 2@ alpha 50
+    wait 10000
+    6@ += 1
+    0D11: set_object 1@ alpha 50
+    0D11: set_object 2@ alpha 255
+    wait 10000
+    6@ += 1
+    if 6@ >= 6
+    then
+        6@ = 0
+        if
+            5@ == 4
+        then
+            0D11: set_object 3@ alpha 255
+            0D11: set_object 4@ alpha 255
+            5@ = 43
+        else
+            if 5@ == 43
+            then
+                0D11: set_object 3@ alpha 255
+                0D11: set_object 4@ alpha 50
+                5@ = 3
+            else
+                0D11: set_object 3@ alpha 50
+                0D11: set_object 4@ alpha 255
+                5@ = 4
+            end
+        end
+    end 
+end
+
+ 
+:SN
+wait 0
+if 0@ == 2
+jf @1
+Model.load(18766)
+Model.load(18767)
+Model.load(18768)
+038B: load_requested_models 
+wait 5000
+1@ = Object.Create(18766, 0.0, 0.0, 0.0)
+2@ = Object.Create(18767, 0.0, 0.0, 0.0)
+3@ = Object.Create(18768, 0.0, 0.0, 0.0)
+6@ = Object.Create(18766, 0.0, 0.0, 0.0)
+7@ = Object.Create(18767, 0.0, 0.0, 0.0)
+8@ = Object.Create(18768, 0.0, 0.0, 0.0)
+
+Object.PutAt(1@, 0.0, 0.0, 1024.0)
+Object.PutAt(2@, 0.0, 0.0, 1024.0)
+Object.PutAt(3@, 0.0, 0.0, 1024.0)
+Object.PutAt(6@, 0.0, 0.0, 1024.0)
+Object.PutAt(7@, 0.0, 0.0, 1024.0)
+Object.PutAt(8@, 0.0, 0.0, 1024.0)
+
+0382: set_object 1@ collision_detection 0 
+0382: set_object 2@ collision_detection 0
+0382: set_object 3@ collision_detection 0
+0382: set_object 6@ collision_detection 0 
+0382: set_object 7@ collision_detection 0
+0382: set_object 8@ collision_detection 0
+
+0177: set_object 6@ Z_angle_to 160.0
+0177: set_object 7@ Z_angle_to 160.0
+0177: set_object 8@ Z_angle_to 160.0
+
+0D11: set_object 1@ alpha 50
+0D11: set_object 2@ alpha 50
+0D11: set_object 3@ alpha 50
+
+5@ = -1
+while true
+    wait 0
+    0209: 4@ = random_int_in_ranges 0 3
+    if 003B: 4@ == 5@
+    then
+        continue
+    end
+    0085: 5@ = 4@
+    if 4@ == 0
+    then
+        0D11: set_object 1@ alpha 255
+        wait 5000
+        0D11: set_object 1@ alpha 50
+        continue    
+    end
+    if 4@ == 1
+    then
+        0D11: set_object 2@ alpha 255
+        wait 5000
+        0D11: set_object 2@ alpha 50
+        continue    
+    end
+    if 4@ == 2
+    then
+        0D11: set_object 3@ alpha 255
+        wait 5000
+        0D11: set_object 3@ alpha 50
+        continue    
+    end
+end
+ 
+

@@ -1,0 +1,90 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+thread "intdet"
+
+if 0AAB:  file_exists "cleo\dw_custom_settings.ini"
+then
+    0AF0: 0@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "INTERIOR" key "DETAILS"
+else
+    0ACE: show_formatted_text_box "~r~[ERROR] ~w~INI file not found! See README for more information."
+    end_custom_thread
+end
+
+{repeat
+wait 0
+until 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 15.0 15.0 15.0
+wait 5000
+show_text "%d" 2000 0@ }
+if 0@ == 0
+then
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_shelves_p1 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_shelves_p2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_shelves_p3 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books1 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books1_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books2_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books3 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books3_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books4 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books4_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_stuff to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_sub1 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_sub2 to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_sub1 to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_sub2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_p1 to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_p2 to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_p2_2 to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_p2_3 to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_p2_4 to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_holes to #NULL  
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_holes to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_holes to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_holes to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_holes to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_holes to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_holes to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_holes to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_holes to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_handles to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_p1 to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_p1 to #NULL 
+end
+if 0@ == 1
+then
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_shelves_p1 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_shelves_p2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_shelves_p3 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books1 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books1_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books2_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books3 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books3_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books4 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books4_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_stuff to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_sub1 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_sub2 to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_sub1 to #NULL 
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #pan_sub2 to #NULL
+end
+if 0@ == 2
+then
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_shelves_p1 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_shelves_p2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_shelves_p3 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books1 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books1_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books2_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books3 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books3_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books4 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_books4_2 to #NULL
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_stuff to #NULL
+end
+
+end_custom_thread

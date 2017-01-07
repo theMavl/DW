@@ -1,0 +1,36 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+
+:debug_2
+wait 0
+095F: get_car $111 componentA 2 rotation_to 6@
+095F: get_car $111 componentA 3 rotation_to 16@
+0097: make 6@ absolute_float
+0097: make 16@ absolute_float 
+if 6@ > 1.256337
+then
+6@ = 1.256337
+08A6: set_car $111 componentA 2 rotation_to 1.256337
+end 
+if 16@ > 1.256337
+then
+16@ = 1.256337
+08A6: set_car $111 componentA 3 rotation_to 1.256337
+end
+0087: 5@ = 6@
+5@ /= 80.0
+0087: 15@ = 16@
+15@ /= 80.0
+7@ = 1
+repeat
+    0063: 6@ -= 5@
+    0063: 16@ -= 15@
+    08A6: set_car $111 componentA 2 rotation_to 6@
+    08A6: set_car $111 componentA 3 rotation_to 16@
+    7@ += 1
+    wait 10
+until 7@ == 80
+0508: car $111 close_all_doors  
+0A93: end_custom_thread

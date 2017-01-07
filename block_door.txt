@@ -1,0 +1,33 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+Model.Load(18666)
+038B: load_requested_models
+repeat
+    wait 0
+until Model.Available(18666)
+Object.Create(2@, 18666, 0.0, 0.0, 0.0)
+Model.Destroy(18666)
+//while true
+wait 0
+//095F: get_car $111 door 2 angle_to 10@
+//095F: get_car $111 door 3 angle_to 20@
+0681: attach_object 2@ to_car $111 with_offset 0.0 -1.0 0.0 rotation 0.0 0.0 0.0
+{if or
+    10@ == 0.0
+    20@ == 0.0
+then
+    if 00DB:   actor $PLAYER_ACTOR in_car $111
+    then
+        0382: set_object 2@ collision_detection 0 
+        0750: set_object 2@ visibility 0
+    else
+        0382: set_object 2@ collision_detection 1 
+        0750: set_object 2@ visibility 1
+    end
+else
+    0382: set_object 2@ collision_detection 0 
+    0750: set_object 2@ visibility 0
+end} 
+//end
+0A93: end_custom_thread

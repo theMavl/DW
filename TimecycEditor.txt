@@ -1,0 +1,4610 @@
+// This file was decompiled using SASCM.ini published by Seemann (http://sannybuilder.com/files/SASCM.rar) on 13.10.2007
+{$CLEO .cs}
+
+//-------------MAIN---------------
+jump @Noname_8711 
+0662: NOP "In-game Timecyc Editor" 
+0662: NOP "Version: 1.8" 
+0662: NOP "Author: fastman92" 
+0662: NOP "Visit my site: fastman92.tk" 
+jump @Noname_270 
+
+:Noname_108
+0A8D: 0@ = read_memory 4194440 size 1 virtual_protect 1 
+0871: init_jump_table 0@ total_jumps 4 default_jump 0 @Noname_217 jumps 138 @Noname_196 202 @Noname_189 208 @Noname_210 249 @Noname_203 -1 @Noname_217 -1 @Noname_217 -1 @Noname_217 
+
+:Noname_189
+0AB2: ret 1 1 
+
+:Noname_196
+0AB2: ret 1 2 
+
+:Noname_203
+0AB2: ret 1 3 
+
+:Noname_210
+0AB2: ret 1 4 
+
+:Noname_217
+0AB2: ret 1 
+0AB1: call_scm_func @Noname_108 0 1@  
+if 
+003B:   0@ == 1@ // (int) 
+jf @Noname_263 
+0485:   NOP_true 
+jump @Noname_265 
+
+:Noname_263
+059A:   NOP_false 
+
+:Noname_265
+0AB2: ret 0 
+
+:Noname_270
+jump @Noname_711 
+
+:Noname_277
+5@ /= 2.0 
+6@ /= 2.0 
+0871: init_jump_table 0@ total_jumps 5 default_jump 0 @Noname_360 jumps 0 @Noname_360 1 @Noname_420 2 @Noname_491 3 @Noname_562 4 @Noname_633 -1 @Noname_360 -1 @Noname_360 
+
+:Noname_360
+0063: 3@ -= 1@ // (float) 
+0063: 4@ -= 2@ // (float) 
+0097: make 3@ absolute_float 
+0097: make 4@ absolute_float 
+if and
+0035:   5@ >= 3@ // (float) 
+0035:   6@ >= 4@ // (float) 
+jf @Noname_704 
+0485:   NOP_true 
+0AB2: ret 0 
+
+:Noname_420
+0087: 7@ = 1@ // (float) 
+0063: 7@ -= 5@ // (float) 
+0063: 4@ -= 2@ // (float) 
+0097: make 4@ absolute_float 
+if and
+0035:   3@ >= 7@ // (float) 
+0025:   1@ > 3@ // (float) 
+0035:   6@ >= 4@ // (float) 
+jf @Noname_704 
+0485:   NOP_true 
+0AB2: ret 0 
+
+:Noname_491
+0087: 7@ = 1@ // (float) 
+005B: 7@ += 5@ // (float) 
+0063: 4@ -= 2@ // (float) 
+0097: make 4@ absolute_float 
+if and
+0035:   3@ >= 1@ // (float) 
+0025:   7@ > 3@ // (float) 
+0035:   6@ >= 4@ // (float) 
+jf @Noname_704 
+0485:   NOP_true 
+0AB2: ret 0 
+
+:Noname_562
+0063: 3@ -= 1@ // (float) 
+0097: make 3@ absolute_float 
+0087: 8@ = 2@ // (float) 
+0063: 8@ -= 6@ // (float) 
+if and
+0035:   4@ >= 8@ // (float) 
+0025:   2@ > 4@ // (float) 
+0035:   5@ >= 3@ // (float) 
+jf @Noname_704 
+0485:   NOP_true 
+0AB2: ret 0 
+
+:Noname_633
+0063: 3@ -= 1@ // (float) 
+0097: make 3@ absolute_float 
+0087: 8@ = 2@ // (float) 
+005B: 8@ += 6@ // (float) 
+if and
+0035:   4@ >= 2@ // (float) 
+0025:   8@ > 4@ // (float) 
+0035:   5@ >= 3@ // (float) 
+jf @Noname_704 
+0485:   NOP_true 
+0AB2: ret 0 
+
+:Noname_704
+059A:   NOP_false 
+0AB2: ret 0 
+
+:Noname_711
+jump @Noname_8711 
+0662: NOP "GTA SA Palette SCM API 1.1 by fastman92" 
+0662: NOP "Visit fastman92-site.tk" 
+
+:Noname_788
+0AB1: call_scm_func @Noname_34448 2 0@ 4 0@  
+0087: 88@(0@,1i) = 1@ // (float) 
+0087: 89@(0@,1i) = 2@ // (float) 
+0AB1: call_scm_func @Noname_3974 4 0@ 0.0 1.0 1.0  
+90@(0@,1i) = -1 
+10@(0@,1i) = 1 
+0AB2: ret 1 0@ 
+
+:Noname_888
+0AB1: call_scm_func @Noname_34607 2 0.4 1.2 5@ 6@  
+0087: 81@(0@,1i) = 5@ // (float) 
+0087: 82@(0@,1i) = 6@ // (float) 
+0AB1: call_scm_func @Noname_34607 2 12.666 15.333 5@ 6@  
+0087: 74@(0@,1i) = 5@ // (float) 
+0087: 75@(0@,1i) = 6@ // (float) 
+0AB1: call_scm_func @Noname_34607 2 25.0 25.0 5@ 6@  
+0AB1: call_scm_func @Noname_34607 2 2.0 2.0 7@ 8@  
+0087: 6@(0@,1i) = 5@ // (float) 
+0087: 7@(0@,1i) = 6@ // (float) 
+005B: 5@ += 7@ // (float) 
+005B: 6@ += 8@ // (float) 
+0087: 7@ = 5@ // (float) 
+0087: 8@ = 6@ // (float) 
+5@ /= 2.0 
+6@ /= 2.0 
+0087: 4@(0@,1i) = 88@(0@,1i) // (float) 
+0087: 5@(0@,1i) = 89@(0@,1i) // (float) 
+005B: 4@(0@,1i) += 5@ // (float) 
+005B: 5@(0@,1i) += 6@ // (float) 
+0087: 11@(0@,1i) = 7@ // (float) 
+0087: 12@(0@,1i) = 8@ // (float) 
+0AB1: call_scm_func @Noname_34607 2 4.0 4.0 5@ 6@  
+0087: 8@(0@,1i) = 5@ // (float) 
+0087: 9@(0@,1i) = 6@ // (float) 
+0AB1: call_scm_func @Noname_34607 2 90.0 90.0 5@ 6@  
+0087: 2@(0@,1i) = 5@ // (float) 
+0087: 3@(0@,1i) = 6@ // (float) 
+5@ /= 2.0 
+6@ /= 2.0 
+0087: 54@(0@,1i) = 5@ // (float) 
+0087: 55@(0@,1i) = 6@ // (float) 
+54@(0@,1i) *= 1.2 
+55@(0@,1i) *= 1.2 
+0087: 0@(0@,1i) = 6@(0@,1i) // (float) 
+0@(0@,1i) /= 2.0 
+005B: 0@(0@,1i) += 4@(0@,1i) // (float) 
+005B: 0@(0@,1i) += 5@ // (float) 
+0@(0@,1i) += 10.0 
+0087: 1@(0@,1i) = 7@(0@,1i) // (float) 
+1@(0@,1i) /= -2.0 
+005B: 1@(0@,1i) += 6@ // (float) 
+005B: 1@(0@,1i) += 5@(0@,1i) // (float) 
+0AB1: call_scm_func @Noname_34607 2 10.0 5.0 5@ 6@  
+0087: 17@(0@,1i) = 2@(0@,1i) // (float) 
+17@(0@,1i) /= 2.0 
+005B: 17@(0@,1i) += 0@(0@,1i) // (float) 
+005B: 17@(0@,1i) += 5@ // (float) 
+0087: 18@(0@,1i) = 3@(0@,1i) // (float) 
+18@(0@,1i) /= -2.0 
+005B: 18@(0@,1i) += 1@(0@,1i) // (float) 
+0087: 23@(0@,1i) = 17@(0@,1i) // (float) 
+0087: 24@(0@,1i) = 18@(0@,1i) // (float) 
+005B: 24@(0@,1i) += 75@(0@,1i) // (float) 
+005B: 24@(0@,1i) += 6@ // (float) 
+0087: 29@(0@,1i) = 17@(0@,1i) // (float) 
+0087: 30@(0@,1i) = 24@(0@,1i) // (float) 
+005B: 30@(0@,1i) += 75@(0@,1i) // (float) 
+005B: 30@(0@,1i) += 6@ // (float) 
+0087: 35@(0@,1i) = 17@(0@,1i) // (float) 
+0087: 36@(0@,1i) = 30@(0@,1i) // (float) 
+005B: 36@(0@,1i) += 75@(0@,1i) // (float) 
+005B: 36@(0@,1i) += 6@ // (float) 
+0087: 41@(0@,1i) = 17@(0@,1i) // (float) 
+0087: 42@(0@,1i) = 36@(0@,1i) // (float) 
+005B: 42@(0@,1i) += 75@(0@,1i) // (float) 
+005B: 42@(0@,1i) += 6@ // (float) 
+0AB1: call_scm_func @Noname_34607 2 60.0 0.0 5@ 6@  
+0AB1: call_scm_func @Noname_34607 2 35.0 0.0 6@ 7@  
+0087: 21@(0@,1i) = 6@ // (float) 
+0087: 22@(0@,1i) = 75@(0@,1i) // (float) 
+0087: 7@ = 75@(0@,1i) // (float) 
+7@ /= 2.0 
+0087: 25@(0@,1i) = 23@(0@,1i) // (float) 
+005B: 25@(0@,1i) += 5@ // (float) 
+0087: 26@(0@,1i) = 24@(0@,1i) // (float) 
+005B: 26@(0@,1i) += 7@ // (float) 
+0087: 31@(0@,1i) = 29@(0@,1i) // (float) 
+005B: 31@(0@,1i) += 5@ // (float) 
+0087: 32@(0@,1i) = 30@(0@,1i) // (float) 
+005B: 32@(0@,1i) += 7@ // (float) 
+0087: 37@(0@,1i) = 35@(0@,1i) // (float) 
+005B: 37@(0@,1i) += 5@ // (float) 
+0087: 38@(0@,1i) = 36@(0@,1i) // (float) 
+005B: 38@(0@,1i) += 7@ // (float) 
+0087: 43@(0@,1i) = 41@(0@,1i) // (float) 
+005B: 43@(0@,1i) += 5@ // (float) 
+0087: 44@(0@,1i) = 42@(0@,1i) // (float) 
+005B: 44@(0@,1i) += 7@ // (float) 
+0087: 27@(0@,1i) = 21@(0@,1i) // (float) 
+27@(0@,1i) /= 2.0 
+005B: 27@(0@,1i) += 25@(0@,1i) // (float) 
+0087: 7@ = 74@(0@,1i) // (float) 
+7@ /= 2.0 
+005B: 27@(0@,1i) += 7@ // (float) 
+0087: 28@(0@,1i) = 26@(0@,1i) // (float) 
+0087: 33@(0@,1i) = 21@(0@,1i) // (float) 
+33@(0@,1i) /= 2.0 
+005B: 33@(0@,1i) += 31@(0@,1i) // (float) 
+005B: 33@(0@,1i) += 7@ // (float) 
+0087: 34@(0@,1i) = 32@(0@,1i) // (float) 
+0087: 39@(0@,1i) = 21@(0@,1i) // (float) 
+39@(0@,1i) /= 2.0 
+005B: 39@(0@,1i) += 37@(0@,1i) // (float) 
+005B: 39@(0@,1i) += 7@ // (float) 
+0087: 40@(0@,1i) = 38@(0@,1i) // (float) 
+0087: 45@(0@,1i) = 21@(0@,1i) // (float) 
+45@(0@,1i) /= 2.0 
+005B: 45@(0@,1i) += 43@(0@,1i) // (float) 
+005B: 45@(0@,1i) += 7@ // (float) 
+0087: 46@(0@,1i) = 44@(0@,1i) // (float) 
+0AB1: call_scm_func @Noname_34607 2 10.0 5.0 5@ 6@  
+0087: 19@(0@,1i) = 74@(0@,1i) // (float) 
+19@(0@,1i) /= 2.0 
+005B: 19@(0@,1i) += 27@(0@,1i) // (float) 
+005B: 19@(0@,1i) += 5@ // (float) 
+0087: 20@(0@,1i) = 18@(0@,1i) // (float) 
+0087: 47@(0@,1i) = 19@(0@,1i) // (float) 
+0087: 48@(0@,1i) = 20@(0@,1i) // (float) 
+005B: 48@(0@,1i) += 75@(0@,1i) // (float) 
+005B: 48@(0@,1i) += 6@ // (float) 
+0087: 56@(0@,1i) = 47@(0@,1i) // (float) 
+0087: 57@(0@,1i) = 48@(0@,1i) // (float) 
+005B: 57@(0@,1i) += 75@(0@,1i) // (float) 
+005B: 57@(0@,1i) += 6@ // (float) 
+0087: 62@(0@,1i) = 56@(0@,1i) // (float) 
+0087: 63@(0@,1i) = 57@(0@,1i) // (float) 
+005B: 63@(0@,1i) += 75@(0@,1i) // (float) 
+005B: 63@(0@,1i) += 6@ // (float) 
+0AB1: call_scm_func @Noname_34607 2 60.0 0.0 5@ 6@  
+0AB1: call_scm_func @Noname_34607 2 35.0 0.0 6@ 7@  
+0087: 7@ = 75@(0@,1i) // (float) 
+7@ /= 2.0 
+0087: 49@(0@,1i) = 47@(0@,1i) // (float) 
+005B: 49@(0@,1i) += 5@ // (float) 
+0087: 50@(0@,1i) = 48@(0@,1i) // (float) 
+005B: 50@(0@,1i) += 7@ // (float) 
+0087: 58@(0@,1i) = 56@(0@,1i) // (float) 
+005B: 58@(0@,1i) += 5@ // (float) 
+0087: 59@(0@,1i) = 57@(0@,1i) // (float) 
+005B: 59@(0@,1i) += 7@ // (float) 
+0087: 64@(0@,1i) = 62@(0@,1i) // (float) 
+005B: 64@(0@,1i) += 5@ // (float) 
+0087: 65@(0@,1i) = 63@(0@,1i) // (float) 
+005B: 65@(0@,1i) += 7@ // (float) 
+0AB1: call_scm_func @Noname_34607 2 20.0 20.0 5@ 6@  
+0085: 86@(0@,1i) = 5@ // (int) 
+0085: 87@(0@,1i) = 6@ // (int) 
+0085: 84@(0@,1i) = 62@(0@,1i) // (int) 
+0085: 85@(0@,1i) = 63@(0@,1i) // (int) 
+5@ /= 2.0 
+6@ /= 2.0 
+005B: 84@(0@,1i) += 5@ // (float) 
+005B: 85@(0@,1i) += 6@ // (float) 
+005B: 85@(0@,1i) += 75@(0@,1i) // (float) 
+0087: 51@(0@,1i) = 21@(0@,1i) // (float) 
+51@(0@,1i) /= 2.0 
+005B: 51@(0@,1i) += 49@(0@,1i) // (float) 
+0087: 7@ = 74@(0@,1i) // (float) 
+7@ /= 2.0 
+005B: 51@(0@,1i) += 7@ // (float) 
+0087: 52@(0@,1i) = 50@(0@,1i) // (float) 
+0087: 60@(0@,1i) = 21@(0@,1i) // (float) 
+60@(0@,1i) /= 2.0 
+005B: 60@(0@,1i) += 58@(0@,1i) // (float) 
+005B: 60@(0@,1i) += 7@ // (float) 
+0087: 61@(0@,1i) = 59@(0@,1i) // (float) 
+0087: 66@(0@,1i) = 21@(0@,1i) // (float) 
+66@(0@,1i) /= 2.0 
+005B: 66@(0@,1i) += 64@(0@,1i) // (float) 
+005B: 66@(0@,1i) += 7@ // (float) 
+0087: 67@(0@,1i) = 65@(0@,1i) // (float) 
+0AB2: ret 0 
+
+:Noname_3425
+if 
+  1@ > 0 
+jf @Noname_3467 
+038F: load_texture "hsvPalette" as 1@ // Load dictionary with 0390 first 
+jump @Noname_3472 
+
+:Noname_3467
+0095: make 1@ absolute_integer 
+
+:Noname_3472
+0085: 77@(0@,1i) = 1@ // (int) 
+if 
+  2@ > 0 
+jf @Noname_3529 
+038F: load_texture "PaletteNeedle" as 2@ // Load dictionary with 0390 first 
+jump @Noname_3534 
+
+:Noname_3529
+0095: make 2@ absolute_integer 
+
+:Noname_3534
+0085: 78@(0@,1i) = 2@ // (int) 
+if 
+  3@ > 0 
+jf @Noname_3585 
+038F: load_texture "spinner" as 3@ // Load dictionary with 0390 first 
+jump @Noname_3590 
+
+:Noname_3585
+0095: make 3@ absolute_integer 
+
+:Noname_3590
+0085: 76@(0@,1i) = 3@ // (int) 
+if 
+  4@ > 0 
+jf @Noname_3641 
+038F: load_texture "VoteYes" as 4@ // Load dictionary with 0390 first 
+jump @Noname_3646 
+
+:Noname_3641
+0095: make 4@ absolute_integer 
+
+:Noname_3646
+0085: 79@(0@,1i) = 4@ // (int) 
+if 
+  5@ > 0 
+jf @Noname_3696 
+038F: load_texture "VoteNo" as 5@ // Load dictionary with 0390 first 
+jump @Noname_3701 
+
+:Noname_3696
+0095: make 5@ absolute_integer 
+
+:Noname_3701
+0085: 80@(0@,1i) = 5@ // (int) 
+0AB2: ret 0 
+0085: 10@(0@,1i) = 1@ // (int) 
+0AB2: ret 0 
+
+:Noname_3735
+if and
+  1@ >= 0 
+   not 1@ > 255 
+803B:   not  1@ == 13@(0@,1i) // (int) 
+jf @Noname_3792 
+0085: 13@(0@,1i) = 1@ // (int) 
+5@ = 1 
+
+:Noname_3792
+if and
+  2@ >= 0 
+   not 2@ > 255 
+803B:   not  2@ == 14@(0@,1i) // (int) 
+jf @Noname_3849 
+0085: 14@(0@,1i) = 2@ // (int) 
+5@ = 1 
+
+:Noname_3849
+if and
+  3@ >= 0 
+   not 3@ > 255 
+803B:   not  3@ == 15@(0@,1i) // (int) 
+jf @Noname_3906 
+0085: 15@(0@,1i) = 3@ // (int) 
+5@ = 1 
+
+:Noname_3906
+if and
+  4@ >= -1 
+   not 4@ > 255 
+jf @Noname_3944 
+0085: 16@(0@,1i) = 4@ // (int) 
+
+:Noname_3944
+if 
+  5@ == 1 
+jf @Noname_3969 
+gosub @Noname_8490 
+
+:Noname_3969
+0AB2: ret 0 
+
+:Noname_3974
+if 
+  1@ >= 0.0 
+   not 1@ > 1.0 
+jf @Noname_4017 
+0087: 68@(0@,1i) = 1@ // (float) 
+
+:Noname_4017
+if 
+  2@ >= 0.0 
+   not 2@ > 1.0 
+jf @Noname_4060 
+0087: 69@(0@,1i) = 2@ // (float) 
+
+:Noname_4060
+if and
+  3@ >= 0.0 
+   not 3@ > 1.0 
+jf @Noname_4103 
+0087: 70@(0@,1i) = 3@ // (float) 
+
+:Noname_4103
+0AB1: call_scm_func @Noname_36118 3 68@(0@,1i) 69@(0@,1i) 70@(0@,1i) 1@ 2@ 3@  
+0085: 13@(0@,1i) = 1@ // (int) 
+0085: 14@(0@,1i) = 2@ // (int) 
+0085: 15@(0@,1i) = 3@ // (int) 
+0AB2: ret 0 
+0AB2: ret 3 13@(0@,1i) 14@(0@,1i) 15@(0@,1i) 
+
+:Noname_4210
+0AB2: ret 4 13@(0@,1i) 14@(0@,1i) 15@(0@,1i) 16@(0@,1i) 
+0AB2: ret 3 13@(0@,1i) 14@(0@,1i) 15@(0@,1i) 
+
+:Noname_4269
+0AB1: call_scm_func @Noname_34537 0 5@ 6@  
+if or
+803B:   not  90@(0@,1i) == 5@ // (int) 
+803B:   not  91@(0@,1i) == 6@ // (int) 
+jf @Noname_4357 
+0AB1: call_scm_func @Noname_888 1 0@  
+0085: 90@(0@,1i) = 5@ // (int) 
+0085: 91@(0@,1i) = 6@ // (int) 
+
+:Noname_4357
+if 
+0AB1: call_scm_func @Noname_31507 0  
+jf @Noname_4875 
+0087: 5@ = 2@(0@,1i) // (float) 
+0073: 5@ /= 3@(0@,1i) // (float) 
+0087: 6@ = 2@ // (float) 
+006B: 6@ *= 5@ // (float) 
+006B: 5@ *= 1@(0@,1i) // (float) 
+0509: 7@ = distance_between_XY 1@ 6@ and_XY 0@(0@,1i) 5@ 
+if 
+0035:   54@(0@,1i) >= 7@ // (float) 
+jf @Noname_4722 
+0087: 10@ = 1@ // (float) 
+0063: 10@ -= 0@(0@,1i) // (float) 
+0063: 6@ -= 5@ // (float) 
+0604: get_Z_angle_for_point 10@ 6@ store_to 8@ 
+8@ += 90.0 
+0656: get_angle 8@ absolute_degrees_to 8@ 
+8@ /= 360.0 
+0073: 7@ /= 2@(0@,1i) // (float) 
+7@ *= 2.0 
+if 
+  7@ > 1.0 
+jf @Noname_4594 
+7@ = 1.0 
+
+:Noname_4594
+0087: 68@(0@,1i) = 8@ // (float) 
+0087: 69@(0@,1i) = 7@ // (float) 
+if 
+   not 10@(0@,1i) == 0 
+jf @Noname_4654 
+70@(0@,1i) = 1.0 
+
+:Noname_4654
+0AB1: call_scm_func @Noname_36118 3 8@ 7@ 70@(0@,1i) 5@ 6@ 7@  
+0085: 13@(0@,1i) = 5@ // (int) 
+0085: 14@(0@,1i) = 6@ // (int) 
+0085: 15@(0@,1i) = 7@ // (int) 
+
+:Noname_4722
+if 
+001D:   4@ > 3@ // (int) 
+0AA0: gosub_if_false @Noname_6934 
+if 
+  3@ > 400 
+jf @Noname_4875 
+if 
+0AB1: call_scm_func @Noname_277 7 0 84@(0@,1i) 85@(0@,1i) 1@ 2@ 86@(0@,1i) 87@(0@,1i)  
+jf @Noname_4875 
+3@ = 0 
+if 
+  10@(0@,1i) == 0 
+jf @Noname_4864 
+10@(0@,1i) = 1 
+jump @Noname_4875 
+
+:Noname_4864
+10@(0@,1i) = 0 
+
+:Noname_4875
+gosub @Noname_8618 
+033E: set_draw_text_position 17@(0@,1i) 18@(0@,1i) GXT 'PC_RGB' 
+gosub @Noname_8618 
+033E: set_draw_text_position 23@(0@,1i) 24@(0@,1i) GXT 'PC_RED' 
+gosub @Noname_8618 
+033E: set_draw_text_position 29@(0@,1i) 30@(0@,1i) GXT 'PC_GREN' 
+gosub @Noname_8618 
+033E: set_draw_text_position 35@(0@,1i) 36@(0@,1i) GXT 'PC_BLUE' 
+gosub @Noname_8618 
+033E: set_draw_text_position 19@(0@,1i) 20@(0@,1i) GXT 'PC_HSV' 
+gosub @Noname_8618 
+033E: set_draw_text_position 47@(0@,1i) 48@(0@,1i) GXT 'PC_HUE' 
+gosub @Noname_8618 
+033E: set_draw_text_position 56@(0@,1i) 57@(0@,1i) GXT 'PC_SAT' 
+gosub @Noname_8618 
+033E: set_draw_text_position 62@(0@,1i) 63@(0@,1i) GXT 'PC_VAL' 
+038E: draw_box_position 25@(0@,1i) 26@(0@,1i) size 21@(0@,1i) 22@(0@,1i) RGBA 240 240 240 255 
+038E: draw_box_position 31@(0@,1i) 32@(0@,1i) size 21@(0@,1i) 22@(0@,1i) RGBA 240 240 240 255 
+038E: draw_box_position 37@(0@,1i) 38@(0@,1i) size 21@(0@,1i) 22@(0@,1i) RGBA 240 240 240 255 
+038E: draw_box_position 49@(0@,1i) 50@(0@,1i) size 21@(0@,1i) 22@(0@,1i) RGBA 240 240 240 255 
+038E: draw_box_position 58@(0@,1i) 59@(0@,1i) size 21@(0@,1i) 22@(0@,1i) RGBA 240 240 240 255 
+038E: draw_box_position 64@(0@,1i) 65@(0@,1i) size 21@(0@,1i) 22@(0@,1i) RGBA 240 240 240 255 
+038D: draw_texture 76@(0@,1i) position 27@(0@,1i) 28@(0@,1i) size 74@(0@,1i) 75@(0@,1i) RGBA 255 255 255 255 
+038D: draw_texture 76@(0@,1i) position 33@(0@,1i) 34@(0@,1i) size 74@(0@,1i) 75@(0@,1i) RGBA 255 255 255 255 
+038D: draw_texture 76@(0@,1i) position 39@(0@,1i) 40@(0@,1i) size 74@(0@,1i) 75@(0@,1i) RGBA 255 255 255 255 
+038D: draw_texture 76@(0@,1i) position 51@(0@,1i) 52@(0@,1i) size 74@(0@,1i) 75@(0@,1i) RGBA 255 255 255 255 
+038D: draw_texture 76@(0@,1i) position 60@(0@,1i) 61@(0@,1i) size 74@(0@,1i) 75@(0@,1i) RGBA 255 255 255 255 
+038D: draw_texture 76@(0@,1i) position 66@(0@,1i) 67@(0@,1i) size 74@(0@,1i) 75@(0@,1i) RGBA 255 255 255 255 
+if 
+   not 16@(0@,1i) == -1 
+jf @Noname_5912 
+038E: draw_box_position 43@(0@,1i) 44@(0@,1i) size 21@(0@,1i) 22@(0@,1i) RGBA 255 255 255 255 
+038D: draw_texture 76@(0@,1i) position 45@(0@,1i) 46@(0@,1i) size 74@(0@,1i) 75@(0@,1i) RGBA 255 255 255 255 
+gosub @Noname_8618 
+033E: set_draw_text_position 41@(0@,1i) 42@(0@,1i) GXT 'PC_ALFA' 
+gosub @Noname_8618 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_8664 4 43@(0@,1i) 44@(0@,1i) 21@(0@,1i) 22@(0@,1i) 5@ 6@  
+045A: draw_text_1number 5@ 6@ GXT 'PC_NUM' number 16@(0@,1i) 
+53@(0@,1i) = 0 
+
+:Noname_5912
+gosub @Noname_8618 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_8664 4 25@(0@,1i) 26@(0@,1i) 21@(0@,1i) 22@(0@,1i) 5@ 6@  
+045A: draw_text_1number 5@ 6@ GXT 'PC_NUM' number 13@(0@,1i) 
+gosub @Noname_8618 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_8664 4 31@(0@,1i) 32@(0@,1i) 21@(0@,1i) 22@(0@,1i) 5@ 6@  
+045A: draw_text_1number 5@ 6@ GXT 'PC_NUM' number 14@(0@,1i) 
+gosub @Noname_8618 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_8664 4 37@(0@,1i) 38@(0@,1i) 21@(0@,1i) 22@(0@,1i) 5@ 6@  
+045A: draw_text_1number 5@ 6@ GXT 'PC_NUM' number 15@(0@,1i) 
+0087: 5@ = 68@(0@,1i) // (float) 
+0087: 6@ = 69@(0@,1i) // (float) 
+0087: 7@ = 70@(0@,1i) // (float) 
+5@ *= 360.0 
+0087: 10@ = 5@ // (float) 
+6@ *= 100.0 
+7@ *= 100.0 
+0092: 5@ = float 5@ to_integer 
+0092: 6@ = float 6@ to_integer 
+0092: 7@ = float 7@ to_integer 
+gosub @Noname_8618 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_8664 4 49@(0@,1i) 50@(0@,1i) 21@(0@,1i) 22@(0@,1i) 8@ 9@  
+045A: draw_text_1number 8@ 9@ GXT 'PC_NUM' number 5@ 
+gosub @Noname_8618 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_8664 4 58@(0@,1i) 59@(0@,1i) 21@(0@,1i) 22@(0@,1i) 8@ 9@  
+045A: draw_text_1number 8@ 9@ GXT 'PC_PNUM' number 6@ 
+gosub @Noname_8618 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_8664 4 64@(0@,1i) 65@(0@,1i) 21@(0@,1i) 22@(0@,1i) 8@ 9@  
+045A: draw_text_1number 8@ 9@ GXT 'PC_PNUM' number 7@ 
+0AB1: call_scm_func @Noname_36118 3 0.0 0.0 70@(0@,1i) 5@ 5@ 5@  
+038D: draw_texture 77@(0@,1i) position 0@(0@,1i) 1@(0@,1i) size 2@(0@,1i) 3@(0@,1i) RGBA 5@ 5@ 5@ 255 
+02F7: 5@ = cosine 10@ // (float) 
+006B: 5@ *= 2@(0@,1i) // (float) 
+5@ /= 2.0 
+006B: 5@ *= 69@(0@,1i) // (float) 
+005B: 5@ += 0@(0@,1i) // (float) 
+02F6: 6@ = sine 10@ // (float) 
+006B: 6@ *= 3@(0@,1i) // (float) 
+6@ /= 2.0 
+006B: 6@ *= 69@(0@,1i) // (float) 
+005B: 6@ += 1@(0@,1i) // (float) 
+038D: draw_texture 78@(0@,1i) position 5@ 6@ size 8@(0@,1i) 9@(0@,1i) RGBA 255 255 255 255 
+038E: draw_box_position 4@(0@,1i) 5@(0@,1i) size 11@(0@,1i) 12@(0@,1i) RGBA 0 0 0 255 
+038E: draw_box_position 4@(0@,1i) 5@(0@,1i) size 6@(0@,1i) 7@(0@,1i) RGBA 13@(0@,1i) 14@(0@,1i) 15@(0@,1i) 255 
+if 
+   not 10@(0@,1i) == 0 
+jf @Noname_6877 
+038D: draw_texture 79@(0@,1i) position 84@(0@,1i) 85@(0@,1i) size 86@(0@,1i) 87@(0@,1i) RGBA 255 255 255 255 
+jump @Noname_6926 
+
+:Noname_6877
+038D: draw_texture 80@(0@,1i) position 84@(0@,1i) 85@(0@,1i) size 86@(0@,1i) 87@(0@,1i) RGBA 255 255 255 255 
+
+:Noname_6926
+0AB2: ret 1 3@ 
+
+:Noname_6934
+if 
+   not 16@(0@,1i) == -1 
+jf @Noname_7147 
+if 
+   not 16@(0@,1i) >= 255 
+jf @Noname_7052 
+0AB1: call_scm_func @Noname_277 7 3 45@(0@,1i) 46@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_7052 
+16@(0@,1i) += 1 
+3@ = 0 
+return 
+
+:Noname_7052
+if 
+  16@(0@,1i) > 0 
+jf @Noname_7147 
+0AB1: call_scm_func @Noname_277 7 4 45@(0@,1i) 46@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_7147 
+16@(0@,1i) -= 1 
+3@ = 0 
+return 
+
+:Noname_7147
+if 
+   not 13@(0@,1i) >= 255 
+jf @Noname_7241 
+0AB1: call_scm_func @Noname_277 7 3 27@(0@,1i) 28@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_7241 
+13@(0@,1i) += 1 
+jump @Noname_8483 
+
+:Noname_7241
+if 
+  13@(0@,1i) > 0 
+jf @Noname_7334 
+0AB1: call_scm_func @Noname_277 7 4 27@(0@,1i) 28@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_7334 
+13@(0@,1i) -= 1 
+jump @Noname_8483 
+
+:Noname_7334
+if 
+   not 14@(0@,1i) >= 255 
+jf @Noname_7428 
+0AB1: call_scm_func @Noname_277 7 3 33@(0@,1i) 34@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_7428 
+14@(0@,1i) += 1 
+jump @Noname_8483 
+
+:Noname_7428
+if 
+  14@(0@,1i) > 0 
+jf @Noname_7521 
+0AB1: call_scm_func @Noname_277 7 4 33@(0@,1i) 34@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_7521 
+14@(0@,1i) -= 1 
+jump @Noname_8483 
+
+:Noname_7521
+if 
+   not 15@(0@,1i) >= 255 
+jf @Noname_7615 
+0AB1: call_scm_func @Noname_277 7 3 39@(0@,1i) 40@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_7615 
+15@(0@,1i) += 1 
+jump @Noname_8483 
+
+:Noname_7615
+if 
+  15@(0@,1i) > 0 
+jf @Noname_7708 
+0AB1: call_scm_func @Noname_277 7 4 39@(0@,1i) 40@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_7708 
+15@(0@,1i) -= 1 
+jump @Noname_8483 
+
+:Noname_7708
+if 
+0AB1: call_scm_func @Noname_277 7 3 51@(0@,1i) 52@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_7825 
+68@(0@,1i) += 0.002777778 
+if 
+  68@(0@,1i) > 1.0 
+jf @Noname_7818 
+68@(0@,1i) = 1.0 
+
+:Noname_7818
+jump @Noname_8398 
+
+:Noname_7825
+if 
+0AB1: call_scm_func @Noname_277 7 4 51@(0@,1i) 52@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_7942 
+68@(0@,1i) -= 0.002777778 
+if 
+   not 68@(0@,1i) >= 0.0 
+jf @Noname_7935 
+68@(0@,1i) = 0.0 
+
+:Noname_7935
+jump @Noname_8398 
+
+:Noname_7942
+if 
+0AB1: call_scm_func @Noname_277 7 3 60@(0@,1i) 61@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_8059 
+69@(0@,1i) += 0.01 
+if 
+  69@(0@,1i) > 1.0 
+jf @Noname_8052 
+69@(0@,1i) = 1.0 
+
+:Noname_8052
+jump @Noname_8398 
+
+:Noname_8059
+if 
+0AB1: call_scm_func @Noname_277 7 4 60@(0@,1i) 61@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_8176 
+69@(0@,1i) -= 0.01 
+if 
+   not 69@(0@,1i) >= 0.0 
+jf @Noname_8169 
+69@(0@,1i) = 0.0 
+
+:Noname_8169
+jump @Noname_8398 
+
+:Noname_8176
+if 
+0AB1: call_scm_func @Noname_277 7 3 66@(0@,1i) 67@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+jf @Noname_8293 
+70@(0@,1i) += 0.01 
+if 
+  70@(0@,1i) > 1.0 
+jf @Noname_8286 
+70@(0@,1i) = 1.0 
+
+:Noname_8286
+jump @Noname_8398 
+
+:Noname_8293
+if 
+0AB1: call_scm_func @Noname_277 7 4 66@(0@,1i) 67@(0@,1i) 1@ 2@ 74@(0@,1i) 75@(0@,1i)  
+0AA1: return_if_false 
+70@(0@,1i) -= 0.01 
+if 
+   not 70@(0@,1i) >= 0.0 
+jf @Noname_8398 
+70@(0@,1i) = 0.0 
+
+:Noname_8398
+3@ = 0 
+0AB1: call_scm_func @Noname_36118 3 68@(0@,1i) 69@(0@,1i) 70@(0@,1i) 5@ 6@ 7@  
+0085: 13@(0@,1i) = 5@ // (int) 
+0085: 14@(0@,1i) = 6@ // (int) 
+0085: 15@(0@,1i) = 7@ // (int) 
+return 
+
+:Noname_8483
+3@ = 0 
+
+:Noname_8490
+0AB1: call_scm_func @Noname_35766 3 13@(0@,1i) 14@(0@,1i) 15@(0@,1i) 5@ 6@ 7@  
+0087: 68@(0@,1i) = 5@ // (float) 
+0087: 69@(0@,1i) = 6@ // (float) 
+0087: 70@(0@,1i) = 7@ // (float) 
+return 
+0085: 71@(0@,1i) = 13@(0@,1i) // (int) 
+0085: 72@(0@,1i) = 14@(0@,1i) // (int) 
+0085: 73@(0@,1i) = 15@(0@,1i) // (int) 
+return 
+
+:Noname_8618
+03E0: unknown_text_draw_flag 1 
+033F: set_text_draw_letter_size 81@(0@,1i) 82@(0@,1i) 
+0343: set_text_draw_linewidth 640.0 
+03E3: set_texture_to_be_drawn_antialiased 0 
+060D: draw_text_shadow 1 color_RGBA 0 0 0 255 
+return 
+
+:Noname_8664
+2@ /= 2.0 
+3@ /= 2.0 
+0063: 0@ -= 2@ // (float) 
+0063: 1@ -= 3@ // (float) 
+0AB2: ret 2 0@ 1@ 
+
+:Noname_8711
+0AB1: call_scm_func @Noname_8728 0  
+jump @Noname_8809 
+
+:Noname_8728
+0AB1: call_scm_func @Noname_34844 0 0@  
+0AB1: call_scm_func @Noname_32201 0 1@  
+0AB1: call_scm_func @Noname_38468 4 0@ -8801 4 1@  
+0AB2: ret 0 
+hex
+ D9 44 24 0C 83 EC 08 DD 1C 24 FF 74 24 10 FF 74
+ 24 10 E8 00 00 00 00 83 C4 10 C3 B1 0A 01 94 FF
+ FF FF
+end
+0004: 0@ =  // Note: the incorrect math opcode was used here
+if 
+   not 0@ == 1 
+jf @Noname_8897 
+if 
+   not 0@ == 4 
+jf @Noname_8897 
+
+:Noname_8858
+8AB0:   not key_pressed 83 
+jf @Noname_8895 
+00BC: show_text_highpriority GXT 'TCWRNV' time 127 flag 1 
+wait 0 
+jump @Noname_8858 
+
+:Noname_8895
+0A93: end_custom_thread 
+
+:Noname_8897
+0AB1: call_scm_func @Noname_34844 0 31@  
+0AB1: call_scm_func @Noname_34448 2 -40092 4 1@  
+0AB1: call_scm_func @Noname_34448 2 -40312 4 2@  
+0A99: chdir 0 
+if 
+0AAB:   file_exists "CLEO\TimecycEditor.ini" 
+jf @Noname_9814 
+if 
+0AA2: 5@ = load_library "Kernel32.dll" // IF and SET 
+jf @Noname_9814 
+if and
+0AA4: 6@ = get_proc_address "GetPrivateProfileIntA" library 5@ // IF and SET 
+0AA4: 7@ = get_proc_address "GetPrivateProfileStringA" library 5@ // IF and SET 
+jf @Noname_9814 
+156@(2@,1i) = 1 
+0A8F: 8@ = 31@ - -9767 // int 
+0A8F: 9@ = 31@ - -9790 // int 
+0A8F: 10@ = 31@ - -9705 // int 
+0AA7: call_function 6@ num_params 4 pop 0 8@ 220 10@ 9@ 10@  
+0085: 154@(2@,1i) = 10@ // (int) 
+0A8F: 10@ = 31@ - -9721 // int 
+0A9F: 12@ = current_thread_pointer 
+0AB1: call_scm_func @Noname_31921 2 12@ 13 12@  
+0AA5: call 7@ num_params 6 pop 0 8@ 8 12@ 0 10@ 9@  
+if 
+0AB1: call_scm_func @Noname_39325 2 13@ 14@  
+jf @Noname_9291 
+146@(2@,1i) = 1 
+gosub @Noname_13076 
+
+:Noname_9291
+0A8F: 10@ = 31@ - -9737 // int 
+0AA5: call 7@ num_params 6 pop 0 8@ 8 12@ 0 10@ 9@  
+0AB1: call_scm_func @Noname_39407 2 13@ 14@ 13@  
+0085: 137@(2@,1i) = 13@ // (int) 
+06D2: 13@v = "" // @v = string 
+0A8F: 10@ = 31@ - -9698 // int 
+0AA5: call 7@ num_params 6 pop 0 8@ 16 12@ 0 10@ 9@  
+17@ = 976859315 
+0A8F: 18@ = 17@ - 13324102 // int 
+17@ *= 2 
+19@ = 50 
+if 
+   not 13@ == 0 
+jf @Noname_9498 
+if 
+88F9:   not  13@v == 17@v 
+jf @Noname_9491 
+0AB1: call_scm_func @Noname_31804 0  
+
+:Noname_9491
+jump @Noname_9537 
+
+:Noname_9498
+8AB0:   not key_pressed 83 
+jf @Noname_9535 
+00BC: show_text_highpriority GXT 'TCINMS' time 127 flag 1 
+wait 0 
+jump @Noname_9498 
+
+:Noname_9535
+0A93: end_custom_thread 
+
+:Noname_9537
+0A8F: 11@ = 31@ - -28424 // int 
+0A8F: 10@ = 31@ - -9797 // int 
+0AA5: call 7@ num_params 6 pop 0 8@ 32 11@ 0 10@ 9@  
+0A8D: 12@ = read_memory 11@ size 4 virtual_protect 0 
+11@ += 4 
+0A8D: 13@ = read_memory 11@ size 4 virtual_protect 0 
+11@ += 4 
+0A8D: 14@ = read_memory 11@ size 4 virtual_protect 0 
+if and
+88FA:   not  12@v == "unspecified" 
+88FA:   not  12@v == "" 
+jf @Noname_9686 
+50@(1@,1i) = 1 
+
+:Noname_9686
+0AA3: free_library 5@ 
+jump @Noname_9855 
+hex
+ 61 75 74 68 6F 72 00 52 6F 74 61 74 65 43 61 6D
+ 65 72 61 4B 65 79 00 41 6C 6C 6F 77 54 6F 53 74
+ 6F 70 54 69 6D 65 00 57 72 69 74 65 49 6C 6C 75
+ 6D 69 6E 61 74 69 6F 6E 49 6E 54 69 6D 65 63 79
+ 63 44 61 74 00 43 4C 45 4F 5C 54 69 6D 65 63 79
+ 63 45 64 69 74 6F 72 2E 69 6E 69 00 4D 41 49 4E
+ 00 31 00 54 69 6D 65 63 79 63 44 61 74 41 75 74
+ 68 6F
+end
+0072: 1.414554E-38 /= $Catalina_Total_Passed_Missions // (int) 
+hex
+ 00 05 DC 00
+end
+146@(2@,1i) = 1 
+gosub @Noname_13076 
+137@(2@,1i) = 1 
+
+:Noname_9855
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 6011584 4 6013600 5@  
+0085: 0@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12043208 4 12053064 5@  
+0085: 1@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12043024 4 12052880 5@  
+0085: 2@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12042840 4 12052696 5@  
+0085: 3@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12042656 4 12052512 5@  
+0085: 4@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12042472 4 12052328 5@  
+0085: 5@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12042288 4 12052144 5@  
+0085: 6@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12042104 4 12051960 5@  
+0085: 7@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12041920 4 12051776 5@  
+0085: 8@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12041736 4 12051592 5@  
+0085: 9@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12041552 4 12051408 5@  
+0085: 10@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12041368 4 12051224 5@  
+0085: 11@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12041184 4 12051040 5@  
+0085: 12@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12041000 4 12050856 5@  
+0085: 13@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12040816 4 12050672 5@  
+0085: 14@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12040632 4 12050488 5@  
+0085: 15@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12040448 4 12050304 5@  
+0085: 16@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12040264 4 12050120 5@  
+0085: 17@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12040080 4 12049936 5@  
+0085: 18@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12039896 4 12049752 5@  
+0085: 19@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12039712 4 12049568 5@  
+0085: 20@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12039528 4 12049384 5@  
+0085: 21@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12039344 4 12049200 5@  
+0085: 22@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12039160 4 12049016 5@  
+0085: 23@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12038976 4 12048832 5@  
+0085: 24@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12038608 4 12048464 5@  
+0085: 25@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12038240 4 12048096 5@  
+0085: 26@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12038056 4 12047912 5@  
+0085: 27@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12037872 4 12047728 5@  
+0085: 28@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12037688 4 12047544 5@  
+0085: 29@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12037504 4 12047360 5@  
+0085: 30@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12037320 4 12047176 5@  
+0085: 31@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12037136 4 12046992 5@  
+0085: 32@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12036952 4 12046808 5@  
+0085: 33@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12036768 4 12046624 5@  
+0085: 34@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12036584 4 12046440 5@  
+0085: 35@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12036400 4 12046256 5@  
+0085: 36@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12036216 4 12046072 5@  
+0085: 37@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12035480 4 12045888 5@  
+0085: 38@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12036032 4 12045888 5@  
+0085: 39@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12035848 4 12045704 5@  
+0085: 40@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12035664 4 12045520 5@  
+0085: 41@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12034744 4 12044600 5@  
+0085: 42@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12035296 4 12045152 5@  
+0085: 43@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12035112 4 12044968 5@  
+0085: 44@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12034928 4 12044784 5@  
+0085: 45@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12034560 4 12044416 5@  
+0085: 46@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12034376 4 12044232 5@  
+0085: 47@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12034192 4 12044048 5@  
+0085: 48@(1@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12034008 4 12043864 5@  
+0085: 49@(1@,1i) = 5@ // (int) 
+35@(2@,1i) = 255 
+0AB1: call_scm_func @Noname_32201 0 5@  
+0085: 3@(2@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5633208 4 5634392 5@  
+0A8D: 5@ = read_memory 5@ size 1 virtual_protect 1 
+0085: 4@(2@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12216132 4 12225988 5@  
+0085: 15@(2@,1i) = 5@ // (int) 
+5@ += 1 
+0085: 16@(2@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_32256 0 5@  
+0085: 8@(2@,1i) = 5@ // (int) 
+5@ += 4 
+0085: 9@(2@,1i) = 5@ // (int) 
+5@ += 4 
+0085: 10@(2@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_33691 0 5@  
+0085: 155@(2@,1i) = 5@ // (int) 
+0AB1: call_scm_func @Noname_788 3 -41012 150.0 350.0 28@  
+
+:Noname_12431
+wait 0 
+if 
+gosub @Noname_12971 
+jf @Noname_12431 
+33@ = 0 
+0390: load_txd_dictionary 'timecyc' 
+038F: load_texture "cursor" as 1 // Load dictionary with 0390 first 
+038F: load_texture "save" as 7 // Load dictionary with 0390 first 
+038F: load_texture "reload" as 8 // Load dictionary with 0390 first 
+038F: load_texture "time_disabled" as 9 // Load dictionary with 0390 first 
+038F: load_texture "time_enabled" as 10 // Load dictionary with 0390 first 
+0AB1: call_scm_func @Noname_3425 6 28@ 2 3 4 5 6  
+1@(2@,1i) = 1 
+5@(2@,1i) = 1 
+31@(2@,1i) = 0 
+gosub @Noname_12993 
+
+:Noname_12605
+wait 0 
+if 
+gosub @Noname_12971 
+jf @Noname_12634 
+jump @Noname_12940 
+
+:Noname_12634
+if 
+0AB0:   key_pressed 154@(2@,1i) 
+jf @Noname_12676 
+7@(2@,1i) = 1 
+003E: unsupported_in_sa 
+hex
+ 00 01 6D CE FF FF
+end
+
+:Noname_12676
+7@(2@,1i) = 0 
+003E: unsupported_in_sa 
+hex
+ 04 01
+end
+gosub @Noname_13035 
+0AB1: call_scm_func @Noname_34537 0 5@ 6@  
+if or
+803B:   not  31@(2@,1i) == 5@ // (int) 
+803B:   not  32@(2@,1i) == 6@ // (int) 
+jf @Noname_12858 
+0085: 31@(2@,1i) = 5@ // (int) 
+0085: 32@(2@,1i) = 6@ // (int) 
+gosub @Noname_13335 
+08D7: 5@ = panel 0@(2@,1i) active_row 
+0085: 2@(2@,1i) = 5@ // (int) 
+08DA: remove_panel 0@(2@,1i) 
+gosub @Noname_23421 
+if 
+   not 2@(2@,1i) == -99 
+jf @Noname_12858 
+090E: set_panel 0@(2@,1i) active_row 2@(2@,1i) 
+
+:Noname_12858
+03F0: enable_text_draw 1 
+gosub @Noname_23930 
+gosub @Noname_17419 
+0AB1: call_scm_func @Noname_39572 6 1 3@ 4@ 11@(2@,1i) 12@(2@,1i) 7@(2@,1i) 3@ 4@  
+0085: 128@(2@,1i) = 33@ // (int) 
+jump @Noname_12605 
+
+:Noname_12940
+003E: unsupported_in_sa 
+hex
+ 04 00
+end
+gosub @Noname_26893 
+08DA: remove_panel 0@(2@,1i) 
+0391: release_txd_dictionary 
+01B7: release_weather 
+jump @Noname_12431 
+
+:Noname_12971
+0AB1: call_scm_func @Noname_34131 2 1162692948 4413763  
+return 
+
+:Noname_12993
+33@ = 0 
+128@(2@,1i) = 0 
+6@(2@,1i) = 0 
+165@(2@,1i) = 0 
+return 
+0A8F: 5@ = 33@ - 128@(2@,1i) // int 
+0062: 6@(2@,1i) -= 5@ // (int) 
+0062: 165@(2@,1i) -= 5@ // (int) 
+return 
+
+:Noname_13076
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5426960 4 4965056 15@  
+0AB1: call_scm_func @Noname_38675 4 31@ 15@ 1 -40051  
+0AB1: call_scm_func @Noname_38597 3 31@ -40053 -40087  
+0AB1: call_scm_func @Noname_38510 4 31@ -40060 4 -40076  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5426967 4 4965063 15@  
+0AB1: call_scm_func @Noname_38468 4 31@ -40072 4 15@  
+0AB1: call_scm_func @Noname_33581 0 15@  
+0AB1: call_scm_func @Noname_38633 4 31@ -40077 4 15@  
+0AB1: call_scm_func @Noname_33636 0 15@  
+0AB1: call_scm_func @Noname_38633 4 31@ -40082 4 15@  
+0AB1: call_scm_func @Noname_38633 4 31@ -40067 4 15@  
+return 
+
+:Noname_13335
+0AB1: call_scm_func @Noname_34607 2 12.666 15.333 5@ 6@  
+0087: 33@(2@,1i) = 5@ // (float) 
+0087: 34@(2@,1i) = 6@ // (float) 
+0AB1: call_scm_func @Noname_34607 2 0.6 1.8 5@ 6@  
+0087: 140@(2@,1i) = 5@ // (float) 
+0087: 141@(2@,1i) = 6@ // (float) 
+0AB1: call_scm_func @Noname_34607 2 0.4 1.2 5@ 6@  
+0087: 138@(2@,1i) = 5@ // (float) 
+0087: 139@(2@,1i) = 6@ // (float) 
+0AB1: call_scm_func @Noname_39535 0 5@ 6@  
+0085: 11@(2@,1i) = 5@ // (int) 
+0085: 12@(2@,1i) = 6@ // (int) 
+0AB1: call_scm_func @Noname_34607 2 32.0 32.0 5@ 6@  
+0AB1: call_scm_func @Noname_34607 2 10.0 0.0 7@ 8@  
+0087: 38@(2@,1i) = 5@ // (float) 
+0087: 39@(2@,1i) = 6@ // (float) 
+5@ /= 2.0 
+6@ /= 2.0 
+36@(2@,1i) = 560.0 
+37@(2@,1i) = 370.0 
+0087: 40@(2@,1i) = 36@(2@,1i) // (float) 
+005B: 36@(2@,1i) += 5@ // (float) 
+005B: 37@(2@,1i) += 6@ // (float) 
+0087: 41@(2@,1i) = 37@(2@,1i) // (float) 
+005B: 41@(2@,1i) += 6@ // (float) 
+0087: 129@(2@,1i) = 38@(2@,1i) // (float) 
+005B: 129@(2@,1i) += 36@(2@,1i) // (float) 
+005B: 129@(2@,1i) += 7@ // (float) 
+0087: 130@(2@,1i) = 37@(2@,1i) // (float) 
+0087: 131@(2@,1i) = 38@(2@,1i) // (float) 
+0087: 132@(2@,1i) = 39@(2@,1i) // (float) 
+13@(2@,1i) = 23.0 
+14@(2@,1i) = 45.0 
+19@(2@,1i) = 300.0 
+0087: 20@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 18@(2@,1i) = 14@(2@,1i) // (float) 
+0087: 17@(2@,1i) = 33@(2@,1i) // (float) 
+17@(2@,1i) /= 2.0 
+005B: 17@(2@,1i) += 13@(2@,1i) // (float) 
+0087: 5@ = 19@(2@,1i) // (float) 
+5@ /= 2.0 
+005B: 17@(2@,1i) += 5@ // (float) 
+0087: 21@(2@,1i) = 17@(2@,1i) // (float) 
+0063: 21@(2@,1i) -= 5@ // (float) 
+21@(2@,1i) += 3.0 
+0087: 22@(2@,1i) = 18@(2@,1i) // (float) 
+0087: 5@ = 20@(2@,1i) // (float) 
+5@ /= 2.0 
+0063: 22@(2@,1i) -= 5@ // (float) 
+0087: 23@(2@,1i) = 13@(2@,1i) // (float) 
+0087: 24@(2@,1i) = 14@(2@,1i) // (float) 
+24@(2@,1i) += 20.0 
+27@(2@,1i) = 300.0 
+0087: 28@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 26@(2@,1i) = 24@(2@,1i) // (float) 
+0087: 25@(2@,1i) = 33@(2@,1i) // (float) 
+25@(2@,1i) /= 2.0 
+005B: 25@(2@,1i) += 23@(2@,1i) // (float) 
+0087: 5@ = 27@(2@,1i) // (float) 
+5@ /= 2.0 
+005B: 25@(2@,1i) += 5@ // (float) 
+0087: 29@(2@,1i) = 25@(2@,1i) // (float) 
+0063: 29@(2@,1i) -= 5@ // (float) 
+29@(2@,1i) += 3.0 
+0087: 30@(2@,1i) = 26@(2@,1i) // (float) 
+0087: 5@ = 28@(2@,1i) // (float) 
+5@ /= 2.0 
+0063: 30@(2@,1i) -= 5@ // (float) 
+133@(2@,1i) = 558.0 
+134@(2@,1i) = 16.0 
+135@(2@,1i) = 595.0 
+0087: 136@(2@,1i) = 134@(2@,1i) // (float) 
+0AB1: call_scm_func @Noname_34686 2 13.3 24.9 5@ 6@  
+0087: 144@(2@,1i) = 5@ // (float) 
+0087: 145@(2@,1i) = 6@ // (float) 
+0087: 142@(2@,1i) = 133@(2@,1i) // (float) 
+005B: 142@(2@,1i) += 135@(2@,1i) // (float) 
+142@(2@,1i) /= 2.0 
+0087: 143@(2@,1i) = 134@(2@,1i) // (float) 
+3@ = 320.0 
+4@ = 224.0 
+0AB1: call_scm_func @Noname_34607 2 40.0 5.0 5@ 6@  
+0AB1: call_scm_func @Noname_34607 2 140.0 0.0 7@ 8@  
+0087: 8@ = 33@(2@,1i) // (float) 
+8@ /= 2.0 
+42@(2@,1i) = 250.0 
+43@(2@,1i) = 335.0 
+0087: 44@(2@,1i) = 42@(2@,1i) // (float) 
+0087: 45@(2@,1i) = 43@(2@,1i) // (float) 
+005B: 45@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 45@(2@,1i) += 6@ // (float) 
+0087: 48@(2@,1i) = 5@ // (float) 
+0087: 49@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 46@(2@,1i) = 44@(2@,1i) // (float) 
+005B: 46@(2@,1i) += 7@ // (float) 
+0087: 47@(2@,1i) = 45@(2@,1i) // (float) 
+005B: 47@(2@,1i) += 8@ // (float) 
+0087: 50@(2@,1i) = 48@(2@,1i) // (float) 
+50@(2@,1i) /= 2.0 
+005B: 50@(2@,1i) += 46@(2@,1i) // (float) 
+005B: 50@(2@,1i) += 8@ // (float) 
+0087: 51@(2@,1i) = 47@(2@,1i) // (float) 
+0087: 52@(2@,1i) = 44@(2@,1i) // (float) 
+0087: 53@(2@,1i) = 45@(2@,1i) // (float) 
+005B: 53@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 53@(2@,1i) += 6@ // (float) 
+0087: 56@(2@,1i) = 5@ // (float) 
+0087: 57@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 54@(2@,1i) = 44@(2@,1i) // (float) 
+005B: 54@(2@,1i) += 7@ // (float) 
+0087: 55@(2@,1i) = 53@(2@,1i) // (float) 
+005B: 55@(2@,1i) += 8@ // (float) 
+0087: 58@(2@,1i) = 56@(2@,1i) // (float) 
+58@(2@,1i) /= 2.0 
+005B: 58@(2@,1i) += 54@(2@,1i) // (float) 
+005B: 58@(2@,1i) += 8@ // (float) 
+0087: 59@(2@,1i) = 55@(2@,1i) // (float) 
+0087: 60@(2@,1i) = 52@(2@,1i) // (float) 
+0087: 61@(2@,1i) = 53@(2@,1i) // (float) 
+005B: 61@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 61@(2@,1i) += 6@ // (float) 
+0087: 64@(2@,1i) = 5@ // (float) 
+0087: 65@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 62@(2@,1i) = 52@(2@,1i) // (float) 
+005B: 62@(2@,1i) += 7@ // (float) 
+0087: 63@(2@,1i) = 61@(2@,1i) // (float) 
+005B: 63@(2@,1i) += 8@ // (float) 
+0087: 66@(2@,1i) = 64@(2@,1i) // (float) 
+66@(2@,1i) /= 2.0 
+005B: 66@(2@,1i) += 62@(2@,1i) // (float) 
+005B: 66@(2@,1i) += 8@ // (float) 
+0087: 67@(2@,1i) = 63@(2@,1i) // (float) 
+0AB1: call_scm_func @Noname_34607 2 40.0 5.0 5@ 6@  
+0AB1: call_scm_func @Noname_34607 2 155.0 0.0 7@ 8@  
+0087: 8@ = 33@(2@,1i) // (float) 
+8@ /= 2.0 
+68@(2@,1i) = 250.0 
+69@(2@,1i) = 335.0 
+0087: 70@(2@,1i) = 68@(2@,1i) // (float) 
+0087: 71@(2@,1i) = 69@(2@,1i) // (float) 
+005B: 71@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 71@(2@,1i) += 6@ // (float) 
+0087: 74@(2@,1i) = 5@ // (float) 
+0087: 75@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 72@(2@,1i) = 70@(2@,1i) // (float) 
+005B: 72@(2@,1i) += 7@ // (float) 
+0087: 73@(2@,1i) = 71@(2@,1i) // (float) 
+005B: 73@(2@,1i) += 8@ // (float) 
+0087: 76@(2@,1i) = 74@(2@,1i) // (float) 
+76@(2@,1i) /= 2.0 
+005B: 76@(2@,1i) += 72@(2@,1i) // (float) 
+005B: 76@(2@,1i) += 8@ // (float) 
+0087: 77@(2@,1i) = 73@(2@,1i) // (float) 
+0087: 78@(2@,1i) = 70@(2@,1i) // (float) 
+0087: 79@(2@,1i) = 71@(2@,1i) // (float) 
+005B: 79@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 79@(2@,1i) += 6@ // (float) 
+0087: 82@(2@,1i) = 5@ // (float) 
+0087: 83@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 80@(2@,1i) = 70@(2@,1i) // (float) 
+005B: 80@(2@,1i) += 7@ // (float) 
+0087: 81@(2@,1i) = 79@(2@,1i) // (float) 
+005B: 81@(2@,1i) += 8@ // (float) 
+0087: 84@(2@,1i) = 82@(2@,1i) // (float) 
+84@(2@,1i) /= 2.0 
+005B: 84@(2@,1i) += 80@(2@,1i) // (float) 
+005B: 84@(2@,1i) += 8@ // (float) 
+0087: 85@(2@,1i) = 81@(2@,1i) // (float) 
+0087: 86@(2@,1i) = 78@(2@,1i) // (float) 
+0087: 87@(2@,1i) = 79@(2@,1i) // (float) 
+005B: 87@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 87@(2@,1i) += 6@ // (float) 
+0087: 90@(2@,1i) = 5@ // (float) 
+0087: 91@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 88@(2@,1i) = 78@(2@,1i) // (float) 
+005B: 88@(2@,1i) += 7@ // (float) 
+0087: 89@(2@,1i) = 87@(2@,1i) // (float) 
+005B: 89@(2@,1i) += 8@ // (float) 
+0087: 92@(2@,1i) = 90@(2@,1i) // (float) 
+92@(2@,1i) /= 2.0 
+005B: 92@(2@,1i) += 88@(2@,1i) // (float) 
+005B: 92@(2@,1i) += 8@ // (float) 
+0087: 93@(2@,1i) = 89@(2@,1i) // (float) 
+0AB1: call_scm_func @Noname_34607 2 65.0 5.0 5@ 6@  
+0AB1: call_scm_func @Noname_34607 2 162.0 0.0 7@ 8@  
+0087: 8@ = 33@(2@,1i) // (float) 
+8@ /= 2.0 
+94@(2@,1i) = 250.0 
+95@(2@,1i) = 335.0 
+0087: 96@(2@,1i) = 94@(2@,1i) // (float) 
+0087: 97@(2@,1i) = 95@(2@,1i) // (float) 
+005B: 97@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 97@(2@,1i) += 6@ // (float) 
+0087: 100@(2@,1i) = 5@ // (float) 
+0087: 101@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 98@(2@,1i) = 96@(2@,1i) // (float) 
+005B: 98@(2@,1i) += 7@ // (float) 
+0087: 99@(2@,1i) = 97@(2@,1i) // (float) 
+005B: 99@(2@,1i) += 8@ // (float) 
+0087: 102@(2@,1i) = 100@(2@,1i) // (float) 
+102@(2@,1i) /= 2.0 
+005B: 102@(2@,1i) += 98@(2@,1i) // (float) 
+005B: 102@(2@,1i) += 8@ // (float) 
+0087: 103@(2@,1i) = 99@(2@,1i) // (float) 
+0087: 104@(2@,1i) = 96@(2@,1i) // (float) 
+0087: 105@(2@,1i) = 97@(2@,1i) // (float) 
+005B: 105@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 105@(2@,1i) += 6@ // (float) 
+0087: 108@(2@,1i) = 5@ // (float) 
+0087: 109@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 106@(2@,1i) = 96@(2@,1i) // (float) 
+005B: 106@(2@,1i) += 7@ // (float) 
+0087: 107@(2@,1i) = 105@(2@,1i) // (float) 
+005B: 107@(2@,1i) += 8@ // (float) 
+0087: 110@(2@,1i) = 108@(2@,1i) // (float) 
+110@(2@,1i) /= 2.0 
+005B: 110@(2@,1i) += 106@(2@,1i) // (float) 
+005B: 110@(2@,1i) += 8@ // (float) 
+0087: 111@(2@,1i) = 107@(2@,1i) // (float) 
+0087: 112@(2@,1i) = 104@(2@,1i) // (float) 
+0087: 113@(2@,1i) = 105@(2@,1i) // (float) 
+005B: 113@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 113@(2@,1i) += 6@ // (float) 
+0087: 116@(2@,1i) = 5@ // (float) 
+0087: 117@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 114@(2@,1i) = 104@(2@,1i) // (float) 
+005B: 114@(2@,1i) += 7@ // (float) 
+0087: 115@(2@,1i) = 113@(2@,1i) // (float) 
+005B: 115@(2@,1i) += 8@ // (float) 
+0087: 118@(2@,1i) = 116@(2@,1i) // (float) 
+118@(2@,1i) /= 2.0 
+005B: 118@(2@,1i) += 114@(2@,1i) // (float) 
+005B: 118@(2@,1i) += 8@ // (float) 
+0087: 119@(2@,1i) = 115@(2@,1i) // (float) 
+0087: 157@(2@,1i) = 112@(2@,1i) // (float) 
+0087: 158@(2@,1i) = 113@(2@,1i) // (float) 
+005B: 158@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 158@(2@,1i) += 6@ // (float) 
+0087: 161@(2@,1i) = 5@ // (float) 
+0087: 162@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 159@(2@,1i) = 112@(2@,1i) // (float) 
+005B: 159@(2@,1i) += 7@ // (float) 
+0087: 160@(2@,1i) = 158@(2@,1i) // (float) 
+005B: 160@(2@,1i) += 8@ // (float) 
+0087: 163@(2@,1i) = 161@(2@,1i) // (float) 
+163@(2@,1i) /= 2.0 
+005B: 163@(2@,1i) += 159@(2@,1i) // (float) 
+005B: 163@(2@,1i) += 8@ // (float) 
+0087: 164@(2@,1i) = 160@(2@,1i) // (float) 
+0087: 120@(2@,1i) = 157@(2@,1i) // (float) 
+0087: 121@(2@,1i) = 158@(2@,1i) // (float) 
+005B: 121@(2@,1i) += 34@(2@,1i) // (float) 
+005B: 121@(2@,1i) += 6@ // (float) 
+0087: 124@(2@,1i) = 5@ // (float) 
+0087: 125@(2@,1i) = 34@(2@,1i) // (float) 
+0087: 122@(2@,1i) = 157@(2@,1i) // (float) 
+005B: 122@(2@,1i) += 7@ // (float) 
+0087: 123@(2@,1i) = 121@(2@,1i) // (float) 
+005B: 123@(2@,1i) += 8@ // (float) 
+0087: 126@(2@,1i) = 124@(2@,1i) // (float) 
+126@(2@,1i) /= 2.0 
+005B: 126@(2@,1i) += 122@(2@,1i) // (float) 
+005B: 126@(2@,1i) += 8@ // (float) 
+0087: 127@(2@,1i) = 123@(2@,1i) // (float) 
+0087: 147@(2@,1i) = 33@(2@,1i) // (float) 
+147@(2@,1i) /= -2.0 
+005B: 147@(2@,1i) += 23@(2@,1i) // (float) 
+148@(2@,1i) = 95.0 
+0AB1: call_scm_func @Noname_34607 2 220.0 0.0 5@ 6@  
+0087: 149@(2@,1i) = 5@ // (float) 
+0087: 150@(2@,1i) = 147@(2@,1i) // (float) 
+005B: 150@(2@,1i) += 149@(2@,1i) // (float) 
+150@(2@,1i) += 25.0 
+151@(2@,1i) = 115.0 
+0087: 152@(2@,1i) = 150@(2@,1i) // (float) 
+0087: 153@(2@,1i) = 151@(2@,1i) // (float) 
+153@(2@,1i) += 10.0 
+return 
+
+:Noname_17419
+08D7: 5@ = panel 0@(2@,1i) active_row 
+0A8D: 6@ = read_memory 10@(2@,1i) size 2 virtual_protect 0 
+00BF: 7@ = current_time_hours, 8@ = current_time_minutes 
+0AB1: call_scm_func @Noname_26917 2 7@ 8@ 7@  
+006A: 7@ *= 4@(2@,1i) // (int) 
+005A: 7@ += 6@ // (int) 
+0871: init_jump_table 1@(2@,1i) total_jumps 2 default_jump 0 @Noname_17561 jumps 1 @Noname_17561 2 @Noname_17689 -1 @Noname_17561 -1 @Noname_17561 -1 @Noname_17561 -1 @Noname_17561 -1 @Noname_17561 
+
+:Noname_17561
+0871: init_jump_table 5@ total_jumps 12 default_jump 0 @Noname_26166 jumps 0 @Noname_17754 1 @Noname_17807 2 @Noname_17860 3 @Noname_17913 4 @Noname_17966 5 @Noname_18019 6 @Noname_18072 
+0872: jump_table_jumps 7 @Noname_19384 8 @Noname_20708 9 @Noname_23015 10 @Noname_23073 11 @Noname_23131 -1 @Noname_26166 -1 @Noname_26166 -1 @Noname_26166 -1 @Noname_26166 
+
+:Noname_17689
+0871: init_jump_table 5@ total_jumps 4 default_jump 0 @Noname_26166 jumps 0 @Noname_23189 1 @Noname_23247 2 @Noname_23305 3 @Noname_23363 4 @Noname_26166 5 @Noname_26166 6 @Noname_26166 
+return 
+
+:Noname_17754
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 1@(1@,1i) 2@(1@,1i) 3@(1@,1i) 0 33@  
+return 
+
+:Noname_17807
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 4@(1@,1i) 5@(1@,1i) 6@(1@,1i) 0 33@  
+return 
+
+:Noname_17860
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 7@(1@,1i) 8@(1@,1i) 9@(1@,1i) 0 33@  
+return 
+
+:Noname_17913
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 10@(1@,1i) 11@(1@,1i) 12@(1@,1i) 0 33@  
+return 
+
+:Noname_17966
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 13@(1@,1i) 14@(1@,1i) 15@(1@,1i) 0 33@  
+return 
+
+:Noname_18019
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 16@(1@,1i) 17@(1@,1i) 18@(1@,1i) 0 33@  
+return 
+
+:Noname_18072
+0A8E: 8@ = 20@(1@,1i) + 7@ // int 
+0A8E: 9@ = 21@(1@,1i) + 7@ // int 
+005A: 7@ += 19@(1@,1i) // (int) 
+0AB1: call_scm_func @Noname_31270 1 7@ 10@  
+0AB1: call_scm_func @Noname_31270 1 8@ 11@  
+0AB1: call_scm_func @Noname_31270 1 9@ 12@  
+if and
+  33@ > 40 
+0AB1: call_scm_func @Noname_31507 0  
+jf @Noname_18744 
+if 
+0AB1: call_scm_func @Noname_277 7 3 50@(2@,1i) 51@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_18264 
+13@ = 0.1 
+jump @Noname_18331 
+
+:Noname_18264
+if 
+0AB1: call_scm_func @Noname_277 7 4 50@(2@,1i) 51@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_18377 
+13@ = -0.1 
+
+:Noname_18331
+0AB1: call_scm_func @Noname_31028 5 7@ 10@ 13@ -12.9 12.7 10@  
+33@ = 0 
+jump @Noname_18744 
+
+:Noname_18377
+if 
+0AB1: call_scm_func @Noname_277 7 3 58@(2@,1i) 59@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_18451 
+13@ = 0.1 
+jump @Noname_18518 
+
+:Noname_18451
+if 
+0AB1: call_scm_func @Noname_277 7 4 58@(2@,1i) 59@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_18564 
+13@ = -0.1 
+
+:Noname_18518
+0AB1: call_scm_func @Noname_31028 5 8@ 11@ 13@ -12.9 12.7 11@  
+33@ = 0 
+jump @Noname_18744 
+
+:Noname_18564
+if 
+0AB1: call_scm_func @Noname_277 7 3 66@(2@,1i) 67@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_18638 
+13@ = 0.1 
+jump @Noname_18705 
+
+:Noname_18638
+if 
+0AB1: call_scm_func @Noname_277 7 4 66@(2@,1i) 67@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_18744 
+13@ = -0.1 
+
+:Noname_18705
+0AB1: call_scm_func @Noname_31028 5 9@ 12@ 13@ -12.9 12.7 12@  
+33@ = 0 
+
+:Noname_18744
+gosub @Noname_26772 
+033E: set_draw_text_position 42@(2@,1i) 43@(2@,1i) GXT 'TOP_SPG' 
+gosub @Noname_26772 
+033E: set_draw_text_position 44@(2@,1i) 45@(2@,1i) GXT 'COP_SZE' 
+038E: draw_box_position 46@(2@,1i) 47@(2@,1i) size 48@(2@,1i) 49@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 50@(2@,1i) 51@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+033E: set_draw_text_position 52@(2@,1i) 53@(2@,1i) GXT 'COP_SZA' 
+038E: draw_box_position 54@(2@,1i) 55@(2@,1i) size 56@(2@,1i) 57@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 58@(2@,1i) 59@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+033E: set_draw_text_position 60@(2@,1i) 61@(2@,1i) GXT 'COP_SPB' 
+038E: draw_box_position 62@(2@,1i) 63@(2@,1i) size 64@(2@,1i) 65@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 66@(2@,1i) 67@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 46@(2@,1i) 47@(2@,1i) 48@(2@,1i) 49@(2@,1i) 13@ 14@  
+0AB1: call_scm_func @Noname_31375 4 10@ 1 13@ 14@  
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 54@(2@,1i) 55@(2@,1i) 56@(2@,1i) 57@(2@,1i) 13@ 14@  
+0AB1: call_scm_func @Noname_31375 4 11@ 1 13@ 14@  
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 62@(2@,1i) 63@(2@,1i) 64@(2@,1i) 65@(2@,1i) 13@ 14@  
+0AB1: call_scm_func @Noname_31375 4 12@ 1 13@ 14@  
+return 
+
+:Noname_19384
+0A8E: 8@ = 23@(1@,1i) + 7@ // int 
+0A8E: 9@ = 24@(1@,1i) + 7@ // int 
+005A: 7@ += 22@(1@,1i) // (int) 
+0A8D: 10@ = read_memory 7@ size 1 virtual_protect 0 
+0A8D: 11@ = read_memory 8@ size 1 virtual_protect 0 
+0A8D: 12@ = read_memory 9@ size 1 virtual_protect 0 
+if and
+  33@ > 40 
+0AB1: call_scm_func @Noname_31507 0  
+jf @Noname_20071 
+if 
+0AB1: call_scm_func @Noname_277 7 3 76@(2@,1i) 77@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_19580 
+10@ += 1 
+0AB1: call_scm_func @Noname_27368 2 10@ 255 10@  
+jump @Noname_19660 
+
+:Noname_19580
+if 
+0AB1: call_scm_func @Noname_277 7 4 76@(2@,1i) 77@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_19686 
+10@ -= 1 
+0AB1: call_scm_func @Noname_27438 1 10@ 10@  
+
+:Noname_19660
+0A8C: write_memory 7@ size 1 value 10@ virtual_protect 0 
+33@ = 0 
+jump @Noname_20071 
+
+:Noname_19686
+if 
+0AB1: call_scm_func @Noname_277 7 3 84@(2@,1i) 85@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_19776 
+11@ += 1 
+0AB1: call_scm_func @Noname_27368 2 11@ 255 11@  
+jump @Noname_19856 
+
+:Noname_19776
+if 
+0AB1: call_scm_func @Noname_277 7 4 84@(2@,1i) 85@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_19882 
+11@ -= 1 
+0AB1: call_scm_func @Noname_27438 1 11@ 11@  
+
+:Noname_19856
+0A8C: write_memory 8@ size 1 value 11@ virtual_protect 0 
+33@ = 0 
+jump @Noname_20071 
+
+:Noname_19882
+if 
+0AB1: call_scm_func @Noname_277 7 3 92@(2@,1i) 93@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_19972 
+12@ += 1 
+0AB1: call_scm_func @Noname_27368 2 12@ 255 12@  
+jump @Noname_20052 
+
+:Noname_19972
+if 
+0AB1: call_scm_func @Noname_277 7 4 92@(2@,1i) 93@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_20071 
+12@ -= 1 
+0AB1: call_scm_func @Noname_27438 1 12@ 12@  
+
+:Noname_20052
+0A8C: write_memory 9@ size 1 value 12@ virtual_protect 0 
+33@ = 0 
+
+:Noname_20071
+gosub @Noname_26772 
+033E: set_draw_text_position 68@(2@,1i) 69@(2@,1i) GXT 'COP_SHP' 
+gosub @Noname_26772 
+033E: set_draw_text_position 70@(2@,1i) 71@(2@,1i) GXT 'COP_SHD' 
+038E: draw_box_position 72@(2@,1i) 73@(2@,1i) size 74@(2@,1i) 75@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 76@(2@,1i) 77@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+033E: set_draw_text_position 78@(2@,1i) 79@(2@,1i) GXT 'COP_LSH' 
+038E: draw_box_position 80@(2@,1i) 81@(2@,1i) size 82@(2@,1i) 83@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 84@(2@,1i) 85@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+033E: set_draw_text_position 86@(2@,1i) 87@(2@,1i) GXT 'COP_POL' 
+038E: draw_box_position 88@(2@,1i) 89@(2@,1i) size 90@(2@,1i) 91@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 92@(2@,1i) 93@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 72@(2@,1i) 73@(2@,1i) 74@(2@,1i) 75@(2@,1i) 13@ 14@  
+045A: draw_text_1number 13@ 14@ GXT 'TCFNUM' number 10@ 
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 80@(2@,1i) 81@(2@,1i) 82@(2@,1i) 83@(2@,1i) 13@ 14@  
+045A: draw_text_1number 13@ 14@ GXT 'TCFNUM' number 11@ 
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 88@(2@,1i) 89@(2@,1i) 90@(2@,1i) 91@(2@,1i) 13@ 14@  
+045A: draw_text_1number 13@ 14@ GXT 'TCFNUM' number 12@ 
+return 
+
+:Noname_20708
+0A90: 11@ = 7@ * 2 // int 
+0A8E: 8@ = 26@(1@,1i) + 11@ // int 
+0A8E: 9@ = 27@(1@,1i) + 7@ // int 
+0A8E: 10@ = 49@(1@,1i) + 7@ // int 
+0A8E: 17@ = 48@(1@,1i) + 7@ // int 
+0A8E: 7@ = 25@(1@,1i) + 11@ // int 
+0AB1: call_scm_func @Noname_38923 4 7@ 2 1 0 11@  
+0AB1: call_scm_func @Noname_38923 4 8@ 2 1 0 12@  
+0AB1: call_scm_func @Noname_31270 1 9@ 13@  
+0AB1: call_scm_func @Noname_31270 1 10@ 14@  
+0AB1: call_scm_func @Noname_38923 4 10@ 1 0 0 14@  
+14@ /= 100 
+0A8D: 18@ = read_memory 17@ size 1 virtual_protect 0 
+if 
+0AB1: call_scm_func @Noname_31507 0  
+jf @Noname_21969 
+if 
+  33@ > 500 
+jf @Noname_21157 
+if 
+   not 14@ >= 2 
+jf @Noname_21039 
+if 
+0AB1: call_scm_func @Noname_277 7 3 126@(2@,1i) 127@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_21039 
+14@ += 1 
+jump @Noname_21121 
+
+:Noname_21039
+if 
+  14@ > 0 
+jf @Noname_21157 
+if 
+0AB1: call_scm_func @Noname_277 7 4 126@(2@,1i) 127@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_21157 
+14@ -= 1 
+
+:Noname_21121
+0A90: 15@ = 14@ * 100 // int 
+0A8C: write_memory 10@ size 1 value 15@ virtual_protect 0 
+33@ = 0 
+jump @Noname_21969 
+
+:Noname_21157
+if 
+  33@ > 40 
+jf @Noname_21557 
+if 
+0AB1: call_scm_func @Noname_277 7 3 118@(2@,1i) 119@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_21249 
+15@ = 0.1 
+jump @Noname_21316 
+
+:Noname_21249
+if 
+0AB1: call_scm_func @Noname_277 7 4 118@(2@,1i) 119@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_21362 
+15@ = -0.1 
+
+:Noname_21316
+0AB1: call_scm_func @Noname_31028 5 9@ 13@ 15@ -12.9 12.7 13@  
+33@ = 0 
+jump @Noname_21969 
+
+:Noname_21362
+if 
+0AB1: call_scm_func @Noname_277 7 3 163@(2@,1i) 164@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_21451 
+18@ += 1 
+0AB1: call_scm_func @Noname_27368 2 18@ 100 18@  
+jump @Noname_21531 
+
+:Noname_21451
+if 
+0AB1: call_scm_func @Noname_277 7 4 163@(2@,1i) 164@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_21557 
+18@ -= 1 
+0AB1: call_scm_func @Noname_27438 1 18@ 18@  
+
+:Noname_21531
+0A8C: write_memory 17@ size 1 value 18@ virtual_protect 0 
+33@ = 0 
+jump @Noname_21969 
+
+:Noname_21557
+if 
+  33@ > 3 
+jf @Noname_21969 
+0AB1: call_scm_func @Noname_277 7 3 102@(2@,1i) 103@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_21661 
+11@ += 1 
+0AB1: call_scm_func @Noname_27368 2 11@ 3000 11@  
+jump @Noname_21744 
+
+:Noname_21661
+if 
+0AB1: call_scm_func @Noname_277 7 4 102@(2@,1i) 103@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_21770 
+11@ -= 1 
+0AB1: call_scm_func @Noname_27403 2 11@ -3000 11@  
+
+:Noname_21744
+0A8C: write_memory 7@ size 2 value 11@ virtual_protect 0 
+33@ = 0 
+jump @Noname_21969 
+
+:Noname_21770
+if 
+0AB1: call_scm_func @Noname_277 7 3 110@(2@,1i) 111@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_21860 
+12@ += 1 
+0AB1: call_scm_func @Noname_27368 2 12@ 3000 12@  
+jump @Noname_21943 
+
+:Noname_21860
+if 
+0AB1: call_scm_func @Noname_277 7 4 110@(2@,1i) 111@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_21969 
+12@ -= 1 
+0AB1: call_scm_func @Noname_27403 2 12@ -3000 12@  
+
+:Noname_21943
+0A8C: write_memory 8@ size 2 value 12@ virtual_protect 0 
+33@ = 0 
+jump @Noname_21969 
+
+:Noname_21969
+gosub @Noname_26772 
+033E: set_draw_text_position 94@(2@,1i) 95@(2@,1i) GXT 'COP_WRP' 
+gosub @Noname_26772 
+033E: set_draw_text_position 96@(2@,1i) 97@(2@,1i) GXT 'COP_FCL' 
+038E: draw_box_position 98@(2@,1i) 99@(2@,1i) size 100@(2@,1i) 101@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 102@(2@,1i) 103@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+033E: set_draw_text_position 104@(2@,1i) 105@(2@,1i) GXT 'COP_FST' 
+038E: draw_box_position 106@(2@,1i) 107@(2@,1i) size 108@(2@,1i) 109@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 110@(2@,1i) 111@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+033E: set_draw_text_position 112@(2@,1i) 113@(2@,1i) GXT 'COP_LOG' 
+038E: draw_box_position 114@(2@,1i) 115@(2@,1i) size 116@(2@,1i) 117@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 118@(2@,1i) 119@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+033E: set_draw_text_position 157@(2@,1i) 158@(2@,1i) GXT 'COP_LBM' 
+038E: draw_box_position 159@(2@,1i) 160@(2@,1i) size 161@(2@,1i) 162@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 163@(2@,1i) 164@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+033E: set_draw_text_position 120@(2@,1i) 121@(2@,1i) GXT 'COP_ILU' 
+038E: draw_box_position 122@(2@,1i) 123@(2@,1i) size 124@(2@,1i) 125@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 126@(2@,1i) 127@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 98@(2@,1i) 99@(2@,1i) 100@(2@,1i) 101@(2@,1i) 15@ 16@  
+045B: draw_text_2numbers 15@ 16@ GXT 'TCFLT' numbers 11@ 0 
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 106@(2@,1i) 107@(2@,1i) 108@(2@,1i) 109@(2@,1i) 15@ 16@  
+045B: draw_text_2numbers 15@ 16@ GXT 'TCFLT' numbers 12@ 0 
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 114@(2@,1i) 115@(2@,1i) 116@(2@,1i) 117@(2@,1i) 15@ 16@  
+0AB1: call_scm_func @Noname_31375 4 13@ 1 15@ 16@  
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 159@(2@,1i) 160@(2@,1i) 161@(2@,1i) 162@(2@,1i) 15@ 16@  
+045A: draw_text_1number 15@ 16@ GXT 'TCPNUM' number 18@ 
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0AB1: call_scm_func @Noname_26822 4 122@(2@,1i) 123@(2@,1i) 124@(2@,1i) 125@(2@,1i) 15@ 16@  
+045B: draw_text_2numbers 15@ 16@ GXT 'TCFLT' numbers 14@ 0 
+return 
+
+:Noname_23015
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 28@(1@,1i) 29@(1@,1i) 30@(1@,1i) 46@(1@,1i) 33@  
+return 
+
+:Noname_23073
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 31@(1@,1i) 32@(1@,1i) 33@(1@,1i) 47@(1@,1i) 33@  
+return 
+
+:Noname_23131
+08D8: 6@ = panel 0@(2@,1i) selected_row 
+if 
+003B:   5@ == 6@ // (int) 
+0AA1: return_if_false 
+1@(2@,1i) = 2 
+08DA: remove_panel 0@(2@,1i) 
+wait 250 
+jump @Noname_23421 
+
+:Noname_23189
+08D8: 6@ = panel 0@(2@,1i) selected_row 
+if 
+003B:   5@ == 6@ // (int) 
+0AA1: return_if_false 
+1@(2@,1i) = 1 
+08DA: remove_panel 0@(2@,1i) 
+wait 250 
+jump @Noname_23421 
+
+:Noname_23247
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 34@(1@,1i) 35@(1@,1i) 36@(1@,1i) 37@(1@,1i) 33@  
+return 
+
+:Noname_23305
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 39@(1@,1i) 40@(1@,1i) 41@(1@,1i) 38@(1@,1i) 33@  
+return 
+
+:Noname_23363
+0AB1: call_scm_func @Noname_31541 9 3@ 4@ 33@ 28@ 7@ 43@(1@,1i) 44@(1@,1i) 45@(1@,1i) 42@(1@,1i) 33@  
+return 
+
+:Noname_23421
+0871: init_jump_table 1@(2@,1i) total_jumps 2 default_jump 0 @Noname_26166 jumps 1 @Noname_23488 2 @Noname_23684 -1 @Noname_26166 -1 @Noname_26166 -1 @Noname_26166 -1 @Noname_26166 -1 @Noname_26166 
+
+:Noname_23488
+08D4: 5@ = create_panel_with_title 'TCYCOPT' position 147@(2@,1i) 148@(2@,1i) width 149@(2@,1i) columns 1 interactive 1 background 1 alignment 0 
+0085: 0@(2@,1i) = 5@ // (int) 
+08DB: set_panel 0@(2@,1i) column 0 header 'DUMMY' data 'TOP_AMB' 'TOP_AMD' 'TOP_SKT' 'TOP_SKB' 'TOP_SCE' 'TOP_SCA' 'TOP_SPR' 'TOP_SHP' 'TOP_WRP' 'TOP_LCL' 'TOP_BCL' 'TCNXTPG' 
+090E: set_panel 0@(2@,1i) active_row 0 
+return 
+
+:Noname_23684
+0087: 5@ = 33@(2@,1i) // (float) 
+5@ /= -2.0 
+005B: 5@ += 23@(2@,1i) // (float) 
+0AB1: call_scm_func @Noname_34607 2 220.0 0.0 6@ 7@  
+08D4: 5@ = create_panel_with_title 'TCYCOPT' position 5@ 95.0 width 6@ columns 1 interactive 1 background 1 alignment 0 
+0085: 0@(2@,1i) = 5@ // (int) 
+08DB: set_panel 0@(2@,1i) column 0 header 'DUMMY' data 'TCPRVPG' 'TOP_WTR' 'TOP_CO1' 'TOP_CO2' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 
+090E: set_panel 0@(2@,1i) active_row 1 
+return 
+
+:Noname_23930
+if 
+  6@(2@,1i) > 0 
+jf @Noname_24019 
+0342: enable_text_draw_centered 1 
+03E0: unknown_text_draw_flag 1 
+0344: unknown_text_draw 400.0 
+033F: set_text_draw_letter_size 140@(2@,1i) 141@(2@,1i) 
+03E3: set_texture_to_be_drawn_antialiased 0 
+060D: draw_text_shadow 1 color_RGBA 0 0 0 35@(2@,1i) 
+033E: set_draw_text_position 422.0 233.0 GXT 29@s 
+
+:Noname_24019
+gosub @Noname_26869 
+038D: draw_texture 7 position 36@(2@,1i) 37@(2@,1i) size 38@(2@,1i) 39@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+if 
+  165@(2@,1i) > 0 
+jf @Noname_24159 
+0093: 5@ = integer 165@(2@,1i) to_float 
+6@ = 400 
+0093: 6@ = integer 6@ to_float 
+0073: 5@ /= 6@ // (float) 
+5@ *= 360.0 
+5@ *= -1.0 
+jump @Noname_24169 
+
+:Noname_24159
+5@ = 0.0 
+
+:Noname_24169
+0087: 7@ = 132@(2@,1i) // (float) 
+7@ *= -1.0 
+074B: draw_texture 8 position 129@(2@,1i) 130@(2@,1i) scale 131@(2@,1i) 7@ angle 5@ color_RGBA 255 255 255 35@(2@,1i) 
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+033E: set_draw_text_position 40@(2@,1i) 41@(2@,1i) GXT 'TCSAVE' 
+5@ = 10.0 
+gosub @Noname_26772 
+033E: set_draw_text_position 15.0 5@ GXT 'TMC' 
+5@ += 10.0 
+gosub @Noname_26772 
+if 
+   not 156@(2@,1i) == 0 
+jf @Noname_24375 
+033E: set_draw_text_position 15.0 5@ GXT 'TCINITR' 
+jump @Noname_24394 
+
+:Noname_24375
+033E: set_draw_text_position 15.0 5@ GXT 'TCINIFL' 
+
+:Noname_24394
+038D: draw_texture 4 position 13@(2@,1i) 14@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+038E: draw_box_position 17@(2@,1i) 18@(2@,1i) size 19@(2@,1i) 20@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+038D: draw_texture 4 position 23@(2@,1i) 24@(2@,1i) size 33@(2@,1i) 34@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+038E: draw_box_position 25@(2@,1i) 26@(2@,1i) size 27@(2@,1i) 28@(2@,1i) RGBA 240 240 240 35@(2@,1i) 
+074B: draw_texture 4 position 133@(2@,1i) 134@(2@,1i) scale 33@(2@,1i) 34@(2@,1i) angle 90.0 color_RGBA 240 240 240 35@(2@,1i) 
+074B: draw_texture 4 position 135@(2@,1i) 136@(2@,1i) scale 33@(2@,1i) 34@(2@,1i) angle 90.0 color_RGBA 240 240 240 35@(2@,1i) 
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+0A9F: 5@ = current_thread_pointer 
+0AB1: call_scm_func @Noname_31921 2 5@ 5 5@  
+0A8F: 7@ = 31@ - -40021 // int 
+0A8D: 8@ = read_memory 10@(2@,1i) size 2 virtual_protect 0 
+0AA5: call 3@(2@,1i) num_params 3 pop 3 8@ 7@ 5@  
+033E: set_draw_text_position 21@(2@,1i) 22@(2@,1i) GXT 5@s 
+00BF: 7@ = current_time_hours, 8@ = current_time_minutes 
+0AB1: call_scm_func @Noname_26917 2 7@ 8@ 9@  
+0A9F: 5@ = current_thread_pointer 
+0AB1: call_scm_func @Noname_31921 2 5@ 5 5@  
+0A8F: 6@ = 31@ - -40028 // int 
+0AA5: call 3@(2@,1i) num_params 3 pop 3 9@ 6@ 5@  
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+033E: set_draw_text_position 29@(2@,1i) 30@(2@,1i) GXT 5@s 
+0AB1: call_scm_func @Noname_27159 1 9@ 11@ 12@  
+0A8E: 10@ = 9@ + 1 // int 
+0AB1: call_scm_func @Noname_37016 2 10@ 8 10@  
+0AB1: call_scm_func @Noname_27159 1 10@ 13@ 14@  
+11@ *= 60 
+005A: 11@ += 12@ // (int) 
+13@ *= 60 
+005A: 13@ += 14@ // (int) 
+7@ *= 60 
+005A: 7@ += 8@ // (int) 
+if 
+001D:   11@ > 13@ // (int) 
+jf @Noname_25047 
+13@ += 1440 
+
+:Noname_25047
+0A8F: 12@ = 13@ - 7@ // int 
+12@ *= 100 
+0062: 13@ -= 11@ // (int) 
+0072: 12@ /= 13@ // (int) 
+0A8F: 14@ = 100 - 12@ // int 
+0A9F: 5@ = current_thread_pointer 
+0AB1: call_scm_func @Noname_31921 2 5@ 5 5@  
+0A8F: 6@ = 31@ - -40037 // int 
+0AA5: call 3@(2@,1i) num_params 3 pop 3 9@ 6@ 5@  
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+045A: draw_text_1number 150@(2@,1i) 151@(2@,1i) GXT 5@s number 12@ 
+0A9F: 5@ = current_thread_pointer 
+0AB1: call_scm_func @Noname_31921 2 5@ 5 5@  
+0A8F: 6@ = 31@ - -40044 // int 
+0AA5: call 3@(2@,1i) num_params 3 pop 3 10@ 6@ 5@  
+gosub @Noname_26772 
+03E0: unknown_text_draw_flag 0 
+045A: draw_text_1number 152@(2@,1i) 153@(2@,1i) GXT 5@s number 14@ 
+if 
+   not 146@(2@,1i) == 0 
+jf @Noname_25443 
+0A8F: 5@ = 31@ - -40087 // int 
+0A8D: 6@ = read_memory 5@ size 1 virtual_protect 0 
+if 
+   not 6@ == 0 
+jf @Noname_25395 
+038D: draw_texture 9 position 142@(2@,1i) 143@(2@,1i) size 144@(2@,1i) 145@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+jump @Noname_25443 
+
+:Noname_25395
+038D: draw_texture 10 position 142@(2@,1i) 143@(2@,1i) size 144@(2@,1i) 145@(2@,1i) RGBA 255 255 255 35@(2@,1i) 
+
+:Noname_25443
+if and
+0AB0:   key_pressed 17 
+0AB0:   key_pressed 83 
+jf @Noname_25469 
+jump @Noname_25866 
+
+:Noname_25469
+if 
+0AB1: call_scm_func @Noname_31507 0  
+0AA1: return_if_false 
+if 
+  33@ > 400 
+jf @Noname_26392 
+if 
+   not 146@(2@,1i) == 0 
+jf @Noname_25620 
+if 
+0AB1: call_scm_func @Noname_277 7 0 142@(2@,1i) 143@(2@,1i) 3@ 4@ 144@(2@,1i) 145@(2@,1i)  
+jf @Noname_25620 
+0AB1: call_scm_func @Noname_31475 1 6@ 6@  
+0A8C: write_memory 5@ size 1 value 6@ virtual_protect 0 
+33@ = 0 
+return 
+
+:Noname_25620
+0AB1: call_scm_func @Noname_34765 2 3@ 4@ 5@ 6@  
+0AB1: call_scm_func @Noname_34765 2 129@(2@,1i) 130@(2@,1i) 7@ 8@  
+0AB1: call_scm_func @Noname_34765 2 131@(2@,1i) 132@(2@,1i) 9@ 10@  
+9@ /= 2.0 
+0509: 5@ = distance_between_XY 5@ 6@ and_XY 7@ 8@ 
+if 
+0035:   9@ >= 5@ // (float) 
+jf @Noname_25809 
+0AA5: call 0@(1@,1i) num_params 0 pop 0  
+6@(2@,1i) = 3000 
+05AA: 29@s = 'TCRELO' 
+33@ = 0 
+165@(2@,1i) = 400 
+return 
+
+:Noname_25809
+if 
+0AB1: call_scm_func @Noname_277 7 0 36@(2@,1i) 37@(2@,1i) 3@ 4@ 38@(2@,1i) 39@(2@,1i)  
+jf @Noname_25963 
+
+:Noname_25866
+if 
+0AB1: call_scm_func @Noname_28483 4 1@ 31@ 4@(2@,1i) 137@(2@,1i)  
+jf @Noname_25928 
+05AA: 29@s = 'TCSVSC' 
+jump @Noname_25942 
+
+:Noname_25928
+05AA: 29@s = 'TSSVFL' 
+
+:Noname_25942
+6@(2@,1i) = 3000 
+33@ = 0 
+return 
+
+:Noname_25963
+if 
+0AB1: call_scm_func @Noname_277 7 3 13@(2@,1i) 14@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_26041 
+6@ = 1 
+33@ = 0 
+jump @Noname_26112 
+
+:Noname_26041
+if 
+0AB1: call_scm_func @Noname_277 7 4 13@(2@,1i) 14@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_26168 
+6@ = -1 
+33@ = 0 
+
+:Noname_26112
+0A8D: 5@ = read_memory 10@(2@,1i) size 2 virtual_protect 0 
+005A: 5@ += 6@ // (int) 
+0AB1: call_scm_func @Noname_37016 2 5@ 4@(2@,1i) 5@  
+set_weather 5@ 
+return 
+
+:Noname_26166
+return 
+
+:Noname_26168
+if 
+0AB1: call_scm_func @Noname_277 7 3 23@(2@,1i) 24@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_26239 
+7@ = 1 
+jump @Noname_26303 
+
+:Noname_26239
+if 
+0AB1: call_scm_func @Noname_277 7 4 23@(2@,1i) 24@(2@,1i) 3@ 4@ 33@(2@,1i) 34@(2@,1i)  
+jf @Noname_26392 
+7@ = -1 
+
+:Noname_26303
+33@ = 0 
+00BF: 5@ = current_time_hours, 6@ = current_time_minutes 
+0AB1: call_scm_func @Noname_26917 2 5@ 6@ 5@  
+005A: 5@ += 7@ // (int) 
+0AB1: call_scm_func @Noname_37016 2 5@ 8 5@  
+0AB1: call_scm_func @Noname_27159 1 5@ 5@ 6@  
+00C0: set_current_time_hours_to 5@ minutes_to 6@ 
+return 
+
+:Noname_26392
+if 
+  33@ > 100 
+0AA1: return_if_false 
+if 
+0AB1: call_scm_func @Noname_277 7 1 133@(2@,1i) 134@(2@,1i) 3@ 4@ 34@(2@,1i) 33@(2@,1i)  
+jf @Noname_26476 
+7@ = -1 
+jump @Noname_26540 
+
+:Noname_26476
+if 
+0AB1: call_scm_func @Noname_277 7 2 133@(2@,1i) 134@(2@,1i) 3@ 4@ 34@(2@,1i) 33@(2@,1i)  
+jf @Noname_26591 
+7@ = 1 
+
+:Noname_26540
+00BF: 5@ = current_time_hours, 6@ = current_time_minutes 
+005A: 5@ += 7@ // (int) 
+0AB1: call_scm_func @Noname_37016 2 5@ 24 5@  
+00C0: set_current_time_hours_to 5@ minutes_to 6@ 
+33@ = 0 
+return 
+
+:Noname_26591
+if 
+0AB1: call_scm_func @Noname_277 7 1 135@(2@,1i) 136@(2@,1i) 3@ 4@ 34@(2@,1i) 33@(2@,1i)  
+jf @Noname_26662 
+7@ = -1 
+jump @Noname_26721 
+
+:Noname_26662
+if 
+0AB1: call_scm_func @Noname_277 7 2 135@(2@,1i) 136@(2@,1i) 3@ 4@ 34@(2@,1i) 33@(2@,1i)  
+0AA1: return_if_false 
+7@ = 1 
+
+:Noname_26721
+00BF: 5@ = current_time_hours, 6@ = current_time_minutes 
+005A: 6@ += 7@ // (int) 
+0AB1: call_scm_func @Noname_37016 2 6@ 60 6@  
+00C0: set_current_time_hours_to 5@ minutes_to 6@ 
+33@ = 0 
+return 
+
+:Noname_26772
+03E0: unknown_text_draw_flag 1 
+033F: set_text_draw_letter_size 138@(2@,1i) 139@(2@,1i) 
+0343: set_text_draw_linewidth 640.0 
+03E3: set_texture_to_be_drawn_antialiased 0 
+060D: draw_text_shadow 1 color_RGBA 0 0 0 35@(2@,1i) 
+return 
+
+:Noname_26822
+2@ /= 2.0 
+3@ /= 2.0 
+0063: 0@ -= 2@ // (float) 
+0063: 1@ -= 3@ // (float) 
+0AB2: ret 2 0@ 1@ 
+
+:Noname_26869
+Actor.SetImmunities($PLAYER_ACTOR, 1, 1, 1, 1, 1)
+Player.CanMove($PLAYER_CHAR) = False
+return 
+Player.CanMove($PLAYER_CHAR) = True
+Actor.SetImmunities($PLAYER_ACTOR, 0, 0, 0, 0, 0)
+return 
+
+:Noname_26917
+if 
+   not 0@ >= 5 
+jf @Noname_26949 
+0AB2: ret 1 0 
+jump @Noname_27151 
+
+:Noname_26949
+if and
+  0@ >= 5 
+   not 0@ > 7 
+jf @Noname_26988 
+0@ -= 4 
+jump @Noname_27151 
+
+:Noname_26988
+if and
+  0@ > 7 
+   not 0@ >= 12 
+jf @Noname_27027 
+0AB2: ret 1 3 
+jump @Noname_27151 
+
+:Noname_27027
+if and
+  0@ >= 12 
+   not 0@ >= 19 
+jf @Noname_27066 
+0AB2: ret 1 4 
+jump @Noname_27151 
+
+:Noname_27066
+if and
+  0@ >= 19 
+   not 0@ > 20 
+jf @Noname_27105 
+0@ -= 14 
+jump @Noname_27151 
+
+:Noname_27105
+if and
+  0@ > 20 
+   not 0@ >= 22 
+jf @Noname_27144 
+0AB2: ret 1 6 
+jump @Noname_27151 
+
+:Noname_27144
+0AB2: ret 1 7 
+
+:Noname_27151
+0AB2: ret 1 0@ 
+
+:Noname_27159
+0871: init_jump_table 0@ total_jumps 8 default_jump 0 @Noname_27359 jumps 0 @Noname_27287 1 @Noname_27296 2 @Noname_27305 3 @Noname_27314 4 @Noname_27323 5 @Noname_27332 6 @Noname_27341 
+0872: jump_table_jumps 7 @Noname_27350 -1 @Noname_27359 -1 @Noname_27359 10 @Noname_27359 11 @Noname_27359 -1 @Noname_27359 -1 @Noname_27359 -1 @Noname_27359 -1 @Noname_27359 
+
+:Noname_27287
+0AB2: ret 2 0 0 
+
+:Noname_27296
+0AB2: ret 2 5 0 
+
+:Noname_27305
+0AB2: ret 2 6 0 
+
+:Noname_27314
+0AB2: ret 2 7 0 
+
+:Noname_27323
+0AB2: ret 2 12 0 
+
+:Noname_27332
+0AB2: ret 2 19 0 
+
+:Noname_27341
+0AB2: ret 2 20 0 
+
+:Noname_27350
+0AB2: ret 2 22 0 
+
+:Noname_27359
+0AB2: ret 2 0 0 
+
+:Noname_27368
+if 
+001D:   0@ > 1@ // (int) 
+jf @Noname_27395 
+0AB2: ret 1 1@ 
+
+:Noname_27395
+0AB2: ret 1 0@ 
+
+:Noname_27403
+if 
+001D:   1@ > 0@ // (int) 
+jf @Noname_27430 
+0AB2: ret 1 1@ 
+
+:Noname_27430
+0AB2: ret 1 0@ 
+
+:Noname_27438
+if 
+   not 0@ >= 0 
+jf @Noname_27463 
+0AB2: ret 1 0 
+
+:Noname_27463
+0AB2: ret 1 0@ 
+hex
+ 45 58 54 52 41 53 55 4E 4E 59 5F 4C 41 00 00 00
+ 00 00 00 00 00 00 00 53 55 4E 4E 59 5F 4C 41 00
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 45 58
+ 54 52 41 53 55 4E 4E 59 5F 53 4D 4F 47 5F 4C 41
+ 00 00 00 00 00 53 55 4E 4E 59 5F 53 4D 4F 47 5F
+ 4C 41 00 00 00 00 00 00 00 00 00 00 43 4C 4F 55
+ 44 59 5F 4C 41 00 00 00 00 00 00 00 00 00 00 00
+ 00 00 00 53 55 4E 4E 59 5F 53
+end
+0046:   // (float) 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+hex
+ 00 45 58 54 52 41 53 55 4E 4E 59 5F 53 46 00 00
+ 00 00 00 00 00 00 00 00 43 4C 4F 55 44 59 5F 53
+end
+0046:   // (float) 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+hex
+ 52 41 49 4E 59 5F 53 46 00 00 00 00 00 00 00 00
+ 00 00 00 00 00 00 00 46 4F 47 47 59 5F 53
+end
+0046:   // (float) 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+hex
+ 00 53 55 4E 4E 59 5F 56 45 47 41 53 00 00 00 00
+ 00 00 00 00 00 00 00 00 45 58 54 52 41 53 55 4E
+ 4E 59 5F 56 45 47 41 53 00 00 00 00 00 00 00 43
+ 4C 4F 55 44 59 5F 56 45 47 41
+end
+-1 = Player.Create(, 0@, 0@, 0@)
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+hex
+ 00 45 58 54 52 41 53 55 4E 4E 59 5F 43 4F 55 4E
+ 54 52 59 53 49 44 45 00 53 55 4E 4E 59 5F 43 4F
+ 55 4E 54 52 59 53 49 44
+end
+0045:   // (float) 
+0000: NOP 
+0000: NOP 
+hex
+ 43 4C 4F 55 44 59 5F 43 4F 55 4E 54 52 59 53 49
+ 44 45 00 00 00 00 00 52 41 49 4E 59 5F 43 4F 55
+ 4E 54 52 59 53 49 44 45 00 00 00 00 00 00 45 58
+ 54 52 41 53 55 4E 4E 59 5F 44 45 53 45 52 54 00
+ 00 00 00 00 00 53 55 4E 4E 59 5F 44 45 53 45 52
+ 54 00 00 00 00 00 00 00 00 00 00 00 53 41 4E 44
+ 53 54 4F 52 4D 5F 44 45 53 45 52 54 00 00 00 00
+ 00 00 00 55 4E 44 45 52 57 41 54 45
+end
+0052: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+hex
+ 00 45 58 54 52 41 43 4F 4C 4F 55 52 53 5F
+end
+0031:    // Note: the incorrect math opcode was used here
+0000: NOP 
+0000: NOP 
+0000: NOP 
+hex
+ 00 45 58 54 52 41 43 4F 4C 4F 55 52 53 5F
+end
+0032:    // Note: the incorrect math opcode was used here
+0000: NOP 
+0000: NOP 
+0000: NOP 
+hex
+ 00 4D 69 64 6E 69 67 68 74 00 35 41
+end
+jf 
+0000: NOP 
+0000: NOP 
+hex
+ 36 41
+end
+jf 
+0000: NOP 
+0000: NOP 
+hex
+ 37 41
+end
+jf 
+0000: NOP 
+0000: NOP 
+hex
+ 4D 69 64 64 61 79 00 00 00 37 50 4D 00 00 00 00
+ 00 00 38 50
+end
+jf 
+0000: NOP 
+0000: NOP 
+hex
+ 31 30 50 4D 00 00 00 00 2F 2F 41 6D 62 09 09 09
+ 41 6D 62 5F 4F 62 6A 09 44 69 62 6F 74 09 09 53
+ 75 6E 43 6F 72 65 09 09 53 75 6E 43 6F 72 6F 6E
+ 61 09 53 75 6E 53 7A 09 53 70 72 53 7A 09 53 70
+ 72 42 67 68 74 09 53 68 64 77 09 4C 69 67 68 74
+ 53 68 64 09 50 6F 6C 65 53 68 64 09 46 61 72 43
+ 6C 70 09 46 6F 67 53 74 09 4C 69 67 68 74 4F 6E
+ 47 72 6F 75 6E 64 09 4C 6F 77 43 6C 6F 75 64 73
+ 52 47 42 09 42 6F 74 74 6F 6D 43 6C 6F 75 64 52
+ 47 42 09 57 61 74 65 72 52 47 42 41 09 52 47 42
+end
+0931: lock_camera_zoom '	Alpha2	RGB2		CloudAlpha		Illumination
+' 
+hex
+ 52 47 42 32 09 09 43 6C 6F 75 64 41 6C 70 68 61
+ 09 09 49 6C 6C 75 6D 69 6E 61 74 69 6F 6E 0D 0A
+ 00 2F 2F 20 47 65 6E 65 72 61 74 65 64 20 75 73
+ 69 6E 67 20 49 6E 2D 67 61 6D 65 20 54 69 6D 65
+ 63 79 63 20 45 64 69 74 6F 72 20 00
+end
+0662: NOP "1.8" 
+hex
+ 00 20 77 72 69 74 74 65 6E 20 62 79 20 66 61 73
+ 74 6D 61 6E 39 32 0D 0A 2F 2F 20 56 69 73 69 74
+ 20 66 61 73 74 6D 61 6E 39 32 2D 73 69 74 65 2E
+ 74 6B 0D 0A 00 2F 2F 20 74 69 6D 65 63 79 63 2E
+ 64 61 74 20 61 75 74 68 6F 72 3A 20 00 00 00 00
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 2F 2F 2F
+ 2F 2F 2F 2F 2F 2F 2F 2F 2F 20 00 09 32 35 35 20
+ 32 35 35 20 32 35 35 00
+end
+
+:Noname_28483
+0A99: chdir 0 
+if 
+File.Open(4@, "data\timecyc.dat", 25207)
+jf @Noname_30764 
+0A8F: 5@ = 1@ - -28297 // int 
+0AB1: call_scm_func @Noname_37391 2 4@ 5@  
+0A8F: 5@ = 1@ - -28340 // int 
+5@ += 4 
+0AB1: call_scm_func @Noname_37391 2 4@ 5@  
+0A8F: 5@ = 1@ - -28348 // int 
+0AB1: call_scm_func @Noname_37391 2 4@ 5@  
+if 
+   not 50@(0@,1i) == 0 
+jf @Noname_28705 
+0A8F: 5@ = 1@ - -28400 // int 
+0AB1: call_scm_func @Noname_37391 2 4@ 5@  
+0A8F: 5@ = 1@ - -28424 // int 
+0AB1: call_scm_func @Noname_37391 2 4@ 5@  
+gosub @Noname_30769 
+
+:Noname_28705
+gosub @Noname_30769 
+0A8F: 5@ = 1@ - -27471 // int 
+0A8F: 10@ = 1@ - -28072 // int 
+0A8F: 15@ = 1@ - -28456 // int 
+0A8F: 16@ = 1@ - -28470 // int 
+7@ = 0 
+
+:Noname_28771
+001D:   2@ > 7@ // (int) 
+jf @Noname_30757 
+0AB1: call_scm_func @Noname_37391 2 4@ 15@  
+0AB1: call_scm_func @Noname_37391 2 4@ 5@  
+0AB1: call_scm_func @Noname_37391 2 4@ 10@  
+0A8F: 6@ = 1@ - -28000 // int 
+8@ = 0 
+
+:Noname_28854
+gosub @Noname_30789 
+0AB1: call_scm_func @Noname_37391 2 4@ 6@  
+gosub @Noname_30769 
+0A90: 9@ = 8@ * 2@ // int 
+005A: 9@ += 7@ // (int) 
+0AB1: call_scm_func @Noname_30847 4 4@ 1@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 2@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 3@(0@,1i) 9@ 1  
+gosub @Noname_30828 
+0AB1: call_scm_func @Noname_30847 4 4@ 4@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 5@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 6@(0@,1i) 9@ 1  
+0AB1: call_scm_func @Noname_37391 2 4@ 16@  
+gosub @Noname_30828 
+0AB1: call_scm_func @Noname_30847 4 4@ 7@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 8@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 9@(0@,1i) 9@ 1  
+gosub @Noname_30828 
+0AB1: call_scm_func @Noname_30847 4 4@ 10@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 11@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 12@(0@,1i) 9@ 1  
+gosub @Noname_30828 
+0AB1: call_scm_func @Noname_30847 4 4@ 13@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 14@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 15@(0@,1i) 9@ 1  
+gosub @Noname_30828 
+0AB1: call_scm_func @Noname_30847 4 4@ 16@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 17@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 18@(0@,1i) 9@ 1  
+gosub @Noname_30828 
+0AB1: call_scm_func @Noname_30930 3 4@ 19@(0@,1i) 9@  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30930 3 4@ 20@(0@,1i) 9@  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30930 3 4@ 21@(0@,1i) 9@  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 22@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 23@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 24@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 25@(0@,1i) 9@ 2  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 26@(0@,1i) 9@ 2  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30930 3 4@ 27@(0@,1i) 9@  
+gosub @Noname_30828 
+0AB1: call_scm_func @Noname_30847 4 4@ 28@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 29@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 30@(0@,1i) 9@ 1  
+gosub @Noname_30828 
+0AB1: call_scm_func @Noname_30847 4 4@ 31@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 32@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 33@(0@,1i) 9@ 1  
+gosub @Noname_30828 
+0AB1: call_scm_func @Noname_30847 4 4@ 34@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 35@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 36@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 37@(0@,1i) 9@ 1  
+gosub @Noname_30828 
+0A8E: 11@ = 38@(0@,1i) + 9@ // int 
+0A8D: 11@ = read_memory 11@ size 1 virtual_protect 0 
+11@ /= 2 
+0AB1: call_scm_func @Noname_37907 1 11@ 11@ 12@  
+0AB1: call_scm_func @Noname_39026 2 11@ 12@ 13@  
+File.Write(4@, 13@, 11@)
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 39@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 40@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 41@(0@,1i) 9@ 1  
+gosub @Noname_30828 
+0A8E: 11@ = 42@(0@,1i) + 9@ // int 
+0A8D: 11@ = read_memory 11@ size 1 virtual_protect 0 
+11@ /= 2 
+0AB1: call_scm_func @Noname_37907 1 11@ 11@ 12@  
+0AB1: call_scm_func @Noname_39026 2 11@ 12@ 13@  
+File.Write(4@, 13@, 11@)
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 43@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 44@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 45@(0@,1i) 9@ 1  
+gosub @Noname_30828 
+0AB1: call_scm_func @Noname_30847 4 4@ 46@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 47@(0@,1i) 9@ 1  
+gosub @Noname_30809 
+0AB1: call_scm_func @Noname_30847 4 4@ 48@(0@,1i) 9@ 1  
+if 
+   not 3@ == 0 
+jf @Noname_30687 
+gosub @Noname_30809 
+0A8E: 11@ = 49@(0@,1i) + 9@ // int 
+0A8D: 11@ = read_memory 11@ size 1 virtual_protect 0 
+0093: 11@ = integer 11@ to_float 
+11@ /= 100.0 
+0AB1: call_scm_func @Noname_39448 1 11@ 11@ 12@ 13@ 14@  
+0AB1: call_scm_func @Noname_39026 4 11@ 12@ 13@ 14@ 17@  
+File.Write(4@, 17@, 11@)
+
+:Noname_30687
+gosub @Noname_30769 
+6@ += 9 
+8@ += 1 
+  8@ > 7 
+jf @Noname_28854 
+gosub @Noname_30789 
+gosub @Noname_30769 
+5@ += 23 
+7@ += 1 
+jump @Noname_28771 
+
+:Noname_30757
+File.Close(4@)
+0485:   NOP_true 
+
+:Noname_30764
+0AB2: ret 0 
+
+:Noname_30769
+11@ = 2573 
+File.Write(4@, 2, 11@)
+return 
+
+:Noname_30789
+11@ = 12079 
+File.Write(4@, 2, 11@)
+return 
+
+:Noname_30809
+11@ = 32 
+File.Write(4@, 1, 11@)
+return 
+
+:Noname_30828
+11@ = 9 
+File.Write(4@, 1, 11@)
+return 
+
+:Noname_30847
+006A: 2@ *= 3@ // (int) 
+005A: 1@ += 2@ // (int) 
+0A8D: 1@ = read_memory 1@ size 3@ virtual_protect 0 
+0AB1: call_scm_func @Noname_37907 1 1@ 1@ 2@  
+0AB1: call_scm_func @Noname_39026 2 1@ 2@ 3@  
+File.Write(0@, 3@, 1@)
+0AB2: ret 0 
+
+:Noname_30930
+005A: 1@ += 2@ // (int) 
+0A8D: 1@ = read_memory 1@ size 1 virtual_protect 0 
+0093: 1@ = integer 1@ to_float 
+1@ /= 10.0 
+0AB1: call_scm_func @Noname_39448 1 1@ 1@ 2@ 3@ 4@  
+0AB1: call_scm_func @Noname_39026 2 1@ 2@ 3@  
+File.Write(0@, 3@, 1@)
+0AB2: ret 0 
+
+:Noname_31028
+005B: 1@ += 2@ // (float) 
+if 
+  2@ > 0.0 
+jf @Noname_31139 
+if and
+  1@ >= 0.0 
+   not 1@ >= 0.1 
+jf @Noname_31105 
+1@ = 0.1 
+jump @Noname_31132 
+
+:Noname_31105
+if 
+0025:   1@ > 4@ // (float) 
+jf @Noname_31132 
+0087: 1@ = 4@ // (float) 
+
+:Noname_31132
+jump @Noname_31214 
+
+:Noname_31139
+if and
+   not 1@ > 0.0 
+  1@ > -0.1 
+jf @Noname_31187 
+1@ = -0.1 
+jump @Noname_31214 
+
+:Noname_31187
+if 
+0025:   3@ > 1@ // (float) 
+jf @Noname_31214 
+0087: 1@ = 3@ // (float) 
+
+:Noname_31214
+0087: 2@ = 1@ // (float) 
+1@ *= 10.0 
+1@ += 0.5 
+0092: 1@ = float 1@ to_integer 
+0A8C: write_memory 0@ size 1 value 1@ virtual_protect 0 
+0AB2: ret 1 2@ 
+
+:Noname_31270
+0AB1: call_scm_func @Noname_38923 4 0@ 1 1 0 0@  
+if 
+  0@ == 0 
+jf @Noname_31324 
+0@ = -1 
+jump @Noname_31349 
+
+:Noname_31324
+if 
+   not 0@ >= 0 
+jf @Noname_31349 
+0@ -= 1 
+
+:Noname_31349
+0093: 0@ = integer 0@ to_float 
+0@ /= 10.0 
+0AB2: ret 1 0@ 
+
+:Noname_31375
+0AB1: call_scm_func @Noname_37209 2 0@ 1 4@ 5@  
+if 
+   not 0@ >= 0.0 
+jf @Noname_31447 
+045B: draw_text_2numbers 2@ 3@ GXT 'TCFLTN' numbers 4@ 5@ 
+jump @Noname_31470 
+
+:Noname_31447
+045B: draw_text_2numbers 2@ 3@ GXT 'TCFLT' numbers 4@ 5@ 
+
+:Noname_31470
+0AB2: ret 0 
+
+:Noname_31475
+if 
+   not 0@ == 0 
+jf @Noname_31500 
+0AB2: ret 1 0 
+
+:Noname_31500
+0AB2: ret 1 1 
+
+:Noname_31507
+if or
+0AB0:   key_pressed 1 
+0AB0:   key_pressed 162 
+jf @Noname_31534 
+0485:   NOP_true 
+0AB2: ret 0 
+
+:Noname_31534
+059A:   NOP_false 
+0AB2: ret 0 
+
+:Noname_31541
+005A: 5@ += 4@ // (int) 
+005A: 6@ += 4@ // (int) 
+005A: 7@ += 4@ // (int) 
+0A8D: 10@ = read_memory 5@ size 1 virtual_protect 0 
+0A8D: 11@ = read_memory 6@ size 1 virtual_protect 0 
+0A8D: 12@ = read_memory 7@ size 1 virtual_protect 0 
+if 
+  8@ > 0 
+jf @Noname_31646 
+005A: 8@ += 4@ // (int) 
+0A8D: 13@ = read_memory 8@ size 1 virtual_protect 0 
+jump @Noname_31653 
+
+:Noname_31646
+13@ = -1 
+
+:Noname_31653
+0AB1: call_scm_func @Noname_3735 5 3@ 10@ 11@ 12@ 13@  
+0AB1: call_scm_func @Noname_4269 5 3@ 0@ 1@ 2@ 40 2@  
+0AB1: call_scm_func @Noname_4210 1 3@ 10@ 11@ 12@ 13@  
+0A8C: write_memory 5@ size 1 value 10@ virtual_protect 0 
+0A8C: write_memory 6@ size 1 value 11@ virtual_protect 0 
+0A8C: write_memory 7@ size 1 value 12@ virtual_protect 0 
+if 
+  8@ > 0 
+jf @Noname_31796 
+0A8C: write_memory 8@ size 1 value 13@ virtual_protect 0 
+
+:Noname_31796
+0AB2: ret 1 2@ 
+
+:Noname_31804
+0AB1: call_scm_func @Noname_108 0 0@  
+0871: init_jump_table 0@ total_jumps 2 default_jump 0 @Noname_31916 jumps 1 @Noname_31880 4 @Noname_31898 -1 @Noname_31916 -1 @Noname_31916 -1 @Noname_31916 -1 @Noname_31916 -1 @Noname_31916 
+
+:Noname_31880
+0AA5: call 8535003 num_params 3 pop 3 0 0 0  
+
+:Noname_31898
+0AA5: call 8538523 num_params 3 pop 3 0 0 0  
+
+:Noname_31916
+0AB2: ret 0 
+
+:Noname_31921
+1@ *= 4 
+1@ += 60 
+005A: 0@ += 1@ // (int) 
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 4604032 4 4604160 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 10763384 4 10773240 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 4741584 4 4741712 0@  
+0AB2: ret 1 0@ 
+0@ = 8749812 
+0A8D: 0@ = read_memory 0@ size 4 virtual_protect 1 
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 8528045 4 8530349 0@  
+0AB2: ret 1 0@ 
+
+:Noname_32201
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 8526773 4 8529077 0@  
+0AB2: ret 1 0@ 
+
+:Noname_32256
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 13112088 4 13122264 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 11120840 4 11130696 0@  
+0AB2: ret 1 0@ 
+0@ = 7295696 
+0AB2: ret 1 0@ 
+0@ = 5283003 
+0A8D: 0@ = read_memory 0@ size 4 virtual_protect 0 
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5017215 4 5017727 0@  
+0A8D: 0@ = read_memory 0@ size 4 virtual_protect 0 
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 4430576 4 4430704 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12005776 4 12015632 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12005152 4 12015008 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 4424832 4 4424960 0@  
+0AB2: ret 1 0@ 
+
+:Noname_32701
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 9867536 4 9877392 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5492432 4 5493616 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5492480 4 5493664 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 8534542 4 8538062 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5492528 4 5493712 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 9067720 4 9072560 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 9867568 4 9877424 0@  
+0AB2: ret 1 0@ 
+
+:Noname_33086
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 6937424 4 6939504 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 8545216 4 8547504 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 6019120 4 6021136 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5474256 4 5475440 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5474560 4 5475744 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5474768 4 5475952 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5468032 4 5469216 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12010640 4 12020496 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 5689456 4 12020496 0@  
+0AB2: ret 1 0@ 
+
+:Noname_33581
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12045188 4 12055044 0@  
+0AB2: ret 1 0@ 
+
+:Noname_33636
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 11993432 4 12003288 0@  
+0AB2: ret 1 0@ 
+
+:Noname_33691
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 11987996 4 11997852 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 6946896 4 6948976 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12694336 4 12704512 0@  
+0AB2: ret 1 0@ 
+
+:Noname_33856
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12677188 4 12687364 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 7336992 4 5713135 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12840868 4 12851044 0@  
+0AB2: ret 1 0@ 
+
+:Noname_34021
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12216132 4 12225988 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_34365 7 0@ 2 0 1 12677184 4 12687360 0@  
+0AB2: ret 1 0@ 
+0AB1: call_scm_func @Noname_32701 0 8@  
+0A8F: 9@ = 8@ - 1 // int 
+0A8D: 9@ = read_memory 9@ size 1 virtual_protect 0 
+if 
+   not 9@ == 0 
+jf @Noname_34358 
+0A9F: 9@ = current_thread_pointer 
+0A8E: 11@ = 9@ + 76 // int 
+9@ += 60 
+0AB1: call_scm_func @Noname_33086 0 10@  
+0AA7: call_function 10@ num_params 1 pop 1 9@ 9@  
+005A: 9@ += 8@ // (int) 
+9@ -= 1 
+
+:Noname_34250
+002D:   9@ >= 8@ // (int) 
+jf @Noname_34310 
+0A8D: 10@ = read_memory 9@ size 1 virtual_protect 0 
+0A8C: write_memory 11@ size 1 value 10@ virtual_protect 0 
+9@ -= 1 
+11@ += 1 
+jump @Noname_34250 
+
+:Noname_34310
+0A8C: write_memory 11@ size 1 value 0 virtual_protect 0 
+if 
+08F9:   0@v == 4@v 
+jf @Noname_34358 
+0A8C: write_memory 8@ size 1 value 0 virtual_protect 0 
+0485:   NOP_true 
+0AB2: ret 0 
+
+:Noname_34358
+059A:   NOP_false 
+0AB2: ret 0 
+
+:Noname_34365
+1@ *= 2 
+31@ = 1 
+
+:Noname_34379
+if 
+003B:   2@(31@,1i) == 0@ // (int) 
+jf @Noname_34416 
+0485:   NOP_true 
+0AB2: ret 1 3@(31@,1i) 
+
+:Noname_34416
+31@ += 2 
+001D:   31@ > 1@ // (int) 
+jf @Noname_34379 
+059A:   NOP_false 
+0AB2: ret 1 2@ 
+
+:Noname_34448
+0A9F: 2@ = current_thread_pointer 
+2@ += 60 
+0A9F: 3@ = current_thread_pointer 
+3@ += 16 
+0A8D: 3@ = read_memory 3@ size 4 virtual_protect 0 
+0062: 3@ -= 0@ // (int) 
+0062: 3@ -= 2@ // (int) 
+3@ /= 16 
+3@ += 1 
+3@ *= 16 
+0072: 3@ /= 1@ // (int) 
+0AB2: ret 1 3@ 
+
+:Noname_34537
+0AB1: call_scm_func @Noname_108 0 0@  
+0AB1: call_scm_func @Noname_33856 0 0@  
+0A8D: 1@ = read_memory 0@ size 4 virtual_protect 0 
+0@ += 4 
+0A8D: 2@ = read_memory 0@ size 4 virtual_protect 0 
+0485:   NOP_true 
+0AB2: ret 2 1@ 2@ 
+
+:Noname_34607
+0AB1: call_scm_func @Noname_34537 0 2@ 3@  
+0093: 2@ = integer 2@ to_float 
+0093: 3@ = integer 3@ to_float 
+3@ *= 1.333333 
+0073: 2@ /= 3@ // (float) 
+0073: 0@ /= 2@ // (float) 
+1@ /= 1.071429 
+0AB2: ret 2 0@ 1@ 
+
+:Noname_34686
+0AB1: call_scm_func @Noname_34537 0 2@ 3@  
+0093: 2@ = integer 2@ to_float 
+0093: 3@ = integer 3@ to_float 
+2@ /= 640.0 
+0073: 0@ /= 2@ // (float) 
+3@ /= 448.0 
+0073: 1@ /= 3@ // (float) 
+0AB2: ret 2 0@ 1@ 
+
+:Noname_34765
+0AB1: call_scm_func @Noname_34537 0 2@ 3@  
+0093: 2@ = integer 2@ to_float 
+0093: 3@ = integer 3@ to_float 
+3@ *= 1.333333 
+0073: 2@ /= 3@ // (float) 
+006B: 0@ *= 2@ // (float) 
+1@ *= 1.071429 
+0AB2: ret 2 0@ 1@ 
+
+:Noname_34844
+0A9F: 0@ = current_thread_pointer 
+0@ += 16 
+0A8D: 0@ = read_memory 0@ size 4 virtual_protect 0 
+0AB2: ret 1 0@ 
+if 
+  1@ == 0.0 
+jf @Noname_34938 
+2@ *= 255.0 
+0087: 3@ = 2@ // (float) 
+0087: 4@ = 2@ // (float) 
+0087: 5@ = 2@ // (float) 
+jump @Noname_35408 
+
+:Noname_34938
+if 
+   not 2@ >= 0.5 
+jf @Noname_35000 
+9@ = 1.0 
+005B: 9@ += 1@ // (float) 
+0087: 7@ = 2@ // (float) 
+006B: 7@ *= 9@ // (float) 
+jump @Noname_35040 
+
+:Noname_35000
+0087: 9@ = 1@ // (float) 
+006B: 9@ *= 2@ // (float) 
+0087: 7@ = 1@ // (float) 
+005B: 7@ += 2@ // (float) 
+0063: 7@ -= 9@ // (float) 
+
+:Noname_35040
+6@ = 2.0 
+006B: 6@ *= 2@ // (float) 
+0063: 6@ -= 7@ // (float) 
+0@ /= 360.0 
+9@ = 1.0 
+9@ /= 3.0 
+0087: 8@ = 0@ // (float) 
+005B: 8@ += 9@ // (float) 
+if 
+   not 8@ >= 0.0 
+jf @Noname_35143 
+8@ += 1.0 
+
+:Noname_35143
+if 
+  8@ > 1.0 
+jf @Noname_35174 
+8@ -= 1.0 
+
+:Noname_35174
+0AB1: call_scm_func @Noname_35476 3 6@ 7@ 8@ 3@  
+0087: 8@ = 0@ // (float) 
+if 
+   not 8@ >= 0.0 
+jf @Noname_35235 
+8@ += 1.0 
+
+:Noname_35235
+if 
+  8@ > 1.0 
+jf @Noname_35266 
+8@ -= 1.0 
+
+:Noname_35266
+0AB1: call_scm_func @Noname_35476 3 6@ 7@ 8@ 4@  
+9@ = 1.0 
+9@ /= 3.0 
+0087: 8@ = 0@ // (float) 
+0063: 8@ -= 9@ // (float) 
+if 
+   not 8@ >= 0.0 
+jf @Noname_35355 
+8@ += 1.0 
+
+:Noname_35355
+if 
+  8@ > 1.0 
+jf @Noname_35386 
+8@ -= 1.0 
+
+:Noname_35386
+0AB1: call_scm_func @Noname_35476 3 6@ 7@ 8@ 5@  
+
+:Noname_35408
+3@ *= 255.0 
+4@ *= 255.0 
+5@ *= 255.0 
+0092: 3@ = float 3@ to_integer 
+0092: 4@ = float 4@ to_integer 
+0092: 5@ = float 5@ to_integer 
+0AB2: ret 3 3@ 4@ 5@ 
+
+:Noname_35476
+0087: 4@ = 2@ // (float) 
+4@ *= 6.0 
+if 
+   not 4@ >= 1.0 
+jf @Noname_35572 
+0087: 4@ = 1@ // (float) 
+0063: 4@ -= 0@ // (float) 
+0087: 3@ = 4@ // (float) 
+3@ *= 6.0 
+006B: 3@ *= 2@ // (float) 
+005B: 3@ += 0@ // (float) 
+jump @Noname_35758 
+
+:Noname_35572
+0087: 4@ = 2@ // (float) 
+4@ *= 2.0 
+if 
+   not 4@ >= 1.0 
+jf @Noname_35626 
+0087: 3@ = 1@ // (float) 
+jump @Noname_35758 
+
+:Noname_35626
+0087: 4@ = 2@ // (float) 
+4@ *= 3.0 
+if 
+   not 4@ >= 2.0 
+jf @Noname_35750 
+4@ = 2.0 
+4@ /= 3.0 
+0063: 4@ -= 2@ // (float) 
+4@ *= 6.0 
+0087: 5@ = 1@ // (float) 
+0063: 5@ -= 0@ // (float) 
+006B: 5@ *= 4@ // (float) 
+0087: 3@ = 5@ // (float) 
+005B: 3@ += 0@ // (float) 
+jump @Noname_35758 
+
+:Noname_35750
+0087: 3@ = 0@ // (float) 
+
+:Noname_35758
+0AB2: ret 1 3@ 
+
+:Noname_35766
+0093: 0@ = integer 0@ to_float 
+0093: 1@ = integer 1@ to_float 
+0093: 2@ = integer 2@ to_float 
+0@ /= 255.0 
+1@ /= 255.0 
+2@ /= 255.0 
+0AB1: call_scm_func @Noname_36773 4 3 0@ 1@ 2@ 3@  
+0AB1: call_scm_func @Noname_36855 4 3 0@ 1@ 2@ 4@  
+0087: 5@ = 3@ // (float) 
+0063: 5@ -= 4@ // (float) 
+if 
+   not 5@ == 0.0 
+jf @Noname_36104 
+0087: 7@ = 5@ // (float) 
+0073: 7@ /= 3@ // (float) 
+if 
+0045:   3@ == 0@ // (float) 
+jf @Noname_36000 
+0087: 6@ = 1@ // (float) 
+0063: 6@ -= 2@ // (float) 
+0073: 6@ /= 5@ // (float) 
+if 
+0025:   2@ > 1@ // (float) 
+jf @Noname_35993 
+6@ += 6.0 
+
+:Noname_35993
+jump @Noname_36094 
+
+:Noname_36000
+if 
+0045:   3@ == 1@ // (float) 
+jf @Noname_36060 
+0087: 6@ = 2@ // (float) 
+0063: 6@ -= 0@ // (float) 
+0073: 6@ /= 5@ // (float) 
+6@ += 2.0 
+jump @Noname_36094 
+
+:Noname_36060
+0087: 6@ = 0@ // (float) 
+0063: 6@ -= 1@ // (float) 
+0073: 6@ /= 5@ // (float) 
+6@ += 4.0 
+
+:Noname_36094
+6@ /= 6.0 
+
+:Noname_36104
+0AB2: ret 3 6@ 7@ 3@ 
+
+:Noname_36118
+0@ *= 6.0 
+0087: 3@ = 0@ // (float) 
+0092: 4@ = float 0@ to_integer 
+0093: 4@ = integer 4@ to_float 
+0063: 3@ -= 4@ // (float) 
+4@ = 1.0 
+0063: 4@ -= 1@ // (float) 
+006B: 4@ *= 2@ // (float) 
+0087: 5@ = 3@ // (float) 
+006B: 5@ *= 1@ // (float) 
+5@ *= -1.0 
+5@ += 1.0 
+006B: 5@ *= 2@ // (float) 
+7@ = 1.0 
+0063: 7@ -= 3@ // (float) 
+006B: 7@ *= 1@ // (float) 
+6@ = 1.0 
+0063: 6@ -= 7@ // (float) 
+006B: 6@ *= 2@ // (float) 
+gosub @Noname_36357 
+8@ *= 255.0 
+9@ *= 255.0 
+10@ *= 255.0 
+0092: 8@ = float 8@ to_integer 
+0092: 9@ = float 9@ to_integer 
+0092: 10@ = float 10@ to_integer 
+0AB2: ret 3 8@ 9@ 10@ 
+
+:Noname_36357
+0092: 0@ = float 0@ to_integer 
+0A91: 7@ = 0@ / 6 // int 
+7@ *= 6 
+0062: 0@ -= 7@ // (int) 
+0871: init_jump_table 0@ total_jumps 6 default_jump 0 @Noname_36453 jumps 0 @Noname_36453 1 @Noname_36479 2 @Noname_36505 3 @Noname_36531 4 @Noname_36557 5 @Noname_36583 -1 @Noname_36453 
+
+:Noname_36453
+0087: 8@ = 2@ // (float) 
+0087: 9@ = 6@ // (float) 
+0087: 10@ = 4@ // (float) 
+return 
+
+:Noname_36479
+0087: 8@ = 5@ // (float) 
+0087: 9@ = 2@ // (float) 
+0087: 10@ = 4@ // (float) 
+return 
+
+:Noname_36505
+0087: 8@ = 4@ // (float) 
+0087: 9@ = 2@ // (float) 
+0087: 10@ = 6@ // (float) 
+return 
+
+:Noname_36531
+0087: 8@ = 4@ // (float) 
+0087: 9@ = 5@ // (float) 
+0087: 10@ = 2@ // (float) 
+return 
+
+:Noname_36557
+0087: 8@ = 6@ // (float) 
+0087: 9@ = 4@ // (float) 
+0087: 10@ = 2@ // (float) 
+return 
+
+:Noname_36583
+0087: 8@ = 2@ // (float) 
+0087: 9@ = 4@ // (float) 
+0087: 10@ = 5@ // (float) 
+return 
+31@ = -2147483648 
+30@ = 1 
+
+:Noname_36626
+if 
+001D:   0@(30@,1i) > 31@ // (int) 
+jf @Noname_36661 
+0085: 31@ = 0@(30@,1i) // (int) 
+
+:Noname_36661
+30@ += 1 
+001D:   30@ > 0@ // (int) 
+jf @Noname_36626 
+0AB2: ret 1 31@ 
+31@ = 2147483647 
+30@ = 1 
+
+:Noname_36708
+if 
+001D:   31@ > 0@(30@,1i) // (int) 
+jf @Noname_36743 
+0085: 31@ = 0@(30@,1i) // (int) 
+
+:Noname_36743
+30@ += 1 
+001D:   30@ > 0@ // (int) 
+jf @Noname_36708 
+0AB2: ret 1 31@ 
+
+:Noname_36773
+31@ = -3.4E38 
+30@ = 1 
+
+:Noname_36790
+if 
+0025:   0@(30@,1i) > 31@ // (float) 
+jf @Noname_36825 
+0087: 31@ = 0@(30@,1i) // (float) 
+
+:Noname_36825
+30@ += 1 
+001D:   30@ > 0@ // (int) 
+jf @Noname_36790 
+0AB2: ret 1 31@ 
+
+:Noname_36855
+31@ = 3.4E38 
+30@ = 1 
+
+:Noname_36872
+if 
+0025:   31@ > 0@(30@,1i) // (float) 
+jf @Noname_36907 
+0087: 31@ = 0@(30@,1i) // (float) 
+
+:Noname_36907
+30@ += 1 
+001D:   30@ > 0@ // (int) 
+jf @Noname_36872 
+0AB2: ret 1 31@ 
+0509: 6@ = distance_between_XY 0@ 1@ and_XY 3@ 4@ 
+0063: 2@ -= 5@ // (float) 
+0604: get_Z_angle_for_point 6@ 2@ store_to 7@ 
+0AB2: ret 1 7@ 
+0063: 0@ -= 2@ // (float) 
+0063: 1@ -= 3@ // (float) 
+0604: get_Z_angle_for_point 0@ 1@ store_to 4@ 
+0AB2: ret 1 4@ 
+
+:Noname_37016
+0A91: 2@ = 0@ / 1@ // int 
+006A: 2@ *= 1@ // (int) 
+0062: 0@ -= 2@ // (int) 
+005A: 0@ += 1@ // (int) 
+0A91: 2@ = 0@ / 1@ // int 
+006A: 2@ *= 1@ // (int) 
+0062: 0@ -= 2@ // (int) 
+0AB2: ret 1 0@ 
+0092: 1@ = float 0@ to_integer 
+0093: 2@ = integer 1@ to_float 
+0063: 0@ -= 2@ // (float) 
+
+:Noname_37110
+0092: 2@ = float 0@ to_integer 
+0093: 2@ = integer 2@ to_float 
+0087: 3@ = 0@ // (float) 
+0063: 3@ -= 2@ // (float) 
+if and
+  3@ > 0.0 
+   not 3@ >= 1.0 
+jf @Noname_37190 
+0@ *= 10.0 
+jump @Noname_37110 
+
+:Noname_37190
+0092: 0@ = float 0@ to_integer 
+0AB2: ret 2 1@ 0@ 
+
+:Noname_37209
+0097: make 0@ absolute_float 
+0092: 2@ = float 0@ to_integer 
+0093: 3@ = integer 2@ to_float 
+0063: 0@ -= 3@ // (float) 
+if 
+  1@ > 0 
+jf @Noname_37312 
+4@ = 10.0 
+
+:Noname_37266
+  1@ > 1 
+jf @Noname_37304 
+4@ *= 10.0 
+1@ -= 1 
+jump @Noname_37266 
+
+:Noname_37304
+006B: 0@ *= 4@ // (float) 
+
+:Noname_37312
+0092: 3@ = float 0@ to_integer 
+0093: 3@ = integer 3@ to_float 
+0087: 4@ = 0@ // (float) 
+0063: 4@ -= 3@ // (float) 
+0092: 0@ = float 0@ to_integer 
+if 
+  4@ > 0.0 
+jf @Noname_37380 
+0@ += 1 
+
+:Noname_37380
+0AB2: ret 2 2@ 0@ 
+
+:Noname_37391
+0A8D: 2@ = read_memory 1@ size 1 virtual_protect 0 
+if 
+   not 2@ == 0 
+jf @Noname_37445 
+File.Write(0@, 1, 2@)
+1@ += 1 
+jump @Noname_37391 
+
+:Noname_37445
+0AB2: ret 0 
+
+:Noname_37450
+0085: 2@ = 0@ // (int) 
+if 
+  1@ > 0 
+jf @Noname_37538 
+3@ = 1 
+
+:Noname_37483
+if 
+  3@ > 1 
+jf @Noname_37509 
+006A: 2@ *= 0@ // (int) 
+
+:Noname_37509
+3@ += 1 
+001D:   3@ > 1@ // (int) 
+jf @Noname_37483 
+jump @Noname_37667 
+
+:Noname_37538
+if 
+   not 1@ >= 0 
+jf @Noname_37660 
+0093: 2@ = integer 2@ to_float 
+0093: 0@ = integer 0@ to_float 
+3@ = -1 
+
+:Noname_37579
+if 
+   not 3@ >= -1 
+jf @Noname_37605 
+006B: 2@ *= 0@ // (float) 
+
+:Noname_37605
+3@ += 1 
+001D:   3@ > 1@ // (int) 
+jf @Noname_37579 
+4@ = 1.0 
+0073: 4@ /= 2@ // (float) 
+0087: 2@ = 4@ // (float) 
+jump @Noname_37667 
+
+:Noname_37660
+2@ = 1 
+
+:Noname_37667
+0AB2: ret 1 2@ 
+
+:Noname_37675
+1@ = 0 
+0095: make 0@ absolute_integer 
+if 
+   not 0@ == 0 
+jf @Noname_37747 
+
+:Noname_37705
+  0@ > 0 
+jf @Noname_37740 
+0@ /= 10 
+1@ += 1 
+jump @Noname_37705 
+
+:Noname_37740
+jump @Noname_37754 
+
+:Noname_37747
+1@ = 1 
+
+:Noname_37754
+0AB2: ret 1 1@ 
+
+:Noname_37762
+0095: make 0@ absolute_integer 
+0AB1: call_scm_func @Noname_37675 1 0@ 2@  
+if 
+002D:   2@ >= 1@ // (int) 
+jf @Noname_37892 
+0085: 3@ = 0@ // (int) 
+0AB1: call_scm_func @Noname_37450 2 10 1@ 4@  
+0072: 3@ /= 4@ // (int) 
+006A: 3@ *= 4@ // (int) 
+0062: 0@ -= 3@ // (int) 
+1@ -= 1 
+0AB1: call_scm_func @Noname_37450 2 10 1@ 4@  
+0072: 0@ /= 4@ // (int) 
+jump @Noname_37899 
+
+:Noname_37892
+0@ = 0 
+
+:Noname_37899
+0AB2: ret 1 0@ 
+
+:Noname_37907
+if and
+   not 0@ > 9999999 
+  0@ >= -9999999 
+jf @Noname_38091 
+0AB1: call_scm_func @Noname_37675 1 0@ 1@  
+if 
+  1@ > 7 
+jf @Noname_37979 
+1@ = 7 
+
+:Noname_37979
+05AA: 2@s = '' 
+if 
+   not 0@ >= 0 
+jf @Noname_38025 
+05AA: 2@s = '-' 
+
+:Noname_38025
+0085: 4@ = 1@ // (int) 
+
+:Noname_38033
+0AB1: call_scm_func @Noname_37762 2 0@ 4@ 5@  
+5@ += 48 
+098B: 2@s = 2@s + 5@s // all string variables 
+4@ -= 1 
+  1 > 4@ 
+jf @Noname_38033 
+
+:Noname_38091
+0AB2: ret 2 2@ 3@ 
+0085: 3@ = 0@ // (int) 
+2@ = 1 
+if 
+  1@ >= 1 
+jf @Noname_38149 
+jump @Noname_38156 
+jump @Noname_38156 
+
+:Noname_38149
+jump @Noname_38197 
+
+:Noname_38156
+if 
+8045:   not  2@ == 1@ // (float) 
+jf @Noname_38238 
+006A: 3@ *= 0@ // (int) 
+2@ += 1 
+jump @Noname_38156 
+
+:Noname_38197
+if 
+8045:   not  2@ == 1@ // (float) 
+jf @Noname_38238 
+0072: 3@ /= 0@ // (int) 
+2@ -= 1 
+jump @Noname_38197 
+
+:Noname_38238
+0AB2: ret 1 3@ 
+0085: 3@ = 0@ // (int) 
+2@ = 1 
+if 
+  1@ >= 1 
+jf @Noname_38293 
+jump @Noname_38300 
+jump @Noname_38300 
+
+:Noname_38293
+jump @Noname_38341 
+
+:Noname_38300
+if 
+803B:   not  2@ == 1@ // (int) 
+jf @Noname_38382 
+006B: 3@ *= 0@ // (float) 
+2@ += 1 
+jump @Noname_38300 
+
+:Noname_38341
+if 
+803B:   not  2@ == 1@ // (int) 
+jf @Noname_38382 
+0073: 3@ /= 0@ // (float) 
+2@ -= 1 
+jump @Noname_38341 
+
+:Noname_38382
+0AB2: ret 1 3@ 
+0062: 3@ -= 0@ // (int) 
+0062: 3@ -= 1@ // (int) 
+0A8C: write_memory 0@ size 1@ value 3@ virtual_protect 2@ 
+0AB2: ret 0 
+0062: 0@ -= 4@ // (int) 
+0062: 0@ -= 1@ // (int) 
+0062: 0@ -= 2@ // (int) 
+0A8C: write_memory 1@ size 2@ value 0@ virtual_protect 3@ 
+0AB2: ret 0 
+
+:Noname_38468
+0062: 0@ -= 1@ // (int) 
+0062: 3@ -= 0@ // (int) 
+0062: 3@ -= 2@ // (int) 
+0A8C: write_memory 0@ size 2@ value 3@ virtual_protect 0 
+0AB2: ret 0 
+
+:Noname_38510
+0062: 0@ -= 1@ // (int) 
+0062: 1@ -= 3@ // (int) 
+0062: 1@ -= 2@ // (int) 
+0A8C: write_memory 0@ size 2@ value 1@ virtual_protect 0 
+0AB2: ret 0 
+0A8C: write_memory 0@ size 1@ value 3@ virtual_protect 2@ 
+0AB2: ret 0 
+0062: 0@ -= 3@ // (int) 
+0A8C: write_memory 1@ size 4 value 0@ virtual_protect 2@ 
+0AB2: ret 0 
+
+:Noname_38597
+0A8F: 2@ = 0@ - 2@ // int 
+0062: 0@ -= 1@ // (int) 
+0A8C: write_memory 0@ size 4 value 2@ virtual_protect 0 
+0AB2: ret 0 
+
+:Noname_38633
+0062: 0@ -= 1@ // (int) 
+0A8C: write_memory 0@ size 2@ value 3@ virtual_protect 0 
+0AB2: ret 0 
+0062: 0@ -= 1@ // (int) 
+0AB2: ret 1 0@ 
+
+:Noname_38675
+0062: 0@ -= 3@ // (int) 
+0A8C: write_memory 1@ size 1 value 233 virtual_protect 2@ 
+1@ += 1 
+0062: 0@ -= 1@ // (int) 
+0@ -= 4 
+0A8C: write_memory 1@ size 4 value 0@ virtual_protect 2@ 
+0AB2: ret 0 
+0062: 0@ -= 1@ // (int) 
+
+:Noname_38744
+0A8D: 5@ = read_memory 0@ size 4 virtual_protect 0 
+if 
+   not 5@ == 0 
+jf @Noname_38802 
+0A8C: write_memory 5@ size 3@ value 4@ virtual_protect 2@ 
+0@ += 4 
+jump @Noname_38744 
+
+:Noname_38802
+0AB2: ret 0 
+0A8E: 31@ = 0@ + 16 // int 
+0A8D: 31@ = read_memory 31@ size 4 virtual_protect 0 
+0062: 31@ -= 1@ // (int) 
+0@ += 68 
+
+:Noname_38844
+0A8D: 1@ = read_memory 0@ size 1 virtual_protect 0 
+if 
+   not 1@ == 0 
+jf @Noname_38907 
+0A8C: write_memory 31@ size 1 value 1@ virtual_protect 0 
+0@ += 1 
+31@ += 1 
+jump @Noname_38844 
+
+:Noname_38907
+0A8C: write_memory 31@ size 1 value 0 virtual_protect 0 
+0AB2: ret 0 
+
+:Noname_38923
+0A8D: 4@ = read_memory 0@ size 1@ virtual_protect 3@ 
+if 
+   not 2@ == 0 
+jf @Noname_39018 
+1@ *= 8 
+1@ -= 1 
+if 
+08B7:   test 4@ bit 1@ 
+jf @Noname_39018 
+1@ += 1 
+5@ = 0 
+08BD: set 5@ bit 1@ 
+0062: 4@ -= 5@ // (int) 
+
+:Noname_39018
+0AB2: ret 1 4@ 
+
+:Noname_39026
+0A9F: 4@ = current_thread_pointer 
+0AB1: call_scm_func @Noname_31921 2 4@ 0 5@  
+6@ = 0 
+
+:Noname_39056
+0A8D: 7@ = read_memory 5@ size 1 virtual_protect 0 
+if and
+  7@ > 0 
+   not 6@ >= 16 
+jf @Noname_39114 
+5@ += 1 
+6@ += 1 
+jump @Noname_39155 
+
+:Noname_39114
+if 
+  6@ == 0 
+jf @Noname_39148 
+059A:   NOP_false 
+0AB2: ret 1 0 
+jump @Noname_39155 
+
+:Noname_39148
+jump @Noname_39162 
+
+:Noname_39155
+jump @Noname_39056 
+
+:Noname_39162
+0485:   NOP_true 
+0AB2: ret 1 6@ 
+
+:Noname_39172
+0A9F: 5@ = current_thread_pointer 
+5@ += 60 
+
+:Noname_39184
+0A8D: 6@ = read_memory 5@ size 1 virtual_protect 0 
+if 
+   not 6@ == 0 
+jf @Noname_39272 
+if and
+  6@ >= 65 
+   not 6@ > 90 
+jf @Noname_39258 
+6@ += 32 
+0A8C: write_memory 5@ size 1 value 6@ virtual_protect 0 
+
+:Noname_39258
+5@ += 1 
+jump @Noname_39184 
+
+:Noname_39272
+if 
+  4@ == 4 
+jf @Noname_39314 
+0AB2: ret 4 0@ 1@ 2@ 3@ 
+jump @Noname_39325 
+
+:Noname_39314
+0AB2: ret 2 0@ 1@ 
+
+:Noname_39325
+0AB1: call_scm_func @Noname_39172 5 0@ 1@ 0 0 2 0@ 1@  
+if or
+08FA:   0@v == "1" 
+08FA:   0@v == "true" 
+08FA:   0@v == "yes" 
+jf @Noname_39400 
+0485:   NOP_true 
+0AB2: ret 0 
+
+:Noname_39400
+059A:   NOP_false 
+0AB2: ret 0 
+
+:Noname_39407
+if 
+0AB1: call_scm_func @Noname_39325 2 0@ 1@  
+jf @Noname_39441 
+0AB2: ret 1 1 
+
+:Noname_39441
+0AB2: ret 1 0 
+
+:Noname_39448
+0A9F: 1@ = current_thread_pointer 
+0AB1: call_scm_func @Noname_34844 0 2@  
+0A8F: 3@ = 2@ - -39532 // int 
+2@ -= -8782 
+1@ += 60 
+0AA5: call 2@ num_params 3 pop 3 0@ 3@ 1@  
+0AB2: ret 4 0@ 1@ 2@ 3@ 
+hex
+ 25 67 00 B1 0A 01 82 78 FF FF
+end
+0204:   actor 20.0 near_car 20.0 radius 0@ 1@ flag in_car 
+0AB2: ret 2 0@ 1@ 
+
+:Noname_39572
+if 
+  5@ == 0 
+jf @Noname_39913 
+0A4A: store_joystick_X_offset_to 5@ Y_offset_to 6@ 
+0AB1: call_scm_func @Noname_34021 0 7@  
+0A8D: 8@ = read_memory 7@ size 1 virtual_protect 0 
+if 
+   not 8@ == 0 
+jf @Noname_39651 
+5@ *= -1.0 
+
+:Noname_39651
+7@ += 1 
+0A8D: 8@ = read_memory 7@ size 1 virtual_protect 0 
+if 
+   not 8@ == 0 
+jf @Noname_39698 
+6@ *= -1.0 
+
+:Noname_39698
+0AB1: call_scm_func @Noname_33691 0 7@  
+0A8D: 7@ = read_memory 7@ size 4 virtual_protect 0 
+006B: 5@ *= 7@ // (float) 
+006B: 6@ *= 7@ // (float) 
+5@ *= 200.0 
+6@ *= 200.0 
+005B: 1@ += 5@ // (float) 
+005B: 2@ += 6@ // (float) 
+if 
+   not 1@ >= 0.0 
+jf @Noname_39813 
+1@ = 0.0 
+jump @Noname_39844 
+
+:Noname_39813
+if 
+  1@ > 639.0 
+jf @Noname_39844 
+1@ = 639.0 
+
+:Noname_39844
+if 
+   not 2@ >= 0.0 
+jf @Noname_39882 
+2@ = 0.0 
+jump @Noname_39913 
+
+:Noname_39882
+if 
+  2@ > 447.0 
+jf @Noname_39913 
+2@ = 447.0 
+
+:Noname_39913
+0087: 5@ = 1@ // (float) 
+0087: 7@ = 3@ // (float) 
+7@ /= 2.0 
+005B: 5@ += 7@ // (float) 
+0087: 6@ = 2@ // (float) 
+0087: 8@ = 4@ // (float) 
+8@ /= 2.0 
+005B: 6@ += 8@ // (float) 
+038D: draw_texture 0@ position 5@ 6@ size 3@ 4@ RGBA 255 255 255 255 
+0AB2: ret 2 1@ 2@ 
+hex
+ 54 57 54 48 25 64 00 54 43 59 43 4C 45 25 64 00
+ 54 54 43 4C 25 64 00 54 4E 43 4C 25 64 00 80 3D
+ 00 00 00 00 00 0F
+end
+0085: // (int) 
+0000: NOP 
+8B56:   not 
+0035:   // (float) 
+0000: NOP 
+00E9: unsupported_in_sa 
+0000: NOP 
+hex
+ 00 A1 00 00 00 00
+end
+00A3:   actor 
+0000: NOP 
+00C3: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+0000: NOP 
+hex
+ 00

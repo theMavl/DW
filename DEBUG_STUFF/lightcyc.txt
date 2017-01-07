@@ -1,0 +1,285 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+thread "ligcyc"
+Model.load(18676)
+Model.Load(18677)
+Model.Load(18678)
+
+Model.Load(18742)
+Model.Load(18743)
+Model.Load(18744)
+038B: load_requested_models 
+wait 100
+while true
+    wait 0
+    0AB4: 30@ = var 0
+    if 30@ == 0
+    then
+    03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #NULL to #LIG_TOP    
+    end
+    if 30@ == 1
+    then
+        15@ = 49
+        gosub @3setw
+    end
+    if 30@ == 2
+    then
+        15@ = 100
+        gosub @3setw
+    end
+    if 30@ == 3
+    then
+        03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_TOP to #LIG_TOP_E
+        repeat
+        wait 0
+        0AB4: 30@ = var 0
+        until 8039: NOT 30@ == 3
+        if or 
+        30@ == 4
+        30@ == 5
+        then
+        03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_TOP_e to #NULL
+        if 30@ == 4
+        then
+            15@ = 49
+            gosub @3setr
+        end
+        if 30@ == 5
+        then
+            15@ = 100
+            gosub @3setr
+        end
+        else
+        03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_TOP_e to #LIG_TOP
+        end
+    end
+end
+
+:3setw
+wait 0
+0@ = object.Create(18676, 0.0, 0.0, 0.0)
+1@ = object.Create(18677, 0.0, 0.0, 0.0)
+2@ = object.Create(18678, 0.0, 0.0, 0.0)
+
+3@ = object.Create(18676, 0.0, 0.0, 0.0)
+4@ = object.Create(18677, 0.0, 0.0, 0.0)
+5@ = object.Create(18678, 0.0, 0.0, 0.0)
+
+6@ = object.Create(18676, 0.0, 0.0, 0.0)
+7@ = object.Create(18677, 0.0, 0.0, 0.0)
+8@ = object.Create(18678, 0.0, 0.0, 0.0)
+
+9@ = object.Create(18676, 0.0, 0.0, 0.0)
+10@ = object.Create(18677, 0.0, 0.0, 0.0)
+11@ = object.Create(18678, 0.0, 0.0, 0.0)
+jump @3set
+
+:3setr
+wait 0
+0@ = object.Create(18742, 0.0, 0.0, 0.0)
+1@ = object.Create(18743, 0.0, 0.0, 0.0)
+2@ = object.Create(18744, 0.0, 0.0, 0.0)
+
+3@ = object.Create(18742, 0.0, 0.0, 0.0)
+4@ = object.Create(18743, 0.0, 0.0, 0.0)
+5@ = object.Create(18744, 0.0, 0.0, 0.0)
+
+6@ = object.Create(18742, 0.0, 0.0, 0.0)
+7@ = object.Create(18743, 0.0, 0.0, 0.0)
+8@ = object.Create(18744, 0.0, 0.0, 0.0)
+
+9@ = object.Create(18742, 0.0, 0.0, 0.0)
+10@ = object.Create(18743, 0.0, 0.0, 0.0)
+11@ = object.Create(18744, 0.0, 0.0, 0.0)
+jump @3set
+
+
+:3set
+wait 0
+Object.PutAt(0@, 0.0, 0.0, 1024.0)
+Object.PutAt(1@, 0.0, 0.0, 1024.0)
+Object.PutAt(2@, 0.0, 0.0, 1024.0)
+Object.PutAt(3@, 0.0, 0.0, 1024.0)
+Object.PutAt(4@, 0.0, 0.0, 1024.0)
+Object.PutAt(5@, 0.0, 0.0, 1024.0)
+Object.PutAt(6@, 0.0, 0.0, 1024.0)
+Object.PutAt(7@, 0.0, 0.0, 1024.0)
+Object.PutAt(8@, 0.0, 0.0, 1024.0)
+Object.PutAt(9@, 0.0, 0.0, 1024.0)
+Object.PutAt(10@, 0.0, 0.0, 1024.0)
+Object.PutAt(11@, 0.0, 0.0, 1024.0)
+
+0382: set_object 0@ collision_detection 0 
+0382: set_object 1@ collision_detection 0
+0382: set_object 2@ collision_detection 0 
+0382: set_object 3@ collision_detection 0 
+0382: set_object 4@ collision_detection 0
+0382: set_object 5@ collision_detection 0 
+0382: set_object 6@ collision_detection 0 
+0382: set_object 7@ collision_detection 0
+0382: set_object 8@ collision_detection 0
+0382: set_object 9@ collision_detection 0 
+0382: set_object 10@ collision_detection 0
+0382: set_object 11@ collision_detection 0
+ 
+0177: set_object 3@ Z_angle_to 100.0 
+0177: set_object 4@ Z_angle_to 100.0 
+0177: set_object 5@ Z_angle_to 100.0
+ 
+0177: set_object 6@ Z_angle_to 180.0 
+0177: set_object 7@ Z_angle_to 180.0 
+0177: set_object 8@ Z_angle_to 180.0
+ 
+0177: set_object 9@ Z_angle_to 260.0 
+0177: set_object 10@ Z_angle_to 260.0 
+0177: set_object 11@ Z_angle_to 260.0 
+
+03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_TOP to #NULL
+
+{if 30@ == 1
+then
+    15@ = 49 //Time
+end }
+29@ = 0
+repeat
+    wait 0
+    29@ += 1
+    if 29@ == 10
+    then
+        15@ = 90
+    end
+    0085: 21@ = 0@
+    0085: 22@ = 3@
+    0085: 23@ = 6@
+    0085: 24@ = 9@
+    gosub @effect
+    0085: 21@ = 1@
+    0085: 22@ = 4@
+    0085: 23@ = 7@
+    0085: 24@ = 10@
+    0AB4: 30@ = var 0
+    if 30@ == 1
+    then
+        15@ = 49 //Time
+    end
+    if 30@ == 2
+    then
+        15@ = 100 //Time
+    end
+    if 30@ == 0
+    then
+        break
+    end
+    gosub @effect
+    0085: 21@ = 2@
+    0085: 22@ = 5@
+    0085: 23@ = 8@
+    0085: 24@ = 11@
+    0AB4: 30@ = var 0
+    if or 
+    30@ == 1
+    30@ == 4
+    then
+        15@ = 49 //Time
+    end
+    if or 
+    30@ == 2
+    30@ == 5
+    then
+        15@ = 100 //Time
+    end
+    if 30@ == 0
+    then
+        break
+    end
+    gosub @effect
+    0AB4: 30@ = var 0
+    if or 
+    30@ == 1
+    30@ == 4
+    then
+        15@ = 49 //Time
+    end
+    if or 
+    30@ == 2
+    30@ == 5
+    then
+        15@ = 100 //Time
+    end
+    if 30@ == 0
+    then
+        break
+    end
+until 30@ == 0
+03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from  to #NULL          #LIG_TOP
+Object.Destroy(0@)
+Object.Destroy(1@)
+Object.Destroy(2@)
+Object.Destroy(3@)
+Object.Destroy(4@)
+Object.Destroy(5@)
+Object.Destroy(6@)
+Object.Destroy(7@)
+Object.Destroy(8@)
+Object.Destroy(9@)
+Object.Destroy(10@)
+Object.Destroy(11@)
+return
+
+:effect
+32@ = 0
+repeat
+    0085: 12@ = 32@ // 100
+    12@ *= 255
+    0072: 12@ /= 15@
+    12@ -= 255
+    0095: make 12@ absolute_integer 
+    0D11: set_object 21@ alpha 12@
+    wait 0
+until 002B: 32@ >= 15@
+
+0750: set_object 21@ visibility 0
+0750: set_object 22@ visibility 0
+0750: set_object 23@ visibility 0
+0750: set_object 24@ visibility 0
+
+0176: 17@ = object 21@ Z_angle 
+17@ -= 20.0
+0177: set_object 21@ Z_angle_to 17@
+
+0176: 17@ = object 22@ Z_angle 
+17@ -= 20.0
+0177: set_object 22@ Z_angle_to 17@
+
+0176: 17@ = object 23@ Z_angle 
+17@ -= 20.0
+0177: set_object 23@ Z_angle_to 17@
+
+0176: 17@ = object 24@ Z_angle 
+17@ -= 20.0
+0177: set_object 24@ Z_angle_to 17@
+
+0D11: set_object 21@ alpha 0
+
+0750: set_object 21@ visibility 1
+0750: set_object 22@ visibility 1
+0750: set_object 23@ visibility 1
+0750: set_object 24@ visibility 1
+32@ = 0
+if 15@ > 50
+then
+    repeat
+        0085: 12@ = 32@ // 100
+        12@ *= 255
+        0072: 12@ /= 15@
+        0095: make 12@ absolute_integer 
+        0D11: set_object 21@ alpha 12@
+        wait 0
+    until  002D: 32@ >= 15@
+end
+0D11: set_object 21@ alpha 255
+return
+0A93: end_custom_thread
+
+              

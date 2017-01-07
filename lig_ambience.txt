@@ -1,0 +1,279 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+thread "ligamb"
+
+const
+R = 6.5
+X = 3@
+Y = 4@
+Angle = 1@
+TopAngle = 14@
+end
+var
+20@ : Float
+1@ : Float
+3@ : Float
+4@ : Float
+11@ : Int
+12@ : Float
+14@ : Float
+end
+
+
+wait 0
+while true
+wait 0
+0AB4: 0@ = var 0
+if
+    0@ == 0
+then
+    0D52: draw_light_type 0 position 6.5 0.0 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position 2.6525334017870477 5.93414412972958 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position -4.335097400739702 4.843235543115767 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position -6.190684372698516 -1.9812690371644084 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position -0.7175170849538092 -6.460276250501939 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position 5.605072669869945 -3.291376667213432 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position 5.292176308422651 3.7739726973800427 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position -1.2857882310277433 6.371557786362025 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position -6.341590533169043 1.4262641794635307 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position -3.8899904488760777 -5.2074921322698975 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position 3.1667198875455385 -5.676432431890965 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position 6.47455361066619 0.5745916311689547 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position 2.1175784859784623 6.14539350698726 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position -4.746262021446646 4.4410580748030295 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position -5.991307269215552 -2.5207612353899918 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position -0.1436280253114456 -6.498412959357472 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position 5.874083227808991 -2.7830102825489353 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+    0D52: draw_light_type 0 position 4.937844015046961 4.227019811056591 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 25 25 affect_entity 0
+end
+if 0@ == 10
+then
+    {32@ = 0
+    repeat 
+        wait 0
+        008F: 1@ = integer 32@ to_float 
+        1@ *= -0.013
+        1@ += 20.0
+        if 1@ > 20.0
+        then 
+            1@ = 20.0
+        end
+        if 1@ < 0.0
+        then
+            1@ = 0.0
+        end
+        0D52: draw_light_type 0 position 6.5 0.0 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position 2.6525334017870477 5.93414412972958 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position -4.335097400739702 4.843235543115767 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position -6.190684372698516 -1.9812690371644084 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position -0.7175170849538092 -6.460276250501939 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position 5.605072669869945 -3.291376667213432 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position 5.292176308422651 3.7739726973800427 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position -1.2857882310277433 6.371557786362025 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position -6.341590533169043 1.4262641794635307 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position -3.8899904488760777 -5.2074921322698975 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position 3.1667198875455385 -5.676432431890965 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position 6.47455361066619 0.5745916311689547 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position 2.1175784859784623 6.14539350698726 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position -4.746262021446646 4.4410580748030295 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position -5.991307269215552 -2.5207612353899918 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position -0.1436280253114456 -6.498412959357472 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position 5.874083227808991 -2.7830102825489353 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        0D52: draw_light_type 0 position 4.937844015046961 4.227019811056591 1026.0 direction 0.0 0.0 1025.0 radius 1@ RGBA 27 25 25 affect_entity 0
+        if 1@ <= 5.0
+        then
+            0087: 2@ = 1@
+            2@ -= 5.0
+            2@ *= -1.0
+            0D52: draw_light_type 2 position 0.0 0.0 1020.6484 direction 0.0 0.0 1027.6484 radius 2@ RGBA 34 9 0 affect_entity 0
+            09E5: create_flash_light_at 0.0 0.0 1020.6484 RGB_mask 17 4 0 radius 2@
+            09E5: create_flash_light_at 0.0 0.0 1027.6484 RGB_mask 17 4 0 radius 2@
+        end
+        show_text "%f %f" 200 1@ 2@
+    until 32@ >= 1500
+    repeat}
+        //wait 0
+        0D52: draw_light_type 2 position 0.0 0.0 1020.6484 direction 0.0 0.0 1027.6484 radius 5.0 RGBA 34 9 0 affect_entity 0
+        09E5: create_flash_light_at 0.0 0.0 1020.6484 RGB_mask 17 4 0 radius 5.0
+        09E5: create_flash_light_at 0.0 0.0 1027.6484 RGB_mask 17 4 0 radius 5.0
+        {0AB4: 0@ = var 0
+    until 8039: NOT 0@ == 10}
+    
+end
+if or 
+0@ == 1
+0@ == 2
+0@ == 6
+0@ == 7
+then
+    11@ = 1
+    gosub @smart_thing    
+end
+if 0@ == 3
+then
+    0AB4: 10@ = var 0
+    while 10@ == 3
+    wait 0
+        0AB4: 10@ = var 0
+        0AB4: 13@ = var 26
+        if 13@ == 1
+        JF CONTINUE   
+        0D52: draw_light_type 0 position 6.5 0.0 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position 2.6525334017870477 5.93414412972958 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position -4.335097400739702 4.843235543115767 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position -6.190684372698516 -1.9812690371644084 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position -0.7175170849538092 -6.460276250501939 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position 5.605072669869945 -3.291376667213432 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position 5.292176308422651 3.7739726973800427 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position -1.2857882310277433 6.371557786362025 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position -6.341590533169043 1.4262641794635307 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position -3.8899904488760777 -5.2074921322698975 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position 3.1667198875455385 -5.676432431890965 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position 6.47455361066619 0.5745916311689547 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position 2.1175784859784623 6.14539350698726 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position -4.746262021446646 4.4410580748030295 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position -5.991307269215552 -2.5207612353899918 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position -0.1436280253114456 -6.498412959357472 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position 5.874083227808991 -2.7830102825489353 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0D52: draw_light_type 0 position 4.937844015046961 4.227019811056591 1026.0 direction 0.0 0.0 1025.0 radius 20.0 RGBA 27 0 0 affect_entity 0
+        0AB4: 10@ = var 0
+    end
+end
+if or 
+0@ == 4
+0@ == 5
+0@ == 8
+0@ == 9
+0@ == 11
+then
+    11@ = 4
+    gosub @smart_thing_red    
+end
+end
+
+
+:smart_thing
+wait 0
+while true
+        wait 0
+        0AB4: 0@ = var 0
+        if or 
+            0@ == 1
+            0@ == 6
+        then
+            12@ = 5.0
+        else
+            12@ = 3.0
+        end
+        if or 
+            0@ == 6
+            0@ == 7
+        then
+            15@ = 24
+        else
+            15@ = 17
+        end
+        20@ -= 12@
+        Angle = 20@
+        //Angle *= 0.017 //Radians
+        X = Angle
+        02F7: X = cosine X // (float) 
+        X *= R
+        Y = Angle
+        02F6: Y = sine Y // (float)
+        Y *= R         
+        09E5: create_flash_light_at X Y 1027.0 RGB_mask 15@ 15@ 15@ radius 10.0
+        09E5: create_flash_light_at X Y 1027.0 RGB_mask 15@ 15@ 15@ radius 10.0
+        Angle = 20@
+        //Angle *= 0.017 //Radians
+        Angle += 180.0
+        X = Angle
+        02F7: X = cosine X // (float) 
+        X *= R
+        Y = Angle
+        02F6: Y = sine Y // (float)
+        Y *= R         
+        09E5: create_flash_light_at X Y 1027.0 RGB_mask 15@ 15@ 15@ radius 10.0
+        09E5: create_flash_light_at X Y 1027.0 RGB_mask 15@ 15@ 15@ radius 10.0      
+        0AB4: 10@ = var 0
+        if and
+        8039: NOT 10@ == 1
+        8039: NOT 10@ == 2
+        8039: NOT 10@ == 6
+        8039: NOT 10@ == 7
+        then
+        break
+        end 
+        //09E5: create_flash_light_at X Y 1026.0 RGB_mask 255 255 255 radius 15.0    
+end
+return
+
+:smart_thing_red
+wait 0
+while true
+        wait 0
+        0AB4: 0@ = var 0
+        if or // Speed
+            0@ == 4 // Fast
+            0@ == 8
+            0@ == 11
+        then
+            12@ = 5.0
+        else          // Slow
+            12@ = 3.0
+        end
+        if or //Wideness 
+            0@ == 8 // 5 set
+            0@ == 9
+        then
+            15@ = 24
+        else          //3 set
+            15@ = 17
+        end
+        20@ -= 12@
+        Angle = 20@
+        //Angle *= 0.017 //Radians
+        X = Angle
+        02F7: X = cosine X // (float) 
+        X *= R
+        Y = Angle
+        02F6: Y = sine Y // (float)
+        Y *= R         
+        09E5: create_flash_light_at X Y 1027.0 RGB_mask 15@ 0 0 radius 10.0
+        09E5: create_flash_light_at X Y 1027.0 RGB_mask 15@ 0 0 radius 10.0
+        Angle = 20@
+        //Angle *= 0.017 //Radians
+        Angle += 180.0
+        X = Angle
+        02F7: X = cosine X // (float) 
+        X *= R
+        Y = Angle
+        02F6: Y = sine Y // (float)
+        Y *= R         
+        09E5: create_flash_light_at X Y 1027.0 RGB_mask 15@ 0 0 radius 10.0
+        09E5: create_flash_light_at X Y 1027.0 RGB_mask 15@ 0 0 radius 10.0 
+        0AB4: 10@ = var 0 
+        if 10@ == 11
+        then
+            09E5: create_flash_light_at 0.0 0.0 1027.6484 RGB_mask 50 50 50 radius 5.0 
+            09E5: create_flash_light_at 0.0 0.0 1022.6484 RGB_mask 27 25 25 radius 5.0
+            09E5: create_flash_light_at 0.0 0.0 1022.6484 RGB_mask 27 25 25 radius 5.0 
+            09E5: create_flash_light_at 1.8421 5.0295 1025.9065 RGB_mask 27 25 25 radius 5.0
+            09E5: create_flash_light_at -0.1913 -4.3639 1024.5703 RGB_mask 25 25 25 radius 5.0
+            09E5: create_flash_light_at 6.2807 0.6637 1026.1406 RGB_mask 25 25 25 radius 5.0
+            09E5: create_flash_light_at -6.1505 1.3802 1026.1406 RGB_mask 25 25 25 radius 5.0
+        end    
+        if and
+        8039: NOT 10@ == 4
+        8039: NOT 10@ == 5
+        8039: NOT 10@ == 8
+        8039: NOT 10@ == 9
+        8039: NOT 10@ == 11
+        then
+        break
+        end  
+        //09E5: create_flash_light_at X Y 1026.0 RGB_mask 255 255 255 radius 15.0    
+end
+return

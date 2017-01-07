@@ -1,0 +1,46 @@
+{$CLEO .cs}
+
+/*
+TARDIS lights 2
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+*/
+
+//-------------MAIN---------------
+THREAD "LIG3"
+
+wait 4000
+
+:def
+wait 100
+if and
+Player.Defined($PLAYER_CHAR)
+Player.Controllable($PLAYER_CHAR)
+056E:   car $111 defined
+jf @def 
+
+Model.Load(18633)
+repeat
+wait 0
+until Model.Available(18633)
+Object.Create(0@,18633,0.0,0.0,0.0)
+0750: set_object 0@ visibility 0
+0382: set_object 0@ collision_detection 0
+0681: attach_object 0@ to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0 
+
+:LIGHT_2
+wait 100
+0AB4: 1@ = var 11
+0AB4: 2@ = var 12
+32@ = 0
+if and
+    1@ == 0
+    2@ == 0
+    0185: $111 400 
+then
+    0750: set_object 0@ visibility 1
+    wait 1500
+    0750: set_object 0@ visibility 0
+    wait 500
+end
+jump @LIGHT_2             

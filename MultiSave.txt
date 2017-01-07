@@ -1,0 +1,51 @@
+// This file was decompiled using SASCM.ini published by Seemann (http://sannybuilder.com/files/SASCM.rar) on 13.10.2007
+{$CLEO .cs}
+
+//-------------MAIN---------------
+wait 5000 
+if 
+0AA9:   is_game_version_original 
+jf @Noname_25 
+goto @Noname_31 
+
+:Noname_25
+wait 0 
+end_custom_thread 
+
+:Noname_31
+wait 0 
+0@ = -386370 
+&0(0@,1i) = 1281312837 
+0@ += 1 
+&0(0@,1i) = 184566095 
+if and
+   Player.Defined($PLAYER_CHAR)
+   not Actor.Driving($PLAYER_ACTOR)
+  $ONMISSION == 0 
+jf @Noname_220 
+0@ = -388622 
+&0(0@,1i) = 1174732801 
+0@ += 1 
+&0(0@,1i) = 1398756421 
+0@ += 1 
+&0(0@,1i) = 184549447 
+0@ += 1 
+&0(0@,1i) = 16 
+0@ += 1 
+&0(0@,1i) = 65536 
+goto @Noname_300 
+
+:Noname_220
+0@ = -388622 
+&0(0@,1i) = 1174405121 
+&0(0@,1i) = 1 
+0@ = -388621 
+
+:Noname_265
+&0(0@,1i) = 0 
+0@ += 1 
+  0@ > -388617 
+jf @Noname_265 
+
+:Noname_300
+goto @Noname_31 

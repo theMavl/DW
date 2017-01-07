@@ -1,0 +1,73 @@
+{$CLEO .s}
+0000: NOP
+thread "T_CONL"
+
+const
+    STT = 1@
+    TRH = 2@
+    LDM = 3@
+    DEM_LEV = 4@
+    KEYBOARD = 5@
+    HELMIC = 6@ 
+    STABIL = 7@
+    VORT_LOOP = 8@
+    VORT_BF = 9@
+    FRET = 10@
+    TEL_CIR = 11@
+end
+
+while true
+    wait 250
+    0AB1: call @get_switcher 2 array 0@ element 1 to 1@                                             
+    0AB1: call @get_switcher 2 array 0@ element 2 to 2@
+    0AB1: call @get_switcher 2 array 0@ element 3 to 3@
+    0AB1: call @get_switcher 2 array 0@ element 4 to 4@
+    0AB1: call @get_switcher 2 array 0@ element 5 to 5@
+    0AB1: call @get_switcher 2 array 0@ element 6 to 6@
+    0AB1: call @get_switcher 2 array 0@ element 7 to 7@
+    0AB1: call @get_switcher 2 array 0@ element 8 to 8@
+    0AB1: call @get_switcher 2 array 0@ element 9 to 9@
+    0AB1: call @get_switcher 2 array 0@ element 10 to 10@
+    0AB1: call @get_switcher 2 array 0@ element 11 to 11@ 
+    if and
+        STT == 1
+        TRH == 0
+    then
+        if and 
+            HELMIC == 1
+            KEYBOARD == 1
+            DEM_LEV == 1
+        then
+            0AB3: var 0 = 2
+        else
+            0AB3: var 0 = 1    
+        end
+    else
+        0AB3: var 0 = 0
+    end
+end
+
+:get_switcher 
+{
+Get selecteed switcher state
+0@ - array, 1@ - element, 2@ - value, 3@ = size 
+Example: 0AB1: call @readArray 3 array 0@ element 1 size 1 to 2@
+} 
+wait 0
+dec(1@) 
+005A: 0@ += 1@ // (int) 
+0A8D: 3@ = read_memory 0@ size 1 virtual_protect 0 
+0AB2: ret 1 3@
+
+
+:get_all 
+{
+Get selecteed switcher state
+0@ - array, 1@ - element, 2@ - value, 3@ = size 
+Example: 0AB1: call @readArray 3 array 0@ element 1 size 1 to 2@
+} 
+wait 0
+//dec(1@) 
+//005A: 0@ += 1@ // (int) 
+0A8D: 3@ = read_memory 0@ size 11 virtual_protect 0 
+0AB2: ret 1 3@

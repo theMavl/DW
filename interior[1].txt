@@ -1,0 +1,1649 @@
+{$CLEO .cs} 
+0000: NOP
+
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+
+//0A93: end_custom_thread
+:1
+wait 0
+if 056D:   actor $PLAYER_ACTOR defined 
+jf @1
+
+const
+    IN_INTERIOR = $93
+    EXTERIOR = $94
+end
+
+var
+    $90: array 3 of Float
+    $95: array 5 of Integer
+end
+
+:int_multithreading
+wait 0
+if 
+0@ == 0               
+jf @in_interior
+
+thread "INTERIOR"
+wait 500
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1 
+repeat
+    wait 0
+until   Car.Defined($111) 
+wait 2000
+IN_INTERIOR = -1
+EXTERIOR = 0
+if 0AAB:  file_exists "CLEO\interior.cs"
+then
+    0A92: create_custom_thread "interior.cs" 1 //IN_INTERIOR check
+    0A92: create_custom_thread "interior.cs" 2 //lig_bar
+else
+    0ACE: show_formatted_text_box "~r~[ERROR]~w~ File interior.cs not found! Do not rename files."
+end
+if 0AAB:  file_exists "CLEO\rlig.s"
+then
+    0A92: create_custom_thread "rlig.s" //Roof Light
+else
+    0ACE: show_formatted_text_box "~r~[ERROR]~w~ File rlig.s not found! Roof Light unavailable"
+end
+
+:pickup
+wait 0
+00AA: store_car $111 position_to 3@ 4@ 5@ 
+0AB4:  6@ = var 16 //Get fade flag
+0AB4:  15@ = var 15 //Get self-repair flag
+//Check if CJ in enter pickup area
+if and
+    8039: NOT 6@ == 2  //If fade flag is NOT 'demat'
+    EXTERIOR == 0
+    15@ == 0 
+then
+    0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset 0.0 -0.0 0.0  
+    if and
+        00DF:   actor $PLAYER_ACTOR driving
+        00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 3@ 4@ 5@ radius 0.5 0.5 0.5 
+    then
+        if 047A:   actor $PLAYER_ACTOR driving_bike 
+        then
+            03C0: 10@ = actor $PLAYER_ACTOR car
+            08C6: set_actor $PLAYER_ACTOR stay_on_bike 1 
+            0574: set_car 10@ keep_position 1
+            gosub @tel_in
+        end
+    else
+        00AA: store_car $111 position_to 3@ 4@ 5@
+        if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 3@ 4@ 5@ radius 0.5 0.5 0.5
+        then 
+            gosub @tel_in
+        end
+    end
+end
+if and
+    00DB:   actor $PLAYER_ACTOR in_car $111
+    EXTERIOR == 0 
+then
+    gosub @tel_in
+end
+
+//Get TARDIS X and Y angle, doors angle
+077D: 26@ = car $111 x_angle 
+06BE: 27@ = car $111 y_angle
+
+02F7: 26@ = cosine 26@ // (float) 
+02F7: 27@ = cosine 27@ // (float)
+
+0097: make 26@ absolute_float 
+0097: make 27@ absolute_float
+095F: get_car $111 door 2 angle_to 1@
+095F: get_car $111 door 3 angle_to 2@
+0097: make 1@ absolute_float 
+0097: make 2@ absolute_float
+//Check if angles are okay and doors are closed
+if and
+    {8020: NOT 27@ > 5.0
+    8020: NOT 26@ > 5.0}
+    26@ > 0.996194698
+    27@ > 0.996194698
+    1@ == 0.0
+    2@ == 0.0
+then
+    0AB5: store_actor $PLAYER_ACTOR closest_vehicle_to 1@ closest_ped_to 2@
+    0AB4:  15@ = var 15 //Get self-repair flag
+    if and
+        00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 3@ 4@ 5@ radius 5.0 5.0 1.0
+        07D6: 1@ == $111
+        EXTERIOR == 0
+        //0AB0: 70 //f
+        00E1: key_pressed 0 15 // F/ENTER
+        80DF:   not actor $PLAYER_ACTOR driving
+        03EE:   player $PLAYER_CHAR controllable
+        15@ == 0
+    then
+        0AB3: var 19 = 1
+        wait 500
+        if //0AB0: 70 
+            00E1: key_pressed 0 15 // F/ENTER
+        then
+            gosub @tel_in_both
+        else
+            gosub @tel_in_aleft
+        end 
+        0AB3: var 19 = 0  
+    end
+else
+    if or
+        8020: NOT 27@ > 0.996194698
+        8020: NOT 26@ > 0.996194698
+        {27@ > 5.0
+        26@ > 5.0}
+    then
+        if and 
+            1@ == 0.0
+            2@ == 0.0
+            //0AB0: 70 //f
+            00E1: key_pressed 0 15 // F/ENTER
+            EXTERIOR == 0
+            IN_INTERIOR == 0
+        then
+            0A92: create_custom_thread "fingsnap.s"
+            wait 500
+            0AAA: 1@ = thread 'fclick' pointer
+            repeat
+                wait 0
+                0D2F: 27@ = get_thread 1@ var 30 
+            until 27@ == 1
+        end
+    end    
+end
+
+//Exterior view mode
+wait 0
+0AB4: 3@ = var 27
+0AB4: 4@ = var 28
+if and
+    IN_INTERIOR == 1
+    0AB0: 69 //e
+    3@ == 3 
+    4@ == 0
+    //0ADC: test_cheat "ouo"
+then
+    0AB1: call @get_toggle 1 id 6 to 3@
+    0AB1: call @get_toggle 1 id 8 to 4@
+    if or  
+        8039: NOT 3@ == 1
+        8039: NOT 4@ == 1
+    then
+        jump @pickup
+    end
+    0AB3: var 28 = 1 // Lock console
+    04ED: load_animation "TARDIS"
+    repeat
+        wait 0
+    until 04EE:   animation "TARDIS" loaded 
+    09BC: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375
+    0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+    call_scm_func @get_toggle 1 id 1 to 3@
+    if 3@ == 0
+    then
+        0812: AS_actor $PLAYER_ACTOR perform_animation "basicFlight_Normal" "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 
+        repeat
+            wait 0
+            0613: 26@ = actor $PLAYER_ACTOR animation "basicFlight_Normal" time
+        until 26@ >= 0.18
+        //0612: set_actor $PLAYER_ACTOR animation "basicFlight_Normal" paused 0
+    else
+        0812: AS_actor $PLAYER_ACTOR perform_animation "basicFlight_extra" "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+        repeat
+            wait 0
+            0613: 26@ = actor $PLAYER_ACTOR animation "basicFlight_extra" time
+        until 26@ >= 0.173
+        //0612: set_actor $PLAYER_ACTOR animation "basicFlight_extra" paused 0
+    end 
+    fade 0 500
+    wait 500
+    0687: clear_actor $PLAYER_ACTOR task 
+    07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+    00A0: store_actor $PLAYER_ACTOR position_to 26@ 27@ 28@
+    0AB4: 3@ = var 9 
+    if 3@ == 0 // Don't sync if in vortex
+    then
+        0A92: create_custom_thread "time_correction.cs" 1 // SYNC TIME
+    else
+        0AB1: call @get_toggle 1 id 5 to 3@
+        if 3@ == 1
+        then
+            04F9: set_extra_colours 15 fade 0
+        else
+            04F9: set_extra_colours 16 fade 0
+        end
+        select_interior 10
+    end
+    EXTERIOR = 1
+    0931: camera_persist_fov 0
+    camera.Restore()
+
+    0AB4: 3@ = var 20 // exterior world id
+    select_interior 3@
+    0860: link_actor $PLAYER_ACTOR to_interior 3@
+    if 3@ > 0
+    then
+        04FA: reset_interior 0 colors 
+    end
+    //fade 1 0
+
+    036A: put_actor $PLAYER_ACTOR in_car $111
+    wait 1000
+    0AB4: 24@ = var 24
+    if 24@ == 1
+    then
+        0AB4: 3@ = var 21
+        0AB4: 4@ = var 22
+        0AB4: 5@ = var 23
+        04E4: unknown_refresh_game_renderer_at 3@ 4@
+        wait 50
+        00AB: put_car $111 at 3@ 4@ 5@
+        wait 50
+        00AB: put_car $111 at 3@ 4@ 5@                                                        
+        wait 50
+        00AB: put_car $111 at 3@ 4@ 5@
+        0AB3: var 24 = 0
+    else
+        00AA: store_car $111 position_to 3@ 4@ 5@
+    end
+    {00AA: store_car $111 position_to 3@ 4@ 5@
+    09BC: put_actor $PLAYER_ACTOR at   3@ 4@ 5@
+    04E4: unknown_refresh_game_renderer_at 3@ 4@}
+        
+    0AB1: call @get_toggle 1 id 2 to 4@
+    if 4@ == 0
+    then
+        0AB4: 4@ = var 0
+        if
+            4@ == 0
+        then
+            0574: set_car $111 keep_position 1
+            0825: set_helicopter $111 instant_rotor_start 
+            04BA: set_car $111 speed_to 999.0
+            07BB: set_heli $111 horizontal_thrust_power 999 
+            wait 500
+            0574: set_car $111 keep_position 0
+            0AB3: var 11 = 0 
+        else
+            0AB4: 4@ = var 9
+            if 4@ == 1
+            then
+                0574: set_car $111 keep_position 0
+            end
+        end   
+    else
+        0574: set_car $111 keep_position 1
+        0AB3: var 11 = 1
+        wait 1000
+    end
+    0915: sync_weather_with_time_and_location_instantly
+    0AB4: 4@ = var 16
+    if 8039: NOT 4@ == 0
+    then
+        0AB1: call_scm_func @camera 0
+    end
+    0AB3: var 28 = 0 // Unlock console
+    
+    0581: enable_radar 1
+    
+    fade 1 1000
+    wait 1000
+    
+    while true 
+        wait 0
+        
+        // EXIT CONDITIONS
+        0AB4: 4@ = var 28
+        if and
+            4@ == 0
+            00E1: key_pressed 0 15 // F/ENTER
+        then
+            break
+        end
+        
+        if or
+            0118:   actor $PLAYER_ACTOR dead 
+            0741:   actor $PLAYER_ACTOR busted 
+            80DB:   NOT actor $PLAYER_ACTOR in_car $111
+        then
+            wait 5000
+            EXTERIOR = 0
+            07CC: set_player_enter_car_button $PLAYER_CHAR to 1
+            jump @pickup
+        end
+        
+        0AB4: 3@ = var 28 // Check if console locked
+        if 3@ == 1
+        then
+            continue  // Skip bidning section if it's locked
+        end
+        
+        // Binding section
+        0AB4: 3@ = var 9 
+        if and
+            0AB0: 90 // z
+            3@ == 1 // in vortex = TRUE
+        then
+            0A92: create_custom_thread "toggles.cs" 2 -1
+            wait 1000
+        end
+        if 0AB0: 84 // T
+        then
+            0AB1: call @get_toggle 1 id 1 to 3@
+            if or
+                3@ == 0
+                3@ == 1
+            then
+                0A92: create_custom_thread "toggles.cs" 1 -1
+                wait 1000
+            end
+        end
+        if 0AB0: 67 // C
+        then
+            0AB1: call @get_toggle 1 id 17 to 3@
+            if or
+                3@ == 0
+                3@ == 1
+            then
+                0AB1: call @get_toggle 1 id 12 to 3@
+                0AB4: 4@ = var 17
+                0AB4: 5@ = var 10
+                if and
+                    3@ == 1
+                    4@ == 0
+                    5@ > 10
+                then
+                    0A92: create_custom_thread "toggles.cs" 17 -1
+                    wait 1000
+                end
+            end
+        end
+        0AB4: 3@ = var 9
+        if and
+            00E1: 0 17 //FIRE
+            3@ == 1
+        then
+            0AB1: call @get_toggle 1 id 17 to 3@
+            if or
+                3@ == 0
+                3@ == 1
+            then
+                0A92: create_custom_thread "toggles.cs" 5 -1
+                0A92: create_custom_thread "toggles.cs" 7 -1
+                wait 1000
+            end
+        end
+        // End of binding section
+    end
+    
+    fade 0 500
+    0AB3: var 28 = 1 // Lock console
+    wait 500
+    0581: enable_radar 0 
+    {00BF: 3@ = current_time_hours, 4@ = current_time_minutes
+    3@ *= 100
+    005A: 3@ += 4@
+    0ABA: end_custom_thread_named "timecor"
+    0AB3: var 36 = 3@ // Time
+    0A92: create_custom_thread "time_correction.cs" // Time correction}
+    
+    0574: set_car $111 keep_position 1
+    0AB3: var 11 = 1
+    00AA: store_car $111 position_to 3@ 4@ 5@
+    0174: 30@ = car $111 Z_angle
+    0AB3: var 21 = 3@
+    0AB3: var 22 = 4@
+    0AB3: var 23 = 5@
+    0AB3: var 20 = $ACTIVE_INTERIOR
+    0AB3: var 6 = 30@
+    wait 500
+    0362: remove_actor $PLAYER_ACTOR from_car_and_place_at 0.01 1.4 1024.375    
+    wait 1500
+    EXTERIOR = 0
+    select_interior 3
+    0860: link_actor $PLAYER_ACTOR to_interior 3
+    Camera.Restore_WithJumpCut()
+    07CC: set_player_enter_car_button $PLAYER_CHAR to 1
+    032A: set_behind_camera_mode_to 0
+    0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 100 mode 1
+	0931: camera_persist_fov 1  
+    04F9: set_extra_colours 11 fade 0
+    09BC: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375
+    0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+    call_scm_func @get_toggle 1 id 1 to 3@
+    if 3@ == 0
+    then
+        0812: AS_actor $PLAYER_ACTOR perform_animation "basicFlight_Normal" "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 
+        0614: set_actor $PLAYER_ACTOR animation "basicFlight_Normal" progress_to 0.488 // 0.0 to 1.0
+        0612: set_actor $PLAYER_ACTOR animation "basicFlight_Normal" paused 0 
+    else
+        0812: AS_actor $PLAYER_ACTOR perform_animation "basicFlight_extra" "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 
+        0614: set_actor $PLAYER_ACTOR animation "basicFlight_extra" progress_to 0.25 // 0.0 to 1.0
+        0612: set_actor $PLAYER_ACTOR animation "basicFlight_extra" paused 0
+    end
+    wait 500
+    0AB3: var 28 = 0 // unLock console
+    fade 1 1000
+    while true
+        wait 0
+        if and 
+            8611:   not actor $PLAYER_ACTOR performing_animation "basicFlight_Normal"
+            8611:   not actor $PLAYER_ACTOR performing_animation "basicFlight_extra"
+        then
+            break
+        end
+    end
+    04EF: release_animation "TARDIS"  
+    jump @pickup
+end
+0AB4: 0@ = var 0
+//Check if CJ in exit pickup area
+if//0101:   actor $PLAYER_ACTOR in_sphere -0.0237 -5.5076 1024.5703 radius 0.5 0.5 0.5 sphere 0 stopped
+    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere {-0.0237 -5.5076 700.5703} 0.1852 -6.2419 1024.5703 radius 0.5 0.5 0.5 
+then
+    if or
+        0@ == 0
+        0@ == 3
+        0@ == 10
+    then
+        0AB3: var 19 = 1
+        gosub @tel_out
+        0AB3: var 19 = 0
+    end 
+end
+if and        
+    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0072 -5.7584 1024.6232 radius 0.5 0.5 1.5
+    00DF:   actor $PLAYER_ACTOR driving
+    8039: 0@ == 2  
+then
+    if or
+        0@ == 0
+        0@ == 3
+        0@ == 10
+    then
+        03C0: 10@ = actor $PLAYER_ACTOR car
+        08C6: set_actor $PLAYER_ACTOR stay_on_bike 1 
+        0574: set_car 10@ keep_position 1
+        0AB3: var 19 = 1
+        gosub @tel_out
+        0AB3: var 19 = 0
+    end 
+end
+jump @pickup
+
+:tel_in_aleft
+wait 0
+0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset 0.205 -1.377 0.0
+05D3: AS_actor $PLAYER_ACTOR goto_point 3@ 4@ 5@ mode 6 10000 ms // versionA
+32@ = 0 
+repeat
+    wait 0
+    if or 
+        09DE:   actor $PLAYER_ACTOR entering_car //Somewhy CJ is entering the car
+        32@ > 10000 //Time's up
+        00E1:   player 0 pressed_key 0
+        00E1:   player 0 pressed_key 1
+        00E1:   player 0 pressed_key 14
+    then
+        0687: clear_actor $PLAYER_ACTOR task
+        0AB3: var 19 = 0
+        jump @pickup
+    end
+    05D3: AS_actor $PLAYER_ACTOR goto_point 3@ 4@ 5@ mode 6 1000 ms
+until 00EC:   actor $PLAYER_ACTOR 0 near_point 3@ 4@ radius 0.4 0.4
+//01B4: set_player $PLAYER_CHAR can_move 0
+00A0: store_actor $PLAYER_ACTOR position_to 26@ 27@ 5@
+09BC: put_actor $PLAYER_ACTOR at 3@ 4@ 5@
+0087: 25@ = 3@
+0087: 27@ = 4@
+0087: 28@ = 5@
+//04D7: set_actor $PLAYER_ACTOR locked 1
+wait 500
+0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset 0.0 0.0 0.0
+0174: 26@ = car $111 Z_angle
+//0173: set_actor $PLAYER_ACTOR Z_angle_to 26@
+05D4: AS_actor $PLAYER_ACTOR rotate_angle 26@ 
+repeat
+    wait 0
+    0087: 4@ = 5@
+    0172: 5@ = actor $PLAYER_ACTOR Z_angle
+until 0045: 4@ == 5@
+0173: set_actor $PLAYER_ACTOR Z_angle_to 26@
+00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@
+if and
+    0045: 3@ == 25@
+    0045: 4@ == 27@
+then
+else
+    0AB3: var 19 = 0
+    jump @pickup
+end
+04D7: set_actor $PLAYER_ACTOR locked 1
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+0992: set_player $PLAYER_CHAR weapons_scrollable 0  
+if 04EE:   animation "DW" loaded 
+then
+    0812: AS_actor $PLAYER_ACTOR perform_animation "tar_one" IFP_file "dw" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB 
+end  
+0AC1: 5@ = load_audiostream_with_3d_support "DWS\Do.MP3"
+0AC5: link_3d_audiostream 5@ to_vehicle $111
+32@ = 0
+repeat 
+    wait 0
+    0AB9: get_audiostream 5@ state_to 7@
+    0613: 26@ = actor $PLAYER_ACTOR animation "tar_one" time 
+    if and 
+        26@ >= 0.29
+        26@ < 0.64
+    then
+        if 7@ == -1
+        then
+            Audiostream.PerformAction(5@, PLAY)
+        end
+        //0AD1: show_formatted_text_highpriority "1 %f" time 2000 26@
+        0087: 27@ = 26@
+        27@ *= -2.687
+        27@ += 0.7793
+        08A6: set_car $111 componentA 3 rotation_to 27@
+        095F: get_car $111 componentA 3 rotation_to 27@
+        27@ *= 72.0
+        27@ /= 1.26
+        0681: attach_object $95[0] to_car $111 with_offset 0.566 -0.698 0.314 rotation 0.0 0.0 27@ 
+    end
+    {if and 
+        26@ >= 0.5
+        26@ < 0.64
+    then
+        0AD1: show_formatted_text_highpriority "2 %f" time 2000 26@
+        0087: 27@ = 26@
+        27@ *= {-2.7786}{-2.78
+        27@ += 0.9453
+        08A6: set_car $111 componentA 3 rotation_to 27@
+        095F: get_car $111 componentA 3 rotation_to 27@
+        27@ *= 72.0
+        27@ /= 1.26
+        0681: attach_object $95[0] to_car $111 with_offset 0.566 -0.698 0.314 rotation 0.0 0.0 27@ 
+    end }
+until 32@ >= 2700
+0612: set_actor $PLAYER_ACTOR animation "tar_one" paused 1
+01B4: set_player $PLAYER_CHAR can_move 1 
+gosub @tel_in
+//0992: set_player $PLAYER_CHAR weapons_scrollable 1
+Audiostream.Release(5@)
+return
+
+:tel_in_both
+wait 0
+0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset -0.03 -1.184 0.0
+05D3: AS_actor $PLAYER_ACTOR goto_point 3@ 4@ 5@ mode 4 10000 ms // versionA
+32@ = 0 
+repeat
+    wait 0
+    if or 
+        09DE:   actor $PLAYER_ACTOR entering_car //Somewhy CJ is entering the car
+        32@ > 10000 //Time's up
+        00E1:   player 0 pressed_key 0
+        00E1:   player 0 pressed_key 1
+        00E1:   player 0 pressed_key 14
+    then
+        0687: clear_actor $PLAYER_ACTOR task
+        0AB3: var 19 = 0
+        jump @pickup
+    end
+until 00EC:   actor $PLAYER_ACTOR 0 near_point 3@ 4@ radius 0.4 0.4
+//01B4: set_player $PLAYER_CHAR can_move 0
+00A0: store_actor $PLAYER_ACTOR position_to 26@ 27@ 5@
+09BC: put_actor $PLAYER_ACTOR at 3@ 4@ 5@
+0087: 25@ = 3@
+0087: 27@ = 4@
+0087: 28@ = 5@
+//04D7: set_actor $PLAYER_ACTOR locked 1
+wait 500
+0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset 0.0 0.0 0.0
+0174: 26@ = car $111 Z_angle
+//0173: set_actor $PLAYER_ACTOR Z_angle_to 26@
+05D4: AS_actor $PLAYER_ACTOR rotate_angle 26@ 
+repeat
+    wait 0
+    0087: 4@ = 5@
+    0172: 5@ = actor $PLAYER_ACTOR Z_angle
+until 0045: 4@ == 5@
+0173: set_actor $PLAYER_ACTOR Z_angle_to 26@
+00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@
+if and
+    0045: 3@ == 25@
+    0045: 4@ == 27@
+then
+else
+    0AB3: var 19 = 0
+    jump @pickup
+end
+04D7: set_actor $PLAYER_ACTOR locked 1
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+if 04EE:   animation "DW" loaded 
+then
+    0812: AS_actor $PLAYER_ACTOR perform_animation "tar_two" IFP_file "dw" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+    //0605: actor $PLAYER_ACTOR perform_animation "tar_two" IFP "dw" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1  
+end
+0AC1: 5@ = load_audiostream_with_3d_support "DWS\Do.MP3"
+0AC5: link_3d_audiostream 5@ to_vehicle $111
+32@ = 0
+repeat 
+    wait 0
+    0613: 26@ = actor $PLAYER_ACTOR animation "tar_two" time 
+    if and 
+        26@ >= 0.44
+        26@ < 1.0
+    then
+        0AB9: get_audiostream 5@ state_to 7@
+        if 7@ == -1
+        then
+            Audiostream.PerformAction(5@, PLAY)
+        end
+        0087: 27@ = 26@
+        27@ *= -1.786
+        27@ += 0.786
+        08A6: set_car $111 componentA 2 rotation_to 27@ 
+        08A6: set_car $111 componentA 3 rotation_to 27@
+        095F: get_car $111 componentA 3 rotation_to 27@
+        27@ *= 72.0
+        27@ /= 1.26
+        0681: attach_object $95[0] to_car $111 with_offset 0.566 -0.698 0.314 rotation 0.0 0.0 27@
+        095F: get_car $111 componentA 2 rotation_to 27@
+        27@ *= 72.0
+        27@ /= 1.26
+        0681: attach_object $95[1] to_car $111 with_offset -0.566 -0.698 0.314 rotation 0.0 0.0 27@ 
+    end  {FOR TAR 2}
+until 32@ >= 2000
+Audiostream.Release(5@)
+04D7: set_actor $PLAYER_ACTOR locked 0
+01B4: set_player $PLAYER_CHAR can_move 1
+//0992: set_player $PLAYER_CHAR weapons_scrollable 1
+wait 500
+return
+
+:tel_in
+wait 0
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+//083D: get_actor $PLAYER_ACTOR velocity_in_direction_XYZ 20@ 21@ 22@ 
+//04D7: set_actor $PLAYER_ACTOR locked 1 
+//0AD1: show_formatted_text_highpriority "%f %f %f" time 2000 20@ 21@ 22@
+
+{00BF: 20@ = current_time_hours, 21@ = current_time_minutes
+20@ *= 100
+005A: 20@ += 21@
+0ABA: end_custom_thread_named "timecor"
+0AB3: var 36 = 20@ // Time
+0A92: create_custom_thread "time_correction.cs" // Time correction}
+
+0AB4: 10@ = var 0
+if 10@ == 2
+then
+    077E: get_active_interior_to 11@
+    0AB3: var 20 = 11@
+    select_interior 3
+    0860: link_actor $PLAYER_ACTOR to_interior 3
+    0209: 11@ = random_int_in_ranges 0 3 
+    if 00DF:   actor $PLAYER_ACTOR driving 
+    then
+        03C0: 10@ = actor $PLAYER_ACTOR car
+        0574: set_car 10@ keep_position 0
+        0840: link_car 10@ to_interior 3
+        if 11@ == 0
+        then
+            0175: set_car 10@ Z_angle_to 79.1433
+        else
+            if 11@ == 1
+            then
+                0175: set_car 10@ Z_angle_to 150.3221
+            else
+                0175: set_car 10@ Z_angle_to 305.0602
+            end
+        end
+        067F: set_car 10@ lights 1 
+    end
+    032A: set_behind_camera_mode_to 0
+    0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 1000 mode 1
+	0931: camera_persist_fov 1 
+    04F9: set_extra_colours 11 fade 0
+    if 11@ == 0
+    then
+        09BC: put_actor $PLAYER_ACTOR at 1.2393 1.929 1023.8347
+    else
+        if 11@ == 1
+        then
+            09BC: put_actor $PLAYER_ACTOR at -1.4504 0.9093 1024.4315
+        else
+            09BC: put_actor $PLAYER_ACTOR at 0.0324 -2.2911 1024.4375
+        end
+    end
+    return
+    //04E4: unknown_refresh_game_renderer_at 0.0 0.0 1024.0
+end
+0AB3: var 19 = 1
+fade 0 300
+if 00DF:   actor $PLAYER_ACTOR driving 
+then
+    08C6: set_actor $PLAYER_ACTOR stay_on_bike 1
+    00AA: store_car $111 position_to 20@ 21@ 22@
+    wait 100 
+    0AC1: 5@ = load_audiostream_with_3d_support "DWS\DC.MP3"
+    0AC2: set_3d_audiostream 5@ position 20@ 21@ 22@
+    0AAD: set_audiostream 5@ perform_action 1
+    03C0: 10@ = actor $PLAYER_ACTOR car
+    //02E3: 12@ = car 10@ speed     
+else
+    0A92: create_custom_thread "psi\doorc.cs"
+end
+077E: get_active_interior_to 11@
+
+wait 1500
+0581: enable_radar 0 
+0574: set_car $111 keep_position 1 
+//01B4: set_player $PLAYER_CHAR can_move 1
+select_interior 3
+0860: link_actor $PLAYER_ACTOR to_interior 3
+04E4: unknown_refresh_game_renderer_at 0.0 0.0 1024.0
+0AB4: 13@ = var 25
+if 056E:   car 13@ defined  //IS K9 exists?
+then
+    0175: set_car 13@ Z_angle_to 303.9858
+    00AB: put_car 13@ at {-5.3488 0.2176 1023.7266}{-3.5869 1.6373 1023.0} -4.4745 0.9258 1023.7266 
+    0574: set_car 13@ keep_position 1
+    067F: set_car 13@ lights 1 
+end
+0AB1: call_scm_func @companions 5 0 -1 -1 -1 3 10@  //mode (0 - in, 1 - out) ; x ; y ; z ; interior
+
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+ 
+if and 
+    00DF:   actor $PLAYER_ACTOR driving
+    80DB: NOT actor $PLAYER_ACTOR in_car $111 
+then
+    03C0: 10@ = actor $PLAYER_ACTOR car
+    0574: set_car 10@ keep_position 0
+    0840: link_car 10@ to_interior 3
+    0174: 5@ = car $111 Z_angle 
+    0174: 4@ = car 10@ Z_angle
+    0063: 4@ -= 5@
+    0175: set_car 10@ Z_angle_to 4@ 
+    09BC: put_actor $PLAYER_ACTOR at 0.1054 -5.0624 1023.9
+    04D7: set_actor $PLAYER_ACTOR locked 0
+    //01B4: set_player $PLAYER_CHAR can_move 0
+    032A: set_behind_camera_mode_to 0
+    0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 1000 mode 1
+	0931: camera_persist_fov 1 
+    04F9: set_extra_colours 11 fade 0
+    //015F: set_camera_position 0.6826 -5.8727 1026.2703 rotation 0.0 0.0 0.0
+    //0159: camera_on_ped $PLAYER_ACTOR 15 2
+    //05D1: AS_actor $PLAYER_ACTOR drive_car 10@ to 1.6933 -0.4999 1024.4309 speed 0.5 0.5 model #NULL 0
+    //02F9: get_car 10@ Z_angle_sine_to 4@
+    {24@ = 0
+    if 
+        $ONMISSION == 0
+    then
+        if or
+            0491:   actor $PLAYER_ACTOR has_weapon 28
+            0491:   actor $PLAYER_ACTOR has_weapon 29
+            0491:   actor $PLAYER_ACTOR has_weapon 32
+        then
+            04B8: get_weapon_data_from_actor $PLAYER_ACTOR weapon_group 5 weapon 26@ ammo 25@ model 24@
+            0555: remove_weapon 26@ from_actor $PLAYER_ACTOR
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
+            Model.Load(24@)
+            038B: load_requested_models 
+        end
+    end  }
+    
+        09BC: put_actor $PLAYER_ACTOR at -0.1022 -3.6977 1024.5703
+        00AB: put_car 10@ at -0.1022 -3.6977 1024.5703
+        wait 100
+        00AB: put_car 10@ at -0.1022 -3.6977 1024.5703
+       
+        067F: set_car 10@ lights 1 
+        wait 500
+        Camera.Restore_WithJumpCut()
+        fade 1 500
+        
+        //0AAC: 6@ = load_audiostream "DWS\FS.MP3"
+        
+        //0605: actor $PLAYER_ACTOR perform_animation "CLICK" IFP "DW" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1
+        //wait 1250
+        //0AAD: set_audiostream 6@ perform_action 1
+        //wait 250
+        
+        wait 1500
+        //01B4: set_player $PLAYER_CHAR can_move 1
+        //05CD: AS_actor $PLAYER_ACTOR exit_car 10@
+        //Audiostream.Release(5@)
+        //Audiostream.Release(6@)
+
+    {if 24@ > 0
+    then
+        01B2: give_actor $PLAYER_ACTOR weapon 26@ ammo 25@
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+        Model.Destroy(24@)
+    end   }
+else
+    0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
+    0362: remove_actor $PLAYER_ACTOR from_car_and_place_at 0.1054 -5.4624 1024.5703
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.1054 -5.4624 1024.5703
+    //09BC: put_actor $PLAYER_ACTOR at {-0.0749 -4.4593 700.5703}0.1054 -5.4624 1024.5703
+    032A: set_behind_camera_mode_to 0
+    0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 1000 mode 1
+	0931: camera_persist_fov 1  
+    04F9: set_extra_colours 11 fade 0
+    04D7: set_actor $PLAYER_ACTOR locked 0
+    wait 300
+    fade 1 500
+    05D3: AS_actor $PLAYER_ACTOR goto_point 0.0 -3.7 1024.5 mode 4 time 2000 ms
+    Camera.Restore_WithJumpCut()
+end
+//067C: put_camera_on_actor $PLAYER_ACTOR with_offset 0.0 -0.8 0.5 rotation 0.0 0.0 0.5 0.0 2
+//0922: set_camera_zoom_in_factor 1.0 out_factor 70.0 timelimit 1600 mode 1
+
+//01B4: set_player $PLAYER_CHAR can_move 1  
+//Camera.Restore_WithJumpCut()
+
+//fade 1 250
+08C6: set_actor $PLAYER_ACTOR stay_on_bike 0
+0A92: create_custom_thread "psi\doorc.cs"
+
+0AB3: var 19 = 0
+return
+
+:tel_out
+wait 0
+//fade 0 250
+//wait 250
+fade 0 300
+0931: camera_persist_fov 0
+Camera.Restore()
+04ED: load_animation "dw"
+0AC1: 5@ = load_audiostream_with_3d_support "dws\do.mp3" //IF and SET
+0AC2: set_3d_audiostream 5@ position 0.0072 -5.7584 1024.6232
+Audiostream.PerformAction(5@, Play)
+wait 1500
+0581: enable_radar 1
+052C: set_player $PLAYER_CHAR drunk_visuals 0
+Audiostream.Release(5@)
+08A6: set_car $111 componentA 2 rotation_to 0.0
+08A6: set_car $111 componentA 3 rotation_to -1.04167
+wait 100
+0AB4: 11@ = var 20
+select_interior 11@
+0860: link_actor $PLAYER_ACTOR to_interior 11@
+if 11@ > 0
+then
+    04FA: reset_interior 0 colors
+end
+//0A92: create_custom_thread "time_correction.cs" 1 // SYNC TIME
+0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset 0.28 -1.135 0.0
+04E4: unknown_refresh_game_renderer_at 3@ 4@
+015F: set_camera_position 3@ 4@ 5@ rotation 0.0 0.0 0.0
+0AB4: 3@ = var 24
+if 3@ == 1
+then
+    10@ = -1
+    if 00DF:   actor $PLAYER_ACTOR driving 
+    then
+        03C0: 10@ = actor $PLAYER_ACTOR car
+        0574: set_car 10@ keep_position 1     
+    end 
+    0430: put_actor $PLAYER_ACTOR into_car $111 passenger_seat 0  
+    wait 500
+    0AB4: 0@ = var 0
+    0AB4: 3@ = var 21
+    0AB4: 4@ = var 22
+    0AB4: 5@ = var 23
+    //fade 1 0
+    04E4: unknown_refresh_game_renderer_at 3@ 4@
+    wait 1000
+    wait 50
+    00AB: put_car $111 at 3@ 4@ 5@
+    wait 50
+    00AB: put_car $111 at 3@ 4@ 5@                                                        
+    wait 50
+    00AB: put_car $111 at 3@ 4@ 5@
+    //fade 0 0
+    0362: remove_actor $PLAYER_ACTOR from_car_and_place_at 3@ 4@ 5@
+    if 056E:   car 10@ defined
+    then
+        036A: put_actor $PLAYER_ACTOR in_car 10@ 
+        00AB: put_car 10@ at 3@ 4@ 5@
+        0574: set_car 10@ keep_position 0
+    end  
+    0AB3: var 24 = 0
+else
+    wait 500
+end    
+0915: sync_weather_with_time_and_location_instantly
+Camera.Restore_WithJumpCut()
+wait 150
+{077E: get_active_interior_to $ACTIVE_INTERIOR
+if $ACTIVE_INTERIOR == 0
+then
+    //02CE: 26@ = ground_z 3@ 4@ 1000.0
+    00AB: put_car $111 at 3@ 4@ -100.0
+end }  
+0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset 0.28 -1.135 0.0
+04E4: unknown_refresh_game_renderer_at 3@ 4@
+if 00DF:   actor $PLAYER_ACTOR driving 
+then
+    03C0: 10@ = actor $PLAYER_ACTOR car
+    0840: link_car 10@ to_interior 11@
+    0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset 0.28 -2.235 -0.3 
+    00A1: put_actor $PLAYER_ACTOR at 3@ 4@ 5@
+    00AB: put_car 10@ at 3@ 4@ 5@
+    wait 100
+    00AB: put_car 10@ at 3@ 4@ 5@
+    0574: set_car 10@ keep_position 0
+    //00AB: put_car 10@ at 3@ 4@ 5@ 
+else
+    09BC: put_actor $PLAYER_ACTOR at 3@ 4@ 5@
+    01B4: set_player $PLAYER_CHAR can_move 1
+    Actor.LockInCurrentPosition($PLAYER_ACTOR) = False
+    Actor.LockInCurrentPosition($PLAYER_ACTOR) = True
+    Camera.Restore_WithJumpCut() 
+end
+0AB4: 13@ = var 25
+if 056E:   car 13@ defined  //IS K9 exists?
+then
+    3@ += 2.0
+    4@ -= 2.0
+    00AB: put_car 13@ at 3@ 4@ 5@
+    3@ -= 2.0
+    4@ += 2.0
+    0574: set_car 13@ keep_position 0
+    067F: set_car 13@ lights 0 
+end
+0AB1: call_scm_func @companions 5 1 3@ 4@ 5@ 11@ 10@  //mode (0 - in, 1 - out) ; x ; y ; z ; interior
+if 80DF:   not actor $PLAYER_ACTOR driving 
+then
+    0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset 0.28 -1.115 0.0
+    09BC: put_actor $PLAYER_ACTOR at 3@ 4@ 5@
+    wait 150
+    09BC: put_actor $PLAYER_ACTOR at 3@ 4@ 5@
+    04D7: set_actor $PLAYER_ACTOR locked 1
+    0174: 5@ = car $111 Z_angle
+    5@ += 180.0
+    0173: set_actor $PLAYER_ACTOR Z_angle_to 5@
+end
+//09BC: put_actor $PLAYER_ACTOR at 3@ 4@ 5@
+0AB1: call_scm_func @get_toggle 1 set_toggle 2 to 3@
+if 3@ == 0
+then
+    0574: set_car $111 keep_position 0
+else
+    0574: set_car $111 keep_position 1
+end
+077D: 5@ = car $111 x_angle 
+06BE: 4@ = car $111 y_angle 
+0097: make 4@ absolute_float 
+0097: make 5@ absolute_float
+if or           //If TARDIS X or Y angle too big for proper playing animation, or driving or cj in air by some reason
+    5@ > 5.0
+    4@ > 5.0
+    00DF:   actor $PLAYER_ACTOR driving
+    0818:   actor $PLAYER_ACTOR in_air 
+then
+    08A6: set_car $111 componentA 2 rotation_to -1.0
+    08A6: set_car $111 componentA 3 rotation_to -1.0
+    0174: 5@ = car $111 Z_angle
+    if 00DF:   actor $PLAYER_ACTOR driving
+    then
+        03C0: 10@ = actor $PLAYER_ACTOR car
+        0174: 4@ = car 10@ Z_angle
+        005B: 5@ += 4@
+        0175: set_car 10@ Z_angle_to 5@
+        067F: set_car 10@ lights 0
+    end
+    04D7: set_actor $PLAYER_ACTOR locked 0
+    08C6: set_actor $PLAYER_ACTOR stay_on_bike 0
+    fade 1 500
+    0AB3: var 19 = 0
+    0992: set_player $PLAYER_CHAR weapons_scrollable 1
+    jump @pickup
+end
+//04D7: set_actor $PLAYER_ACTOR locked 1
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+if 04EE:   animation "DW" loaded 
+then
+    //0812: AS_actor $PLAYER_ACTOR perform_animation "tar_three" IFP_file "dw" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB   
+    0605: actor $PLAYER_ACTOR perform_animation "tar_three" IFP "dw" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1
+end
+32@ = 0
+repeat
+    wait 0
+    0613: 26@ = actor $PLAYER_ACTOR animation "tar_three" time
+    if 32@ > 1000     //If animation somewhy can't be played after 1 sec
+    then
+        08A6: set_car $111 componentA 2 rotation_to -1.0
+        08A6: set_car $111 componentA 3 rotation_to -1.0
+        fade 1 500
+        04D7: set_actor $PLAYER_ACTOR locked 0
+        0687: clear_actor $PLAYER_ACTOR task 
+        04EF: release_animation "DW"
+        0AB3: var 19 = 0
+        0992: set_player $PLAYER_CHAR weapons_scrollable 1
+        jump @pickup
+    end 
+until 26@ >= 0.0425
+fade 1 500
+0AC1: 5@ = load_audiostream_with_3d_support "DWS\DC.MP3"
+0AC5: link_3d_audiostream 5@ to_vehicle $111
+wait 100
+32@ = 0
+repeat 
+    wait 0
+        0613: 26@ = actor $PLAYER_ACTOR animation "tar_three" time 
+    if and 
+    26@ >= 0.505
+    26@ < 0.715
+    then
+        0AB9: get_audiostream 5@ state_to 7@
+        if 7@ == -1
+        then
+        Audiostream.PerformAction(5@, PLAY)
+        end
+        0087: 27@ = 26@
+        27@ *= 4.841
+        27@ += -3.462
+        08A6: set_car $111 componentA 3 rotation_to 27@
+        095F: get_car $111 componentA 3 rotation_to 27@
+        27@ *= 72.0
+        27@ /= 1.26
+        0681: attach_object $95[0] to_car $111 with_offset 0.566 -0.698 0.314 rotation 0.0 0.0 27@ 
+    end
+    095F: get_car $111 componentA 3 rotation_to 27@ 
+until 32@ >= 3100
+0508: car $111 close_all_doors
+wait 800
+04D7: set_actor $PLAYER_ACTOR locked 0
+04EF: release_animation "DW"
+0992: set_player $PLAYER_CHAR weapons_scrollable 1 
+0AAE: release_audiostream 5@
+015A: restore_camera 
+return
+
+
+:companions
+wait 0
+if 0@ == 0
+then
+    //run "vars/companions.s"
+    wait 100
+    07F6: get_group $PLAYER_GROUP number_of_leaders_to 10@ number_of_members_to 11@
+    if
+        11@ == 0
+    then
+        call_scm_func @compvar_null 0
+        0AB2: ret 1 0    
+    end
+    
+    06F0: set_group $PLAYER_GROUP distance_limit_to 3000.0
+    for 13@ = 1 to 11@ step 1
+        wait 0
+        0AB1: call_scm_func @comp_get_cords 1 13@ 5@ 6@ 7@ 8@
+        0085: 12@ = 13@
+        12@ -= 1
+        092B: 12@ = group $PLAYER_GROUP member 12@
+        if 12@ == -1
+        then
+            continue
+        end
+        call_scm_func @put_in_compvar 2 12@ 13@
+        06C9: remove_actor 12@ from_group
+        0687: clear_actor 12@ task 
+        0860: link_actor 12@ to_interior 4@
+        09BC: put_actor 12@ at 5@ 6@ 7@
+        0173: set_actor 12@ Z_angle_to 8@         
+        //0687: clear_actor 12@ task
+        if 13@ > 5
+        then
+            06B0: AS_actor 12@ sit_down 400000000 ms 
+        else
+            0209: 17@ = random_int_in_ranges 0 4
+            0AB1: call_scm_func @comp_get_anim 1 17@ 20@v
+            //0687: clear_actor 12@ task
+            0812: AS_actor 12@ perform_animation 20@v IFP_file "PED" 4.0 loopA 1 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            //04D7: set_actor 12@ locked 1
+        end
+        0638: AS_actor 12@ stay_put 1 
+        //05B9: AS_actor 12@ stay_idle 400000000 ms
+        //04D7: set_actor 12@ locked 1
+    end
+    //07B3: set_group $PLAYER_GROUP give_command 4 
+else
+     call_scm_func @get_from_compvar 1 1 12@
+     if 12@ == -1
+     then
+        //0ABA: end_custom_thread_named "compvar"
+        0AB2: ret 1 0
+     end
+     07AF: 14@ = player $PLAYER_CHAR group 
+     0630: put_actor $PLAYER_ACTOR in_group 14@ as_leader
+     for 13@ = 1 to 7 step 1
+        wait 0
+        {0085: 12@ = 13@
+        12@ -= 1
+        092B: 12@ = group $PLAYER_GROUP member 12@
+        if 12@ == -1
+        then
+            continue
+        end }
+        call_scm_func @get_from_compvar 1 13@ 12@
+        if 12@ == -1
+        then    
+            break                                
+        end
+        if 12@ == -2
+        then
+            continue                                
+        end 
+        if or
+            856D:   not actor 12@ defined
+            0118:   actor 12@ dead 
+        then
+            continue
+        end
+        0687: clear_actor 12@ task
+        0860: link_actor 12@ to_interior 4@
+        2@ -= 2.0
+        0972: put_actor 12@ at 1@ 2@ 3@
+        0631: put_actor 12@ in_group 14@
+        02E2: set_actor 12@ weapon_accuracy_to 100
+        //04D7: set_actor 12@ locked 0
+        0638: AS_actor 12@ stay_put 0
+        call_scm_func @put_in_compvar 1 13@
+        //05B9: AS_actor 12@ stay_idle 0 ms
+    end
+    call_scm_func @compvar_null 0
+    //0ABA: end_custom_thread_named "compvar"
+    //0ABA: end_custom_thread_named 'compvar'
+    //07B3: set_group $PLAYER_GROUP give_command 0
+    06F0: set_group $PLAYER_GROUP distance_limit_to 50.0
+end 
+0AB2: ret 1 0
+
+:put_in_compvar
+0AAA: 5@ = thread "compvar" pointer
+0D2E: set_thread 5@ var 1@ to 0@
+0AB2: ret 0
+
+:get_from_compvar
+0AAA: 5@ = thread "compvar" pointer
+0D2F: 1@ = get_thread 5@ var 0@
+//0D2E: set_thread 5@ var 0@ to -1
+0AB2: ret 1 1@
+
+:rem_from_compvar
+0AAA: 5@ = thread "compvar" pointer
+0D2E: set_thread 5@ var 1@ to -1
+0AB2: ret 0
+
+:compvar_null
+0AAA: 5@ = thread "compvar" pointer
+0D2E: set_thread 5@ var 1 to -1
+0D2E: set_thread 5@ var 2 to -1
+0D2E: set_thread 5@ var 3 to -1
+0D2E: set_thread 5@ var 4 to -1
+0D2E: set_thread 5@ var 5 to -1
+0D2E: set_thread 5@ var 6 to -1
+0D2E: set_thread 5@ var 7 to -1
+0AB2: ret 0
+
+:comp_get_cords
+wait 0
+
+if 0@ == 1
+then
+    0AB2: ret 4 -2.1037 -6.2201 1026.1406 329.3221
+end
+if 0@ == 2
+then
+    0AB2: ret 4 6.2735 -0.6893 1026.1406 89.0302
+end
+if 0@ == 3
+then
+    0AB2: ret 4 -6.6147 1.3768 1023.7266 73.0485
+end
+if 0@ == 4
+then
+    0AB2: ret 4 -5.4638 3.1298 1026.1331 243.7978
+end
+if 0@ == 5
+then
+    0AB2: ret 4 5.3853 3.2759 1026.1331 125.3831
+end
+if 0@ == 6
+then
+    0AB2: ret 4 1.3928 -2.3135 1024.3827 27.4635
+end
+if 0@ == 7
+then
+    0AB2: ret 4  2.7227 0.0541 1024.375 88.8075
+end
+0AB2: ret 1 0
+
+:comp_get_anim
+wait 0
+if 0@ == 0
+then
+    0AB2: ret 1 "Idle_Gang1"
+end
+if 0@ == 1
+then
+    0AB2: ret 1 "Idle_HBHB"
+end
+if 0@ == 2
+then
+    0AB2: ret 1 "Idle_STANCE"
+end
+if 0@ == 3
+then
+    0AB2: ret 1 "Idle_TIRED"
+end
+0AB2: ret 1 0
+
+
+
+////////////////////////////////
+//                            //
+//In-interior checking  thread//
+//                            //
+////////////////////////////////
+
+:in_interior
+wait 0
+if
+0@ == 1
+jf @int_lig
+03A4: name_thread 'INT_CHK'
+12@ = 1
+0AAC: 1@ = load_audiostream "dws\int_ambience.wav"
+0AC0: loop_audiostream 1@ flag 1
+0ABC: set_audiostream 1@ volume 0.0
+Audiostream.PerformAction(1@,Play)
+
+if
+    00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 15.0 15.0 15.0   // Load game in TARDIS interior
+then
+    032A: set_behind_camera_mode_to 0
+    0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 100 mode 1
+	0931: camera_persist_fov 1
+    0992: set_player $PLAYER_CHAR weapons_scrollable 0
+    0581: enable_radar 0 
+end
+
+while true
+    wait 1
+    0AB4: 0@ = var 0
+    if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 15.0 15.0 15.0 
+    then
+        if EXTERIOR == 0
+        then
+            IN_INTERIOR = 1
+            if 8039: NOT 0@ == 10
+            then
+                0ABC: set_audiostream 1@ volume 0.3
+            end
+            032A: set_behind_camera_mode_to 0
+            //00C0: set_current_time_hours_to 0 minutes_to 0 
+        end
+    ELSE
+        IN_INTERIOR = 0
+        if 8039: 0@ == 10
+        then
+            0ABC: set_audiostream 1@ volume 0.0
+        end
+    end
+    wait 0
+    if 0@ == 0
+    then
+        wait 0
+        00A0: store_actor $PLAYER_ACTOR position_to 21@ 22@ 11@
+        if  0AE2: 21@ = random_vehicle_near_point 21@ 22@ 11@ in_radius 10.0 find_next 0 pass_wrecked 1
+        then
+            0AB5: store_actor $PLAYER_ACTOR closest_vehicle_to 21@ closest_ped_to 11@
+            if and
+                07D6: 21@ == $111
+                EXTERIOR == 0
+            then
+                if 12@ == 1
+                then
+                    12@ = 0
+                    //0AD1: show_formatted_text_highpriority "0" time 500
+                    07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+                end
+            else
+                if 12@ == 0
+                then
+                    12@ = 1
+                    //0AD1: show_formatted_text_highpriority "1" time 500
+                    07CC: set_player_enter_car_button $PLAYER_CHAR to 1
+                end
+            end
+            {09B3: get_car $111 door_status 11@
+            if and 
+                07D6: 21@ == $111
+                09DE:  actor $PLAYER_ACTOR entering_car
+                //11@ == 0
+            then
+                0687: clear_actor $PLAYER_ACTOR task
+                gosub @tel_in
+                jump @pickup
+            end}   
+        else
+            07CC: set_player_enter_car_button $PLAYER_CHAR to 1
+            12@ = 1    
+        end
+    end
+end
+
+
+
+////////////////////////////////
+//                            //
+//   Lig-Bar effect thread    //
+//                            //
+////////////////////////////////
+
+:int_lig
+wait 0
+if
+0@ == 2
+jf @int_multithreading
+03A4: name_thread 'INT_LIG' 
+Model.Load(18654)
+Model.Load(18664)
+Model.Load(18665)
+Model.Load(18661)
+Model.Load(18663)
+038B: load_requested_models 
+repeat
+    wait 0
+until Model.Available(18664)
+Object.Create(1@, 18654, 0.0, 0.0, 1025.075) //LIG_BAR
+Object.Create(2@, 18664, 0.0, 0.0, 1021.67)  //lig_roundels_p1
+Object.Create(10@, 18665, 0.0, 0.0, 1021.67) //lig_roundels_p2
+Object.Create(11@, 18661, 0.0, 0.0, 1026.15) //lig_spot
+Object.Create(12@, 18663, 0.0, 0.0, 1026.15) //lig_coronaW
+Object.Create(13@, 18691, 0.0, 0.0, 1026.15) //lig_bar_rotate
+Object.Create(23@, 18691, 0.0, 0.0, 1026.15) //lig_bar_rotate
+
+01BC: put_object 1@ at 0.0 0.0 1024.0
+01BC: put_object 2@ at 0.0 0.0 1024.0
+01BC: put_object 10@ at 0.0 0.0 1024.0
+01BC: put_object 11@ at 0.0 0.0 1024.0
+01BC: put_object 12@ at 0.0 0.0 1024.0
+01BC: put_object 13@ at 0.0 0.0 1024.0
+01BC: put_object 23@ at 0.0 0.0 1024.0
+0750: set_object 12@ visibility 0
+0750: set_object 13@ visibility 0 
+0750: set_object 23@ visibility 0  
+//07C4: set_object 1@ axis_angle_relation_to 0.0 0.0 0.999999999999 1.32679489668e-06
+07C4: set_object 2@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 10@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+
+0566: link_object 1@ to_interior 3
+0566: link_object 2@ to_interior 3
+0566: link_object 10@ to_interior 3
+0566: link_object 11@ to_interior 3
+0566: link_object 12@ to_interior 3
+0566: link_object 13@ to_interior 3
+0566: link_object 23@ to_interior 3
+
+09CA: set_object 1@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+09CA: set_object 2@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+09CA: set_object 10@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+09CA: set_object 13@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+09CA: set_object 23@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+0382: set_object 1@ collision_detection 0
+0382: set_object 11@ collision_detection 0
+0382: set_object 12@ collision_detection 0
+0382: set_object 13@ collision_detection 0
+0382: set_object 23@ collision_detection 0
+
+15@ = 1
+25@ = 7
+while true
+    wait 0
+    0AB4: 0@ = var 0
+    if 0@ == 10
+    then
+        5@ = 1000
+        3@ = 50 //Start
+        4@ = 20 //Finish
+        gosub @effect
+        0D11: set_object 1@ alpha 20
+        0D11: set_object 2@ alpha 20
+        0D11: set_object 10@ alpha 20
+        0D11: set_object 11@ alpha 20
+        0750: set_object 12@ visibility 0
+        repeat
+            wait 0
+            0AB4: 0@ = var 0
+        until 8039: 0@ == 10
+        0750: set_object 12@ visibility 1 
+    end
+    if 0@ == 11
+    then
+        while 0@ == 11
+            32@ = 0
+            repeat
+                wait 0
+                0AB4: 0@ = var 0
+                if 8039: 0@ == 11
+                then
+                    continue
+                end
+            until 32@ >= 700
+            0D11: set_object 2@ alpha 20
+            0D11: set_object 10@ alpha 255
+            32@ = 0
+            repeat
+                wait 0
+                0AB4: 0@ = var 0
+                if 8039: 0@ == 11
+                then
+                    continue
+                end
+            until 32@ >= 700
+            0D11: set_object 2@ alpha 255
+            0D11: set_object 10@ alpha 20
+        end
+    end
+    if or
+        0@ == 0
+        0@ == 3
+    then
+        while true
+            wait 0
+            5@ = 2000
+            3@ = 50 //Start
+            4@ = 255 //Finish
+            0750: set_object 12@ visibility 0
+            gosub @effect
+            3@ = 255 //Start
+            4@ = 50 //Finish
+            0750: set_object 12@ visibility 1
+            gosub @effect
+            0AB4: 0@ = var 0
+            if and
+                8039: NOT 0@ == 0
+                8039: NOT 0@ == 3
+            then
+                break
+            end
+        end
+    else
+        0085: 20@ = 2@
+        0750: set_object 13@ visibility 1
+        0750: set_object 23@ visibility 1
+        0D11: set_object 1@ alpha 50
+        while true
+            wait 0
+            5@ = 800
+            3@ = 50 //Start
+            4@ = 255 //Finish  
+            gosub @effect
+            3@ = 255 //Start
+            4@ = 50 //Finish
+            gosub @effect
+            if 003B: 20@ == 2@
+            then
+                0085: 20@ = 10@
+            else
+                0085: 20@ = 2@
+            end
+            0AB1: call_scm_func @lig_bar_angle 1 15@ 14@
+            0AB1: call_scm_func @lig_bar_angle 1 25@ 24@
+            0177: set_object 13@ Z_angle_to 14@
+            0177: set_object 23@ Z_angle_to 24@
+            15@ += 1
+            25@ += 1
+            if 15@ == 15
+            then
+                15@ = 1
+            end
+            if 25@ == 15
+            then
+                25@ = 1
+            end 
+            0AB4: 0@ = var 0
+            if or
+                0@ == 0
+                0@ == 3
+            then
+                break
+            end
+        end
+        0750: set_object 13@ visibility 0
+        0750: set_object 23@ visibility 0
+    end
+end
+
+:effect
+0085: 7@ = 4@
+0062: 7@ -= 3@ //DELTA CONVERTED 98
+32@ = 0
+repeat
+    0085: 8@ = 32@ // 100
+    006A: 8@ *= 7@ //9800
+    0072: 8@ /= 5@ //5
+    005A: 8@ += 3@ //133
+    if 8@ > 180
+    then
+        0750: set_object 12@ visibility 1
+    else
+        0750: set_object 12@ visibility 0
+    end
+    if or
+        0@ == 0
+        0@ == 3
+        0@ == 10
+    then
+        0D11: set_object 1@ alpha 8@
+        0D11: set_object 2@ alpha 8@
+        0D11: set_object 10@ alpha 8@
+        0D11: set_object 11@ alpha 8@
+    else
+        0D11: set_object 13@ alpha 8@
+        0D11: set_object 20@ alpha 8@
+        0D11: set_object 11@ alpha 8@
+    end
+    wait 0
+until 002B: 32@ >= 5@
+return
+
+:lig_bar_angle
+wait 0
+if 0@ == 1
+then
+    0AB2: ret 1 0.0
+end
+if 0@ == 2
+then
+    0AB2: ret 1 -40.0
+end
+if 0@ == 3
+then
+    0AB2: ret 1 -80.0
+end
+if 0@ == 4
+then
+    0AB2: ret 1 -100.0
+end
+if 0@ == 5
+then
+    0AB2: ret 1 -120.0
+end
+if 0@ == 6
+then
+    0AB2: ret 1 -140.0
+end
+if 0@ == 7
+then
+    0AB2: ret 1 -160.0
+end
+if 0@ == 8
+then
+    0AB2: ret 1 -180.0
+end
+if 0@ == 9
+then
+    0AB2: ret 1 -240.0
+end
+if 0@ == 10
+then
+    0AB2: ret 1 -260.0
+end
+if 0@ == 11
+then
+    0AB2: ret 1 -280.0
+end
+if 0@ == 12
+then
+    0AB2: ret 1 -300.0
+end
+if 0@ == 13
+then
+    0AB2: ret 1 -320.0
+end
+if 0@ == 14
+then
+    0AB2: ret 1 -340.0
+end
+0AB2: ret 1 0
+
+:camera
+if
+    $94 == 1 
+then
+    0209: 9@ = random_int_in_ranges 0 2
+    if 9@ == 0
+    then 
+        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset -3.5 -6.5 0.0
+    else
+        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset 3.5 -6.5 0.0
+    end
+    Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+    Camera.OnVehicle($111, 15, 1)
+end
+0AB2: ret 0
+{$INCLUDE move_set_get}

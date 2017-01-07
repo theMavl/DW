@@ -1,0 +1,697 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+:main
+wait 0
+if 0@ == 0
+jf @top_controller
+
+thread "ligcyc"
+
+wait 1000
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+const
+    WHI_LEFT = 18676
+    WHI_MID = 18677
+    WHI_RIGHT = 18678
+    WHI_LEFT_2 = #lig_rotate1_2
+    WHI_MID_2 = #lig_rotate2_2
+    WHI_RIGHT_2 = #lig_rotate3_2
+    RED_LEFT = #lig_rotate8
+    RED_MID = #lig_rotate9
+    RED_RIGHT = #lig_rotate10
+    RED_LEFT_2 = #lig_rotate8_2
+    RED_MID_2 = #lig_rotate9_2
+    RED_RIGHT_2 = #lig_rotate10_2
+end
+
+Model.load(WHI_LEFT)
+Model.Load(WHI_MID)
+Model.Load(WHI_RIGHT)
+Model.load(WHI_LEFT_2)
+Model.Load(WHI_MID_2)
+Model.Load(WHI_RIGHT_2)
+
+Model.Load(RED_LEFT)
+Model.Load(RED_RIGHT)
+Model.Load(RED_MID)
+Model.Load(RED_LEFT_2)
+Model.Load(RED_MID_2)
+Model.Load(RED_RIGHT_2)
+038B: load_requested_models
+
+run "toplig.cs" 1 // Top light controller
+ 
+wait 100
+29@ = 0
+while true
+    wait 0
+    0AB4: 30@ = var 0
+    if and 
+        30@ == 0
+        8039: NOT 29@ == 0
+    then
+        29@ = 0
+        0AB3: var 42 = 1
+    end
+    0AB4: 31@ = var 11
+    if 30@ == 1
+    then
+        0AB3: var 42 = 0
+        0AB1: call_scm_func @3set 2 1 1//1 - white, 2 - red / 1 - fast, 2 - slow
+        0AB3: var 42 = 1 
+    end
+    if 30@ == 2
+    then
+        0AB3: var 42 = 0
+        0AB1: call_scm_func @3set 2 1 2//1 - white, 2 - red / 1 - fast, 2 - slow
+        0AB3: var 42 = 1
+    end
+    if and
+        30@ == 3
+        8039: NOT 29@ == 3
+    then
+        0AB3: var 42 = 2
+        0AB3: var 26 = 1      
+        29@ = 3
+    end
+    if and
+        30@ == 3
+        29@ == 3
+    then
+        32@ = 0
+        repeat
+            wait 0
+            0AB4: 30@ = var 0
+            if 30@ == 3
+            jf break
+        until 32@ > 2000
+        if 30@ == 3
+        jf continue
+        0AB3: var 42 = 0
+        0AB3: var 26 = 0
+        32@ = 0
+        repeat
+            wait 0
+            0AB4: 30@ = var 0
+            if 30@ == 3
+            jf break
+        until 32@ > 1000
+        If 30@ == 3
+        then
+            0AB3: var 42 = 2
+            0AB3: var 26 = 1
+        end
+        if 30@ == 0
+        then
+            0AB3: var 42 = 1
+        end
+    end
+    if 30@ == 4
+    then
+        0AB4: 30@ = var 42
+        0AB3: var 42 = 0
+        0AB1: call_scm_func @3set 2 2 1//1 - white, 2 - red / 1 - fast, 2 - slow
+        0AB3: var 42 = 30@ 
+    end
+    if 30@ == 5
+    then
+        0AB4: 30@ = var 42
+        0AB3: var 42 = 0
+        0AB1: call_scm_func @3set 2 2 2//1 - white, 2 - red / 1 - fast, 2 - slow
+        0AB4: 30@ = var 0
+        0AB3: var 42 = 30@ 
+    end
+    if 30@ == 6
+    then
+        0AB3: var 42 = 0
+        0AB1: call_scm_func @5set 2 1 1//1 - white, 2 - red / 1 - fast, 2 - slow
+        0AB3: var 42 = 1 
+    end
+    if 30@ == 7
+    then
+        0AB3: var 42 = 0
+        0AB1: call_scm_func @5set 2 1 2//1 - white, 2 - red / 1 - fast, 2 - slow
+        0AB3: var 42 = 1 
+    end
+    if 30@ == 8
+    then
+        0AB4: 30@ = var 42
+        0AB3: var 42 = 0
+        0AB1: call_scm_func @5set 2 2 1//1 - white, 2 - red / 1 - fast, 2 - slow
+        0AB3: var 42 = 30@ 
+    end
+    if 30@ == 9
+    then
+        0AB4: 30@ = var 42
+        0AB3: var 42 = 0
+        0AB1: call_scm_func @5set 2 2 2//1 - white, 2 - red / 1 - fast, 2 - slow
+        0AB3: var 42 = 30@ 
+    end
+    if 30@ == 11
+    then
+        0AB4: 29@ = var 42
+        if or
+            29@ == 0
+            29@ == 2
+        then 
+            0AB3: var 42 = 0
+        else               
+            0AB3: var 42 = 1
+        end    
+        0AB1: call_scm_func @5set 2 2 1//1 - white, 2 - red / 1 - fast, 2 - slow
+        0AB3: var 42 = 29@ 
+    end
+end
+
+:3set
+{
+    3 bars set cycle
+    Input: 1 - white, 2 - red
+    Vars: 0@-11@ - objects, 12@ - time
+}
+wait 0
+if 1@ == 1 //Set start speed
+then
+    12@ = 29
+else
+    12@ = 100
+end
+if 0@ == 1 //Set color
+then
+    0@ = object.Create(18676, 0.0, 0.0, 0.0)
+    1@ = object.Create(18677, 0.0, 0.0, 0.0)
+    2@ = object.Create(18678, 0.0, 0.0, 0.0)
+    3@ = object.Create(18676, 0.0, 0.0, 0.0)
+    4@ = object.Create(18677, 0.0, 0.0, 0.0)
+    5@ = object.Create(18678, 0.0, 0.0, 0.0)
+    6@ = object.Create(18676, 0.0, 0.0, 0.0)
+    7@ = object.Create(18677, 0.0, 0.0, 0.0)
+    8@ = object.Create(18678, 0.0, 0.0, 0.0)
+    9@ = object.Create(18676, 0.0, 0.0, 0.0)
+    10@ = object.Create(18677, 0.0, 0.0, 0.0)
+    11@ = object.Create(18678, 0.0, 0.0, 0.0)
+else
+    0@ = object.Create(18742, 0.0, 0.0, 0.0)
+    1@ = object.Create(18743, 0.0, 0.0, 0.0)
+    2@ = object.Create(18744, 0.0, 0.0, 0.0)
+    3@ = object.Create(18742, 0.0, 0.0, 0.0)
+    4@ = object.Create(18743, 0.0, 0.0, 0.0)
+    5@ = object.Create(18744, 0.0, 0.0, 0.0)
+    6@ = object.Create(18742, 0.0, 0.0, 0.0)
+    7@ = object.Create(18743, 0.0, 0.0, 0.0)
+    8@ = object.Create(18744, 0.0, 0.0, 0.0)
+    9@ = object.Create(18742, 0.0, 0.0, 0.0)
+    10@ = object.Create(18743, 0.0, 0.0, 0.0)
+    11@ = object.Create(18744, 0.0, 0.0, 0.0)
+end
+Object.PutAt(0@, 0.0, 0.0, 1024.0)
+Object.PutAt(1@, 0.0, 0.0, 1024.0)
+Object.PutAt(2@, 0.0, 0.0, 1024.0)
+Object.PutAt(3@, 0.0, 0.0, 1024.0)
+Object.PutAt(4@, 0.0, 0.0, 1024.0)
+Object.PutAt(5@, 0.0, 0.0, 1024.0)
+Object.PutAt(6@, 0.0, 0.0, 1024.0)
+Object.PutAt(7@, 0.0, 0.0, 1024.0)
+Object.PutAt(8@, 0.0, 0.0, 1024.0)
+Object.PutAt(9@, 0.0, 0.0, 1024.0)
+Object.PutAt(10@, 0.0, 0.0, 1024.0)
+Object.PutAt(11@, 0.0, 0.0, 1024.0)
+
+0382: set_object 0@ collision_detection 0 
+0382: set_object 1@ collision_detection 0
+0382: set_object 2@ collision_detection 0 
+0382: set_object 3@ collision_detection 0 
+0382: set_object 4@ collision_detection 0
+0382: set_object 5@ collision_detection 0 
+0382: set_object 6@ collision_detection 0 
+0382: set_object 7@ collision_detection 0
+0382: set_object 8@ collision_detection 0
+0382: set_object 9@ collision_detection 0 
+0382: set_object 10@ collision_detection 0
+0382: set_object 11@ collision_detection 0
+ 
+0177: set_object 3@ Z_angle_to 100.0 
+0177: set_object 4@ Z_angle_to 100.0 
+0177: set_object 5@ Z_angle_to 100.0
+0177: set_object 6@ Z_angle_to 180.0 
+0177: set_object 7@ Z_angle_to 180.0 
+0177: set_object 8@ Z_angle_to 180.0
+0177: set_object 9@ Z_angle_to 260.0 
+0177: set_object 10@ Z_angle_to 260.0 
+0177: set_object 11@ Z_angle_to 260.0
+
+while true
+    wait 0
+    0AB1: call_scm_func @effect 10 mode 1 time 12@ objs 0@ 3@ 6@ 9@ invis -1 -1 -1 -1 new_invis 12@ 12@ 12@ 12@ middle_check 12@  // these 12@x4 are just dummies. They should be rewritten by the last 12@ - middle check
+    if 12@ == -1
+    then
+        break
+    end
+    0AB1: call_scm_func @effect 10 mode 1 time 12@ objs 1@ 4@ 7@ 10@ invis -1 -1 -1 -1 new_invis 12@ 12@ 12@ 12@ middle_check 12@
+    if 12@ == -1
+    then
+        break
+    end
+    0AB1: call_scm_func @effect 10 mode 1 time 12@ objs 2@ 5@ 8@ 11@ invis -1 -1 -1 -1 new_invis 12@ 12@ 12@ 12@ middle_check 12@
+    if 12@ == -1
+    then
+        break
+    end
+end
+
+Object.Destroy(0@)
+Object.Destroy(1@)
+Object.Destroy(2@)
+Object.Destroy(3@)
+Object.Destroy(4@)
+Object.Destroy(5@)
+Object.Destroy(6@)
+Object.Destroy(7@)
+Object.Destroy(8@)
+Object.Destroy(9@)
+Object.Destroy(10@)
+Object.Destroy(11@)
+0AB2: ret 0
+
+
+:5set
+{
+    5 bars set cycle
+    Input: 1 - white, 2 - red
+    Vars: 0@-23@ - objects, 24@ - time, 25-28@ - invis and new invis
+}
+wait 0
+if 1@ == 1 //Set start speed
+then
+    24@ = 49
+else
+    24@ = 100
+end
+if 0@ == 1 //Set color
+then
+    0@ = object.Create(WHI_LEFT, 0.0, 0.0, 0.0)
+    1@ = object.Create(WHI_MID, 0.0, 0.0, 0.0)
+    2@ = object.Create(WHI_RIGHT, 0.0, 0.0, 0.0)
+    3@ = object.Create(18757, 0.0, 0.0, 0.0)
+    4@ = object.Create(18758, 0.0, 0.0, 0.0)
+    5@ = object.Create(18759, 0.0, 0.0, 0.0)
+    6@ = object.Create(WHI_LEFT, 0.0, 0.0, 0.0)
+    7@ = object.Create(WHI_MID, 0.0, 0.0, 0.0)
+    8@ = object.Create(WHI_RIGHT, 0.0, 0.0, 0.0)
+    9@ = object.Create(WHI_LEFT_2, 0.0, 0.0, 0.0)
+    10@ = object.Create(WHI_MID_2, 0.0, 0.0, 0.0)
+    11@ = object.Create(WHI_RIGHT_2, 0.0, 0.0, 0.0)
+    12@ = object.Create(WHI_LEFT, 0.0, 0.0, 0.0)
+    13@ = object.Create(WHI_MID, 0.0, 0.0, 0.0)
+    14@ = object.Create(WHI_RIGHT, 0.0, 0.0, 0.0)
+    15@ = object.Create(WHI_LEFT_2, 0.0, 0.0, 0.0)
+    16@ = object.Create(WHI_MID_2, 0.0, 0.0, 0.0)
+    17@ = object.Create(WHI_RIGHT_2, 0.0, 0.0, 0.0)
+    18@ = object.Create(WHI_LEFT, 0.0, 0.0, 0.0)
+    19@ = object.Create(WHI_MID, 0.0, 0.0, 0.0)
+    20@ = object.Create(WHI_RIGHT, 0.0, 0.0, 0.0)
+    21@ = object.Create(WHI_LEFT_2, 0.0, 0.0, 0.0)
+    22@ = object.Create(WHI_MID_2, 0.0, 0.0, 0.0)
+    23@ = object.Create(WHI_RIGHT_2, 0.0, 0.0, 0.0)
+else
+    0@ = object.Create(RED_LEFT, 0.0, 0.0, 0.0)
+    1@ = object.Create(RED_MID, 0.0, 0.0, 0.0)
+    2@ = object.Create(RED_RIGHT, 0.0, 0.0, 0.0)
+    3@ = object.Create(RED_LEFT_2, 0.0, 0.0, 0.0)
+    4@ = object.Create(RED_MID_2, 0.0, 0.0, 0.0)
+    5@ = object.Create(RED_RIGHT_2, 0.0, 0.0, 0.0)
+    6@ = object.Create(RED_LEFT, 0.0, 0.0, 0.0)
+    7@ = object.Create(RED_MID, 0.0, 0.0, 0.0)
+    8@ = object.Create(RED_RIGHT, 0.0, 0.0, 0.0)
+    9@ = object.Create(RED_LEFT_2, 0.0, 0.0, 0.0)
+    10@ = object.Create(RED_MID_2, 0.0, 0.0, 0.0)
+    11@ = object.Create(RED_RIGHT_2, 0.0, 0.0, 0.0)
+    12@ = object.Create(RED_LEFT, 0.0, 0.0, 0.0)
+    13@ = object.Create(RED_MID, 0.0, 0.0, 0.0)
+    14@ = object.Create(RED_RIGHT, 0.0, 0.0, 0.0)
+    15@ = object.Create(RED_LEFT_2, 0.0, 0.0, 0.0)
+    16@ = object.Create(RED_MID_2, 0.0, 0.0, 0.0)
+    17@ = object.Create(RED_RIGHT_2, 0.0, 0.0, 0.0)
+    18@ = object.Create(RED_LEFT, 0.0, 0.0, 0.0)
+    19@ = object.Create(RED_MID, 0.0, 0.0, 0.0)
+    20@ = object.Create(RED_RIGHT, 0.0, 0.0, 0.0)
+    21@ = object.Create(RED_LEFT_2, 0.0, 0.0, 0.0)
+    22@ = object.Create(RED_MID_2, 0.0, 0.0, 0.0)
+    23@ = object.Create(RED_RIGHT_2, 0.0, 0.0, 0.0)
+end
+
+Object.PutAt(0@, 0.0, 0.0, 1024.0)
+Object.PutAt(1@, 0.0, 0.0, 1024.0)
+Object.PutAt(2@, 0.0, 0.0, 1024.0)
+Object.PutAt(3@, 0.0, 0.0, 1024.0)
+Object.PutAt(4@, 0.0, 0.0, 1024.0)
+Object.PutAt(5@, 0.0, 0.0, 1024.0)
+Object.PutAt(6@, 0.0, 0.0, 1024.0)
+Object.PutAt(7@, 0.0, 0.0, 1024.0)
+Object.PutAt(8@, 0.0, 0.0, 1024.0)
+Object.PutAt(9@, 0.0, 0.0, 1024.0)
+Object.PutAt(10@, 0.0, 0.0, 1024.0)
+Object.PutAt(11@, 0.0, 0.0, 1024.0)
+Object.PutAt(12@, 0.0, 0.0, 1024.0)
+Object.PutAt(13@, 0.0, 0.0, 1024.0)
+Object.PutAt(14@, 0.0, 0.0, 1024.0)
+Object.PutAt(15@, 0.0, 0.0, 1024.0)
+Object.PutAt(16@, 0.0, 0.0, 1024.0)
+Object.PutAt(17@, 0.0, 0.0, 1024.0)
+Object.PutAt(18@, 0.0, 0.0, 1024.0)
+Object.PutAt(19@, 0.0, 0.0, 1024.0)
+Object.PutAt(20@, 0.0, 0.0, 1024.0)
+Object.PutAt(21@, 0.0, 0.0, 1024.0)
+Object.PutAt(22@, 0.0, 0.0, 1024.0)
+Object.PutAt(23@, 0.0, 0.0, 1024.0)
+
+0382: set_object 0@ collision_detection 0 
+0382: set_object 1@ collision_detection 0
+0382: set_object 2@ collision_detection 0 
+0382: set_object 3@ collision_detection 0 
+0382: set_object 4@ collision_detection 0
+0382: set_object 5@ collision_detection 0
+0382: set_object 6@ collision_detection 0 
+0382: set_object 7@ collision_detection 0
+0382: set_object 8@ collision_detection 0
+0382: set_object 9@ collision_detection 0 
+0382: set_object 10@ collision_detection 0
+0382: set_object 11@ collision_detection 0
+0382: set_object 12@ collision_detection 0 
+0382: set_object 13@ collision_detection 0
+0382: set_object 14@ collision_detection 0 
+0382: set_object 15@ collision_detection 0 
+0382: set_object 16@ collision_detection 0
+0382: set_object 17@ collision_detection 0
+0382: set_object 18@ collision_detection 0 
+0382: set_object 19@ collision_detection 0
+0382: set_object 20@ collision_detection 0
+0382: set_object 21@ collision_detection 0 
+0382: set_object 22@ collision_detection 0
+0382: set_object 23@ collision_detection 0
+  
+0177: set_object 3@ Z_angle_to -20.0 
+0177: set_object 4@ Z_angle_to -20.0 
+0177: set_object 5@ Z_angle_to -20.0
+0177: set_object 6@ Z_angle_to 100.0 
+0177: set_object 7@ Z_angle_to 100.0 
+0177: set_object 8@ Z_angle_to 100.0
+0177: set_object 9@ Z_angle_to 80.0 
+0177: set_object 10@ Z_angle_to 80.0 
+0177: set_object 11@ Z_angle_to 80.0
+0177: set_object 12@ Z_angle_to 180.0 
+0177: set_object 13@ Z_angle_to 180.0 
+0177: set_object 14@ Z_angle_to 180.0
+0177: set_object 15@ Z_angle_to 160.0 
+0177: set_object 16@ Z_angle_to 160.0 
+0177: set_object 17@ Z_angle_to 160.0
+0177: set_object 18@ Z_angle_to 260.0 
+0177: set_object 19@ Z_angle_to 260.0 
+0177: set_object 20@ Z_angle_to 260.0
+0177: set_object 21@ Z_angle_to 240.0 
+0177: set_object 22@ Z_angle_to 240.0 
+0177: set_object 23@ Z_angle_to 240.0  
+0085: 25@ = 5@
+0085: 26@ = 11@
+0085: 27@ = 17@
+0085: 28@ = 23@
+0750: set_object 25@ visibility 0 
+0750: set_object 26@ visibility 0
+0750: set_object 27@ visibility 0
+0750: set_object 28@ visibility 0
+while true
+    wait 0
+    0AB1: call_scm_func @effect 10 mode 2 time 24@ objs 0@ 6@ 12@ 18@ invis 25@ 26@ 27@ 28@ new_invis 25@ 26@ 27@ 28@ middle_check 24@ 
+    if 24@ == -1
+    then
+        break
+    end
+    0AB1: call_scm_func @effect 10 mode 2 time 24@ objs 1@ 7@ 13@ 19@ invis 25@ 26@ 27@ 28@ new_invis 25@ 26@ 27@ 28@ middle_check 24@
+    if 24@ == -1
+    then
+        break
+    end
+    0AB1: call_scm_func @effect 10 mode 2 time 24@ objs 2@ 8@ 14@ 20@ invis 25@ 26@ 27@ 28@ new_invis 25@ 26@ 27@ 28@ middle_check 24@
+    if 24@ == -1
+    then
+        break
+    end
+    0AB1: call_scm_func @effect 10 mode 2 time 24@ objs 3@ 9@ 15@ 21@ invis 25@ 26@ 27@ 28@ new_invis 25@ 26@ 27@ 28@ middle_check 24@ 
+    if 24@ == -1
+    then
+        break
+    end
+    0AB1: call_scm_func @effect 10 mode 2 time 24@ objs 4@ 10@ 16@ 22@ invis 25@ 26@ 27@ 28@ new_invis 25@ 26@ 27@ 28@ middle_check 24@
+    if 24@ == -1
+    then
+        break
+    end
+    0AB1: call_scm_func @effect 10 mode 2 time 24@ objs 5@ 11@ 17@ 23@ invis 25@ 26@ 27@ 28@ new_invis 25@ 26@ 27@ 28@ middle_check 24@
+    if 24@ == -1
+    then
+        break
+    end
+end
+
+Object.Destroy(0@)
+Object.Destroy(1@)
+Object.Destroy(2@)
+Object.Destroy(3@)
+Object.Destroy(4@)
+Object.Destroy(5@)
+Object.Destroy(6@)
+Object.Destroy(7@)
+Object.Destroy(8@)
+Object.Destroy(9@)
+Object.Destroy(10@)
+Object.Destroy(11@)
+Object.Destroy(12@)
+Object.Destroy(13@)
+Object.Destroy(14@)
+Object.Destroy(15@)
+Object.Destroy(16@)
+Object.Destroy(17@)
+Object.Destroy(18@)
+Object.Destroy(19@)
+Object.Destroy(20@)
+Object.Destroy(21@)
+Object.Destroy(22@)
+Object.Destroy(23@)
+0AB2: ret 0
+
+
+:effect
+{
+    Effect function
+    Input: [int] - mode (1 - 3 bars, 2 - 5 bars), [int] - time, [int] [int] [int] [int] - current objects
+    Output: [int] - set time depending on result of var 0 check or break the cycle
+    Vars: 0@ - mode , 1@ - time, 2@-9@ - objs, 10@ - time for calculations inside the procedure, 11@ - temp angle for moving, 30@ - var 0 for middle check
+}
+if 0@ == 1
+then
+    32@ = 0
+    repeat
+        0085: 10@ = 32@ // 100
+        10@ *= 255
+        0072: 10@ /= 1@
+        10@ -= 255
+        0095: make 10@ absolute_integer
+        0D11: set_object 2@ alpha 10@
+        wait 0
+    until 002B: 32@ >= 1@
+    
+    0750: set_object 2@ visibility 0
+    0750: set_object 3@ visibility 0
+    0750: set_object 4@ visibility 0
+    0750: set_object 5@ visibility 0
+    
+    0176: 11@ = object 2@ Z_angle 
+    11@ -= 20.0
+    0177: set_object 2@ Z_angle_to 11@
+    0176: 11@ = object 3@ Z_angle 
+    11@ -= 20.0
+    0177: set_object 3@ Z_angle_to 11@
+    
+    0AAA: 12@ = thread 'ligamb' pointer   //Export angle to lig_ambience
+    0D2E: set_thread 12@ var 14 to 11@ 
+    
+    0176: 11@ = object 4@ Z_angle 
+    11@ -= 20.0
+    0177: set_object 4@ Z_angle_to 11@
+    0176: 11@ = object 5@ Z_angle 
+    11@ -= 20.0
+    0177: set_object 5@ Z_angle_to 11@
+    
+    0D11: set_object 3@ alpha 0
+
+    0750: set_object 2@ visibility 1
+    0750: set_object 3@ visibility 1
+    0750: set_object 4@ visibility 1
+    0750: set_object 5@ visibility 1
+    
+    if 1@ > 50
+    then
+        repeat
+            0085: 10@ = 32@ // 100
+            10@ *= 255
+            0072: 10@ /= 1@
+            0095: make 10@ absolute_integer 
+            0D11: set_object 2@ alpha 10@
+            wait 0
+        until  002D: 32@ >= 1@
+    end
+    0D11: set_object 2@ alpha 255
+else
+    32@ = 0
+    repeat
+        0085: 10@ = 32@ // 100
+        10@ *= 255
+        0072: 10@ /= 1@
+        10@ -= 255
+        0095: make 10@ absolute_integer 
+        0D11: set_object 2@ alpha 10@
+        wait 0
+    until 002B: 32@ >= 1@
+    
+    0750: set_object 2@ visibility 0
+    0750: set_object 3@ visibility 0
+    0750: set_object 4@ visibility 0
+    0750: set_object 5@ visibility 0
+    
+    0176: 11@ = object 2@ Z_angle 
+    11@ -= 40.0
+    0177: set_object 2@ Z_angle_to 11@
+    
+    0176: 11@ = object 3@ Z_angle 
+    11@ -= 40.0
+    0177: set_object 3@ Z_angle_to 11@
+    
+    0AAA: 12@ = thread 'ligamb' pointer   //Export angle to lig_ambience
+    0D2E: set_thread 12@ var 14 to 11@
+    
+    0176: 11@ = object 4@ Z_angle 
+    11@ -= 40.0
+    0177: set_object 4@ Z_angle_to 11@
+    
+    0176: 11@ = object 5@ Z_angle 
+    11@ -= 40.0
+    0177: set_object 5@ Z_angle_to 11@
+    
+    0D11: set_object 6@ alpha 0
+    
+    32@ = 0
+    if 1@ > 50
+    then
+        repeat
+            0085: 10@ = 32@ // 100
+            10@ *= 255
+            0072: 10@ /= 1@
+            0095: make 10@ absolute_integer 
+            0D11: set_object 6@ alpha 10@
+            wait 0
+        until  002D: 32@ >= 1@
+    end
+    
+    0D11: set_object 6@ alpha 255
+    
+    0750: set_object 6@ visibility 1
+    0750: set_object 7@ visibility 1
+    0750: set_object 8@ visibility 1
+    0750: set_object 9@ visibility 1    
+end
+
+0AB4: 30@ = var 0
+if or
+30@ == 1
+30@ == 4
+30@ == 6
+30@ == 8
+30@ == 11
+then
+    0AB2: ret 5 2@ 3@ 4@ 5@ 49
+end
+if or
+30@ == 2
+30@ == 5
+30@ == 7
+30@ == 9
+then
+    0AB2: ret 5 2@ 3@ 4@ 5@ 100
+end
+
+if or
+30@ == 0
+30@ == 3
+then
+    0AB2: ret 5 2@ 3@ 4@ 5@ -1
+end
+
+
+/////////////////////////////////////////////////////////////
+
+:top_controller
+wait 0
+if 8039: 0@ == 1
+then
+    end_custom_thread
+end
+
+thread "topcont"
+
+1@ = 1 // prev
+0AB3: var 42 = 1
+
+while true
+    wait 0
+    0AB4: 0@ = var 42
+    if 0@ == 0
+    then
+        if 1@ == 2
+        then
+            03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_TOP_E to #NULL
+            1@ = 0    
+        else
+            if 1@ == 1
+            then
+                03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_TOP to #NULL
+                1@ = 0
+            end
+        end    
+    end
+    if 0@ == 1
+    then
+        if 1@ == 2
+        then
+            03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_TOP_E to #LIG_TOP
+            1@ = 1    
+        else
+            if 1@ == 0
+            then
+                03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #NULL to #LIG_TOP
+                1@ = 1
+            end
+        end    
+    end
+    if 0@ == 2
+    then
+        if 1@ == 1
+        then
+            03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_TOP to #LIG_TOP_E
+            1@ = 2    
+        else
+            if 1@ == 0
+            then
+                03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #NULL to #LIG_TOP_E
+                1@ = 2
+            end
+        end    
+    end
+end
+
+end_custom_thread    

@@ -1,0 +1,117 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+/*04ED: load_animation "DW"
+    wait 100
+    0812: AS_actor $PLAYER_ACTOR perform_animation "11th_hour" IFP_file "DW" 5.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB 
+end_custom_thread */
+
+{run "fade.s" 1
+0AB3: var 0 = 0}
+run "grabbing_extraSND.s"
+0AB3: var 50 = 1
+
+067B: put_camera_on_car $111 with_offset 6.5 -12.5 0.0 point_to_actor $PLAYER_ACTOR tilt 0.0 2 
+04ED: load_animation "FINALE" 
+0464: put_actor $PLAYER_ACTOR into_turret_on_car $111 at_car_offset 0.0 -1.0 -0.8 position 1 shooting_angle_limit 0.0 with_weapon 0
+041E: set_radio_station 11
+0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0 
+0812: AS_actor $PLAYER_ACTOR perform_animation "FIN_HANG_SLIP" IFP_file "FINALE" 10.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB 
+32@ = 0
+repeat
+    wait 0
+    gosub @fall
+until 32@ >= 3300
+0812: AS_actor $PLAYER_ACTOR perform_animation "FIN_HANG_LOOP" IFP_file "FINALE" 10.0 loopA 1 lockX 0 lockY 0 lockF 0 time -1 // versionB
+ 
+repeat
+    wait 0
+     gosub @fall
+ 
+ if 0ab0: 87 // w
+ then
+    04ED: load_animation "DW"
+    wait 100
+    067A: put_camera_on_car $111 with_offset 6.5 -12.5 0.0 point_to_car $111 tilt 0.0 2 
+    0464: put_actor $PLAYER_ACTOR into_turret_on_car $111 at_car_offset 0.0 -1.0 -1.9 position 1 shooting_angle_limit 0.0 with_weapon 0
+    0812: AS_actor $PLAYER_ACTOR perform_animation "11th_hour" IFP_file "DW" 5.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB 
+    wait 700
+    0209: 2@ = random_int_in_ranges 0 5
+    if 2@ == 0
+    then 
+       04EF: release_animation "DW" 
+        0687: clear_actor $PLAYER_ACTOR task
+        05B9: AS_actor $PLAYER_ACTOR stay_idle 1 ms
+        0465: remove_actor $PLAYER_ACTOR from_turret_mode
+        camera.Restore()
+    else
+        wait 1000
+        fade 0 200
+        wait 200 
+        Camera.Restore_WithJumpCut()
+        04EF: release_animation "DW" 
+        0687: clear_actor $PLAYER_ACTOR task
+        05B9: AS_actor $PLAYER_ACTOR stay_idle 1 ms
+        0464: put_actor $PLAYER_ACTOR into_turret_on_car $111 at_car_offset 0.0 -0.2 -0.2 position 1 shooting_angle_limit 0.0 with_weapon 0
+        //0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset 0.0 -0.2 -0.2
+        //09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 3@ 4@ 5@ 
+        //0465: remove_actor $PLAYER_ACTOR from_turret_mode
+        repeat
+            wait 0
+            0AB4: 2@ = var 50
+        until 2@ == 0
+        
+    end 
+    
+    jump @end
+ end
+
+ if 0ab0: 83 // s
+ then
+    0687: clear_actor $PLAYER_ACTOR task
+    05B9: AS_actor $PLAYER_ACTOR stay_idle 1 ms
+    0465: remove_actor $PLAYER_ACTOR from_turret_mode 
+    Camera.Restore()
+    jump @end
+ end
+until false  
+
+:fall
+    0174: 0@ = car $111 Z_angle 
+    0173: set_actor $PLAYER_ACTOR Z_angle_to 0@
+    0407: store_coords_to 3@ 4@ 5@ from_car $111 with_offset 0.0 0.0 -1.1
+    0407: store_coords_to 6@ 7@ 8@ from_car $111 with_offset 0.0 0.0 -3.3
+    077D: 1@ = car $111 x_angle 
+    06BE: 2@ = car $111 y_angle 
+    
+    02F7: 1@ = cosine 1@ // (float) 
+    02F7: 2@ = cosine 2@ // (float) 
+
+    //0656: get_angle 1@ absolute_degrees_to 1@ 
+    //0656: get_angle 2@ absolute_degrees_to 2@
+    if and
+        06BD:  no_obstacles_between 3@ 4@ 5@ and 6@ 7@ 8@ solid 1 car 1 actor 0 object 1 particle 0
+        1@ > 0.342
+        2@ > 0.342
+    then
+    {077D: 1@ = car $111 x_angle 
+    06BE: 2@ = car $111 y_angle }
+        //show_text "there is nothing %f %f" 100 1@ 2@
+        
+
+    else
+        //show_text "something is there" 100
+        06A2: get_car $111 velocity_in_direction_XYZ 3@ 4@ 5@
+
+        0465: remove_actor $PLAYER_ACTOR from_turret_mode 
+        0687: clear_actor $PLAYER_ACTOR task 
+        camera.Restore_WithJumpCut()
+        083C: set_actor $PLAYER_ACTOR velocity_in_direction_XYZ 3@ 4@ 5@ 
+
+        jump @end
+    end 
+return 
+
+:end
+0AB3: var 50 = 0
+end_custom_thread

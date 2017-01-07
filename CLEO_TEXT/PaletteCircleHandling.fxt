@@ -1,0 +1,11 @@
+PC_RGB ~g~RGB
+PC_RED ~g~Red
+PC_GREN ~g~Green
+PC_BLUE ~g~Blue
+PC_HSV ~g~HSV
+PC_HUE ~g~Hue
+PC_SAT ~g~Sat
+PC_VAL ~g~Value
+PC_NUM ~r~~1~
+PC_PNUM ~r~~1~%
+PC_ALFA ~g~Alpha

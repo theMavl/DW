@@ -1,0 +1,172 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+thread "rotors"
+wait 1500
+Model.Load(18714)
+Model.Load(18715)
+Model.Load(18716)
+Model.Load(18717)
+Model.Load(18718)
+Model.Load(18719)
+038B: load_requested_models 
+wait 100
+0107: 0@ = create_object 18714 at 0.0 0.0 1024.0
+0107: 1@ = create_object 18715 at 0.0 0.0 1024.0
+0107: 2@ = create_object 18716 at 0.0 0.0 1024.0
+0107: 3@ = create_object 18717 at 0.0 0.0 1024.0
+0107: 4@ = create_object 18718 at 0.0 0.0 1024.0
+0107: 5@ = create_object 18719 at 0.0 0.0 1024.0
+01BC: put_object 0@ at 0.0 0.0 1024.0
+01BC: put_object 1@ at 0.0 0.0 1024.0
+01BC: put_object 2@ at 0.0 0.0 1024.0
+01BC: put_object 3@ at 0.0 0.0 1024.0
+01BC: put_object 4@ at 0.0 0.0 1024.0
+01BC: put_object 5@ at 0.0 0.0 1024.0
+
+0566: link_object 0@ to_interior 3
+0566: link_object 1@ to_interior 3 
+0566: link_object 2@ to_interior 3 
+0566: link_object 3@ to_interior 3 
+0566: link_object 4@ to_interior 3 
+0566: link_object 5@ to_interior 3
+
+0177: set_object 0@ Z_angle_to 0.0
+0177: set_object 2@ Z_angle_to 0.0
+0177: set_object 3@ Z_angle_to 0.0
+0177: set_object 5@ Z_angle_to 0.0
+0177: set_object 1@ Z_angle_to 0.0
+0177: set_object 4@ Z_angle_to 0.0
+//repeat
+//wait 0
+//until 0ab0: 56
+26@ = 0.0
+:1
+wait 100
+while true
+    wait 0
+    0AB4: 23@ = var 0
+    if 23@ == 10
+    then
+        0D11: set_object 3@ alpha 20  
+        0D11: set_object 4@ alpha 20  
+        0D11: set_object 5@ alpha 20  
+
+        repeat
+            wait 0
+            0AB4: 23@ = var 0
+        until 8039: 23@ == 10
+        0D11: set_object 3@ alpha 255  
+        0D11: set_object 4@ alpha 255  
+        0D11: set_object 5@ alpha 255
+    else
+        if 23@ == 11
+        then
+            continue
+        end
+        if and
+            8039: 23@ == 0
+            8039: 23@ == 3
+        then
+            break
+        end
+    end
+end
+32@ = 0
+while true
+    wait 0
+    0093: 10@ = integer 32@ to_float
+    if 10@ < 2000.0
+    then
+        10@ /= 12000.0
+        01FB: 25@ = square_root 10@
+    else
+        25@ = 0.4
+    end
+    0A8D: 27@ = read_memory 0xBA6794 size 1 virtual_protect 1 //If frame limiter enabled
+    if 27@ == 1
+    then
+        25@ *= 2.0
+    end
+    005B: 26@ += 25@
+    if 26@ > 360.0
+    then
+        26@ -= 360.0
+    end
+    0177: set_object 0@ Z_angle_to 26@
+    0177: set_object 2@ Z_angle_to 26@
+    0177: set_object 3@ Z_angle_to 26@
+    0177: set_object 5@ Z_angle_to 26@
+    26@ *= -1.0
+    0177: set_object 1@ Z_angle_to 26@
+    0177: set_object 4@ Z_angle_to 26@
+    26@ *= -1.0
+    0AB4: 23@ = var 0
+    IF or
+        23@ == 0
+        23@ == 3
+    then
+        jump @3
+    end
+    {if 0ADC: test_cheat "stop"
+    then
+        jump @2
+    end}
+end
+jump @1
+:2
+Object.Destroy(0@)
+Object.Destroy(1@)
+Object.Destroy(2@)
+Object.Destroy(3@)
+Object.Destroy(4@)
+Object.Destroy(5@)
+0A93: end_custom_thread
+
+
+:3
+32@ = 0
+while true
+    wait 0
+    0093: 10@ = integer 32@ to_float
+    if 10@ < 2000.0
+    then
+        10@ /= 12000.0
+        01FB: 25@ = square_root 10@
+        23@ = 0.4
+        0063: 23@ -= 25@
+        0087: 25@ = 23@
+        if or
+            25@ == 0.0
+            25@ < 0.0
+        then
+            jump @1
+        end
+    else
+        JUMP @1
+    end
+    0A8D: 27@ = read_memory 0xBA6794 size 1 virtual_protect 1 //If frame limiter enabled
+    if 27@ == 1
+    then
+        25@ *= 3.0
+    end
+    005B: 26@ += 25@
+    if 26@ > 360.0
+    then
+        26@ -= 360.0
+    end
+    0177: set_object 0@ Z_angle_to 26@
+    0177: set_object 2@ Z_angle_to 26@
+    0177: set_object 3@ Z_angle_to 26@
+    0177: set_object 5@ Z_angle_to 26@
+    26@ *= -1.0
+    0177: set_object 1@ Z_angle_to 26@
+    0177: set_object 4@ Z_angle_to 26@
+    26@ *= -1.0
+end

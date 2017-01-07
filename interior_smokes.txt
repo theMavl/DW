@@ -1,0 +1,143 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+thread "intsmok"
+
+wait 0
+
+if 0AAB:  file_exists "cleo\dw_custom_settings.ini"
+then
+    0AF0: 0@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "INTERIOR" key "DETAILS"
+    if 0@ < 2
+    then
+        end_custom_thread
+    end
+end
+
+064B: 14@ = create_particle "tar_smoke" at 2.003 -1.555 1023.381 type 1 
+064B: 15@ = create_particle "tar_smoke" at 1.798 1.881 1023.381 type 1
+064B: 16@ = create_particle "tar_smoke" at -2.064 1.467 1023.381 type 1 
+064B: 17@ = create_particle "tar_smoke" at -1.661 -1.943 1023.381 type 1
+064B: 18@ = create_particle "tar_smoke" at 8.854 1.56 1022.717 type 1
+
+064C: make_particle 14@ visible
+064C: make_particle 15@ visible
+064C: make_particle 16@ visible
+064C: make_particle 17@ visible
+064C: make_particle 18@ visible
+
+4@ = 1
+5@ = 1
+6@ = 1
+7@ = 1
+8@ = 1
+
+:cycle
+while true
+    wait 0
+    0209: 7@ = random_int_in_ranges 1500 20000
+    32@ = 0
+    repeat
+        wait 0
+        0AB4: 0@ = var 0
+        if 0@ == 10
+        then
+            jump @srepair
+        end
+        if or
+            0@ == 3
+            0@ == 8     // emergency
+            0@ == 9
+        then
+            jump @emergency
+        end    
+    until 002D: 32@ >= 7@
+    064E: stop_particle 14@
+    064E: stop_particle 15@
+    064E: stop_particle 16@
+    064E: stop_particle 17@
+    064E: stop_particle 18@
+    0209: 7@ = random_int_in_ranges 1500 20000
+    32@ = 0
+    repeat
+        wait 0
+        0AB4: 0@ = var 0
+        if 0@ == 10
+        then
+            jump @srepair
+        end
+        if or
+            0@ == 3
+            0@ == 8     // emergency
+            0@ == 9
+        then
+            jump @emergency
+        end    
+    until 002D: 32@ >= 7@
+    064C: make_particle 14@ visible
+    064C: make_particle 15@ visible
+    064C: make_particle 16@ visible
+    064C: make_particle 17@ visible
+    064C: make_particle 18@ visible  
+end
+
+:srepair
+wait 0
+064E: stop_particle 14@
+064E: stop_particle 15@
+064E: stop_particle 16@
+064E: stop_particle 17@
+064E: stop_particle 18@
+repeat
+    wait 0
+    0AB4: 0@ = var 0  
+until 8039: NOT 0@ == 10
+jump @cycle
+
+:emergency
+wait 0
+064E: stop_particle 14@
+064E: stop_particle 15@
+064E: stop_particle 16@
+064E: stop_particle 17@
+064E: stop_particle 18@
+064B: 24@ = create_particle "prt_smokeII_3_expand" at 2.003 -1.555 1023.381 type 1 
+064B: 25@ = create_particle "prt_smokeII_3_expand" at 1.798 1.881 1023.381 type 1
+064B: 26@ = create_particle "prt_smokeII_3_expand" at -2.064 1.467 1023.381 type 1 
+064B: 27@ = create_particle "prt_smokeII_3_expand" at -1.661 -1.943 1023.381 type 1
+064B: 28@ = create_particle "prt_smokeII_3_expand" at -0.0322 -4.0514 1023.381 type 1
+
+064C: make_particle 24@ visible
+064C: make_particle 25@ visible
+064C: make_particle 26@ visible
+064C: make_particle 27@ visible
+064C: make_particle 28@ visible
+repeat
+    wait 0
+    0AB4: 0@ = var 0
+    if and
+        8039: 0@ == 3
+        8039: 0@ == 8
+        8039: 0@ == 0
+    then
+        break
+    end  
+until False
+0650: destroy_particle 24@ 
+0650: destroy_particle 25@ 
+0650: destroy_particle 26@ 
+0650: destroy_particle 27@ 
+0650: destroy_particle 28@
+jump @cycle
+
+:check_var
+0AB4: 0@ = var 0
+if or
+    0@ == 0
+    0@ == 3
+then
+    1@ = 2000
+else
+    1@ = 800
+end
+return

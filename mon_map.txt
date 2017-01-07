@@ -1,0 +1,30 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+thread "mon_map"
+wait 0
+model.Load(18784)
+038B: load_requested_models 
+wait 1000
+0@ = object.Create(18784, 0.0, 0.0, 0.0)
+Object.PutAt(0@, 0.0, 0.0, 1024.0)
+0566: link_object 0@ to_interior 3
+object.CollisionDetection(0@, 0)
+
+while true
+    wait 0
+    0AB1: call_scm_func @get_toggle 1 get_toggle 6 to 1@
+    0AB1: call_scm_func @get_toggle 1 get_toggle 8 to 2@
+    if and
+        1@ == 0
+        2@ == 0
+    then
+        break
+    end
+end
+wait 2500
+Object.Destroy(0@)
+Model.Destroy(18784)
+0A93: end_custom_thread
+
+{$INCLUDE move_set_get}

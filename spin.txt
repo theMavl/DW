@@ -1,0 +1,258 @@
+{$CLEO .s}
+
+//-------------MAIN---------------
+0000: NOP
+
+const
+    spin_limon = 35.0
+    spin_limoff = 16.25
+end
+
+var
+$95: array 5 of Integer
+end
+
+
+
+:SPIN_12
+wait 10
+//0566: link_object $110 to_interior $ACTIVE_INTERIOR
+0AB4: 0@ = var 9
+0AB4: 1@ = var 0
+if
+    0@ == 1 // In vortex
+then
+    if or 
+        1@ == 8
+        1@ == 9
+    then
+        0AB3: var 17 = 1
+        jump @SPIN_cv
+    end
+end
+if and 
+    0@ == 1 // In vortex
+    0185:   car $111 health >= 400 
+then
+    0AB3: var 17 = 1
+    jump @spin_cv
+end
+0AB4: 1@ = var 0
+if and
+    00E1: key_pressed 0 17 // LMB
+    00DB:   actor $PLAYER_ACTOR in_car $111
+    0039:   1@ == 0 
+then
+    0AB3: var 17 = 1
+    jump @SPIN_122
+end
+0AB4: 1@ = var 11 // lock on space
+02E3: 2@ = car $111 speed 
+if and
+    8185: NOT car $111 health >= 400
+    1@ == 0
+    2@ >= 20.0  
+then
+    0AB3: var 17 = 1
+    jump @SPIN_122
+end
+//jump @SPIN_12
+end_custom_thread
+
+:SPIN_cv
+wait 0
+0338: set_car $111 visibility 0
+0750: set_object $95[0] visibility 0 
+0750: set_object $95[1] visibility 0
+0750: set_object $95[2] visibility 1 
+0750: set_object $95[3] visibility 1 
+0750: set_object $95[4] visibility 0
+0D11: set_object $110 alpha 255
+0750: set_object $110 visibility 1
+//0176: 13@ = object $110 Z_angle
+13@ = 0.0
+repeat
+    31@ = 1
+    0176: 13@ = object $110 Z_angle
+    repeat
+        if
+            0185:   car $111 health >= 400
+        then  
+            11@ = 40.0
+        else
+            02E3: 11@ = car $111 speed
+        end
+        0338: set_car $111 visibility 0
+        20@ = 75.0 //ratio of round-time and speed. responsible for how much speed will affect on round-time
+        23@ = 4750.0 //round-time when speed = 0
+        006B: 20@ *= 11@
+        0063: 23@ -= 20@ //round-time
+        0087: 14@ = 23@ //saving for debug texts
+        21@ = 360.0
+        //0093: 22@ = integer 31@ to_float
+        //006B: 21@ *= 22@
+        0073: 21@ /= 23@ //delta
+        0A8D: 7@ = read_memory 0xBA6794 size 1 virtual_protect 1
+        if 7@ == 0
+        then
+            21@ *= spin_limoff //delta * CUSTOM SPEED
+        else
+            21@ *= spin_limon //delta * CUSTOM SPEED
+        end
+        0AB4: 7@ = var 18
+        0093: 7@ = integer 7@ to_float
+        006B: 21@ *= 7@
+        {006B:} 
+        0087: 15@ = 21@ //saving for debug texts
+        005B: 13@ += 21@
+        if 13@ >= 360.0 //preventing angle more than 360.0
+        then
+        13@ -= 360.0 
+        end
+        0681: attach_object $110 to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 13@ 
+        0681: attach_object $95[2] to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 13@
+        0087: 23@ = 13@
+        23@ += 90.0
+        0681: attach_object $95[3] to_car $111 with_offset 0.0 0.0 0.651 rotation 0.0 0.0 23@   
+        wait 0
+        //0AD1: show_formatted_text_highpriority "speed: %.2f rtime: %.2f delta: %.2f z: %.2f" time 2000 11@ 14@ 15@ 13@
+        {STOPPER}
+        0176: 23@ = object $110 Z_angle
+        0174: 24@ = car $111 Z_angle
+        0063: 24@ -= 23@
+        0097: make 24@ absolute_float
+        //02E3: 11@ = car $111 speed
+        30@ = 0
+        if and
+            8021: 24@ > 6.0
+            8021: 11@ > 30.0
+        then
+            30@ = 1
+        end
+        0AB4: 9@ = var 9
+        if 9@ == 0
+        then
+            break
+        end
+        {/STOPPER}
+    until 30@ == 1
+    if 30@ == 1 
+    then
+        break
+    end
+    0AB4: 29@ = var 0  // ÊÎÑÒÛËÜ ÎÂÅÐ 9000 ÁËßÒÜ
+    if or
+        29@ == 0
+        29@ == 3
+    then
+        break
+    end   
+until 80E1: key_pressed 0 17
+//0338: set_car $111 visibility 1 
+//0750: set_object $110 visibility 0
+0681: attach_object $110 to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+0681: attach_object $95[2] to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0   //united tdoors
+0681: attach_object $95[3] to_car $111 with_offset 0.0 0.0 0.651 rotation 0.0 0.0 90.0  //main
+0750: set_object $95[0] visibility 1 
+0750: set_object $95[1] visibility 1
+0750: set_object $95[2] visibility 0
+0750: set_object $95[4] visibility 1 
+0AB3: var 17 = 0
+0A93: end_custom_thread
+
+:SPIN_122
+wait 0
+0338: set_car $111 visibility 0 
+0D11: set_object $110 alpha 255
+0750: set_object $110 visibility 1
+0750: set_object $95[0] visibility 0 
+0750: set_object $95[1] visibility 0
+0750: set_object $95[2] visibility 1
+//0750: set_object $95[4] visibility 0 
+0176: 13@ = object $110 Z_angle
+repeat
+    31@ = 1
+    //0176: 13@ = object $110 Z_angle
+    13@ = 0.0
+    repeat
+        02E3: 11@ = car $111 speed
+        20@ = 75.0 //ratio of round-time and speed. responsible for how much speed will affect on round-time
+        23@ = 4750.0 //round-time when speed = 0
+        006B: 20@ *= 11@
+        0063: 23@ -= 20@ //round-time
+        0087: 14@ = 23@ //saving for debug texts
+        21@ = 360.0
+        //0093: 22@ = integer 31@ to_float
+        //006B: 21@ *= 22@
+        0073: 21@ /= 23@ //delta
+        0A8D: 7@ = read_memory 0xBA6794 size 1 virtual_protect 1
+        if 7@ == 0
+        then
+            21@ *= spin_limoff //delta * CUSTOM SPEED
+        else
+            21@ *= spin_limon //delta * CUSTOM SPEED
+        end
+        0AB4: 7@ = var 18
+        0093: 7@ = integer 7@ to_float
+        006B: 21@ *= 7@ 
+        {006B:} 
+        0087: 15@ = 21@ //saving for debug texts
+        005B: 13@ += 21@
+        if 
+            13@ >= 360.0 //preventing angle more than 360.0
+        then
+            13@ -= 360.0 
+        end
+        if and
+            8021: 13@ > -360.0 //preventing angle less than -360.0
+            0185:   car $111 health >= 400 //Only if not emergency 
+        then
+            13@ += 360.0 
+        end
+        0681: attach_object $110 to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 13@ 
+        0681: attach_object $95[2] to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 13@
+        0087: 23@ = 13@
+        23@ += 90.0
+        0681: attach_object $95[3] to_car $111 with_offset 0.0 0.0 0.651 rotation 0.0 0.0 23@       
+        wait 0
+        //0AD1: show_formatted_text_highpriority "speed: %.2f rtime: %.2f delta: %.2f z: %.2f" time 2000 11@ 14@ 15@ 13@
+        {STOPPER}
+        0176: 23@ = object $110 Z_angle
+        0174: 24@ = car $111 Z_angle
+        0063: 24@ -= 23@
+        0097: make 24@ absolute_float
+        02E3: 11@ = car $111 speed
+        30@ = 0
+        if and
+            8021: 24@ > 6.0
+            8021: 11@ > 30.0
+        then 
+            30@ = 1
+        end
+        0AB4: 0@ = var 11
+        if or
+            8039: 0@ == 0
+            11@ == 0.0
+        then
+            0176: 23@ = object $110 Z_angle
+            0175: $111 23@
+            break
+        end
+        {/STOPPER}
+     until 30@ == 1
+    if 0@ == 1
+    then
+        break
+    end   
+until 80E1: key_pressed 0 17
+0338: set_car $111 visibility 1 
+0750: set_object $110 visibility 0
+0681: attach_object $110 to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+0681: attach_object $95[2] to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0   //doors
+0681: attach_object $95[3] to_car $111 with_offset 0.0 0.0 0.651 rotation 0.0 0.0 90.0   //main
+0750: set_object $95[0] visibility 1 
+0750: set_object $95[1] visibility 1
+0750: set_object $95[2] visibility 0
+0750: set_object $95[4] visibility 1
+0AB3: var 17 = 0
+0A93: end_custom_thread

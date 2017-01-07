@@ -1,0 +1,879 @@
+{$CLEO .cs}
+0000: NOP
+//-------------MAIN---------------
+
+:k9_multithreading
+wait 0
+if 
+0@ == 0               
+jf @ears
+
+thread 'K9'
+
+////////////////////////////////
+//                            //
+//      K-9 main thread       //
+//                            //
+////////////////////////////////
+
+const
+    rechtime = 60000 //60000 //How long player should wait for summon K-9 again. Default - 60000 ms
+    discdelay = 30000 //How long K-9 will wait connection after losing. Default - 30000 ms
+end
+
+:load
+wait 0 
+if 
+   Player.Defined($PLAYER_CHAR)
+else_jump @load
+wait 0        
+Model.Load(#RCCAM)
+Model.Load(18659)
+038B: load_requested_models
+repeat
+    wait 0
+until Model.Available(18659)
+
+28@ = 0 //Set First call
+
+:a
+wait 0
+if and
+    0AB0:   key_pressed 57//9
+    80DB:   NOT actor $PLAYER_ACTOR in_car $111
+jf @a
+jump @K9
+
+:K9
+wait 0
+if $93 == 0
+then 
+    00A0: store_actor $PLAYER_ACTOR position_to 6@ 7@ 8@
+    04C4: store_coords_to 3@ 4@ 5@ from_actor $PLAYER_ACTOR with_offset 5.0 5.0 1.0
+    0208: 9@ = random_float_in_ranges 6@ 3@
+    0208: 5@ = random_float_in_ranges 7@ 4@
+else 
+    9@ = -4.47458 
+    5@ = 0.925 
+    8@ = 1023.7266
+end
+if 28@ == 0 //First call?
+then
+    28@ = 1 //Not first call anymore
+    0209: 21@ = random_int_in_ranges 0 2
+else
+    0209: 21@ = random_int_in_ranges 0 3
+end
+if 21@ == 0
+then
+    Audiostream.Load3D(21@, "DWS/k-9_orders.mp3")
+else
+    if 21@ == 1
+    then
+        Audiostream.Load3D(21@, "DWS/k-9_components.mp3")
+    else
+        if 21@ == 2
+        then
+            Audiostream.Load3D(21@, "DWS/k-9_resume.mp3")
+        end
+    end
+end
+wait 1000
+11@ = Car.Create(#RCCAM, 9@, 5@, 8@)
+0AB3: var 25 = 11@
+0338: set_car 11@ visibility 0
+14@ = Object.Create(18659, 0.0, 0.0, 0.0)
+0A92: create_custom_thread "K-9.cs" 1 11@ 14@  //K9 ears thread
+wait 2500
+077E: get_active_interior_to $ACTIVE_INTERIOR
+0840: link_car 11@ to_interior $ACTIVE_INTERIOR
+//0566: link_object 14@ to_interior $ACTIVE_INTERIOR
+if $93 == 1
+then
+    067F: set_car 11@ lights 1
+end
+Object.SetImmunities(14@, 1, 1, 1, 1, 1)
+0750: set_object 14@ visibility 0
+0681: attach_object 14@ to_car 11@ with_offset 0.0 0.0 0.2 rotation 0.0 0.0 0.0 
+0224: set_car 11@ health_to 1500
+0560: create_random_actor_in_car 11@ handle_as 17@ 
+0332: set_actor 17@ bleeding 0
+Actor.Health(17@) = 1E38
+0A09: set_actor 2@ muted 1
+0337: set_actor 17@ visibility 0
+0619: enable_actor 17@ collision_detection 0
+0423: set_car 11@ improved_handling_to 2.0 // (float)
+00A8: set_car 11@ to_psycho_driver 
+054A: set_actor 17@ can_be_shot_in_a_car 0
+053F: set_car 11@ tires_vulnerability 0
+09C4: set_car 11@ gas_tank_explosion_enabled 0
+0852: set_car 11@ damages_visible 0
+0526: set_actor 17@ stay_in_car_when_jacked 1
+0982: set_actor 17@ stay_in_car_when_dead 1
+0AC5: link_3d_audiostream 21@ to_vehicle 11@
+Audiostream.PerformAction(21@, PLAY)
+if $93 == 1
+then
+    0574: set_car 11@ keep_position 1 
+end
+wait 1000
+30@ = 0
+
+:idle
+repeat
+    wait 1
+    0840: link_car 11@ to_interior $ACTIVE_INTERIOR
+    0566: link_object 14@ to_interior $ACTIVE_INTERIOR
+    {if $93 == 0 //Disable folowing CJ if in TARDIS interior
+    jf continue }
+    if $93 == 1
+    then
+        0AB1: call_scm_func @recharge 3 11@ 30@ 0 shots_after 30@ // K-9 handle, current shots (0 = 15 shots left; 14 = 1 shot left), full recover? | return: shots after (-1 = foff, K9)
+        if 30@ == -1
+        then
+            0209: 21@ = random_int_in_ranges 0 2
+            if 21@ == 0
+            then
+                Audiostream.Load3D(21@, "DWS/k-9_master.mp3")
+            else
+                Audiostream.Load3D(21@, "DWS/k-9_affirmative.mp3") 
+            end
+            0AC5: link_3d_audiostream 21@ to_vehicle 11@
+            0AAD: set_audiostream 21@ perform_action 1
+            jump @goodbye
+        end
+        continue
+    end
+    if AND 
+        30@ == 10
+        28@ < 2 //K-9 said that?
+    then
+        wait 100
+        Audiostream.Load3D(21@, "DWS/k-9_energy.mp3")
+        0AC5: link_3d_audiostream 21@ to_vehicle 11@
+        0AAD: set_audiostream 21@ perform_action 1
+        28@ = 2 //K-9 already said that 
+    end
+    if or  
+        30@ > 14
+        8185:   NOT car 11@ health >= 375
+    then
+        :tel_to_recharge
+        02AC: set_car 11@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+        Audiostream.Load3D(21@, "DWS/k-9_drive.mp3")
+        0AC5: link_3d_audiostream 21@ to_vehicle 11@
+        0AAD: set_audiostream 21@ perform_action 1
+        //Actor.DestroyInstantly(17@)
+        wait 1000
+        0AAA: 3@ = thread 'K9_EARS' pointer
+        0D2F: 19@ = get_thread 3@ var 19
+        0D2F: 20@ = get_thread 3@ var 20 
+        0A92: create_custom_thread "K-9.cs" 2 11@ 19@ 100 0 1250 20@ //K-9 fade effect thread. 2 - script flag, 11@ - K-9 handle, 19@ - 1st ear, 0/100 - start/end, 1250- time, 20@ - 2nd ear
+        //jump @goodbye
+        wait 1700
+        0227: 7@ = car 11@ health
+        if or
+            0119:   car 11@ wrecked
+            7@ < 299
+        then
+            00AB: put_car 11@ at 3241.0 1023.7266 -999.0
+            0459: end_thread_named 'K9_EARS'
+             
+            11@ = Car.Create(#RCCAM, 0.0, 0.0, -1000.0)
+            0AB3: var 25 = 11@
+            0338: set_car 11@ visibility 0
+            14@ = Object.Create(18659, 0.0, 0.0, 0.0)
+            0A92: create_custom_thread "K-9.cs" 1 11@ 14@  //K9 ears thread
+            wait 2500
+            077E: get_active_interior_to $ACTIVE_INTERIOR
+            0840: link_car 11@ to_interior $ACTIVE_INTERIOR
+            Object.SetImmunities(14@, 1, 1, 1, 1, 1)
+            0750: set_object 14@ visibility 0
+            0681: attach_object 14@ to_car 11@ with_offset 0.0 0.0 0.2 rotation 0.0 0.0 0.0 
+            0224: set_car 11@ health_to 300
+            0560: create_random_actor_in_car 11@ handle_as 17@ 
+            0332: set_actor 17@ bleeding 0
+            Actor.Health(17@) = 1E38
+            0A09: set_actor 2@ muted 1
+            0337: set_actor 17@ visibility 0
+            0619: enable_actor 17@ collision_detection 0
+            0423: set_car 11@ improved_handling_to 2.0 // (float)
+            00A8: set_car 11@ to_psycho_driver 
+            054A: set_actor 17@ can_be_shot_in_a_car 0
+            053F: set_car 11@ tires_vulnerability 0
+            09C4: set_car 11@ gas_tank_explosion_enabled 0
+            0852: set_car 11@ damages_visible 0
+            0526: set_actor 17@ stay_in_car_when_jacked 1
+            0982: set_actor 17@ stay_in_car_when_dead 1
+            0AAA: 3@ = thread 'K9_EARS' pointer
+            0D2F: 19@ = get_thread 3@ var 19
+            0D2F: 20@ = get_thread 3@ var 20
+        end     
+        0D0F: set_car 11@ alpha 255
+        0D11: set_object 19@ alpha 239
+        0D11: set_object 20@ alpha 239 
+        0175: set_car 11@ Z_angle_to 303.9858
+        00AB: put_car 11@ at -4.4745 0.9258 1023.7266
+        0840: link_car 11@ to_interior 3  
+        0574: set_car 11@ keep_position 1
+        067F: set_car 11@ lights 1
+        0338: set_car 11@ visibility 1 
+        0750: set_object 19@ visibility 1 
+        0750: set_object 20@ visibility 1
+           
+        0AB1: call_scm_func @recharge 3 11@ 30@ 1 shots_after 30@ // K-9 handle, current shots (0 = 15 shots left; 14 = 1 shot left), full recover? | return: shots after
+        02AC: set_car 11@ immunities BP 0 FP 0 EP 0 CP 0 MP 0
+        continue
+        
+    end
+    00A0: store_actor $PLAYER_ACTOR position_to 6@ 7@ 8@
+    00AA: store_car 11@ position_to 3@ 4@ 5@ 
+    0509: 8@ = distance_between_XY 6@ 7@ and_XY 3@ 4@
+    050A: 29@ = distance_between_XYZ 0.0 0.0 1024.0 and_XYZ 3@ 4@ 5@ // distance from interior
+    0AB4: 3@ = var 19
+    if and
+        3@ == 0
+        8@ > 100.0
+        $93 == 0
+        29@ > 100.0 // k9 is not in interior
+    then
+        32@ = 0
+        03E5: show_text_box 'k9lost'
+        0186: 29@ = create_marker_above_car 11@
+        0574: set_car 11@ keep_position 1 
+        repeat
+            wait 500
+            00A0: store_actor $PLAYER_ACTOR position_to 6@ 7@ 8@
+            00AA: store_car 11@ position_to 3@ 4@ 5@ 
+            0509: 8@ = distance_between_XY 6@ 7@ and_XY 3@ 4@
+            if 8@ < 100.0
+            then
+                Marker.Disable(29@)
+                0574: set_car 11@ keep_position 0
+                03E5: show_text_box 'k9bonl'
+                jump @idle
+            end
+            if 0AB0: 57
+            then
+                Marker.Disable(29@)
+                03E5: show_text_box 'k9hcan'
+                jump @goodbye
+            end
+        until 32@ > discdelay
+        03E5: show_text_box 'k9tout'
+        Marker.Disable(29@)
+        jump @goodbye
+    end
+    if and
+        00E1: key_pressed 0 6
+        0AB0: 82
+        8019: NOT 30@ > 15
+    then
+        jump @attack
+    end
+    00A0: store_actor $PLAYER_ACTOR position_to 6@ 7@ 8@
+    if 81AD:   NOT car 11@ sphere 0 near_point 6@ 7@ radius 5.0 5.0
+    then
+        03CC: enable_car 11@ stuck_check_distance_to 1.0 time_to 3500 
+        if 
+            01AD:   car 11@ sphere 0 near_point 6@ 7@ radius 8.0 8.0
+        then
+            //0AD1: show_formatted_text_highpriority "TASK: follow player [%.2f %.2f] ws: 5.0" time 2000 6@ 7@
+            00AD: set_car 11@ max_speed_to 5.0
+        else
+            //0AD1: show_formatted_text_highpriority "TASK: follow player [%.2f %.2f] ws: 15.0" time 2000 6@ 7@ 
+            00AD: set_car 11@ max_speed_to 15.0
+        end
+        if and
+            83CE: NOT  car 11@ stuck
+            16@ == 1
+        then
+            16@ = 0
+        end  
+        if and
+            03CE:   car 11@ stuck
+            16@ == 0
+        then
+            06C7: AS_actor 17@ driver_of_car 11@ perform_action 3 timelimit 1500 
+            {0174: 18@ = car 11@ Z_angle 
+            18@ -= 180.0
+            0175: set_car 11@ Z_angle_to 18@
+            16@ = 1
+            32@ = 0}
+        end
+        if and
+            03CE:   car 11@ stuck
+            16@ == 1
+            32@ > 5000
+        then
+            0174: 18@ = car 11@ Z_angle
+            0208: 31@ = random_float_in_ranges 0.0 180.0  
+            005B: 18@ += 31@
+            0175: set_car 11@ Z_angle_to 18@ 
+            32@ = 0
+        end
+        0704: car 11@ drive_to 6@ 7@ 8@
+        00AE: unknown_set_car 11@ to_ignore_traffic_lights  2
+        04e0: car 11@ abandon_path_radius 200 
+    else
+        03CD: disable_car 11@ stuck_check 
+    end 
+until 0ab0: 57
+//Demat by user command
+0209: 21@ = random_int_in_ranges 0 2
+if 21@ == 0
+then
+    Audiostream.Load3D(21@, "DWS/k-9_master.mp3")
+else
+    Audiostream.Load3D(21@, "DWS/k-9_affirmative.mp3") 
+end
+0AC5: link_3d_audiostream 21@ to_vehicle 11@
+0AAD: set_audiostream 21@ perform_action 1
+:goodbye
+0574: set_car 11@ keep_position 1 
+Object.Destroy(14@)
+while 056E:   car 11@ defined
+    wait 0
+end
+0AB3: var 25 = -1
+wait rechtime
+03E5: show_text_box 'k9aval'
+jump @a
+
+:attack
+wait 0
+Model.Load(18634)
+wait 0
+if  0AD2: 3@ = player $PLAYER_CHAR targeted_actor //IF and SET
+jf @idle
+if 8039:   NOT   3@ ==  -1
+jf @idle
+0209: 21@ = random_int_in_ranges 0 2
+if 21@ == 0
+then
+    Audiostream.Load3D(21@, "DWS/k-9_master.mp3")
+else
+    Audiostream.Load3D(21@, "DWS/k-9_affirmative.mp3") 
+end
+0AC5: link_3d_audiostream 21@ to_vehicle 11@
+Audiostream.PerformAction(21@, PLAY)
+00A0: store_actor 3@ position_to 6@ 7@ 8@
+if or
+    89ED:   NOT actor 17@ is_within_field_of_view_actor 3@
+    81B0:   NOT car 11@ sphere 0 in_sphere 6@ 7@ 8@ radius 5.0 5.0 5.0 stopped
+then
+    03CC: enable_car 11@ stuck_check_distance_to 2.0 time_to 2000
+    32@ = 0
+    31@ = 0
+    while 31@ == 0  //81AD:   NOT car 11@ sphere 0 near_point 6@ 7@ radius 5.0 5.0
+        wait 0
+        if 
+            8185:   NOT car 11@ health >= 375
+        then
+            {02AC: set_car 11@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+            Audiostream.Load3D(21@, "DWS/k-9_drive.mp3")
+            0AC5: link_3d_audiostream 21@ to_vehicle 11@
+            0AAD: set_audiostream 21@ perform_action 1
+            Actor.DestroyInstantly(17@)
+            wait 1000}
+            jump @tel_to_recharge
+        end
+        if 0AB0: 52{4}  //Cancel the order
+        then
+            0209: 21@ = random_int_in_ranges 0 2
+            if 21@ == 0
+            then
+                Audiostream.Load3D(21@, "DWS/k-9_master.mp3")
+            else
+                Audiostream.Load3D(21@, "DWS/k-9_affirmative.mp3") 
+            end
+            0AC5: link_3d_audiostream 21@ to_vehicle 11@
+            Audiostream.PerformAction(21@, PLAY)
+            03E5: show_text_box 'k9tcan'
+            wait 1000
+            jump @idle
+        end
+        if 056D:   actor 3@ defined 
+        jf @idle
+        if
+        01B0:  car 11@ sphere 0 in_sphere 6@ 7@ 8@ radius 5.0 5.0 5.0 stopped
+        then
+            if 09ED:  actor 17@ is_within_field_of_view_actor 3@
+            then
+                31@ = 1
+            else
+                00A0: store_actor 3@ position_to 6@ 7@ 8@
+                0407: store_coords_to 13@ 4@ 5@ from_car 11@ with_offset 0.0 0.0 0.0
+                0509: 8@ = distance_between_XY 6@ 7@ and_XY 13@ 4@ // ÃÈÏÎÒÅÍÓÇÀ
+                0063: 6@ -= 13@
+                0063: 7@ -= 4@
+                0AA5: call 0x4207C0 num_params 2 pop 2 _x 7@ _y 6@ // atan2
+                0AE9: pop_float 7@
+                7@ *= 57.2957795   //Èç ðàäèàíîâ â ãðàäû    
+                7@ *= -1.0 //Îòðàçèòü
+                0175: set_car 11@ Z_angle_to 7@
+                31@ = 1  
+            end
+        end
+        00A0: store_actor 3@ position_to 6@ 7@ 8@
+        if and
+            83CE: NOT  car 11@ stuck
+            16@ == 1
+        then
+            16@ = 0
+        end  
+        if and
+            03CE:   car 11@ stuck
+            16@ == 0
+        then
+            00A0: store_actor 3@ position_to 6@ 7@ 8@
+                0407: store_coords_to 13@ 4@ 5@ from_car 11@ with_offset 0.0 0.0 0.0
+                0509: 8@ = distance_between_XY 6@ 7@ and_XY 13@ 4@ // ÃÈÏÎÒÅÍÓÇÀ
+                0063: 6@ -= 13@
+                0063: 7@ -= 4@
+                0AA5: call 0x4207C0 num_params 2 pop 2 _x 7@ _y 6@ // atan2
+                0AE9: pop_float 7@
+                7@ *= 57.2957795   //Èç ðàäèàíîâ â ãðàäû    
+                7@ *= -1.0 //Îòðàçèòü
+                0175: set_car 11@ Z_angle_to 7@
+            {0174: 18@ = car 11@ Z_angle 
+            18@ -= 180.0
+            0175: set_car 11@ Z_angle_to 18@  }
+            //0ACE: show_formatted_text_box "[debug] new angle: %f" 18@
+            16@ = 1
+        end
+        if 
+            01AD:   car 11@ sphere 0 near_point 6@ 7@ radius 15.0 15.0
+        then
+            //0AD1: show_formatted_text_highpriority "TASK: drive-to [%.2f %.2f] ws: 7.0" time 2000 6@ 7@
+            00AD: set_car 11@ max_speed_to 14.0
+        else
+            //0AD1: show_formatted_text_highpriority "TASK: drive-to [%.2f %.2f] ws: 19.0" time 2000 6@ 7@
+            00AD: set_car 11@ max_speed_to 38.0
+        end
+        0704: car 11@ drive_to 6@ 7@ 8@
+        00AE: unknown_set_car 11@ to_ignore_traffic_lights  2
+        04e0: car 11@ abandon_path_radius 200 
+        if and
+            32@ > 15000
+            03CE: car 11@ stuck
+        then
+            //0ACE: show_formatted_text_box "[debug] K9 goes too long! Never mind about the target"
+            jump @idle
+        end
+    end     
+end 
+0687: clear_actor 3@ task
+//0AD1: show_formatted_text_highpriority "TASK: kill %d" time 2000 3@
+//LASER SECTION
+repeat
+    wait 0
+until Model.Available(18634)
+15@ = Object.Create(18634, 0.0, 0.0, 0.0)
+Object.SetImmunities(15@, 1, 1, 1, 1, 1)
+0681: attach_object 15@ to_car 11@ with_offset 0.0 0.7 0.15 rotation 96.0 0.0 0.0
+Model.Destroy(18634)
+00A0: store_actor 3@ position_to 6@ 7@ 8@
+0407: store_coords_to 13@ 4@ 5@ from_car 11@ with_offset 0.0 0.07 0.15 
+0509: 8@ = distance_between_XY 6@ 7@ and_XY 13@ 4@ // ÃÈÏÎÒÅÍÓÇÀ
+0063: 6@ -= 13@
+0063: 7@ -= 4@
+0AA5: call 0x4207C0 num_params 2 pop 2 _x 7@ _y 6@ // atan2
+0AE9: pop_float 7@
+7@ *= 57.2957795   //Èç ðàäèàíîâ â ãðàäû    
+7@ *= -1.0 //Îòðàçèòü
+0174: 19@ = car 11@ Z_angle
+0063: 7@ -= 19@
+8@ *= 0.4
+08D2: object 15@ scale_model 8@
+0681: attach_object 15@ to_car 11@ with_offset 0.0 0.7 0.15 rotation 96.0 0.0 7@
+Audiostream.Load3D(21@, "DWS/k-9_laser.mp3")
+0AC3: link_3d_audiostream 21@ to_object 15@
+Audiostream.PerformAction(21@, PLAY)
+0750: set_object 15@ visibility 1
+05B9: AS_actor 3@ stay_idle 20000 ms
+wait 100
+//LASER SECTION
+if 80DF: NOT  actor 3@ driving
+then 
+0209: 1@ = random_int_in_ranges 0 9
+0871: init_jump_table 1@ total_jumps 9 0 @end jumps 0 @KD_left 1 @KD_right 2 @KO_SHOT_FACE 3 @KO_SHOT_FRONT 4 @KO_SHOT_STOM 5 @KO_SKID_BACK 6 @KO_SKID_FRONT 
+0872: jump_table_jumps 7 @KO_SPIN_L 8 @KO_SPIN_R -1 @end -1 @end -1 @end -1 @end -1 @end -1 @end -1 @end
+end
+:continue
+wait 900
+Audiostream.Release(21@)
+0321: kill_actor 3@ 
+
+if 00DF:   actor 3@ driving  
+then 
+    00A0: store_actor 3@ position_to 6@ 7@ 8@
+    7@ += 1.5
+    0362: remove_actor 3@ from_car_and_place_at 6@ 7@ 8@
+    {03C0: 1@ = actor 3@ car  }
+    //0633: AS_actor 3@ exit_car 
+end
+
+30@ += 1
+object.Destroy(15@)
+0332: set_actor 3@ bleeding 0
+01C2: remove_references_to_actor 3@
+Model.Destroy(18634)
+jump @idle
+
+:KD_LEFT
+0829: actor 3@ perform_animation "KD_LEFT" IFP_file "PED" 4.0 time -1 and_dies 
+jump @continue
+
+:KD_RIGHT
+0829: actor 3@ perform_animation "KD_RIGHT" IFP_file "PED" 4.0 time -1 and_dies 
+jump @continue
+
+:KO_SHOT_FACE
+0829: actor 3@ perform_animation "KO_SHOT_FACE" IFP_file "PED" 4.0 time -1 and_dies 
+jump @continue
+
+:KO_SHOT_FRONT
+0829: actor 3@ perform_animation "KO_SHOT_FRONT" IFP_file "PED" 4.0 time -1 and_dies 
+jump @continue
+
+:KO_SHOT_STOM
+0829: actor 3@ perform_animation "KO_SHOT_STOM" IFP_file "PED" 4.0 time -1 and_dies 
+jump @continue
+
+:KO_SKID_BACK
+0829: actor 3@ perform_animation "KO_SKID_BACK" IFP_file "PED" 4.0 time -1 and_dies 
+jump @continue
+
+:KO_SKID_FRONT
+0829: actor 3@ perform_animation "KO_SKID_FRONT" IFP_file "PED" 4.0 time -1 and_dies 
+jump @continue
+
+:KO_SPIN_L
+0829: actor 3@ perform_animation "KO_SPIN_L" IFP_file "PED" 4.0 time -1 and_dies 
+jump @continue
+
+:KO_SPIN_R
+0829: actor 3@ perform_animation "KO_SPIN_R" IFP_file "PED" 4.0 time -1 and_dies 
+jump @continue
+
+:end
+jump @idle
+ 
+////////////////////////////////
+//                            //
+//      THREAD K9_EARS        //
+//                            //
+////////////////////////////////
+
+:ears
+if
+0@ == 1
+jf @fade
+03A4: name_thread 'K9_EARS'
+const
+    EX = 0.0487 
+    EXO = -0.0487
+    EY = 0.396
+    EZ = 0.475
+    EARS = 1000  //Ears rotation period. 1000 ms - default. Less value - bigger rotation speed
+end
+0085: 11@ = 1@
+Model.Load(18635)
+038B: load_requested_models
+repeat
+    wait 0
+until Model.Available(18635)
+//0AB4: 11@ = var 16
+19@ = Object.Create(18635, 0, 0, -100.0)
+20@ = Object.Create(18635, 0, 0, -100.0)
+0750: set_object 19@ visibility 0 
+0750: set_object 20@ visibility 0
+Object.SetImmunities(19@, 1, 1, 1, 1, 1)
+Object.SetImmunities(20@, 1, 1, 1, 1, 1)
+0566: link_object 19@ to_interior $ACTIVE_INTERIOR
+0566: link_object 20@ to_interior $ACTIVE_INTERIOR
+0382: set_object 19@ collision_detection 0 
+0382: set_object 20@ collision_detection 0 
+0681: attach_object 19@ to_car 11@ with_offset EXO EY EZ rotation 90.0 0.0 180.0
+0681: attach_object 20@ to_car 11@ with_offset EX EY EZ rotation 90.0 0.0 180.0
+0A92: create_custom_thread "K-9.cs" 2 11@ 19@ 0 100 1250 20@ //K-9 fade effect thread. 2 - script flag, 11@ - K-9 handle, 19@ - 1st ear, 0/100 - start/end, 1250- time, 20@ - 2nd ear
+wait 1700
+0D0F: set_car 11@ alpha 255
+Object.Destroy(19@)
+Object.Destroy(20@)
+19@ = Object.Create(18635, 0, 0, -100.0)
+20@ = Object.Create(18635, 0, 0, -100.0)
+0681: attach_object 19@ to_car 11@ with_offset EXO EY EZ rotation 90.0 0.0 180.0
+0681: attach_object 20@ to_car 11@ with_offset EX EY EZ rotation 90.0 0.0 180.0
+
+:e
+wait 100
+32@ = 0
+repeat
+    wait 0
+        0093: 3@ = integer 32@ to_float 
+        3@ *= 0.09
+        if 
+            03CA:   object 2@ exists 
+        then
+            0681: attach_object 19@ to_car 11@ with_offset EXO EY EZ rotation 90.0 3@ 180.0
+            3@ *= -1.0
+            0681: attach_object 20@ to_car 11@ with_offset EX EY EZ rotation 90.0 3@ 180.0
+        else
+            jump @end_e
+        end
+until 32@ >= EARS
+wait 100
+32@ = 0
+repeat
+    wait 0
+        0093: 3@ = integer 32@ to_float 
+        3@ *= 0.09
+        3@ -= 90.0
+        if 
+            03CA:   object 2@ exists
+        then
+            0681: attach_object 20@ to_car 11@ with_offset EX EY EZ rotation 90.0 3@ 180.0
+            3@ *= -1.0
+            0681: attach_object 19@ to_car 11@ with_offset EXO EY EZ rotation 90.0 3@ 180.0
+        else
+            jump @end_e
+        end
+until 32@ >= EARS
+jump @e
+
+:end_e
+0A92: create_custom_thread "K-9.cs" 2 11@ 19@ 100 0 1250 20@
+wait 1700
+0108: destroy_object 19@
+0108: destroy_object 20@
+Car.Destroy(11@)
+0A93: end_custom_thread
+
+
+////////////////////////////////
+//                            //
+//     K-9 fading thread      //
+//                            //
+////////////////////////////////
+
+:fade
+if
+    0@ == 2
+jf @k9_multithreading
+03A4: name_thread 'K9_FADE'
+3@ *= 7
+3@ /= 5 
+3@ += 100
+4@ *= 7
+4@ /= 5 
+4@ += 100
+0085: 7@ = 4@
+0062: 7@ -= 3@
+32@ = 0
+0840: link_car 1@ to_interior $ACTIVE_INTERIOR
+repeat
+    if or 
+        856E:   NOT car 1@ defined 
+        83CA:   NOT object 2@ exists
+        83CA:   NOT object 6@ exists
+    then
+        break
+    end
+    0085: 8@ = 32@
+    006A: 8@ *= 7@
+    0072: 8@ /= 5@
+    005A: 8@ += 3@
+    0D0F: set_car 1@ alpha 8@
+    0D11: set_object 2@ alpha 8@ 
+    0D11: set_object 6@ alpha 8@
+    0750: set_object 2@ visibility 1 
+    0750: set_object 6@ visibility 1
+    0338: set_car 1@ visibility 1
+    wait 0
+until 002B: 32@ >= 5@
+0A93: end_custom_thread
+
+:recharge
+wait 3000
+0227: 2@ = car 0@ health
+if and
+    2@ >= 1500
+    1@ == 0
+then
+    8@ = 1 // No need to say "All components..."
+else
+    8@ = 0 // Gotta say it, when finish recharging
+end
+while true
+    32@ = 0
+    0227: 2@ = car 0@ health
+    
+    repeat
+        wait 0
+        if and
+            0AB0: 57 // 9
+            $93 == 1
+        then
+            0AB2: ret 1 -1 // Goodbye, K-9
+        end
+        
+              
+        if 2@ >= 1000
+        then
+            if and 
+                $94 == 0
+                $93 == 0
+            then
+                0AB2: ret 1 1@
+            else
+                0AB4: 19@ = var 19
+                if 19@ == 1
+                then
+                    0AB2: ret 1 1@
+                end
+            end
+        end
+        
+        if and
+            8039: NOT 8@ == 1 // did we say it?
+            2@ >= 1500
+            1@ == 0
+        then
+            Audiostream.Load3D(9@, "DWS/k-9_components.mp3")
+            0AC5: link_3d_audiostream 9@ to_vehicle 0@
+            0AAD: set_audiostream 9@ perform_action 1
+            8@ = 1
+            wait 2500
+            Audiostream.Release(9@)
+        end
+        if 0202:   actor $PLAYER_ACTOR near_car 0@ radius 2.0 2.0 flag 0
+        then
+            00AA: store_car 0@ position_to 3@ 4@ 5@ 
+            0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 3@ Y 4@ Z 5@ store_screen_X_to 6@ Y_to 7@
+            03F0: enable_text_draw 1 
+            if and
+                1@ == 0
+                2@ >= 1500
+            then
+                0AD3: string 20@v format "~g~Charged"                
+            else
+                0085: 10@ = 2@
+                log_int 10@
+                11@ = 15
+                log_int 11@
+                0062: 11@ -= 1@
+                {0093: 10@ = integer 10@ to_float 
+                0093: 11@ = integer 11@ to_float 
+                10@ /= 15.0
+                11@ /= 0.15 }
+                0A91: 10@ = 10@ / 15 // int
+                log_int 10@
+                0093: 11@ = integer 11@ to_float
+                11@ /= 0.15
+                0092: 11@ = float 11@ to_integer
+                log_int 11@
+                005A: 10@ += 11@ // int
+                log_int 10@
+                //005B: 10@ += 11@ // float
+                0A91: 10@ = 10@ / 2 // int
+                log_int 10@
+                //10@ /= 2.0
+                //0092: 10@ = float 10@ to_integer
+                if 10@ < 10
+                then    
+                    0AD3: string 20@v format "Recharging"
+                end
+                if and
+                    10@ >= 10
+                    10@ < 20
+                then    
+                    0AD3: string 20@v format "~r~R~w~echarging"
+                end
+                if and
+                    10@ >= 20
+                    10@ < 30
+                then    
+                    0AD3: string 20@v format "~r~Re~w~charging"
+                end
+                if and
+                    10@ >= 30
+                    10@ < 40
+                then    
+                    0AD3: string 20@v format "~r~Rec~w~harging"
+                end
+                if and
+                    10@ >= 40
+                    10@ < 50
+                then    
+                    0AD3: string 20@v format "~y~Rech~w~arging"
+                end 
+                if and
+                    10@ >= 50
+                    10@ < 60
+                then    
+                    0AD3: string 20@v format "~y~Recha~w~rging"
+                end
+                if and
+                    10@ >= 60
+                    10@ < 70
+                then    
+                    0AD3: string 20@v format "~y~Rechar~w~ging"
+                end
+                if and
+                    10@ >= 70
+                    10@ < 80
+                then    
+                    0AD3: string 20@v format "~g~Recharg~w~ing"
+                end
+                if and
+                    10@ >= 80
+                    10@ < 90
+                then    
+                    0AD3: string 20@v format "~g~Rechargi~w~ng"
+                end
+                if and
+                    10@ >= 90
+                    10@ < 100
+                then    
+                    0AD3: string 20@v format "~g~Rechargin~w~g"
+                end 
+                //0AD3: string 20@v format "RECHARGING %d" 10@
+            end
+            0ADF: add_dynamic_GXT_entry "k9rech" text 20@v
+            033E: set_draw_text_position 6@ 7@ GXT "k9rech"
+        end
+        //show_text "%d %d" 200 2@ 1@
+    until 32@ >= 4000
+    0227: 2@ = car 0@ health
+    if 8019: NOT 2@ > 1499  
+    then
+        2@ += 75 //+1 hp
+        if 2@ > 1500
+        then
+            2@ = 1500
+        end
+        
+        0224: set_car 0@ health_to 2@     
+    end
+    if 1@ > 0
+    then
+        1@ -= 1 // +1 shot
+    end 
+end
+0AB2: ret 1 1@
+
+
+:getScreenXYFrom3DCoords
+0AA7: call_function 0x70CE30 num_params 6 pop 6 clipNear 1 clipFar 1 yMult 7@s xMult 6@s outVector 2@s inVector 0@s result 29@
+0073: 2@ /= 6@
+0073: 2@ /= 4@
+0073: 3@ /= 7@
+0073: 3@ /= 4@
+2@ *= 527.0592
+3@ *= 368.94144
+0342: set_text_draw_centered 1
+081C: draw_text_outline 1 RGBA 0 0 0 255
+033F: set_text_draw_letter_size 0.3 1.1
+0AB2: ret 2 2@ 3@

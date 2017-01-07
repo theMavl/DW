@@ -1,0 +1,58 @@
+
+:move_toggle
+//Input: 0@ - toggle ID, 1@ - move to
+0A92: create_custom_thread "toggles.cs" 0@ 1@
+0AB2: ret 0
+
+:set_toggle
+{
+Set selected switcher state to 
+0@ - element, 1@ - value
+Example: 0AB1: call @set_toggle 2 id 1 value 1
+} 
+wait 0
+0@ -= 1
+008B: 3@ = $112 // (int)  
+005A: 3@ += 0@ // (int)   
+0A8C: write_memory 3@ size 1 value 1@ virtual_protect 0 
+0AB2: ret 0
+
+:get_toggle
+{
+Get selecteed switcher state
+0@ - element, 1@ - value
+Example: 0AB1: call @get_toggle 1 id 0@ to 1@
+} 
+wait 0
+dec(0@)
+008B: 3@ = $112 // (int) 
+005A: 3@ += 0@ // (int) 
+0A8D: 4@ = read_memory 3@ size 1 virtual_protect 0 
+0AB2: ret 1 4@
+
+:get_all
+{
+Get all values
+}
+008B: 30@ = $112 // (int)
+0A8D: 0@ = read_memory 30@ size 1 virtual_protect 0
+30@ += 1
+0A8D: 1@ = read_memory 30@ size 1 virtual_protect 0
+30@ += 1
+0A8D: 2@ = read_memory 30@ size 1 virtual_protect 0
+30@ += 1
+0A8D: 3@ = read_memory 30@ size 1 virtual_protect 0
+30@ += 1
+0A8D: 4@ = read_memory 30@ size 1 virtual_protect 0
+30@ += 1
+0A8D: 5@ = read_memory 30@ size 1 virtual_protect 0
+30@ += 1
+0A8D: 6@ = read_memory 30@ size 1 virtual_protect 0
+30@ += 1
+0A8D: 7@ = read_memory 30@ size 1 virtual_protect 0
+30@ += 1
+0A8D: 8@ = read_memory 30@ size 1 virtual_protect 0
+30@ += 1
+0A8D: 9@ = read_memory 30@ size 1 virtual_protect 0
+30@ += 1
+0AB2: ret 10 0@ 1@ 2@ 3@ 4@ 5@ 6@ 7@ 8@ 9@

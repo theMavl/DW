@@ -1,0 +1,121 @@
+    //this badass is written by Mavl
+{$CLEO .cs}
+
+/*
+TARDIS energy system. Part 2
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+*/
+
+//-------------MAIN---------------
+0000: NOP
+thread 'tegdec'
+wait 1500
+
+:def
+wait 100
+if
+056D:   actor $PLAYER_ACTOR defined
+jf @def 
+
+:main
+wait 1000
+0AB4: 1@ = var 11
+0AB1: call @get_switcher 2 array $112 element 1 to 1@
+if and 
+0038:  1@ == 0
+00DB:   actor $PLAYER_ACTOR in_car $111
+then
+    0AB4: 0@ = var 10
+    if 0185:   car $111 health >= 400
+    then
+        0@ -= 4
+    else
+        0@ -= 1
+    end
+    0AB3: var 10 = 0@
+    if 
+        8029: NOT 0@ >= 0
+    then
+        0@ = 0
+        0AB3: var 10 = 0@
+    end
+end
+0AB4: 0@ = var 10
+0AB4: 10@ = var 9
+0AB4: 1@ = var 11
+0AB4: 2@ = var 0
+0AB4: 3@ = var 12
+if and
+3@ == 1
+8019: NOT 0@ > 10
+then
+        0AAC: 17@ = load_audiostream "DWS\uncloak_2d.mp3"
+        Model.Load(18637)
+        038B: load_requested_models
+        repeat
+        wait 0
+        until Model.Available(18637)
+        Audiostream.PerformAction(17@, PLAY)
+        2@ = Object.Create(18637, 0.0, 0.0, -100.0)
+        09CA: set_object 2@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+        Model.Destroy(18637)
+        0382: set_object 2@ collision_detection 0
+        0566: link_object 2@ to_interior $ACTIVE_INTERIOR
+        067A: put_camera_on_car $111 with_offset -3.5 -6.5 0.0 point_to_car $111 tilt 0.0 1 
+        0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset -3.5 -6.5 0.0
+        Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+        Camera.OnVehicle($111, 15, 1)
+        wait 356
+        0681: attach_object 2@ to_car $111 with_offset 0.0 0.0 -0.030 rotation 0.0 0.0 0.0
+        wait 500
+        0338: set_car $111 visibility 1
+        0750: set_object $95[0] visibility 1
+        0750: set_object $95[1] visibility 1 
+        0750: set_object $95[3] visibility 1
+        wait 500
+        Object.Destroy(2@)
+        015A: restore_camera
+        03BF: set_player $PLAYER_CHAR ignored_by_everyone 0
+        01F7: set_player $PLAYER_CHAR ignored_by_cops 0 
+        010D: set_player $PLAYER_CHAR wanted_level_to $20 
+        0AB3: var 12 = 0
+        0AB3: var 0 = 0
+        Model.Destroy(18637)   
+end
+0AB4: 0@ = var 10
+0AB4: 10@ = var 9
+0AB4: 1@ = var 11
+0AB4: 2@ = var 0
+if and
+    8019: NOT  0@ > 2
+    8039: NOT  1@ == 1
+    8039: NOT 2@ == 2
+    8039: NOT  10@ == 1
+then
+0AB3: var 11 = 1
+0AAC: 9@ = load_audiostream "DWS\SSP.WAV"
+00AA: store_car $111 position_to 3@ 4@ 5@
+20@ = 2
+0AB3: var 0 = 20@
+0A1C: set_helicopter $111 play_engine_sounds 0
+wait 500
+Audiostream.PerformAction(9@, PLAY)
+wait 200
+0A92: create_custom_thread "fade.s" 11
+wait 700
+if $ACTIVE_INTERIOR == 0
+then
+    00AB: put_car $111 at 3@ 4@ -100.0
+end
+0574: set_car $111 keep_position 1
+0918: set_car $111 engine_operation 0
+0338: set_car $111 visibility 1
+0AB3: var 12 = 0
+0AB3: var 11 = 1
+20@ = 0
+0AB3: var 0 = 20@ 
+end
+jump @main
+
+{$I get_switcher}

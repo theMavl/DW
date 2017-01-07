@@ -1,0 +1,385 @@
+{$CLEO .s}
+0000: NOP
+wait 0
+
+:objects
+if 0@ == 0
+jf @controller
+
+thread 'IVCLO'
+const
+    ZERO    = 18787
+    ONE     = 18788
+    TWO     = 18789
+    THREE   = 18790
+    FOUR    = 18791
+    FIVE    = 18792
+    SIX     = 18793
+    SEVEN   = 18794
+    EIGHT   = 18795
+    NINE    = 18796
+    SEP     = 18786
+    DESTROY    = 30@
+end
+
+DESTROY = 0
+Model.Load(ZERO)
+Model.Load(ONE)
+Model.Load(TWO)
+Model.Load(THREE)
+Model.Load(FOUR)
+Model.Load(FIVE)
+Model.Load(SIX)
+Model.Load(SEVEN)
+Model.Load(EIGHT)
+Model.Load(NINE)
+Model.Load(SEP)
+
+//first digit
+0@ = Object.Create(ZERO, 0.0, 0.0, 0.0)
+1@ = Object.Create(ONE, 0.0, 0.0, 0.0)
+2@ = Object.Create(TWO, 0.0, 0.0, 0.0)
+Object.PutAt(0@, 0.075, 0.802, 1024.913)
+Object.PutAt(1@, 0.075, 0.802, 1024.913)
+Object.PutAt(2@, 0.075, 0.802, 1024.913)
+
+//2nd digit
+3@ = Object.Create(ZERO, 0.0, 0.0, 0.0)
+4@ = Object.Create(ONE, 0.0, 0.0, 0.0)
+5@ = Object.Create(TWO, 0.0, 0.0, 0.0)
+6@ = Object.Create(THREE, 0.0, 0.0, 0.0)
+7@ = Object.Create(FOUR, 0.0, 0.0, 0.0)
+8@ = Object.Create(FIVE, 0.0, 0.0, 0.0)
+9@ = Object.Create(SIX, 0.0, 0.0, 0.0)
+10@ = Object.Create(SEVEN, 0.0, 0.0, 0.0)
+11@ = Object.Create(EIGHT, 0.0, 0.0, 0.0)
+12@ = Object.Create(NINE, 0.0, 0.0, 0.0)
+Object.PutAt(3@, 0.035, 0.802, 1024.913)
+Object.PutAt(4@, 0.035, 0.802, 1024.913)
+Object.PutAt(5@, 0.035, 0.802, 1024.913)
+Object.PutAt(6@, 0.035, 0.802, 1024.913)
+Object.PutAt(7@, 0.035, 0.802, 1024.913)
+Object.PutAt(8@, 0.035, 0.802, 1024.913)
+Object.PutAt(9@, 0.035, 0.802, 1024.913)
+Object.PutAt(10@, 0.035, 0.802, 1024.913)
+Object.PutAt(11@, 0.035, 0.802, 1024.913)
+Object.PutAt(12@, 0.035, 0.802, 1024.913)
+
+29@ = Object.Create(SEP, 0.0, 0.0, 0.0)
+Object.PutAt(29@, 0.0, 0.802, 1024.913)
+
+//3rd digit
+13@ = Object.Create(ZERO, 0.0, 0.0, 0.0)
+14@ = Object.Create(ONE, 0.0, 0.0, 0.0)
+15@ = Object.Create(TWO, 0.0, 0.0, 0.0)
+16@ = Object.Create(THREE, 0.0, 0.0, 0.0)
+17@ = Object.Create(FOUR, 0.0, 0.0, 0.0)
+18@ = Object.Create(FIVE, 0.0, 0.0, 0.0)
+Object.PutAt(13@, -0.035, 0.802, 1024.913)
+Object.PutAt(14@, -0.035, 0.802, 1024.913)
+Object.PutAt(15@, -0.035, 0.802, 1024.913)
+Object.PutAt(16@, -0.035, 0.802, 1024.913)
+Object.PutAt(17@, -0.035, 0.802, 1024.913)
+Object.PutAt(18@, -0.035, 0.802, 1024.913)
+
+
+//4th digit
+19@ = Object.Create(ZERO, 0.0, 0.0, 0.0)
+20@ = Object.Create(ONE, 0.0, 0.0, 0.0)
+21@ = Object.Create(TWO, 0.0, 0.0, 0.0)
+22@ = Object.Create(THREE, 0.0, 0.0, 0.0)
+23@ = Object.Create(FOUR, 0.0, 0.0, 0.0)
+24@ = Object.Create(FIVE, 0.0, 0.0, 0.0)
+25@ = Object.Create(SIX, 0.0, 0.0, 0.0)
+26@ = Object.Create(SEVEN, 0.0, 0.0, 0.0)
+27@ = Object.Create(EIGHT, 0.0, 0.0, 0.0)
+28@ = Object.Create(NINE, 0.0, 0.0, 0.0)
+Object.PutAt(19@, -0.075, 0.802, 1024.913)
+Object.PutAt(20@, -0.075, 0.802, 1024.913)
+Object.PutAt(21@, -0.075, 0.802, 1024.913)
+Object.PutAt(22@, -0.075, 0.802, 1024.913)
+Object.PutAt(23@, -0.075, 0.802, 1024.913)
+Object.PutAt(24@, -0.075, 0.802, 1024.913)
+Object.PutAt(25@, -0.075, 0.802, 1024.913)
+Object.PutAt(26@, -0.075, 0.802, 1024.913)
+Object.PutAt(27@, -0.075, 0.802, 1024.913)
+Object.PutAt(28@, -0.075, 0.802, 1024.913)
+
+Object.CollisionDetection(0@, 0)
+Object.CollisionDetection(1@, 0)
+Object.CollisionDetection(2@, 0)
+Object.CollisionDetection(3@, 0)
+Object.CollisionDetection(4@, 0)
+Object.CollisionDetection(5@, 0)
+Object.CollisionDetection(6@, 0)
+Object.CollisionDetection(7@, 0)
+Object.CollisionDetection(8@, 0)
+Object.CollisionDetection(9@, 0)
+Object.CollisionDetection(10@, 0)
+Object.CollisionDetection(11@, 0)
+Object.CollisionDetection(12@, 0)
+Object.CollisionDetection(13@, 0)
+Object.CollisionDetection(14@, 0)
+Object.CollisionDetection(15@, 0)
+Object.CollisionDetection(16@, 0)
+Object.CollisionDetection(17@, 0)
+Object.CollisionDetection(18@, 0)
+Object.CollisionDetection(19@, 0)
+Object.CollisionDetection(20@, 0)
+Object.CollisionDetection(21@, 0)
+Object.CollisionDetection(22@, 0)
+Object.CollisionDetection(23@, 0)
+Object.CollisionDetection(24@, 0)
+Object.CollisionDetection(25@, 0)
+Object.CollisionDetection(26@, 0)
+Object.CollisionDetection(27@, 0)
+Object.CollisionDetection(28@, 0)
+Object.CollisionDetection(29@, 0)
+
+0750: set_object 0@ visibility 0
+0750: set_object 1@ visibility 0
+0750: set_object 2@ visibility 0
+0750: set_object 3@ visibility 0
+0750: set_object 4@ visibility 0
+0750: set_object 5@ visibility 0
+0750: set_object 6@ visibility 0
+0750: set_object 7@ visibility 0
+0750: set_object 8@ visibility 0
+0750: set_object 9@ visibility 0
+0750: set_object 10@ visibility 0
+0750: set_object 11@ visibility 0
+0750: set_object 12@ visibility 0
+0750: set_object 13@ visibility 0
+0750: set_object 14@ visibility 0
+0750: set_object 15@ visibility 0
+0750: set_object 16@ visibility 0
+0750: set_object 17@ visibility 0
+0750: set_object 18@ visibility 0
+0750: set_object 19@ visibility 0
+0750: set_object 20@ visibility 0
+0750: set_object 21@ visibility 0
+0750: set_object 22@ visibility 0
+0750: set_object 23@ visibility 0
+0750: set_object 24@ visibility 0
+0750: set_object 25@ visibility 0
+0750: set_object 26@ visibility 0
+0750: set_object 27@ visibility 0
+0750: set_object 28@ visibility 0
+
+Model.destroy(ZERO)
+Model.destroy(ONE)
+Model.destroy(TWO)
+Model.destroy(THREE)
+Model.destroy(FOUR)
+Model.destroy(FIVE)
+Model.destroy(SIX)
+Model.destroy(SEVEN)
+Model.destroy(EIGHT)
+Model.destroy(NINE)
+Model.destroy(SEP)
+
+run "vortex_clock_i.s" 1 // launch controller
+
+while true
+    wait 100
+    if DESTROY == 1
+    then
+        Object.Destroy(0@)
+        Object.Destroy(1@)
+        Object.Destroy(2@)
+        Object.Destroy(3@)
+        Object.Destroy(4@)
+        Object.Destroy(5@)
+        Object.Destroy(6@)
+        Object.Destroy(7@)
+        Object.Destroy(8@)
+        Object.Destroy(9@)
+        Object.Destroy(10@)
+        Object.Destroy(11@)
+        Object.Destroy(12@)
+        Object.Destroy(13@)
+        Object.Destroy(14@)
+        Object.Destroy(15@)
+        Object.Destroy(16@)
+        Object.Destroy(17@)
+        Object.Destroy(18@)
+        Object.Destroy(19@)
+        Object.Destroy(20@)
+        Object.Destroy(21@)
+        Object.Destroy(22@)
+        Object.Destroy(23@)
+        Object.Destroy(24@)
+        Object.Destroy(25@)
+        Object.Destroy(26@)
+        Object.Destroy(27@)
+        Object.Destroy(28@)
+        Object.Destroy(29@)
+        end_custom_thread
+    end
+end
+end_custom_thread
+
+
+//-------------------------------------------------------------------------------
+
+
+:controller
+thread "IVCLC"
+
+{
+    1@ - 1st, etc...
+}
+
+wait 0
+
+while true
+    wait 0
+    0AB4: 9@ = var 9
+    if 9@ == 0
+    then
+        0AAA: 12@ = thread 'IVCLO' pointer
+        0D2E: set_thread 12@ var 30 to 1 // destroy clock
+        end_custom_thread
+    end 
+    0AB4: 12@ = var 47 // vortex time
+    0A91: 1@ = 12@ / 1000 
+    0B14: 12@ = 12@ MOD 1000
+    0A91: 2@ = 12@ / 100
+    0B14: 12@ = 12@ MOD 100
+    0A91: 3@ = 12@ / 10
+    0B14: 4@ = 12@ MOD 10
+    //show_text "%d %d %d %d" 100 1@ 2@ 3@ 4@
+    call_scm_func @switch 2 column 1 to 1@
+    call_scm_func @switch 2 column 2 to 2@
+    call_scm_func @switch 2 column 3 to 3@
+    call_scm_func @switch 2 column 4 to 4@
+end
+
+end_custom_thread
+
+:switch
+{
+    Change digit value. Input: 0@ - column, 1@ - switch to (0-9)
+}
+0AAA: 12@ = thread 'IVCLO' pointer
+if 0@ == 1
+then
+    0AAA: 12@ = thread 'IVCLO' pointer
+    0D2F: 2@ = get_thread 12@ var 0 
+    0D2F: 3@ = get_thread 12@ var 1 
+    0D2F: 4@ = get_thread 12@ var 2
+    0750: set_object 2@ visibility 0 
+    0750: set_object 3@ visibility 0
+    0750: set_object 4@ visibility 0
+    0871: init_jump_table 1@ total_jumps 3 default_jump 0 @v jumps 0 @v1 1 @v2 2 @v3 -1 @v -1 @v -1 @v -1 @v 
+end
+if 0@ == 2
+then
+    0D2F: 2@ = get_thread 12@ var 3 
+    0D2F: 3@ = get_thread 12@ var 4 
+    0D2F: 4@ = get_thread 12@ var 5
+    0D2F: 5@ = get_thread 12@ var 6 
+    0D2F: 6@ = get_thread 12@ var 7 
+    0D2F: 7@ = get_thread 12@ var 8
+    0D2F: 8@ = get_thread 12@ var 9 
+    0D2F: 9@ = get_thread 12@ var 10 
+    0D2F: 10@ = get_thread 12@ var 11
+    0D2F: 11@ = get_thread 12@ var 12
+    0750: set_object 2@ visibility 0 
+    0750: set_object 3@ visibility 0
+    0750: set_object 4@ visibility 0
+    0750: set_object 5@ visibility 0 
+    0750: set_object 6@ visibility 0
+    0750: set_object 7@ visibility 0
+    0750: set_object 8@ visibility 0 
+    0750: set_object 9@ visibility 0
+    0750: set_object 10@ visibility 0
+    0750: set_object 11@ visibility 0
+    0871: init_jump_table 1@ total_jumps 10 default_jump 0 @v jumps 0 @v1 1 @v2 2 @v3 3 @v4 4 @v5 5 @v6 6 @v7
+    0872: jump_table_jumps 7 @v8 8 @v9 9 @v10 -1 @v -1 @v -1 @v -1 @v -1 @v -1 @v
+end
+if 0@ == 3
+then
+    0D2F: 2@ = get_thread 12@ var 13 
+    0D2F: 3@ = get_thread 12@ var 14 
+    0D2F: 4@ = get_thread 12@ var 15
+    0D2F: 5@ = get_thread 12@ var 16 
+    0D2F: 6@ = get_thread 12@ var 17
+    0D2F: 7@ = get_thread 12@ var 18
+    0750: set_object 2@ visibility 0 
+    0750: set_object 3@ visibility 0
+    0750: set_object 4@ visibility 0
+    0750: set_object 5@ visibility 0 
+    0750: set_object 6@ visibility 0
+    0750: set_object 7@ visibility 0
+    0871: init_jump_table 1@ total_jumps 6 default_jump 0 @v jumps 0 @v1 1 @v2 2 @v3 3 @v4 4 @v5 5 @v6 -1 @v -1 @v 
+end
+if 0@ == 4
+then
+    0D2F: 2@ = get_thread 12@ var 19 
+    0D2F: 3@ = get_thread 12@ var 20 
+    0D2F: 4@ = get_thread 12@ var 21
+    0D2F: 5@ = get_thread 12@ var 22 
+    0D2F: 6@ = get_thread 12@ var 23 
+    0D2F: 7@ = get_thread 12@ var 24
+    0D2F: 8@ = get_thread 12@ var 25 
+    0D2F: 9@ = get_thread 12@ var 26 
+    0D2F: 10@ = get_thread 12@ var 27
+    0D2F: 11@ = get_thread 12@ var 28
+    0750: set_object 2@ visibility 0 
+    0750: set_object 3@ visibility 0
+    0750: set_object 4@ visibility 0
+    0750: set_object 5@ visibility 0 
+    0750: set_object 6@ visibility 0
+    0750: set_object 7@ visibility 0
+    0750: set_object 8@ visibility 0 
+    0750: set_object 9@ visibility 0
+    0750: set_object 10@ visibility 0
+    0750: set_object 11@ visibility 0
+    0871: init_jump_table 1@ total_jumps 10 default_jump 0 @v jumps 0 @v1 1 @v2 2 @v3 3 @v4 4 @v5 5 @v6 6 @v7
+    0872: jump_table_jumps 7 @v8 8 @v9 9 @v10 -1 @v -1 @v -1 @v -1 @v -1 @v -1 @v
+end
+0AB2: ret 0
+
+:v
+0AB2: ret 0
+
+:v1 
+0750: set_object 2@ visibility 1
+0AB2: ret 0
+
+:v2 
+0750: set_object 3@ visibility 1
+0AB2: ret 0
+
+:v3 
+0750: set_object 4@ visibility 1
+0AB2: ret 0
+
+:v4 
+0750: set_object 5@ visibility 1
+0AB2: ret 0
+
+:v5 
+0750: set_object 6@ visibility 1
+0AB2: ret 0
+
+:v6
+0750: set_object 7@ visibility 1
+0AB2: ret 0
+
+:v7
+0750: set_object 8@ visibility 1
+0AB2: ret 0
+
+:v8
+0750: set_object 9@ visibility 1
+0AB2: ret 0
+
+:v9
+0750: set_object 10@ visibility 1
+0AB2: ret 0
+
+:v10
+0750: set_object 11@ visibility 1
+0AB2: ret 0

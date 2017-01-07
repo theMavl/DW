@@ -1,0 +1,112 @@
+//this badass is written by Mavl
+{$CLEO .cs}
+
+/*
+TARDIS energy system. Part 1
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+*/
+
+//-------------MAIN---------------
+0000: NOP
+thread 'TEG'
+
+wait 1000
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+:def
+wait 100
+if
+056D:   actor $PLAYER_ACTOR defined
+jf @def 
+
+wait 1000
+
+const
+    MAX = 10@
+end
+
+//MAX = 100
+//0AB3: var 10 = MAX
+
+gosub @max
+0AB3: var 10 = 10@
+
+:show
+gosub @max
+0AB4: 0@ = var 10
+while 8038:   NOT 0@ == MAX
+    wait 1000
+    0AB4: 3@ = var 0
+    if or
+    8039:  NOT 3@ == 0
+    8185: NOT car $111 health >= 400 
+    then
+        break
+    end  
+    0AB4: 0@ = var 10
+    0@ += 3
+    0AB3: var 10 = 0@
+    if 
+        001D: 0@ > MAX
+    then
+        0AB3: var 10 = MAX
+        break
+    end
+    /*
+    if 
+        801D: NOT 0@ > 0
+    then
+        0AB3: var 10 = 0
+    end
+    */
+end
+wait 1000
+jump @show
+
+:max
+{0AB4: 1@ = var 12
+0AB4: 13@ = var 13 }
+0AB1: call @get_toggle 1 id 12 to 1@
+0AB1: call @get_toggle 1 id 13 to 13@
+if or
+    1@ == 1
+    1@ == 3
+then
+    1@ = 1
+else
+    1@ = 0
+end
+if or
+    13@ == 1
+    13@ == 3
+then
+    13@ = 1
+else
+    13@ = 0
+end
+
+if and
+    1@ == 1
+    13@ == 1
+then
+    MAX = 25
+else
+    if 13@ == 1
+    then
+        MAX = 75
+    else
+        if 1@ == 1
+        then
+            MAX = 50
+        else
+            MAX = 100
+        end
+    end
+end
+return
+
+{$I move_set_get}

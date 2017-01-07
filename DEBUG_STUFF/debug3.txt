@@ -1,0 +1,196 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+02E4: load_cutscene_data 'PROLOG1' 
+
+0244: set_cutscene_pos 1.2393 1.929 1024.3827 
+02E7: start_cutscene 
+02EA: end_cutscene 
+
+
+end_custom_thread
+
+:put_at_s
+00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@
+ 
+0087: 9@ = 3@ // cur X
+0087: 5@ = 0@ // in X
+0063: 9@ -= 5@
+9@ /= 1000.0 // Transition time. 9@ is now 'a' in y=ax+b for X
+
+0087: 7@ = 4@ // cur Y
+0087: 5@ = 1@ // in Y
+0063: 7@ -= 5@
+7@ /= 1000.0 // Transition time. 7@ is now 'a' in y=ax+b for Y
+32@ = 0
+repeat
+    wait 0
+    0093: 12@ = integer 32@ to_float
+    12@ -= 1000.0
+    12@ *= -1.0 
+    0087: 5@ = 9@ // store 'a' X
+    0087: 6@ = 7@ // store 'a' Y
+    
+    006B: 5@ *= 12@
+    005B: 5@ += 0@
+    
+    006B: 6@ *= 12@
+    005B: 6@ += 1@
+    show_text "%f %f %f | %f %f %f %f" 100 0@ 1@ 2@ 5@ 6@ 2@ 12@
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 5@ 6@ 2@
+until 32@ >= 200
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0@ 1@ 2@ 
+0AB2: ret 0
+
+{repeat
+    wait 0
+    if 01F3:   car $111 in_air
+    then
+        show_text "~g~In air" 100
+    else
+        show_text "~r~Landed" 100
+    end 
+until 0ab0: 56 }
+0AB3: var 11 = 0
+//
+00AB: put_car $111 at 0.0 0.0 10.0 
+
+0407: store_coords_to 1@ 2@ 3@ from_car $111 with_offset 0.0 -0.6 0.0
+09BC: put_actor $PLAYER_ACTOR at 1@ 2@ 3@
+
+$94 = 1
+0174: 4@ = car $111 Z_angle 
+4@ -= 180.0
+0173: set_actor $PLAYER_ACTOR Z_angle_to 4@
+
+//0560: create_random_actor_in_car $111 handle_as 0@
+
+
+0464: attach_ped_to_car  $PLAYER_ACTOR car $111 offset 0.0 -0.6 0.0 position 2 angle_limit 360.0 weapon 0
+Camera.Restore_WithJumpCut
+
+
+
+0407: store_coords_to 1@ 2@ 3@ from_car $111 with_offset 0.0 0.0 0.0
+0743: heli $111 fly_to 1@ 2@ 3@ altitude 3@ 3@
+
+0574: set_car $111 keep_position 1
+04BA: set_car $111 speed_to 10.0 
+wait 100
+0574: set_car $111 keep_position 0 
+0825: set_helicopter $111 instant_rotor_start 
+0A1C: set_helicopter $111 play_engine_sounds 1 
+
+
+
+repeat
+wait 0
+0407: store_coords_to 9@ 10@ 11@ from_car $111 with_offset 3.5 -6.5 0.0
+Camera.SetPosition(9@,10@,11@,0.0,0.0,0.0)
+Camera.OnVehicle($111, 15, 2)
+until 0ab0: 56
+0574: set_car $111 keep_position 1
+$94 = 0
+//actor.DestroyInstantly(0@)
+0465: remove_actor $PLAYER_ACTOR from_turret_mode 
+
+0A93: end_custom_thread 
+0224: set_car $111 health_to 399
+repeat
+wait 0
+0AB4: 3@ = var 17
+show_text "%d" 100 3@ 
+until 0ab0: 56 
+{call_scm_func @rand_bdtext 0 26@
+show_text "text: %s" 1000 26@v
+0A93: end_custom_thread                
+                
+:rand_bdtext
+0209: 6@ = random_int_in_ranges 1 16
+10@v = ""
+0AD3: string 10@v format "BT%d" 6@
+0AB2: ret 1 10@ }
+
+run "spin.s"
+0A93: end_custom_thread
+{08EB: create_sparks_at -0.968 -1.5589 1024.375 velocity_direction 0.0 0.0 5.0 density 60 
+0948: create_explosion_at -1.743 -0.0056 1024.375 type 9 camera_shake 0.1     }
+064B: 14@ = create_particle "explosion_tiny" at 0.0 0.0 1024.875 type 1 
+064B: 15@ = create_particle "explosion_tiny" at -2.1969 2.5696 1025.085 type 1
+064B: 16@ = create_particle "explosion_tiny" at 3.0627 -0.9293 1025.0879 type 1
+064B: 17@ = create_particle "explosion_tiny" at -1.3796 -1.0288 1022.6484 type 1
+064B: 18@ = create_particle "explosion_tiny" at 1.0408 0.9617 1024.751 type 1 
+064B: 19@ = create_particle "explosion_large" at 0.0 0.0 1027.0 type 1 
+//064B: 15@ = create_particle "prt_spark" at -2.0365 1.4783 1024.875 type 1
+repeat
+wait 1000
+064C: make_particle 14@ visible
+064C: make_particle 15@ visible
+064C: make_particle 16@ visible
+064C: make_particle 17@ visible
+064C: make_particle 18@ visible
+064C: make_particle 19@ visible
+	//020C: add_explosion 0.0 0.0 1024.0 type 9
+0948: create_explosion_at 0.0 0.0 1012.0 type 9 camera_shake 0.1
+
+08EB: create_sparks_at 0.0 0.0 1024.875 velocity_direction 0.0 0.0 5.0 density 60 
+08EB: create_sparks_at -2.1969 2.5696 1025.085 velocity_direction 0.0 0.0 5.0 density 60 
+08EB: create_sparks_at 3.0627 -0.9293 1025.0879 velocity_direction 0.0 0.0 5.0 density 60 
+08EB: create_sparks_at -1.3796 -1.0288 1022.6484 velocity_direction 0.0 0.0 5.0 density 60 
+08EB: create_sparks_at 1.0408 0.9617 1024.751 velocity_direction 0.0 0.0 5.0 density 60 
+until 0ab0: 56
+0650: destroy_particle 14@  
+0650: destroy_particle 15@  
+0650: destroy_particle 16@
+0650: destroy_particle 17@  
+0650: destroy_particle 18@
+0650: destroy_particle 19@
+
+
+
+
+0A93: end_custom_thread
+{wait 0
+const
+R = 6.5
+X = 3@
+Y = 4@
+Angle = 1@
+end
+var
+0@ : Float
+1@ : Float
+3@ : Float
+4@ : Float
+end
+0@ = 0.0 
+repeat
+    wait 0
+    0@ -= 3.0
+    Angle = 0@
+    //Angle *= 0.017 //Radians
+    X = Angle
+    02F7: X = cosine X // (float) 
+    X *= R
+    Y = Angle
+    02F6: Y = sine Y // (float)
+    Y *= R         
+    09E5: create_flash_light_at X Y 1027.0 RGB_mask 17 17 17 radius 10.0
+    09E5: create_flash_light_at X Y 1027.0 RGB_mask 17 17 17 radius 10.0
+    
+    Angle = 0@
+    //Angle *= 0.017 //Radians
+    Angle += 180.0
+    X = Angle
+    02F7: X = cosine X // (float) 
+    X *= R
+    Y = Angle
+    02F6: Y = sine Y // (float)
+    Y *= R         
+    09E5: create_flash_light_at X Y 1027.0 RGB_mask 17 17 17 radius 10.0
+    09E5: create_flash_light_at X Y 1027.0 RGB_mask 17 17 17 radius 10.0      
+     
+    //09E5: create_flash_light_at X Y 1026.0 RGB_mask 255 255 255 radius 15.0    
+until 0ab0: 56
+
+0A93: end_custom_thread }

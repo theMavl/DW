@@ -1,0 +1,1229 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+wait 1000
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+thread "tarmon"
+04ED: load_animation "TARDIS"
+
+0AB3: var 29 = 0 // Set Fast return to 0
+0AB3: var 37 = -1 // Unset destination time
+
+Model.Load(#mon_menu) //Monitor menu
+
+wait 2000
+22@ = object.Create(#mon_menu, 0.0, 0.0, 0.0) //Monitor menu
+Object.PutAt(22@, 0.0, 0.0, 1024.0)
+0382: set_object 22@ collision_detection 0
+0750: set_object 22@ visibility 0  
+
+while true
+    wait 0
+    0AB4: 0@ = var 27
+    0AB4: 1@ = var 0
+    if and
+        0@ == 2
+        0AB0: 69 // E
+    then
+        if or
+            1@ == 0 //not performing any action
+            1@ == 3
+        jf continue
+        07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+        0AB1: call @put_at_s 3 1.3 0.72 1024.375
+        gosub @turn_to_console
+        0972: put_actor $PLAYER_ACTOR at 1.3 0.72 1024.375
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 120.0
+        04D7: set_actor $PLAYER_ACTOR locked 1 
+        //01B4: set_player $PLAYER_CHAR can_move 0
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+        0992: set_player $PLAYER_CHAR weapons_scrollable 0
+        0812: AS_actor $PLAYER_ACTOR perform_animation "keyboard_type" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+        //015F: set_camera_position 0.1265 1.9164 1025.375 rotation 0.0 0.0 0.0 
+        //0160: set_camera_point_at 1.0 0.0 1024.92 mode 2
+        //0460: set_camera_transverse_delay 0.0 time 1000
+        0AAC: 19@ = load_audiostream "dws\keypad.wav" //IF and SET
+        0AAC: 18@ = load_audiostream "dws\interface.mp3" //IF and SET
+        repeat
+            wait 0
+            0613: 21@ = actor $PLAYER_ACTOR animation "keyboard_type" time
+        until 21@ >= 0.5
+        0AAD: set_audiostream 19@ perform_action 1
+        repeat
+            wait 0
+            0613: 21@ = actor $PLAYER_ACTOR animation "keyboard_type" time
+        until 21@ >= 0.7
+        0612: set_actor $PLAYER_ACTOR animation "keyboard_type" paused 0
+        015F: set_camera_position 1.3 0.752 1024.92055 rotation 0.0 0.0 0.0
+        0160: set_camera_point_at 0.0 0.0 1024.92 mode 2
+        //0460: set_camera_transverse_delay 0.0 time 1500
+        //wait 1500
+        0922: set_camera_zoom_in_factor {70.0} 40.0 out_factor 40.0 timelimit 500 mode 2
+        0931: lock_camera_zoom 1
+        0750: set_object 22@ visibility 1
+        0826: enable_hud 0
+        0581: enable_radar 0
+        03F0: enable_text_draw 1
+        0AAD: set_audiostream 18@ perform_action 1
+        //wait 500 
+        repeat
+            wait 0
+            if 0185:   car $111 health >= 400
+            then 
+                0AB4: 23@ = var 20
+                if 23@ == 0
+                then
+                    0AB4: 23@ = var 21
+                    0AB4: 24@ = var 22
+                    0AB4: 25@ = var 23
+                    0843: get_zone_at 23@ 24@ 25@ nameA_to 26@v 
+                    gosub @text_style
+                    033E: set_draw_text_position 50.0 100.0 GXT "SOLSYS"  // Push
+                    gosub @text_style
+                    033E: set_draw_text_position 50.0 120.0 GXT "SAN_AND"  // Push
+                    gosub @text_style
+                    033E: set_draw_text_position 50.0 140.0 GXT 26@v  // Push
+                else
+                    gosub @text_style
+                    033E: set_draw_text_position 50.0 100.0 GXT "SOLSYS"  // Push
+                    gosub @text_style
+                    033E: set_draw_text_position 50.0 120.0 GXT "SAN_AND"  // Push
+                    gosub @text_style
+                    033E: set_draw_text_position 50.0 140.0 GXT "UNKLOC"  // Push
+                end
+            else
+                gosub @text_style
+                call_scm_func @rand_bdtext 0 26@
+                033E: set_draw_text_position 50.0 100.0 GXT 26@v // Push
+                gosub @text_style
+                call_scm_func @rand_bdtext 0 26@
+                033E: set_draw_text_position 50.0 120.0 GXT 26@v  // Push
+                gosub @text_style
+                call_scm_func @rand_bdtext 0 26@
+                033E: set_draw_text_position 50.0 140.0 GXT 26@v // Push
+                
+            end 
+            // Enter Coordinates
+            if or
+                0AB0: 97 // num 1
+                0AB0: 49 // 1
+            then
+                0AB4: 23@ = var 21
+                0AB4: 24@ = var 22
+                {04D7: set_actor $PLAYER_ACTOR locked 1 
+                0972: put_actor $PLAYER_ACTOR at 23@ 24@ 1024.375 }
+                02A7: 25@ = create_icon_marker_and_sphere 42 at 23@ 24@ -10.0
+                0A8C: write_memory 12216228 size 4 value 1 virtual_protect 0 
+                0A8C: write_memory 12216484 size 4 value 2688257 virtual_protect 0 
+                0AA5: call 7629216 num_params 0 pop 0
+                while true
+                    wait 0
+                    if or
+                        0AB0: 13 //enter
+                        0AB0: 27 //esc
+                    then
+                        break
+                    end
+                end
+                Marker.Disable(25@)
+                //0972: put_actor $PLAYER_ACTOR at 1.3 0.72 1024.375
+                //0173: set_actor $PLAYER_ACTOR Z_angle_to 120.0
+                04D7: set_actor $PLAYER_ACTOR locked 0
+                0A8C: write_memory 12216228 size 4 value 0 virtual_protect 0 
+                0A8C: write_memory 12216484 size 4 value 0 virtual_protect 0
+                0AA5: call 7630704 num_params 0 pop 0
+                if 0AB0: 27 //esc
+                then
+                    0AAC: 15@ = load_audiostream "dws\interface_cancel.mp3" //IF and SET
+                    0AAD: set_audiostream 15@ perform_action 1
+                    wait 1000
+                    Audiostream.Release(15@)
+                    continue
+                end
+                0AAC: 15@ = load_audiostream "dws\interface_apply.mp3" //IF and SET
+                0AAD: set_audiostream 15@ perform_action 1               
+                0AB6: store_target_marker_coords_to 23@ 24@ 25@
+                wait 500
+                if 0185:   car $111 health >= 400
+                then
+                    0ACE: show_formatted_text_box "Solar Sys, Sol-3~n~X: %.2f~n~Y: %.2f~n~Z: %.2f" 23@ 24@ -100.0
+                else
+                    call_scm_func @rand_bdtext 0 26@
+                    03E5: show_text_box 26@v
+                end
+                0AB3: var 30 = 23@
+                0AB3: var 31 = 24@
+                0AB3: var 32 = -100.0
+                0AB3: var 33 = 0
+                0AB3: var 34 = 0.0
+                0AB3: var 29 = 0 //Fast return disabled
+                wait 1000
+                Audiostream.Release(15@)
+                03E6: remove_text_box 
+            end
+            // Randomizer
+            if or 
+                0AB0: 98 // num 2
+                0AB0: 50 // 2
+            then
+                0209: 23@ = random_int_in_ranges 0 5
+                if 23@ == 1
+                then
+                    if 0AAB:  file_exists "cleo\DW_INTERIORS.ini"
+                    jf continue
+                    if 0185:   car $111 health >= 400
+                    then
+                        0AF0: 23@ = get_int_from_ini_file "cleo\DW_INTERIORS.ini" section "total" key "ints"
+                        0209: 23@ = random_int_in_ranges 1 23@
+                        0093: 23@ = integer 23@ to_float
+                        0AED: 24@v = float 23@ to_string_format "%.15g"
+                        0AC8: 23@ = allocate_memory_size 50
+                        0AF4: 23@ = read_string_from_ini_file "cleo\DW_INTERIORS.ini" section 24@v key "string"
+                        0AD4: 27@ = scan_string 23@ format "%d %f,%f,%f" 26@ 23@ 24@ 25@ //IF and SET
+                        0AB3: var 30 = 23@ // X
+                        0AB3: var 31 = 24@ // Y
+                        0AB3: var 32 = 25@ // Z
+                        0AB3: var 33 = 26@ // INT
+                        0AB3: var 34 = 0.0  // ANG
+                        0AB3: var 29 = 0 //Fast return disabled
+                        if 0185:   car $111 health >= 400
+                        then
+                            0ACE: show_formatted_text_box "Solar Sys, Sol-3~n~X: %.2f~n~Y: %.2f~n~Z: %.2f" 23@ 24@ 25@
+                        else
+                            call_scm_func @rand_bdtext 0 26@
+                            03E5: show_text_box 26@v
+                        end
+                    else
+                        call_scm_func @rand_bdtext 0 26@
+                        03E5: show_text_box 26@v
+                    end                     
+                else
+                    0208: 23@ = random_float_in_ranges -2999.9 2999.9
+                    0208: 24@ = random_float_in_ranges -2999.9 2999.9
+                    if 0185:   car $111 health >= 400
+                    then
+                        0ACE: show_formatted_text_box "Solar Sys, Sol-3~n~X: %.2f~n~Y: %.2f~n~Z: %.2f" 23@ 24@ -100.0
+                    else
+                        call_scm_func @rand_bdtext 0 26@
+                        03E5: show_text_box 26@v
+                    end
+                    
+                    0AB3: var 30 = 23@ // X
+                    0AB3: var 31 = 24@ // Y
+                    0AB3: var 32 = -100.0 // Z
+                    0AB3: var 33 = 0  // INT
+                    0AB3: var 34 = 0.0 // ANG
+                    0AB3: var 29 = 0 //Fast return disabled
+                end
+                0AAC: 15@ = load_audiostream "dws\interface_apply.mp3" //IF and SET
+                0AAD: set_audiostream 15@ perform_action 1
+                wait 1000
+                Audiostream.Release(15@)
+                03E6: remove_text_box   
+            end
+            if or
+                0AB0: 99 // num 3
+                0AB0: 51 // 3
+            then
+                if 0185:   car $111 health >= 400
+                then
+                    0750: set_object 22@ visibility 0
+                    gosub @programming
+                    0812: AS_actor $PLAYER_ACTOR perform_animation "keyboard_type" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+                    0614: set_actor $PLAYER_ACTOR animation "keyboard_type" progress_to 0.568 // 0.0 to 1.0
+                    0612: set_actor $PLAYER_ACTOR animation "keyboard_type" paused 0
+                    0750: set_object 22@ visibility 1
+                else
+                    call_scm_func @rand_bdtext 0 26@
+                    03E5: show_text_box 26@v
+                    wait 1000
+                end
+            end
+        until 0AB0: 69 // E
+        0750: set_object 22@ visibility 0
+        wait 500
+        0826: enable_hud 1
+        //0581: enable_radar 1
+        01B4: set_player $PLAYER_CHAR can_move 1
+        07CC: set_player_enter_car_button $PLAYER_CHAR to 1
+        04D7: set_actor $PLAYER_ACTOR locked 0
+        0AAD: set_audiostream 19@ perform_action 1
+        0812: AS_actor $PLAYER_ACTOR perform_animation "keyboard_type" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+        0614: set_actor $PLAYER_ACTOR animation "keyboard_type" progress_to 0.568 // 0.0 to 1.0
+        0612: set_actor $PLAYER_ACTOR animation "keyboard_type" paused 0
+        wait 250  
+        Camera.Restore_WithJumpCut()
+        032A: set_behind_camera_mode_to 0
+        0922: set_camera_zoom_in_factor 85.0 out_factor 85.0 timelimit 100 mode 2
+        //wait 500
+        0612: set_actor $PLAYER_ACTOR animation "keyboard_type" paused 1
+        //Camera.Restore()
+        //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+        032A: set_behind_camera_mode_to 0
+        0AAE: release_audiostream 19@
+        Audiostream.Release(18@)
+        continue 
+    end
+    if and
+        0@ == 2
+        0AB0: 84 // T
+    then
+        if or
+            1@ == 0 //not performing any action
+            1@ == 3
+        jf continue
+        //01B4: set_player $PLAYER_CHAR can_move 0
+        0AB1: call @put_at_s 3 1.3 0.72 1024.375
+        gosub @turn_to_console
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 120.0
+        0972: put_actor $PLAYER_ACTOR at 1.3 0.72 1024.375
+        04D7: set_actor $PLAYER_ACTOR locked 1
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+        0992: set_player $PLAYER_CHAR weapons_scrollable 0
+        07CC: set_player_enter_car_button $PLAYER_CHAR to 0
+        0AAC: 18@ = load_audiostream "dws\interface.mp3" //IF and SET
+        
+        0812: AS_actor $PLAYER_ACTOR perform_animation "keyboard_time" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+        //015F: set_camera_position 0.1265 1.9164 1025.375 rotation 0.0 0.0 0.0 
+        //0160: set_camera_point_at 1.0 0.0 1024.92 mode 2
+        //0460: set_camera_transverse_delay 0.0 time 1000
+        //0AAC: 19@ = load_audiostream "dws\keypad.wav" //IF and SET
+        {repeat
+            wait 0
+            0613: 21@ = actor $PLAYER_ACTOR animation "keyboard_type" time
+        until 21@ >= 0.5
+        0AAD: set_audiostream 19@ perform_action 1
+        repeat
+            wait 0
+            0613: 21@ = actor $PLAYER_ACTOR animation "keyboard_type" time
+        until 21@ >= 0.7}
+        wait 500
+        0AAD: set_audiostream 18@ perform_action 1
+        wait 350        
+        0612: set_actor $PLAYER_ACTOR animation "keyboard_time" paused 0
+        015F: set_camera_position 1.3 0.752 1024.92055 rotation 0.0 0.0 0.0
+        0160: set_camera_point_at 0.0 0.0 1024.92 mode 2
+        //0460: set_camera_transverse_delay 0.0 time 1500
+        //wait 750
+        //0D10: set_actor $PLAYER_ACTOR alpha 0  
+        //wait 750
+        0922: set_camera_zoom_in_factor {70.0} 40.0 out_factor 40.0 timelimit 500 mode 1 
+        0931: lock_camera_zoom 1
+        0826: enable_hud 0
+        0581: enable_radar 0
+        wait 500
+        Audiostream.Release(18@)
+        03F0: enable_text_draw 1
+        0@ = 320.0
+        1@ = 224.0
+        0AB4: 10@ = var 37
+        if 8039: 10@ == -1
+        then
+            //show_text "%d" 1000 10@
+            0A91: 8@ = 10@ / 60 // int
+            0B14: 5@ = 8@ MOD 10
+            0A91: 8@ = 8@ / 10 // int
+            
+            0B14: 6@ = 10@ MOD 60
+            0B14: 7@ = 6@ MOD 10
+            0A91: 6@ = 6@ / 10 // int
+            
+            //save old values  
+            0085: 11@ = 8@
+            0085: 4@ = 5@
+            0085: 9@ = 6@
+            0085: 17@ = 7@
+        else
+            8@ = 0
+            5@ = 0
+            6@ = 0
+            7@ = 0
+            // olds
+            11@ = 0
+            4@ = 0
+            9@ = 0
+            17@ = 0
+        end
+        0390: load_txd_dictionary 'DWGUI' 
+        038F: load_texture "sel" as 11
+        03F0: enable_text_draw 1
+        03E3: set_texture_to_be_drawn_antialiased 1
+        repeat
+            wait 0
+            0A4A: store_joystick_X_offset_to 2@ Y_offset_to 3@ 
+            3@ *= -1.0
+            005B: 0@ += 2@ // (float)
+            if 0@ < 0.0
+            then
+                0@ = 0.0
+            end
+            if 0@ > 640.0
+            then
+                0@ = 640.0
+            end
+            if 0@ <= 160.0
+            then
+                0AD3: string 20@v format "%d%d:%d%d" 8@ 5@ 6@ 7@
+                0ADF: add_dynamic_GXT_entry "DESTIM" text 20@v
+                038D: draw_texture 11 position 238.0 162.0 size 25.0 25.0 RGBA 255 255 255 255
+                //0ADF: add_dynamic_GXT_entry "DESTIA" text "~d~    "
+                20@ = 1   
+            else
+                if and
+                    0@ > 160.0
+                    0@ <= 320.0
+                then
+                    0AD3: string 20@v format "%d%d:%d%d" 8@ 5@ 6@ 7@
+                    0ADF: add_dynamic_GXT_entry "DESTIM" text 20@v
+                    038D: draw_texture 11 position 279.0 162.0 size 25.0 25.0 RGBA 255 255 255 255
+                    20@ = 2 
+                else
+                    if and 
+                        0@ > 320.0
+                        0@ <= 480.0
+                    then
+                        0AD3: string 20@v format "%d%d:%d%d" 8@ 5@ 6@ 7@
+                        0ADF: add_dynamic_GXT_entry "DESTIM" text 20@v
+                        038D: draw_texture 11 position 355.0 162.0 size 25.0 25.0 RGBA 255 255 255 255
+                        20@ = 3
+                    else
+                        if and 
+                            0@ > 480.0
+                            0@ <= 640.0
+                        then
+                            0AD3: string 20@v format "%d%d:%d%d" 8@ 5@ 6@ 7@
+                            0ADF: add_dynamic_GXT_entry "DESTIM" text 20@v
+                            038D: draw_texture 11 position 397.0 162.0 size 25.0 25.0 RGBA 255 255 255 255
+                            20@ = 4 
+                        end
+                    end
+                end
+            end
+            if 8185: NOT  car $111 health >= 400
+            then
+                0209: 8@ = random_int_in_ranges 0 10
+                0209: 5@ = random_int_in_ranges 0 10
+                0209: 6@ = random_int_in_ranges 0 6
+                0209: 7@ = random_int_in_ranges 0 10 
+                0AD3: string 20@v format "%d%d:%d%d" 8@ 5@ 6@ 7@
+                0ADF: add_dynamic_GXT_entry "DESTIM" text 20@v
+            end
+            0342: toggle_text_draw_centered 1
+            0340: set_text_draw_RGBA 255 255 255 alpha 255
+            060D: draw_text_shadow 1 color 125 125 125 alpha 0
+            081C: draw_text_outline 1 RGBA 0 0 0 255
+            0343: set_text_draw_linewidth 640.0
+            033F: set_text_draw_letter_size 2.0 6.0
+            0349: set_text_draw_font 3 
+            033E: set_draw_text_position 320.0 180.0 GXT "DESTIM"  // Push
+            0342: toggle_text_draw_centered 1
+            0340: set_text_draw_RGBA 255 255 255 alpha 255
+            060D: draw_text_shadow 1 color 125 125 125 alpha 0
+            081C: draw_text_outline 1 RGBA 0 0 0 255
+            0343: set_text_draw_linewidth 640.0
+            033F: set_text_draw_letter_size 2.0 6.0
+            0349: set_text_draw_font 3  
+            033E: set_draw_text_position 320.0 140.0 GXT "DESTIA"  // Push
+            if 00E1:   player 0 pressed_key 5
+            then
+                if and
+                    8@ == 9
+                    5@ == 9
+                    6@ == 5
+                    7@ == 9
+                then
+                    continue
+                end
+                if and
+                    20@ == 1
+                    8@ < 9
+                then
+                    8@ += 1
+                end
+                if 20@ == 2
+                then
+                    if 5@ == 9
+                    then
+                        if 8@ < 9
+                        then
+                            5@ = 0
+                            8@ += 1
+                        end
+                    else
+                        5@ += 1
+                    end                                       
+                end
+                if 20@ == 3
+                then
+                    if 6@ == 5
+                    then
+                        if 5@ < 9
+                        then
+                            5@ += 1
+                            6@ = 0
+                        else
+                            if 8@ < 9
+                            then
+                                5@ = 0
+                                6@ = 0
+                                8@ += 1
+                            end
+                        end
+                    else
+                        6@ += 1
+                    end
+                end
+                if 20@ == 4
+                then
+                    if 7@ == 9
+                    then
+                        if 6@ < 5
+                        then
+                            6@ += 1
+                            7@ = 0
+                        else
+                            if 5@ < 9
+                            then
+                                5@ += 1
+                                6@ = 0
+                                7@ = 0
+                            else
+                                if 8@ < 9
+                                then
+                                    8@ += 1
+                                    5@ = 0
+                                    6@ = 0
+                                    7@ = 0
+                                end
+                            end
+                        end
+                    else
+                        7@ += 1
+                    end
+                end
+            end
+            if 00E1:   player 0 pressed_key 7
+            then
+                if and
+                    8@ > 0
+                    20@ == 1
+                then 
+                    8@ -= 1
+                end
+                if 20@ == 2
+                then
+                    if 5@ == 0
+                    then
+                        if 8@ > 0
+                        then
+                            5@ = 9  
+                            8@ -= 1
+                        end
+                    else
+                        5@ -= 1
+                    end
+                end
+                if
+                    20@ == 3
+                then
+                    if 6@ == 0
+                    then
+                        if 5@ > 0
+                        then
+                            6@ = 5
+                            5@ -= 1
+                        else
+                            if 8@ > 0
+                            then
+                                6@ = 5
+                                5@ = 9
+                                8@ -= 1
+                            end
+                        end
+                    else
+                        6@ -= 1
+                    end
+                end
+                if
+                    20@ == 4
+                then
+                    if 7@ == 0
+                    then
+                        if 6@ > 0
+                        then
+                            6@ -= 1
+                            7@ = 9
+                        else
+                            if 5@ > 0
+                            then
+                                5@ -= 1
+                                7@ = 9
+                                6@ = 5
+                            else
+                                if 8@ > 0
+                                then
+                                    8@ -= 1
+                                    5@ = 9
+                                    6@ = 5
+                                    7@ = 9
+                                end
+                            end
+                        end
+                    else
+                        7@ -= 1
+                    end
+                end
+            end
+            if 0AB0: 69 // e
+            then
+                0AAC: 15@ = load_audiostream "dws\interface_cancel.mp3" //IF and SET
+                0AAD: set_audiostream 15@ perform_action 1
+                jump @cont
+            end
+            if 0AB0: 13 //enter
+            then
+                if and
+                    003B: 8@ == 11@
+                    003B: 5@ == 4@
+                    003B: 6@ == 9@
+                    003B: 7@ == 17@
+                then
+                    continue
+                else
+                    break
+                end    
+            end 
+        until false
+
+        if 0185:   car $111 health >= 400
+        then
+            if and 
+                8@ == 0
+                5@ == 0
+                6@ == 0
+                7@ == 0
+            then
+                0AB3: var 37 = -1
+                0AB4: 15@ = var 38
+                if 15@ == 1
+                then
+                    0AB3: var 38 = 0
+                    03E5: show_text_box "APDIS"
+                end
+            else  
+                8@ *= 10
+                6@ *= 10
+                005A: 8@ += 5@
+                005A: 6@ += 7@
+                8@ *= 60
+                005A: 8@ += 6@
+                0AB3: var 37 = 8@
+                0AB3: var 38 = 1
+                03E5: show_text_box "TIMESET"
+            end
+            0AAC: 15@ = load_audiostream "dws\interface_apply.mp3" //IF and SET
+            0AAD: set_audiostream 15@ perform_action 1
+        else
+            call_scm_func @rand_bdtext 0 26@
+            0AAC: 15@ = load_audiostream "dws\interface_cancel.mp3" //IF and SET
+            0AAD: set_audiostream 15@ perform_action 1
+            00BC: show_text_highpriority GXT 26@v time 2000 flag 1    
+        end
+        :cont
+        if 8185: NOT  car $111 health >= 400
+        then
+            03F0: enable_text_draw 0
+            0391: release_txd_dictionary
+        end 
+        0@ = -1
+        wait 500    
+        0826: enable_hud 1
+        //0581: enable_radar 1
+        01B4: set_player $PLAYER_CHAR can_move 1
+        07CC: set_player_enter_car_button $PLAYER_CHAR to 1
+        04D7: set_actor $PLAYER_ACTOR locked 0
+        0337: set_actor $PLAYER_ACTOR visibility 1
+        0812: AS_actor $PLAYER_ACTOR perform_animation "keyboard_time" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+        0614: set_actor $PLAYER_ACTOR animation "keyboard_time" progress_to 0.587 // 0.0 to 1.0
+        0612: set_actor $PLAYER_ACTOR animation "keyboard_time" paused 0
+        
+        0D10: set_actor $PLAYER_ACTOR alpha 255
+        wait 250
+        Audiostream.Release(15@)
+        Camera.Restore_WithJumpCut()
+        032A: set_behind_camera_mode_to 0
+        0922: set_camera_zoom_in_factor 85.0 out_factor 85.0 timelimit 100 mode 1
+        
+        //wait 500
+        0612: set_actor $PLAYER_ACTOR animation "keyboard_time" paused 1
+        //Camera.Restore()
+        wait 100
+        
+        //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+        
+        //0AAE: release_audiostream 19@
+        continue 
+    end
+    if and
+        0@ == 2
+        0AB0: 82 // R
+        1@ == 0
+    then
+        0AAC: 19@ = load_audiostream "dws\keypad.wav" //IF and SET
+        0AB1: call @put_at_s 3 1.3 0.72 1024.375
+        gosub @turn_to_console
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 120.0
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+        0992: set_player $PLAYER_CHAR weapons_scrollable 0
+        0812: AS_actor $PLAYER_ACTOR perform_animation "keyboard_frt" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+        wait 700
+        0AAD: set_audiostream 19@ perform_action 1
+        {0AB4: 23@ = var 1
+        0AB4: 24@ = var 2
+        0AB4: 25@ = var 3
+        0AB4: 26@ = var 4
+        0AB4: 27@ = var 5
+        0AB4: 28@ = var 35
+        0AB3: var 30 = 23@
+        0AB3: var 31 = 24@
+        0AB3: var 32 = 25@
+        0AB3: var 33 = 26@
+        0AB3: var 34 = 27@
+        0AB3: var 37 = 28@}
+        0AB3: var 29 = 1
+        03E5: show_text_box "FRTACT"
+        //00BC: show_text_highpriority GXT "FRTACT" time 2000 flag 1
+        wait 100
+        0AAE: release_audiostream 19@
+        wait 630
+        continue
+    end
+    if and
+        0@ == 5
+        0AB0: 69 // E
+        8039: 1@ == 10
+    then
+        0AB1: call @put_at_s 3 -1.25 -0.7425 1024.375
+        gosub @turn_to_console
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 300.0
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+        0992: set_player $PLAYER_CHAR weapons_scrollable 0
+        04D7: set_actor $PLAYER_ACTOR locked 1
+        0812: AS_actor $PLAYER_ACTOR perform_animation "scanner_check" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+        wait 1000
+        0612: set_actor $PLAYER_ACTOR animation "scanner_check" paused 0 
+        015F: set_camera_position -1.04 -0.6 1025.2 rotation 0.0 0.0 0.0
+        0160: set_camera_point_at -0.69 -0.4 1024.4149 mode 2
+        //0460: set_camera_transverse_delay 0.0 time 500
+        //wait 500
+        0922: set_camera_zoom_in_factor 37.0 out_factor 37.0 timelimit 500 mode 1 
+        0931: lock_camera_zoom 1
+        03F0: enable_text_draw 1
+        //wait 500
+        repeat
+        wait 0
+            0227: 21@ = car $111 health
+            if 21@ >= 1500
+            then
+                21@ -= 1500
+                0A91: 21@ = 21@ / 5
+                if 21@ > 30
+                then
+                    0ADE: 25@v = text_by_GXT_entry "SH_S"
+                else
+                    0ADE: 25@v = text_by_GXT_entry "SH_S_R"
+                end
+            else
+                0A91: 21@ = 21@ / 15
+                if 21@ > 33
+                then
+                    0ADE: 25@v = text_by_GXT_entry "SH_H"
+                else
+                    0ADE: 25@v = text_by_GXT_entry "SH_H_R"
+                end
+            end
+            0AD3: string 23@v format "%s: %d" 25@v 21@
+            
+            0ADF: add_dynamic_GXT_entry "SHIT" text 23@v
+            gosub @text_style2
+            033E: set_draw_text_position 50.0 200.0 GXT "SHIT"  // Push
+            
+            0AB4: 21@ = var 10
+            0ADE: 25@v = text_by_GXT_entry "ENER_S"
+            0AD3: string 23@v format "%s: %d" 25@v 21@
+            
+            0ADF: add_dynamic_GXT_entry "SHIT2" text 23@v
+            gosub @text_style2
+            033E: set_draw_text_position 50.0 220.0 GXT "SHIT2"  // Push
+            
+            0AB4: 24@ = var 9 
+            if 24@ == 1
+            then
+                0ADE: 23@v = text_by_GXT_entry "STAT1"
+            else 
+                0AB4: 24@ = var 16
+                if 24@ == 0
+                then
+                    0ADE: 23@v = text_by_GXT_entry "STAT2"
+                end
+                if 24@ == 1
+                then
+                    0ADE: 23@v = text_by_GXT_entry "STAT3"
+                end
+                if 24@ == 2
+                then
+                    0ADE: 23@v = text_by_GXT_entry "STAT4"
+                end
+                if 24@ == 3
+                then
+                    0ADE: 23@v = text_by_GXT_entry "STAT5"
+                end
+            end
+            if 8185: NOT  car $111 health >= 400 
+            then
+                call_scm_func @rand_bdtext 0 23@
+                0ADE: 23@v = text_by_GXT_entry 23@v
+            end
+            0ADF: add_dynamic_GXT_entry "SHIT3" text 23@v
+            gosub @text_style2
+            0342: enable_text_draw_centered 1 
+            033E: set_draw_text_position 320.0 200.0 GXT "SHIT3"  // Push
+            
+            gosub @text_style2
+            0AB4: 24@ = var 13
+            if 24@ == 0
+            then
+                0340: set_text_draw_RGBA 255 255 255 alpha 150
+                06D2: 23@v = "HADS"
+            else
+                06D2: 23@v = "~g~HADS"
+            end
+            0ADF: add_dynamic_GXT_entry "SHIT4" text 23@v
+            033E: set_draw_text_position 480.0 200.0 GXT "SHIT4"  // Push
+            
+            gosub @text_style2
+            0AB4: 24@ = var 12
+            if 24@ == 0
+            then
+                0340: set_text_draw_RGBA 255 255 255 alpha 150
+                06D2: 23@v = "Cloaked"
+            else
+                06D2: 23@v = "~g~Cloaked"
+            end
+            0ADF: add_dynamic_GXT_entry "SHIT5" text 23@v
+            033E: set_draw_text_position 480.0 220.0 GXT "SHIT5"  // Push
+            if and
+                0185:   car $111 health >= 400  
+                0AB0:   key_pressed 80 // P
+            then
+                0AB1: call_scm_func @hads_menu 0
+            end
+        until 0ab0: 69 // e
+        04D7: set_actor $PLAYER_ACTOR locked 0
+        wait 500
+        Camera.Restore_WithJumpCut()
+        032A: set_behind_camera_mode_to 0
+        0922: set_camera_zoom_in_factor 85.0 out_factor 85.0 timelimit 100 mode 1
+        
+        wait 500
+        0612: set_actor $PLAYER_ACTOR animation "scanner_check" paused 1
+        //0992: set_player $PLAYER_CHAR weapons_scrollable 1
+        continue
+    end
+end
+
+:hads_menu
+wait 0
+    :hadsp
+    0AB4: 5@ = var 13
+    0AF0: 6@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "FIRE"
+    0AF0: 7@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "WATER"
+    if 5@ == 1
+    then
+        0ADF: add_dynamic_GXT_entry "HADSED" text "System ~g~Enabled"
+        //0ADE: 10@v = text_by_GXT_entry "HADSEN"    
+    else
+        0ADF: add_dynamic_GXT_entry "HADSED" text "System ~r~Disabled"
+        //0ADE: 10@v = text_by_GXT_entry "HADSDI"
+    end
+    
+    if 6@ == 0
+    then
+        0ADF: add_dynamic_GXT_entry "HADSF" text "Enable Fire Reaction"
+        //0ADE: 10@v = text_by_GXT_entry "FIREON"
+    else
+        0ADF: add_dynamic_GXT_entry "HADSF" text "Disable Fire Reaction"
+        //0ADE: 10@v = text_by_GXT_entry "FIREOF"
+    end
+    
+    if 7@ == 0
+    then
+        //0ADE: 10@v = text_by_GXT_entry "WATRON"
+        0ADF: add_dynamic_GXT_entry "HADSW" text "Enable Water Reaction"
+    else
+        //0ADE: 10@v = text_by_GXT_entry "WATROF"
+        0ADF: add_dynamic_GXT_entry "HADSW" text "Disable Water Reaction"
+    end
+    
+    3@ = 0
+    08D4: 1@ = create_panel_with_title 'HADS' position 200.0 170.0 width 200.0 columns 1 interactive 1 background 0 alignment 0  
+    08DB: set_panel 1@ column 0 header '50' data "HADSED" "HADSF" "HADSW" "EXT" 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY' 'DUMMY'
+    08D9: set_panel 1@ row 0 enable 0
+    03F0: enable_text_draw 1
+    repeat
+        wait 0
+        0340: set_text_draw_RGBA 255 255 255 alpha 255
+        060D: draw_text_shadow 1 color 125 125 125 alpha 0
+        081C: draw_text_outline 1 RGBA 0 0 0 255
+        0343: set_text_draw_linewidth 640.0
+        033F: set_text_draw_letter_size 1.0 2.0
+        0349: set_text_draw_font 0 
+        033E: set_draw_text_position 200.0 160.0 GXT "HADS"  // Push
+        if 0AB0:   key_pressed 32 // space
+        then
+            08D7: 3@ = panel 1@ active_row
+            if 
+                3@ == 1
+            then
+                //fire reaction
+                if 6@ == 1
+                then
+                    0AF1: write_int 0 to_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "FIRE"
+                    03E5: show_text_box "AFIROF" // Fire Reaction ~r~Disabled
+                else
+                    0AF1: write_int 1 to_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "FIRE"
+                    03E5: show_text_box "AFIRON" // Fire Reaction ~g~Enabled
+                end
+                08DA: remove_panel 1@
+                wait 500
+                jump @hadsp
+            end
+            if 
+                3@ == 2
+            then
+                //water reaction
+                if 7@ == 1
+                then
+                    0AF1: write_int 0 to_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "WATER"
+                    03E5: show_text_box "AWATOF" // Water Reaction ~r~Disabled
+                else
+                    0AF1: write_int 1 to_ini_file "cleo\dw_custom_settings.ini" section "HADS" key "WATER"
+                    03E5: show_text_box "AWATON" // Water Reaction ~g~Enabled
+                end
+                08DA: remove_panel 1@
+                wait 500
+                jump @hadsp
+            end
+            if
+                3@ == 3
+                //ext
+            then 
+                08DA: remove_panel 1@
+                break    
+            end
+        end
+    until 0AB0:   key_pressed 13 // enter
+    08DA: remove_panel 1@  
+0AB2: ret 0
+
+:turn_to_console
+//04D7: set_actor $PLAYER_ACTOR locked 1 
+06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at 0.0 0.0 1024.0 
+while true
+    wait 0
+    0172: 28@ = actor $PLAYER_ACTOR Z_angle 
+    if 0045: 28@ == 29@
+    then
+        break
+    end
+    0087: 29@ = 28@
+end                                   
+04D7: set_actor $PLAYER_ACTOR locked 0
+return
+
+:programming
+wait 0
+if 8AAB: NOT  file_exists "CLEO\DW_CUSTOM_SETTINGS.ini"
+then
+    return
+end
+:again
+
+0ADE: 25@v = text_by_GXT_entry "EXTL"  // Close list
+0ADF: add_text_label "TEXTL" text 25@v
+
+if 0185:   car $111 health >= 400  //Show hint only if hp > 400
+then
+    0512: show_permanent_text_box "PREVH"
+end
+gosub @programming_panel
+repeat
+    wait 0
+    
+    0340: set_text_draw_RGBA 255 255 255 alpha 255
+    060D: draw_text_shadow 1 color 125 125 125 alpha 0
+    081C: draw_text_outline 1 RGBA 0 0 0 255
+    0343: set_text_draw_linewidth 640.0
+    033F: set_text_draw_letter_size 1.0 2.0
+    0349: set_text_draw_font 0 
+    033E: set_draw_text_position 240.0 120.0 GXT "LOCLIST"  // Push
+    
+    if 
+        0AB0:   key_pressed 32 // space
+    then
+        08D7: 2@ = panel 1@ active_row
+        03E6: remove_text_box
+        08DA: remove_panel 1@
+        if 2@ == 11
+        then
+            return
+        end
+        if 2@ == 10
+        then
+            0ADE: 25@v = text_by_GXT_entry 'PRGCAN'  // Cancel
+            0ADF: add_text_label 'TEXTL' text 25@v
+            gosub @programming_panel
+            08D9: set_panel 1@ row 10 enable 0
+            0512: show_permanent_text_box "SAVEMES" // Select Memory Bank to save
+            repeat
+                wait 100
+                if
+                    0AB0:   key_pressed 13 // Enter
+                then
+                    03E6: remove_text_box
+                    08DA: remove_panel 1@
+                    wait 500
+                    03E5: show_text_box "PRGSAV0"  // Coordinate ~r~unsaved
+                    0AAC: 15@ = load_audiostream "dws\interface_cancel.mp3" //IF and SET
+                    0AAD: set_audiostream 15@ perform_action 1
+                    wait 1000
+                    Audiostream.Release(15@)
+                    jump @again
+                end
+            until 0AB0:   key_pressed 32
+            08D7: 2@ = panel 1@ active_row
+            03E6: remove_text_box
+            08DA: remove_panel 1@
+            if 2@ == 11
+            then
+                03E5: show_text_box "PRGSAV0"  // Coordinate ~r~unsaved
+                0AAC: 15@ = load_audiostream "dws\interface_cancel.mp3" //IF and SET
+                0AAD: set_audiostream 15@ perform_action 1
+                wait 1000
+                Audiostream.Release(15@)
+                jump @again
+            else
+                0085: 3@ = 2@
+                3@ += 1
+                008F: 3@ = integer 3@ to_float 
+                0AED: 3@v = float 3@ to_string_format "%.15g"
+                00AA: store_car $111 position_to 5@ 6@ 7@
+                0174: 4@ = car $111 Z_angle
+                0AF3: write_float 5@ to_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "X"
+                0AF3: write_float 6@ to_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "Y"
+                0AF3: write_float 7@ to_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "Z"
+                0AF3: write_float 4@ to_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "ANGLE"
+                0AB4: 8@ = var 20 // exterior world id
+                0AF1: write_int 8@ to_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "INTERIOR"
+                
+                03E5: show_text_box "PRGSAV1"  // Coordinate ~g~saved
+                0AAC: 15@ = load_audiostream "dws\interface_apply.mp3" //IF and SET
+                0AAD: set_audiostream 15@ perform_action 1
+                wait 1000
+                Audiostream.Release(15@)
+                jump @again
+            end
+        else
+            0085: 3@ = 2@
+            3@ += 1
+            008F: 3@ = integer 3@ to_float 
+            0AED: 3@v = float 3@ to_string_format "%.15g"
+            0AF2: 5@ = get_float_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "X"
+            0AF2: 6@ = get_float_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "Y"
+            0AF2: 7@ = get_float_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "Z"
+            0AF0: 8@ = get_int_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "INTERIOR"
+            0AF2: 4@ = get_float_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "ANGLE"
+            0ACE: show_formatted_text_box "Solar system, Sol-3~n~X: %.2f~n~Y: %.2f~n~Z: %.2f" 5@ 6@ 7@
+            0AB3: var 30 = 5@ // X
+            0AB3: var 31 = 6@ // Y
+            0AB3: var 32 = 7@ // Z
+            0AB3: var 33 = 8@  // INT
+            0AB3: var 34 = 4@ // ANG
+            0AB3: var 29 = 0 //Fast return disabled
+            0AAC: 15@ = load_audiostream "dws\interface_apply.mp3" //IF and SET
+            0AAD: set_audiostream 15@ perform_action 1
+            wait 1000
+            Audiostream.Release(15@)
+            03E6: remove_text_box
+            return 
+        end
+    end
+    08D7: 2@ = panel 1@ active_row
+    if and
+        0AB0:   key_pressed 80 // P
+        8019: 2@ > 9
+        0185:   car $111 health >= 400 //check if emergency (hp >= 400)
+    then
+        // Location preview
+        03E6: remove_text_box
+        08DA: remove_panel 1@
+        0085: 3@ = 2@
+        3@ += 1
+        008F: 3@ = integer 3@ to_float 
+        0AED: 3@v = float 3@ to_string_format "%.15g"
+        0AF4: 17@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "Name"
+        0AF2: 5@ = get_float_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "X"
+        0AF2: 6@ = get_float_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "Y"
+        0AF2: 7@ = get_float_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "Z"
+        0AF0: 8@ = get_int_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section 3@v key "INTERIOR"
+        fade 0 500
+        wait 500
+        0931: camera_persist_fov 0
+        0826: enable_hud 0
+        5@ -= 7.0
+        6@ -= 7.0
+        7@ += 7.0
+        015F: set_camera_position 5@ 6@ 7@ rotation 0.0 0.0 0.0 
+        5@ += 7.0
+        6@ += 7.0
+        7@ -= 7.0
+        0160: set_camera_point_at 5@ 6@ 7@ mode 2 
+        04E4: unknown_refresh_game_renderer_at 5@ 6@
+        7@ += 500.0
+        00A0: store_actor $PLAYER_ACTOR position_to 2@ 4@ 9@
+        09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 5@ 6@ 7@
+        04D7: set_actor $PLAYER_ACTOR locked 1
+        0915: sync_weather_with_time_and_location_instantly
+        7@ -= 500.0
+        01B4: set_player $PLAYER_CHAR can_move 0
+        0860: link_actor $PLAYER_ACTOR to_interior 8@
+        select_interior 8@
+        if 8@ > 0
+        then
+            04FA: reset_interior 0 colors 
+        end
+        0ACE: show_formatted_text_box "%s:~n~Solar system, Sol-3~n~X: %.2f~n~Y: %.2f~n~Z: %.2f" 17@v 5@ 6@ 7@
+        wait 100
+        fade 1 500
+        wait 1000
+        repeat
+            wait 0
+            0395: clear_area 1 at 5@ 6@ 7@ range 700.0
+        until 0ab0: 13 // enter
+        fade 0 500
+        wait 500
+        
+        04F9: set_extra_colours 11 fade 0
+        //0930: lock_cam_pos 0
+        select_interior 3
+        0860: link_actor $PLAYER_ACTOR to_interior 3
+        04E4: unknown_refresh_game_renderer_at 1.3 0.72
+        09BC: put_actor $PLAYER_ACTOR at 1.3 0.72 1024.375
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 120.0
+        camera.Restore_WithJumpCut()
+        wait 100
+        04D7: set_actor $PLAYER_ACTOR locked 0
+        032A: set_behind_camera_mode_to 0
+        0922: set_camera_zoom_in_factor 40.0 out_factor 40.0 timelimit 100 mode 1 
+	    0931: camera_persist_fov 1
+	    wait 150
+	    015F: set_camera_position 1.3 0.752 1024.92055 rotation 0.0 0.0 0.0
+        0160: set_camera_point_at 0.0 0.0 1024.92 mode 2
+        03E6: remove_text_box        
+        wait 100
+        fade 1 500
+        jump @again
+    end
+until 0AB0: 13 // enter
+03E6: remove_text_box
+08DA: remove_panel 1@
+return
+
+:text_style
+0340: set_text_draw_RGBA 255 255 255 alpha 255
+060D: draw_text_shadow 1 color 125 125 125 alpha 0
+081C: draw_text_outline 1 RGBA 0 0 0 255
+0343: set_text_draw_linewidth 640.0
+033F: set_text_draw_letter_size 0.3 1.5
+0349: set_text_draw_font 2
+return
+
+:rand_bdtext
+0209: 6@ = random_int_in_ranges 1 16
+10@v = ""
+0AD3: string 10@v format "BT%d" 6@
+0AB2: ret 1 10@
+
+
+:text_style2
+    0340: set_text_draw_RGBA 255 255 255 alpha 255
+    060D: draw_text_shadow 1 color 125 125 125 alpha 0
+    081C: draw_text_outline 1 RGBA 0 0 0 255
+    0343: set_text_draw_linewidth 640.0
+    033F: set_text_draw_letter_size 0.5 1.5
+    0349: set_text_draw_font 2
+return
+
+:programming_panel
+wait 0
+0AF4: 16@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "1" key "name" 
+0ADF: add_text_label "CORD1" text 16@v
+0AF4: 16@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "2" key "name" 
+0ADF: add_text_label "CORD2" text 16@v
+0AF4: 16@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "3" key "name" 
+0ADF: add_text_label "CORD3" text 16@v
+0AF4: 16@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "4" key "name" 
+0ADF: add_text_label "CORD4" text 16@v
+0AF4: 16@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "5" key "name" 
+0ADF: add_text_label "CORD5" text 16@v
+0AF4: 16@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "6" key "name" 
+0ADF: add_text_label "CORD6" text 16@v
+0AF4: 16@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "7" key "name" 
+0ADF: add_text_label "CORD7" text 16@v
+0AF4: 16@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "8" key "name" 
+0ADF: add_text_label "CORD8" text 16@v
+0AF4: 16@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "9" key "name" 
+0ADF: add_text_label "CORD9" text 16@v
+0AF4: 16@v = read_string_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "10" key "name" 
+0ADF: add_text_label "CORD10" text 16@v
+wait 200
+08D4: 1@ = create_panel_with_title 'LOCLIST' position 210.0 130.0 width 200.0 columns 1 interactive 1 background 0 alignment 0  
+08DB: set_panel 1@ column 0 header 'DUMMY' data 'CORD1' 'CORD2' 'CORD3' 'CORD4' 'CORD5' 'CORD6' 'CORD7' 'CORD8' 'CORD9' 'CORD10' 'SAVEC' 'TEXTL'
+return
+
+:put_at_s
+00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@
+ 
+0087: 9@ = 3@ // cur X
+0087: 5@ = 0@ // in X
+0063: 9@ -= 5@
+9@ /= 1000.0 // Transition time. 9@ is now 'a' in y=ax+b for X
+
+0087: 7@ = 4@ // cur Y
+0087: 5@ = 1@ // in Y
+0063: 7@ -= 5@
+7@ /= 1000.0 // Transition time. 7@ is now 'a' in y=ax+b for Y
+32@ = 0
+repeat
+    wait 0
+    0093: 12@ = integer 32@ to_float
+    12@ -= 1000.0
+    12@ *= -1.0 
+    0087: 5@ = 9@ // store 'a' X
+    0087: 6@ = 7@ // store 'a' Y
+    
+    006B: 5@ *= 12@
+    005B: 5@ += 0@
+    
+    006B: 6@ *= 12@
+    005B: 6@ += 1@
+    //show_text "%f %f %f | %f %f %f %f" 100 0@ 1@ 2@ 5@ 6@ 2@ 12@
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 5@ 6@ 2@
+until 32@ >= 200
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0@ 1@ 2@ 
+0AB2: ret 0

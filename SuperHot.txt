@@ -1,0 +1,85 @@
+//written by Tommy
+{$CLEO .cs}
+
+//-------------MAIN---------------
+thread 'SUPERHOT'
+
+:a
+wait 0
+if
+Player.Defined($PLAYER_CHAR)
+jf @a
+jump @b
+
+:b
+wait 0
+if and
+0ADC:   test_cheat "SUPERHOT"
+044B:   actor $PLAYER_ACTOR on_foot
+jf @a 
+0@ = 1
+0AD1: show_formatted_text_highpriority "TIME MOVES WHEN YOU MOVE" time 1500
+jump @c
+
+:c
+wait 0
+while 0@ == 1
+    wait 0
+    if or
+    00E1:   player 0 pressed_key 0
+    00E1:   player 0 pressed_key 1
+    00E1:   player 0 pressed_key 5
+    00E1:   player 0 pressed_key 7
+    00E1:   player 0 pressed_key 16
+    then
+    015D: set_gamespeed 1.0
+    else
+        wait 0
+        if or
+        00E1:   player 0 pressed_key 14
+        00E1:   player 0 pressed_key 4
+        00E1:   player 0 pressed_key 8
+        00E1:   player 0 pressed_key 9
+        00E1:   player 0 pressed_key 10
+        00E1:   player 0 pressed_key 11
+        then
+        015D: set_gamespeed 1.0
+        wait 1000
+        end
+        wait 0
+        if
+        00E1:   player 0 pressed_key 18
+        then
+        015D: set_gamespeed 1.0
+        wait 350
+        end
+        wait 0
+        if and
+        00E1:   player 0 pressed_key 0
+        00E1:   player 0 pressed_key 6
+        then
+        015D: set_gamespeed 1.0
+        wait 1000
+        end
+        wait 0
+        if 
+        00E1:   player 0 pressed_key 17
+        then
+        015D: set_gamespeed 1.0
+        else
+        015D: set_gamespeed 0.1
+        end
+    end
+    wait 0
+    if or 
+    00E1:   player 0 pressed_key 15
+    00E1:   player 0 pressed_key 19
+    then
+    0@ = 0
+    015D: set_gamespeed 1.0
+    0AD1: show_formatted_text_highpriority "~r~SUPER" time 1500
+    wait 1625
+    0AD1: show_formatted_text_highpriority "~r~HOT" time 1500
+    end
+end
+jump @a 

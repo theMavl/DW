@@ -1,0 +1,93 @@
+{$CLEO .cs}
+
+/*
+TARDIS Misc script
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+Version: 1.0
+*/
+//-------------MAIN---------------
+thread 'vis'
+wait 1000
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+if 0AAB:  file_exists "cleo\dw_custom_settings.ini"
+then
+    0AF0: $113 = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "LANG" key "LANG"
+else
+    0A93: end_custom_thread
+end
+wait 5700
+
+:def
+wait 100
+if
+056D:   actor $PLAYER_ACTOR defined
+jf @def 
+20@ = 0
+:vis
+wait 100
+0AB4: 0@ = var 11
+0AB4: 1@ = var 0
+02E3: 10@ = car $111 speed
+if and
+    00DB:   actor $PLAYER_ACTOR in_car $111 
+    20@ == 0
+then
+    09AD: set_vehicle_camera_mode 3
+end 
+if and
+    10@ >= 10
+    0@ == 0
+    1@ == 0
+then
+    while 00DB:   actor $PLAYER_ACTOR in_car $111
+        wait 100
+        0AB4: 0@ = var 11
+        0AB4: 1@ = var 0
+        02E3: 10@ = car $111 speed
+        if and
+            10@ > 1.0
+            8185: NOT car $111 health >= 400
+        then
+            0A8D: 7@ = read_memory 0xBA6794 size 1 virtual_protect 1
+            if 7@ == 0
+            then
+                0AF0: 7@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "C_LIM_OFF"
+                052C: set_player $PLAYER_CHAR drunk_visuals 7@
+            else
+                0AF0: 7@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "C_LIM_ON"
+                052C: set_player $PLAYER_CHAR drunk_visuals 7@
+            end
+        end
+        if or
+            0@ == 1
+            8039: NOT 1@ == 0
+            10@ < 1.0
+        then
+            //0AD1: show_formatted_text_highpriority "cancel" time 2000 
+            break
+        else
+        
+            0A8D: 7@ = read_memory 0xBA6794 size 1 virtual_protect 1
+            if 7@ == 0
+            then
+                0AF0: 7@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "B_LIM_OFF"
+                052C: set_player $PLAYER_CHAR drunk_visuals 7@
+            else
+                0AF0: 7@ = get_int_from_ini_file "cleo\dw_custom_settings.ini" section "DRUNK" key "B_LIM_ON"
+                052C: set_player $PLAYER_CHAR drunk_visuals 7@
+            end    
+        //0AD1: show_formatted_text_highpriority "action" time 2000
+        end   
+    end
+    0AB4: 1@ = var 0
+    if 8039: 1@ == 3
+    then
+        052C: set_player $PLAYER_CHAR drunk_visuals 0
+    end  
+end
+jump @vis

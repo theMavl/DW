@@ -1,0 +1,370 @@
+{$CLEO .cs}
+/*
+TARDIS emergency mode
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+*/
+
+//-------------MAIN---------------
+//0@ - TARDIS
+//1@ - CLOISTER
+//2@ - FIRE1
+//3@ - FIRE2
+//4@ - X
+//5@ - Y
+//6@ - Z
+thread 'EMER'
+Model.load(18662)
+038B: load_requested_models
+
+wait 1000
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+while true
+    wait 100
+    if and
+        Player.Defined($PLAYER_CHAR)
+        Player.Controllable($PLAYER_CHAR)
+        056E:   car $111 defined
+    then
+        break
+    end
+end
+
+var
+    17@ : Float
+    18@ : Float
+end
+
+Object.Create(23@, 18662, 2.0, 0.0, 0.0) //interior texture RED
+0750: set_object 23@ visibility 0
+0382: set_object 23@ collision_detection 0
+0681: attach_object 23@ to_car $111 with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0
+:main
+while true
+    wait 0
+    if Car.Defined($111)
+    then
+        if and
+            8119:   NOT car $111 wrecked
+            8185: NOT car $111 health > 400
+        then
+            gosub @emer
+        end
+    end
+end
+
+:emer
+wait 0
+Car.SetImmunities($111 , 1, 1, 1, 1, 1)
+0224: set_car $111 health_to 300 
+054F: clear_car $111 damage
+008B: 25@ = $95[4] // BACKUP NORMAL WALLPAPER
+0750: set_object $95[4] visibility 0  
+008A: $95[4] = 23@ // SET RED WALLPAPER
+095F: get_car $111 door 2 angle_to 1@
+095F: get_car $111 door 3 angle_to 2@
+if or
+    8043: NOT 1@ == 0.0
+    8043: NOT 2@ == 0.0
+then
+    0750: set_object $95[4] visibility 1
+end 
+
+0AB4: 4@ = var 12
+if 4@ == 1 // Disable cloaking
+then
+    0A92: create_custom_thread "cloak.s"
+end
+
+0AB3: var 13 = 0 // disable hads
+call_scm_func @set_toggle 2 tog 16 to 0 // set hads switch to 0, but without moving the object
+0AAA: 10@ = thread 'subtogg' pointer
+0D2E: set_thread 10@ var 10 to 0 // set hads key model to DISABLED
+
+0AC1: 1@ = load_audiostream_with_3d_support "DWS\CLO.MP3"
+0AC1: 7@ = load_audiostream_with_3d_support "DWS\CLO.MP3"
+wait 100
+0AC5: link_3d_audiostream 1@ to_vehicle $111
+0AC2: set_3d_audiostream 7@ position 0.0 0.0 1024.0
+0AC0: audiostream 1@ loop 1
+0AC0: audiostream 7@ loop 1
+0AAD: set_mp3 1@ perform_action 1
+0AAD: set_mp3 7@ perform_action 1
+{2.5144 6.5824 1026.1406
+1.2613 4.725 1022.6557 }
+
+066B: 2@ = attach_particle "riot_smoke" to_car $111  offset 0.0 0.0 0.0 1
+066B: 3@ = attach_particle "prt_smokeII_3_expand" to_car $111  offset 0.0 0.0 0.0 1
+
+{064B: 14@ = create_particle "fire" at 2.003 -1.555 1023.381 type 1 
+064B: 15@ = create_particle "fire" at 1.798 1.881 1023.381 type 1
+064B: 16@ = create_particle "fire" at -2.064 1.467 1023.381 type 1 
+064B: 19@ = create_particle "fire" at -1.661 -1.943 1023.381 type 1}
+064B: 21@ = create_particle "fire_med" at 8.854 1.56 1022.717 type 1
+
+gosub @rand_fireC
+02CF: 14@ = create_fire_at 10@ 11@ 1022.717 propagation 0 size 3 
+gosub @rand_fireC
+02CF: 14@ = create_fire_at 10@ 11@ 1022.717 propagation 0 size 3 
+gosub @rand_fireC
+02CF: 14@ = create_fire_at 10@ 11@ 1022.717 propagation 0 size 3 
+
+gosub @rand_fireC
+064B: 14@ = create_particle "fire_large" at 10@ 11@ 1022.717 type 1
+gosub @rand_fireC
+064B: 15@ = create_particle "fire_large" at 10@ 11@ 1022.717 type 1
+gosub @rand_fireC
+064B: 16@ = create_particle "fire_large" at 10@ 11@ 1022.717 type 1
+gosub @rand_fireC
+064B: 19@ = create_particle "fire_large" at 10@ 11@ 1022.717 type 1
+
+064B: 22@ = attach_particle "prt_smokeII_3_expand" at 8.2148 1.5145 1023.7109 type 1
+064B: 24@ = attach_particle "prt_smokeII_3_expand" at 0.0 0.0 1022.6484 type 1
+064C: make_particle 2@ visible
+064C: make_particle 3@ visible
+064C: make_particle 14@ visible
+064C: make_particle 15@ visible
+064C: make_particle 16@ visible
+064C: make_particle 19@ visible
+064C: make_particle 21@ visible
+064C: make_particle 22@ visible
+064C: make_particle 24@ visible
+
+0A92: create_custom_thread "smoke.s"
+0AB3: var 0 = 3
+
+call_scm_func @get_toggle 1 2 10@
+if 10@ == 1
+then
+    jump @suspend
+end
+
+while true
+    wait 0
+    0AB4: 9@ = var 9
+    0AB4: 0@ = var 0
+    if or 
+        //9@ == 1
+        0@ == 8
+        0@ == 9
+    then
+        continue
+    end
+    0AB4: 11@ = var 50 // grabbing flag
+    if or
+        $94 == 1
+        11@ == 1
+    then
+        call_scm_func @get_toggle 1 2 10@
+        0AB4: 11@ = var 10
+        if and
+            8039: 10@ == 3 // not locked
+            8039: 10@ == 2
+        then
+            if 11@ > 5
+            then
+                
+                0574: set_car $111 keep_position 0
+                0208: 10@ = random_float_in_ranges -2999.0 2999.0
+                0208: 11@ = random_float_in_ranges -2999.0 2999.0
+                0208: 12@ = random_float_in_ranges -2999.0 2999.0
+                0208: 13@ = random_float_in_ranges 0.0 200.0
+                show_text "fly to %f %f %f" 1000 10@ 11@ 12@
+                0743: heli $111 fly_to 10@ 11@ 12@ altitude 0.0 13@
+                07BB: set_heli $111 horizontal_thrust_power 300
+                04BA: set_car $111 speed_to 300.0
+                0AB3: var 11 = 0
+                0AB4: 2@ = var 17
+                0AB4: 11@ = var 50 // grabbing
+                if and
+                    2@ == 0
+                    11@ == 0 // grabbing is off
+                then
+                    0A92: create_custom_thread "spin.s"
+                end
+            end 
+        else
+            0AB3: var 11 = 1
+        end 
+        0AB4: 20@ = var 9
+        if 20@ == 0
+        then
+            00AA: store_car $111  position_to 4@ 5@ 6@
+            020C: create_explosion_with_radius 0 at 4@ 5@ 6@
+        end
+        32@ = 0
+        0AB4: 20@ = var 50
+        repeat
+            wait 0
+            if and
+                $94 == 0
+                20@ == 0
+            then
+                break
+            end
+            if and
+                $94 == 0
+                $93 == 0
+                20@ == 0
+            then
+                break
+            end
+        until 32@ >= 7500 
+    else
+        0AB1: call_scm_func @rand_explosion 0
+        0574: set_car $111 keep_position 1
+        32@ = 0
+        11@ = 0 // extra explosion between wait cycle
+        0AB4: 20@ = var 50 // grabbing
+        repeat
+            wait 0
+            if
+                $94 == 1
+            then
+                break
+            end
+            if and
+                $94 == 0
+                $93 == 0
+                20@ == 0
+            then
+                break
+            end
+            if and
+                11@ == 0
+                32@ >= 2500
+            then
+                0AB1: call_scm_func @rand_explosion 0
+                11@ = 1
+            end
+            if and
+                11@ == 1
+                32@ >= 5000
+            then
+                0AB1: call_scm_func @rand_explosion 0
+                11@ = 2
+            end
+            if and
+                11@ == 2
+                32@ >= 7000
+            then
+                0AB1: call_scm_func @rand_explosion 0
+                11@ = 3
+            end    
+        until 32@ >= 7500
+    end
+    0AB4: 11@ = var 50 // grabbing
+    if and
+        11@ == 0
+        80DB: NOT  actor $PLAYER_ACTOR in_car $111
+        80FE: NOT  actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 15.0 15.0 15.0
+    then
+        wait 500
+        0AB4: 11@ = var 50 // grabbing
+        if 11@ == 0
+        then
+            jump @suspend
+        end
+    end
+    0AB4: 11@ = var 10
+    0AB4: 12@ = var 48  // suspended
+    if or
+        11@ < 5
+        12@ == 1 
+    then
+        jump @suspend
+    end    
+end
+return
+
+:suspend
+0574: set_car $111 keep_position 1
+repeat
+    wait 0
+    0AB4: 0@ = var 15
+until 0@ == 1
+wait 15000
+0650: destroy_particle 2@
+0650: destroy_particle 3@
+0650: destroy_particle 14@
+0650: destroy_particle 15@
+0650: destroy_particle 16@
+0650: destroy_particle 19@
+0650: destroy_particle 21@
+0650: destroy_particle 24@
+0650: destroy_particle 22@
+0980: extinguish_all_fires_at 0.0 0.0 1024.0 radius 200.0 
+
+while 8185:   NOT car $111 health >= 400
+    wait 1000
+end
+0750: set_object $95[4] visibility 0  
+008A: $95[4] = 25@ // RESTORE 
+0AAE: release_audiostream 1@
+0AAE: release_audiostream 7@
+0AB3: var 48 = 0
+jump @main
+
+:rand_explosion
+wait 0
+0209: 0@ = random_int_in_ranges 0 2
+if 0@ == 0
+then
+    0AAC: 3@ = load_audiostream "dws\explosion1.mp3"
+else
+    0AAC: 3@ = load_audiostream "dws\explosion2.mp3"
+end
+if or
+    $94 == 1
+    $93 == 1
+then
+    0AAD: set_audiostream 3@ perform_action 1
+end
+0209: 0@ = random_int_in_ranges 1 7
+//0AD1: show_formatted_text_highpriority "%d" time 2000 0@
+if 0@ == 1
+then
+    064B: 1@ = create_particle "explosion_tiny" at 0.0 0.0 1024.875 type 1
+    08EB: create_sparks_at 0.0 0.0 1024.875 velocity_direction 0.0 0.0 5.0 density 60 
+end
+if 0@ == 2
+then
+    064B: 1@ = create_particle "explosion_tiny" at -2.1969 2.5696 1025.085 type 1
+    08EB: create_sparks_at -2.1969 2.5696 1025.085 velocity_direction 0.0 0.0 5.0 density 60 
+end
+if 0@ == 3
+then
+    064B: 1@ = create_particle "explosion_tiny" at 3.0627 -0.9293 1025.0879 type 1
+    08EB: create_sparks_at 3.0627 -0.9293 1025.0879 velocity_direction 0.0 0.0 5.0 density 60
+end
+if 0@ == 4
+then
+    064B: 1@ = create_particle "explosion_tiny" at -1.3796 -1.0288 1022.6484 type 1
+    08EB: create_sparks_at -1.3796 -1.0288 1022.6484 velocity_direction 0.0 0.0 5.0 density 60
+end
+if 0@ == 5
+then
+    064B: 1@ = create_particle "explosion_tiny" at 1.0408 0.9617 1024.751 type 1
+    08EB: create_sparks_at 1.0408 0.9617 1024.751 velocity_direction 0.0 0.0 5.0 density 60 
+end
+if 0@ == 6
+then
+    064B: 1@ = create_particle "explosion_large" at 0.0 0.0 1027.0 type 1
+    0948: create_explosion_at 0.0 0.0 1012.0 type 9 camera_shake 0.1
+end
+064C: make_particle 1@ visible
+wait 1500
+0650: destroy_particle 1@
+Audiostream.Release(3@)  
+0AB2: ret 0
+
+:rand_fireC
+0208: 10@ = random_float_in_ranges -6.5 6.5
+0208: 11@ = random_float_in_ranges -6.5 6.5 
+return
+
+{$INCLUDE move_set_get}

@@ -1,0 +1,24 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+thread "extsnd"
+0AC1: 0@ = load_audiostream_with_3d_support "DWS\engine_loop.mp3" //IF and SET
+0AC5: link_3d_audiostream 0@ to_vehicle $111
+0AC0: loop_audiostream 0@ flag 1
+
+0AAD: set_audiostream 0@ perform_action 1
+repeat
+    wait 0
+    0A1C: set_helicopter $111 play_engine_sounds 0
+    
+    02E3: 1@ = car $111 speed 
+    if or
+        $93 == 1
+        $94 == 1
+    then
+        break
+    end
+until 1@ == 0.0
+
+0AAE: release_audiostream 0@
+end_custom_thread

@@ -1,0 +1,232 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+
+repeat
+    wait 0
+    0AB4: 30@ = var 39
+until 30@ == 1
+
+thread "rlig"
+
+wait 0
+Model.load(18679)
+Model.Load(18692)
+Model.Load(18680)
+Model.Load(18763)
+038B: load_requested_models
+
+0@ = object.Create(18679, 0.0, 0.0, 0.0)
+2@ = object.Create(18680, 0.0, 0.0, 0.0) 
+
+1@ = object.Create(18692, 0.0, 0.0, 0.0)    //Tail 1
+10@ = object.Create(18692, 0.0, 0.0, 0.0)   //Tail 2
+
+11@ = object.Create(18763, 0.0, 0.0, 0.0)
+12@ = object.Create(18763, 0.0, 0.0, 0.0)      //Dupes
+13@ = object.Create(18763, 0.0, 0.0, 0.0)
+14@ = object.Create(18763, 0.0, 0.0, 0.0)
+
+Object.PutAt(0@, 0.0, 0.0, 1024.0)
+Object.PutAt(2@, 0.0, 0.0, 1024.0)
+Object.PutAt(1@, 0.0, 0.0, 1023.99)
+Object.PutAt(10@, 0.0, 0.0, 1023.99)
+Object.PutAt(11@, 0.0, 0.0, 1023.99)
+Object.PutAt(12@, 0.0, 0.0, 1023.99)
+Object.PutAt(13@, 0.0, 0.0, 1023.99)
+Object.PutAt(14@, 0.0, 0.0, 1023.99)
+
+
+0382: set_object 0@ collision_detection 0
+0382: set_object 1@ collision_detection 0 
+0382: set_object 10@ collision_detection 0
+0382: set_object 11@ collision_detection 0
+0382: set_object 12@ collision_detection 0
+0382: set_object 13@ collision_detection 0
+0382: set_object 14@ collision_detection 0 
+0382: set_object 2@ collision_detection 0 
+
+0750: set_object 0@ visibility 0
+0750: set_object 2@ visibility 0
+0750: set_object 1@ visibility 0 
+0750: set_object 10@ visibility 0
+0750: set_object 11@ visibility 0
+0750: set_object 12@ visibility 0
+0750: set_object 13@ visibility 0
+0750: set_object 14@ visibility 0
+
+
+:1
+wait 0
+while true
+    wait 250
+    0AB4: 30@ = var 0
+    if and 
+        8039: NOT 30@ == 0
+        8039: NOT 30@ == 3
+    then
+        if 30@ == 10 //Self Repair
+        then
+            continue
+        else 
+            break
+        end
+    end
+end
+
+03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #LIG_ROOF to #LIG_ROOF_OFF
+
+0750: set_object 1@ visibility 1 
+0750: set_object 10@ visibility 1
+0750: set_object 11@ visibility 1
+0750: set_object 12@ visibility 1
+0750: set_object 13@ visibility 1
+0750: set_object 14@ visibility 1 
+
+
+15@ = 500 //Time
+16@ = 0.0
+17@ = -20.0
+18@ = -40.0
+23@ = -1
+
+
+0177: set_object 1@ Z_angle_to 0.0
+0177: set_object 11@ Z_angle_to -20.0
+0177: set_object 12@ Z_angle_to -40.0
+
+0177: set_object 10@ Z_angle_to -180.0
+0177: set_object 13@ Z_angle_to -200.0
+0177: set_object 14@ Z_angle_to -220.0
+
+while true
+    wait 0
+    16@ -= 20.0
+    if 16@ < -360.0
+    then
+        16@ += 360.0
+    end
+    0087: 17@ = 16@
+    17@ -= 20.0
+    0087: 18@ = 17@
+    18@ -= 20.0
+    if or 
+        18@ == -180.0
+        18@ == -360.0
+    then
+        0750: set_object 0@ visibility 1   
+    end
+    if or 
+        18@ == -200.0
+        18@ == -380.0
+    then
+        //0750: set_object 0@ visibility 0  
+        0750: set_object 2@ visibility 1 
+    end
+    if or 
+        18@ == -220.0
+        18@ == -400.0
+    then
+        0085: 23@ = 0@
+        //0750: set_object 0@ visibility 0   
+    end
+    if or 
+        18@ == -240.0
+        18@ == -60.0
+    then
+        0085: 23@ = 2@
+        //0750: set_object 2@ visibility 0   
+    end
+    0177: set_object 1@ Z_angle_to 16@
+    0177: set_object 11@ Z_angle_to 17@
+    0177: set_object 12@ Z_angle_to 18@
+    16@ += 180.0
+    17@ += 180.0
+    18@ += 180.0
+    0177: set_object 10@ Z_angle_to 16@
+    0177: set_object 13@ Z_angle_to 17@
+    0177: set_object 14@ Z_angle_to 18@
+    16@ -= 180.0
+    17@ -= 180.0
+    18@ -= 180.0
+    gosub @effect
+    0AB4: 30@ = var 0
+    if or 
+        30@ == 0
+        30@ == 3
+    then 
+        break
+    end
+end
+
+0750: set_object 0@ visibility 0
+0750: set_object 1@ visibility 0 
+0750: set_object 10@ visibility 0
+0750: set_object 11@ visibility 0
+0750: set_object 12@ visibility 0
+0750: set_object 13@ visibility 0
+0750: set_object 14@ visibility 0 
+0750: set_object 2@ visibility 0 
+03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from  to #LIG_ROOF_OFF        #LIG_ROOF
+
+jump @1
+
+{Object.Destroy(0@)
+Object.Destroy(2@)
+Object.Destroy(1@)
+Object.Destroy(10@)
+Object.Destroy(11@)
+Object.Destroy(12@)
+Object.Destroy(13@)
+Object.Destroy(14@)
+0A93: end_custom_thread  }
+
+:effect
+32@ = 0
+repeat
+    0085: 22@ = 32@ // 100
+    22@ *= 255
+    0072: 22@ /= 15@
+    22@ -= 255
+    0095: make 22@ absolute_integer 
+    0D11: set_object 1@ alpha 22@
+    if Object.Exists(23@)
+    then
+        0D11: set_object 23@ alpha 22@
+    end
+    wait 0
+until 002B: 32@ >= 15@
+if Object.Exists(23@)
+    then
+        0750: set_object 23@ visibility 0
+        0D11: set_object 23@ alpha 255
+        23@ = -1
+    end
+return
+
+{:effect0
+32@ = 0
+repeat
+    0085: 12@ = 32@ // 100
+    12@ *= 255
+    0072: 12@ /= 15@
+    12@ -= 255
+    0095: make 12@ absolute_integer 
+    0D11: set_object 0@ alpha 12@
+    wait 0
+until 002B: 32@ >= 15@
+return
+
+:effect2
+32@ = 0
+repeat
+    0085: 12@ = 32@ // 100
+    12@ *= 255
+    0072: 12@ /= 15@
+    12@ -= 255
+    0095: make 12@ absolute_integer 
+    0D11: set_object 2@ alpha 12@
+    wait 0
+until 002B: 32@ >= 15@
+return
+0A93: end_custom_thread        }

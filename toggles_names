@@ -1,0 +1,11 @@
+const
+    STT = 1
+    HND = 2
+    RED_L = 3
+    RED_R = 4
+    LEV_1 = 5
+    LEV_2 = 6
+    LEV_3 = 7
+    LEV_4 = 8
+    LEV_5 = 9
+end

@@ -1,0 +1,498 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+0D10: set_actor $PLAYER_ACTOR alpha 255  
+
+end_custom_thread
+//0224: set_car $111 health_to 300
+//0574: set_car $111 keep_position 0
+02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1 
+//041E: set_radio_station 11
+
+{Model.load(#WMYCON)
+038B: load_requested_models 
+
+0129: 1@ = create_actor_pedtype 23 model #WMYCON in_car $111 driverseat }
+Model.Load(#HYDRA)
+//Model.Load(#RHINO)
+038B: load_requested_models 
+00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
+2@ += 100.0
+for 10@ = 0 to 100
+    wait 10
+    
+    11@ = car.Create(#HYDRA, 0@, 1@, 2@)
+    //12@ = car.Create(#RHINO, 0.0, 0.0, 0.0)
+   // 099A: set_car 12@ collision_detection 0 
+   // 0683: attach_car 12@ to_car 11@ with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0 
+    //0338: set_car 11@ visibility 0 
+
+    0560: create_random_actor_in_car 11@ handle_as 3@ 
+
+    08A2: set_hydra 11@ attack_with_rockets_car_of_player $PLAYER_CHAR radius 30.0
+    0@ += 5.0 
+    10@ += 1
+end
+
+
+
+ 
+end_custom_thread
+10@ = 2452.4397 
+11@ = -2016.2325
+12@ = 13.4257 
+
+3@ = 1.5
+4@ = 0.0
+5@ = 0.0
+
+
+for 20@ = 0 to 100 
+    wait 0
+    32@ = 0
+    0087: 0@ = 10@ // (float) 
+    0087: 1@ = 11@ // (float) 
+    0087: 2@ = 12@ // (float) 
+
+    repeat
+        wait 0
+        04D5: create_corona_at 0@ 1@ 2@ radius 0.5 type 0 flare 0 RGB 0 0 255
+        005B: 0@ += 3@ 
+        005B: 1@ += 4@
+        005B: 2@ += 5@
+        04D5: create_corona_at 0@ 1@ 2@ radius 0.5 type 0 flare 0 RGB 0 0 255
+        005B: 0@ += 3@ 
+        005B: 1@ += 4@
+        005B: 2@ += 5@
+        04D5: create_corona_at 0@ 1@ 2@ radius 0.5 type 0 flare 0 RGB 0 0 255
+        005B: 0@ += 3@ 
+        005B: 1@ += 4@
+        005B: 2@ += 5@
+        04D5: create_corona_at 0@ 1@ 2@ radius 0.5 type 0 flare 0 RGB 0 0 255
+        005B: 0@ += 3@ 
+        005B: 1@ += 4@
+        005B: 2@ += 5@
+        04D5: create_corona_at 0@ 1@ 2@ radius 0.5 type 0 flare 0 RGB 0 0 255
+        005B: 0@ += 3@ 
+        005B: 1@ += 4@
+        005B: 2@ += 5@
+        04D5: create_corona_at 0@ 1@ 2@ radius 0.5 type 0 flare 0 RGB 0 0 255
+        show_text "%f %f %f" 100 0@ 1@ 2@
+    until 32@ > 600
+    005B: 10@ += 3@ 
+    005B: 11@ += 4@
+    005B: 12@ += 5@
+end
+
+end_custom_thread
+
+:drawCoronas
+wait 0
+04D5: create_corona_at 0@ 1@ 2@ radius 10.5 type 0 flare 0 RGB 0 0 255
+005B: 0@ += 3@ 
+005B: 1@ += 4@
+005B: 2@ += 5@
+04D5: create_corona_at 0@ 1@ 2@ radius 10.5 type 0 flare 0 RGB 0 0 255
+005B: 0@ += 3@ 
+005B: 1@ += 4@
+005B: 2@ += 5@
+04D5: create_corona_at 0@ 1@ 2@ radius 10.5 type 0 flare 0 RGB 0 0 255
+005B: 0@ += 3@ 
+005B: 1@ += 4@
+005B: 2@ += 5@
+04D5: create_corona_at 0@ 1@ 2@ radius 10.5 type 0 flare 0 RGB 0 0 255
+005B: 0@ += 3@ 
+005B: 1@ += 4@
+005B: 2@ += 5@
+04D5: create_corona_at 0@ 1@ 2@ radius 10.5 type 0 flare 0 RGB 0 0 255
+005B: 0@ += 3@ 
+005B: 1@ += 4@
+005B: 2@ += 5@
+04D5: create_corona_at 0@ 1@ 2@ radius 10.5 type 0 flare 0 RGB 0 0 255
+0AB2: ret 0
+
+
+
+0AB6: store_target_marker_coords_to 0@ 1@ 2@ // IF and SET
+04E4: unknown_refresh_game_renderer_at 0@ 1@ 
+03CB: set_rendering_origin_at 0@ 1@ 2@
+
+08C7: put_actor $PLAYER_ACTOR at 0@ 1@ 2@ // versionB 
+04D7: set_actor $PLAYER_ACTOR locked  0
+
+{07A7: put_jetpack_on_actor $PLAYER_ACTOR
+
+Marker.CreateAboveCar(30@,$111)
+repeat
+wait 0
+until 0ab0: 56
+marker.Disable(30@)
+                       }
+0A93: end_custom_thread
+repeat
+    wait 0
+    092B: 1@ = group $PLAYER_GROUP member 0
+    092B: 2@ = group $PLAYER_GROUP member 1
+    092B: 3@ = group $PLAYER_GROUP member 2 
+    092B: 4@ = group $PLAYER_GROUP member 3 
+    092B: 5@ = group $PLAYER_GROUP member 4 
+    092B: 6@ = group $PLAYER_GROUP member 5 
+    092B: 7@ = group $PLAYER_GROUP member 6
+    0AAA: 25@ = thread "compvar" pointer
+    0D2F: 8@ = get_thread 25@ var 1 
+    0D2F: 9@ = get_thread 25@ var 2
+    0D2F: 10@ = get_thread 25@ var 3
+    0D2F: 11@ = get_thread 25@ var 4
+    0D2F: 12@ = get_thread 25@ var 5
+    0D2F: 13@ = get_thread 25@ var 6
+    0D2F: 14@ = get_thread 25@ var 7 
+    show_text "%d %d %d %d %d %d %d~n~%d %d %d %d %d %d %d" 100 1@ 2@ 3@ 4@ 5@ 6@ 7@ 8@ 9@ 10@ 11@ 12@ 13@ 14@
+until 0ab0: 56
+0A93: end_custom_thread
+Model.load(#tar_shell)
+038B: load_requested_models
+0@ = Object.Create(#tar_shell, 0.0, 0.0, 0.0)
+0681: attach_object 0@ to_car $111 with_offset 0.0 0.0 100.0 rotation 0.0 0.0 0.0 
+
+0A93: end_custom_thread
+
+//Model.load(1598)
+Model.load(#LASER)
+038B: load_requested_models
+00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@
+2@ += 1.0 
+//0@ = object.Create(1598, 1@, 2@, 3@)
+3@ -= 2.0
+10@ = object.Create(#LASER, 1@, 2@, 3@) 
+04D9: object 10@ set_scripted_collision_check 1
+//0382: set_object 10@ collision_detection 0 
+0906: set_object 10@ mass_to 1000000.0 // float 
+//069A: attach_object 10@ to_object 0@ with_offset 0.0 0.0 0.0 rotation 0.0 -90.0 0.0
+//08D2: object 0@ scale_model 0.1 
+0453: set_object 10@ XY_rotation 0.0 90.0 angle 0.0
+wait 3000
+0AD1: show_formatted_text_highpriority "T" time 2000
+0392: make_object 10@ moveable 1 
+//0381: throw_object 10@ velocity_in_direction 23@ 24@ 25@ 
+
+0381: throw_object 10@ velocity_in_direction 80.0 0.0 0.0
+32@ = 0
+while true
+wait 0
+if or 
+04DA:   has_object 10@ collided 
+32@ > 3000
+then
+break
+end
+end
+0D36: store_object 10@ collided_entities_to 1@ 2@ -1 -1 -1 -1
+0D1B: get_entity 1@ type_to 1@ class_to 2@
+0AD1: show_formatted_text_highpriority "%d %d" time 2000 1@ 2@
+//object.Destroy(0@)
+
+object.Destroy(10@)
+0A93: end_custom_thread
+//00A1: put_actor $PLAYER_ACTOR at 0.0 0.0 3.3523
+//04D7: set_actor $PLAYER_ACTOR locked 1 
+//select_interior 3
+//0860: link_actor $PLAYER_ACTOR to_interior 7}
+//jump @1
+
+
+0AB1: call @SetupLiveScreen num_params 7 screen 0 coords 2032.2705 996.2603 10.8131 width 5.0 height 5.0 angle 0.0
+0A8C: write_memory 0x50B538 size 1 value 0xEB virtual_protect 1
+
+repeat  
+    wait 0
+    player.Defined(0)
+    jf continue
+    {00FE:   actor $player_actor sphere 0 in_sphere 2512.1816 -1669.3521 21.0431 radius 150.0 150.0 150.0
+    jf continue
+    00C2:   sphere_onscreen 2512.1816 -1669.3521 21.0431 radius 10.0
+    jf continue       }
+    
+    0A8E: 0@ = 0xB6F028 + 0x14
+    0A8D: 1@ = read_memory 0@ size 4 virtual_protect 0
+    0D05: set_matrix 1@ position 1000.0 0.0 1024.0
+    0D02: 10@ = matrix 1@ x_angle
+    0D03: 11@ = matrix 1@ y_angle  
+    0D04: 12@ = matrix 1@ z_angle
+    //10@ *= -1.0
+    //12@ *= -1.0
+    //0D13: set_matrix 1@ x_angle 10@  
+    //0D15: set_matrix 1@ y_angle 12@
+
+    0AD1: show_formatted_text_highpriority "%f %f %f" time 2000 10@ 11@ 12@
+    0A8E: 0@ = 0xB6F028 + 0xADC
+    0AA6: call_method 0x59BBC0 struct 0@ num_params 1 pop 0 1@   // CMatrix__Copy(&CCamera.TvCamMatrix, CCamera.placeable.pMatrix)
+until 0ab0: 56
+0A93: end_custom_thread
+
+
+
+:SetupLiveScreen
+0012: 0@ *= 0x30
+000A: 0@ += 0x8D5DD8
+0017: 4@ /= 2.0
+0017: 5@ /= 2.0
+02F6: 8@ = SIN 6@
+02F7: 7@ = COS 6@
+0013: 7@ *= 4@
+0013: 8@ *= 4@
+0087: 9@ = 1@
+0087: 10@ = 2@
+005B: 9@ += 7@
+005B: 10@ += 8@
+0087: 11@ = 3@
+005B: 11@ += 5@
+0087: 12@ = 1@
+0087: 13@ = 2@
+0063: 12@ -= 7@
+0063: 13@ -= 8@
+0087: 17@ = 3@
+0063: 17@ -= 5@
+0A8C: write_memory 0@ size 4 value 9@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 10@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 11@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 12@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 13@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 11@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 12@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 13@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 17@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 9@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 10@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 17@ virtual_protect 0
+0AB2: RET 0
+
+
+
+
+
+
+
+
+
+
+//03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #lig_top_e to #lig_top
+ 
+
+:2
+repeat
+    wait 0
+    //00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@    
+    
+    //FOR IDLE
+
+    09E5: create_flash_light_at 0.0 0.0 1027.6484 RGB_mask 50 50 50 radius 300.0 
+    09E5: create_flash_light_at 0.0 0.0 1022.6484 RGB_mask 27 25 25 radius 300.0
+    09E5: create_flash_light_at 0.0 0.0 1022.6484 RGB_mask 27 25 25 radius 300.0 
+    09E5: create_flash_light_at 1.8421 5.0295 1025.9065 RGB_mask 27 25 25 radius 300.0
+    09E5: create_flash_light_at -0.1913 -4.3639 1024.5703 RGB_mask 25 25 25 radius 300.0
+    09E5: create_flash_light_at 6.2807 0.6637 1026.1406 RGB_mask 25 25 25 radius 300.0
+    09E5: create_flash_light_at -6.1505 1.3802 1026.1406 RGB_mask 25 25 25 radius 300.0 
+    //FOR IDLE
+    //for emergency
+    {09E5: create_flash_light_at 0.0 0.0 1027.6484 RGB_mask 50 0 0 radius 300.0 
+    09E5: create_flash_light_at 0.0 0.0 1022.6484 RGB_mask 25 0 0 radius 300.0
+    09E5: create_flash_light_at 0.0 0.0 1022.6484 RGB_mask 25 0 0 radius 300.0 
+    09E5: create_flash_light_at -6.587 -0.773 1023.7266 RGB_mask 50 0 0 radius 300.0
+    09E5: create_flash_light_at 3.8622 2.3412 1023.8591 RGB_mask 50 0 0 radius 300.0
+    09E5: create_flash_light_at 0.3123 -4.0214 1024.5703 RGB_mask 50 0 0 radius 300.0}
+    //for emergency
+    //0D52: draw_light_type 2 position 0.0 0.0 1026.0 direction 0.0 0.0 1024.0 radius 6.0 RGBA 0 0 0 affect_entity 0
+    //0D5B: draw_spotlight_from 0.3155 -3.8632 1024.5703 to 0.0 0.0 1026.0 base_radius 10.0 target_radius 5.0 enable_shadow 1 shadow_intensity 1.0 flag1 1 flag2 1 
+    //015F: set_camera_position -4.1737 -4.8294 1026.1406 rotation 0.0 0.0 0.0
+    //0160: set_camera_point_at 0.0 0.0 1025.5 mode 2 
+    //0581: enable_radar 0
+    //0826: enable_hud 0
+  
+until 0ab0: 56
+
+//Camera.Restor
+0A93: end_custom_thread
+//$94 = 0
+//01B4: set_player $PLAYER_CHAR can_move 0
+//0AB3: var 10 = 1000
+
+//0581: enable_radar 0 
+//0826: enable_hud 0
+//select_interior 3
+//0860: link_actor $PLAYER_ACTOR to_interior 3
+//00A1: put_actor $PLAYER_ACTOR at 0.0 0.0 1024.0
+06B1: 0@ = create_searchlight_at 0.0 0.0 1030.0 radius 70.0 target 0.0 0.0 1023.0 radius 70.0 
+0A02: set_searchlight 0@ lights_through_obstacles 1 
+//0581: enable_radar 1
+//    0826: enable_hud 1
+06B2: destroy_searchlight 0@ 
+0A93: end_custom_thread
+
+01B4: set_player $PLAYER_CHAR can_move 0 
+00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@ 
+015F: set_camera_position 3@ 4@ 5@ rotation 0.0 0.0 0.0 
+06B1: 0@ = create_searchlight_at  1.069 2.5637 1030.3125 radius 0.3 target 1.069 2.5637 1024.375  radius 32.5
+3@ = 1.069
+4@ = 2.5647
+5@ = 1024.3125
+
+{06B1: 1@ = create_searchlight_at  -0.7413 2.594 1030.3125 radius 0.3 target -0.7413 2.594 1024.375  radius 32.5 
+06B1: 2@ = create_searchlight_at  -1.7789 2.0369 1030.3125 radius 0.3 target -1.7789 2.0369 1024.375  radius 32.5 }
+repeat
+    wait 0 
+    if 0ab0: 37
+    then 
+        3@ -= 0.01
+        06B2: destroy_searchlight 0@
+        06B1: 0@ = create_searchlight_at  3@ 4@ 5@ radius 0.3 target 3@ 4@ 1024.375  radius 32.5    
+    end
+    if 0ab0: 39
+    then
+        3@ += 0.01
+        06B2: destroy_searchlight 0@
+        06B1: 0@ = create_searchlight_at  3@ 4@ 5@ radius 0.3 target 3@ 4@ 1024.375  radius 32.5     
+    end 
+    if 0ab0: 38
+    then
+        4@ += 0.01
+        06B2: destroy_searchlight 0@
+        06B1: 0@ = create_searchlight_at  3@ 4@ 5@ radius 0.3 target 3@ 4@ 1024.375  radius 32.5      
+    end
+    if 0ab0: 40
+    then
+        4@ -= 0.01
+        06B2: destroy_searchlight 0@
+        06B1: 0@ = create_searchlight_at  3@ 4@ 5@ radius 0.3 target 3@ 4@ 1024.375  radius 32.5     
+    end
+    if 0ab0: 33
+    then
+        5@ += 0.01
+        06B2: destroy_searchlight 0@
+        06B1: 0@ = create_searchlight_at  3@ 4@ 5@ radius 0.3 target 3@ 4@ 1024.375  radius 32.5      
+    end
+    if 0ab0: 34
+    then
+        5@ -= 0.01
+        06B2: destroy_searchlight 0@
+        06B1: 0@ = create_searchlight_at  3@ 4@ 5@ radius 0.3 target 3@ 4@ 1024.375  radius 32.5     
+    end
+     
+    0160: set_camera_point_at 3@ 4@ 5@ mode 2 
+    0AD1: show_formatted_text_highpriority "%f %f %f" time 100 3@ 4@ 5@  
+until 0ab0: 56
+06B2: destroy_searchlight 0@ 
+//06B2: destroy_searchlight 1@ 
+//06B2: destroy_searchlight 2@ 
+01B4: set_player $PLAYER_CHAR can_move 1
+Camera.Restore()
+0A93: end_custom_thread 
+wait 1000
+while true
+    wait 0
+    if
+        0AB0:  key_pressed 56
+    then
+        0A8C: write_memory 0xB5F852 size 1 value 1 virtual_protect 0
+        0A8C: write_memory 0x748BC5 size 2 value 0x13C virtual_protect 1
+        0AA5: call 0x747660 num_params 2 pop 2 "movies\\2.mpg" 0
+        0A8C: write_memory 0xC8D4C0 size 1 value 4 virtual_protect 0
+        003D:
+        0AA5: call 0x746740 num_params 0 pop 0
+        0A8C: write_memory 0xBA677B size 1 value 0 virtual_protect 0
+        0A8C: write_memory 0xB5F852 size 1 value 0 virtual_protect 0
+        0A93: end_custom_thread
+    end
+    if
+        0AB0:  key_pressed 16
+    then
+        wait 600
+    end
+end
+
+
+0A93: end_custom_thread  
+var
+$95: array 8 of Integer
+end
+// for 10@ = 0 to 7
+        wait 0
+        0D11: set_object $95[0] alpha 255
+//end
+0A93: end_custom_thread
+
+
+04C4: store_coords_to 3@ 4@ 5@ from_actor $PLAYER_ACTOR with_offset 5.0 5.0 1.0
+0208: 9@ = random_float_in_ranges 6@ 3@
+0208: 5@ = random_float_in_ranges 7@ 4@
+wait 1000
+11@ = Car.Create(#RCCAM, 9@, 5@, 8@)
+15@ = Object.Create(18634, 0.0, 0.0, 0.0)
+Model.Destroy(#RCCAM)
+Model.Destroy(18634)
+Object.CollisionDetection(15@, 0)
+//0681: attach_object 15@ to_car 12@ with_offset 0.0 0.7 0.15 rotation 90.0 0.0 -30.0  //   OFFSETS FOR LASER!!!!!
+//07C3: get_object 15@ axis_angle_relation_to 0@ 1@ 2@ 3@
+//0AD1: show_formatted_text_highpriority "%f %f %f %f" time 2000 0@ 1@ 2@ 3@
+0560: create_random_actor_in_car 11@ handle_as 17@
+//0683: attach_car 12@ to_car 11@ with_offset 0.0 0.0 0.3 rotation 0.0 0.0 0.0 
+0224: set_car 11@ health_to 1500
+//099A: set_car 12@ collision_detection 0  
+Car.SetImmunities(11@, 1, 1, 1, 1, 1)
+//00A8: set_car 11@ to_psycho_driver 
+//Car.SetDriverBehaviour(11@, KillThePlayer)
+
+repeat
+    wait 100
+    //if 0AB0: 54
+    //then
+        if  0AD2: 13@ = player $PLAYER_CHAR targeted_actor //IF and SET
+        jf CONTINUE
+        if 09ED:   actor 17@ is_within_field_of_view_actor $PLAYER_ACTOR 
+        then
+            
+            0750: set_object 15@ visibility 1
+        else
+            0AD1: show_formatted_text_highpriority "~r~doesn't see" time 2000
+            0750: set_object 15@ visibility 1
+        end
+        if 0AB0: 54
+        then
+
+            0175: set_car 11@ Z_angle_to 120.0
+
+        end
+        00A0: store_actor 13@ position_to 6@ 7@ 8@
+        0407: store_coords_to 3@ 4@ 5@ from_car 11@ with_offset 0.0 0.07 0.15 
+        0509: 8@ = distance_between_XY 6@ 7@ and_XY 3@ 4@ // √»œŒ“≈Õ”«¿
+        0063: 6@ -= 3@
+        0063: 7@ -= 4@
+        0AA5: call 0x4207C0 num_params 2 pop 2 _x 7@ _y 6@ // atan2
+        0AE9: pop_float 7@
+        7@ *= 57.2957795   //»Á ‡‰Ë‡ÌÓ‚ ‚ „‡‰˚    
+        7@ *= -1.0 //ŒÚ‡ÁËÚ¸
+        0174: 19@ = car 11@ Z_angle
+          
+        0063: 7@ -= 19@
+        8@ *= 0.85
+        08D2: object 15@ scale_model 8@
+        04C4: store_coords_to 3@ 4@ 5@ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 0.7 
+    
+        0681: attach_object 15@ to_car 11@ with_offset 0.0 0.7 0.15 rotation 96.0 0.0 7@
+        0AD1: show_formatted_text_highpriority "~r~%.2f ~b~%.2f" time 2000 7@ 19@
+    //end
+until 0AB0: 56
+00A6: destroy_car 11@
+Object.Destroy(15@)
+Actor.DestroyInstantly(17@)
+0A93: end_custom_thread

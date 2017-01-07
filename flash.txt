@@ -1,0 +1,51 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+thread "vflash"
+
+10@ = 1 // do we need a spark? [flag]
+
+0390: load_txd_dictionary 'DWGUI' 
+038F: load_texture "flash" as 13
+
+while true
+    gosub @flash
+    wait 331
+    gosub @flash
+    wait 1158
+    gosub @flash
+    wait 1546
+    gosub @flash
+    wait 1517
+    gosub @flash
+    wait 1632
+    gosub @flash
+    wait 2092
+    gosub @flash
+    wait 720
+    gosub @flash
+    wait 615
+end
+
+:flash
+0AB4: 0@ = var 9
+if 0@ == 0
+then
+    jump @end
+end
+if and
+    00DB:   actor $PLAYER_ACTOR in_car $111
+    10@ == 1 // spark is needed mutherfucker
+then
+    03F0: enable_text_draw 1
+    038D: draw_texture 12 position 320.0 160.0 size 700.0 700.0 RGBA 255 255 255 255
+    wait 50
+    03F0: enable_text_draw 0
+else
+    wait 50
+end
+return
+
+:end
+0391: release_txd_dictionary 
+0A93: end_custom_thread

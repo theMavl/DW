@@ -1,0 +1,20 @@
+{$CLEO}
+0000:
+
+:1
+wait 0
+if
+ Player.Defined($PLAYER_ACTOR)
+jf @1
+Marker.CreateIconAndSphere(2@, 1, 0.0, 0.0, 0.0)
+
+:MISSION_START
+wait 100
+if and
+    0102:   actor $PLAYER_ACTOR in_sphere 0.0 0.0 0.5 radius 1.2 1.2 2.0 sphere 1 stopped_on_foot 
+    $ONMISSION == 0
+jf @MISSION_START
+Marker.Disable(2@)
+00BA: show_text_styled GXT 'SWEET_1' time 1000 style 24
+0A94: start_custom_mission "MIS"
+0A93: end_custom_thread

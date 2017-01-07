@@ -1,0 +1,35 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+while true
+    wait 100
+    if 0ADC: test_cheat "do1"
+    then 
+        0A92: create_custom_thread "DEBUG_STUFF/debug1.cs"
+    end
+    if 0ADC: test_cheat "do2"
+    then 
+        0A92: create_custom_thread "DEBUG_STUFF/debug2.cs"
+    end
+    if 0ADC: test_cheat "do3"
+    then 
+        0A92: create_custom_thread "DEBUG_STUFF/debug3.cs"
+    end
+    if 0ADC: test_cheat "do4"
+    then 
+        0A92: create_custom_thread "DEBUG_STUFF/debug4.cs"
+    end
+    if 0ADC: test_cheat "evil"
+    then 
+        0A92: create_custom_thread "master.s"
+    end
+    if 0ADC: test_cheat "golig"
+    then 
+        0A92: create_custom_thread "DEBUG_STUFF/lightcyc.cs"
+    end
+    if 0ADC: test_cheat "opty"
+    then 
+        0A92: create_custom_thread "DEBUG_STUFF/TV SCREEN.cs"
+    end
+end

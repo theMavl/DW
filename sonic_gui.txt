@@ -1,0 +1,100 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+
+:first
+wait 0
+if 0@ == 0
+jf @second
+
+thread "SON_GUI"
+//0ADF: add_dynamic_GXT_entry "SON_GUI" text "~>~~<~"
+//wait 7000
+0390: load_txd_dictionary 'CROSS' 
+038F: load_texture "sonic_target" as 17
+
+:1
+wait 100
+if and
+    02D8:   actor $PLAYER_ACTOR current_weapon == 7
+    80DF:   not actor $PLAYER_ACTOR driving 
+jf @1
+
+0AF2: 0@ = get_float_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "SONIC" key "LEN"
+0390: load_txd_dictionary 'CROSS' 
+while 02D8:   actor $PLAYER_ACTOR current_weapon == 7
+    wait 0
+    if
+        00DF:  actor $PLAYER_ACTOR driving 
+    then
+        continue
+    end
+    00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@
+    0AE2: 1@ = random_vehicle_near_point 3@ 4@ 5@ in_radius 0@ find_next 0 pass_wrecked 1
+    //0AD1: show_formatted_text_highpriority "%d" time 1 32@
+    if or 
+        856E:   not car 1@ defined //1@ == -1
+        $93 == 1 
+    then
+        continue
+    end
+    if 80E1: NOT key_pressed 0 6
+    then
+        0AB5: store_actor $PLAYER_ACTOR closest_vehicle_to 1@ closest_ped_to 10@
+    end
+    if
+        856E:   not car 1@ defined //1@ == -1
+    then
+        continue
+    end
+    if or
+        0119:   car 1@ wrecked
+        07D6:   1@ == $111
+        0137:   car 1@ model == #RCCAM
+        0137:   car 1@ model == #RHINO
+    then
+        continue
+    end
+    if
+        056E:   car 1@ defined //1@ == -1
+    then
+        00AA: store_car 1@ position_to 3@ 4@ 5@
+    else
+        1@ = -1
+        continue    
+    end      
+    1@ = -1
+    03F0: enable_text_draw 1
+    //0342: set_text_draw_centered 1
+    //081C: draw_text_outline 1 RGBA 0 0 0 255
+    //033F: set_text_draw_letter_size 0.3 1.1
+    0AB1: call_scm_func @getScreenXYFrom3DCoords 3 3D_coords_X 3@ Y 4@ Z 5@ store_screen_X_to 3@ Y_to 4@
+    //033E: set_draw_text_position 3@ 4@ GXT 'SON_GUI'  // Push 
+    03E3: set_texture_to_be_drawn_antialiased 1
+    038D: draw_texture 17 position 3@ 4@ size 25.0 25.0 RGBA 255 255 255 255 
+end
+jump @1
+
+:getScreenXYFrom3DCoords
+0AA7: call_function 0x70CE30 num_params 6 pop 6 clipNear 1 clipFar 1 yMult 7@s xMult 6@s outVector 2@s inVector 0@s result 29@
+0073: 2@ /= 6@
+0073: 2@ /= 4@
+0073: 3@ /= 7@
+0073: 3@ /= 4@
+2@ *= 640.0
+3@ *= 448.0
+0AB2: ret 2 2@ 3@
+
+//////////////////////////////
+:second 
+if 0@ == 1
+jf @first
+thread "SON_CUI"
+0390: load_txd_dictionary 'CROSS' 
+038F: load_texture "CEL1" as 18
+03E3: set_texture_to_be_drawn_antialiased 1
+03F0: enable_text_draw 1 
+while true
+wait 0
+038D: draw_texture 18 position 339.1 179.1 size 25.0 25.0 RGBA 255 255 255 255
+end

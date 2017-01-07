@@ -1,0 +1,6 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+wait 5000
+0AB3: var 49 = 255
+end_custom_thread

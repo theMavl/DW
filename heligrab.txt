@@ -1,0 +1,175 @@
+// This file was decompiled using SASCM.ini published by Seemann (http://sannybuilder.com/files/SASCM.rar) on 13.10.2007
+{$CLEO .cs}
+
+//-------------MAIN---------------
+thread "HELIGRAB" 
+04ED: load_animation "FINALE" 
+
+:HELIGRAB_22
+wait 0 
+if and
+   Player.Defined($PLAYER_CHAR)
+   not wasted_or_busted 
+   not Actor.Driving($PLAYER_ACTOR)
+0AB0:   key_pressed 9 
+jf @HELIGRAB_22 
+
+:HELIGRAB_53
+wait 250 
+0A8D: 0@ = read_memory 12700004 size 4 virtual_protect 0 
+gosub @HELIGRAB_107 
+0A8D: 0@ = read_memory 12700008 size 4 virtual_protect 0 
+gosub @HELIGRAB_107 
+goto @HELIGRAB_53 
+
+:HELIGRAB_107
+wait 0 
+if 
+  0@ > 0 
+jf @HELIGRAB_811 
+0A8D: 1@ = read_memory 12010644 size 4 virtual_protect 0 
+0AA8: call_function_method 4342112 struct 1@ num_params 1 pop 0 0@ 1@  
+Car.StorePos(1@, 5@, 6@, 7@)
+Actor.StorePos($PLAYER_ACTOR, 8@, 9@, 10@)
+050A: 17@ = distance_between_XYZ 5@ 6@ 7@ and_XYZ 8@ 9@ 10@ 
+if 
+   Car.Id(1@) == #POLMAV
+jf @HELIGRAB_22 
+if 
+   not 17@ > 5.0 
+jf @HELIGRAB_22 
+goto @HELIGRAB_262 
+
+:HELIGRAB_262
+wait 0 
+0665: get_actor $PLAYER_ACTOR model_to 12@ 
+Model.Load(12@)
+wait 100 
+
+:HELIGRAB_283
+   not Model.Available(12@)
+jf @HELIGRAB_306 
+wait 0 
+goto @HELIGRAB_283 
+
+:HELIGRAB_306
+13@ = Car.Model(1@)
+Model.Load(13@)
+wait 100 
+
+:HELIGRAB_323
+   not Model.Available(13@)
+jf @HELIGRAB_346 
+wait 0 
+goto @HELIGRAB_323 
+
+:HELIGRAB_346
+046C: 14@ = car 1@ driver 
+if 
+   not 14@ == -1 
+jf @HELIGRAB_22 
+0432: 15@ = get_actor_handle_from_car 1@ passenger_seat 0 
+if 
+   not 15@ == -1 
+jf @HELIGRAB_22 
+Car.StorePos(1@, 16@, 17@, 18@)
+0362: remove_actor 14@ from_car_and_place_at 0.0 0.0 0.0 
+0362: remove_actor 15@ from_car_and_place_at 0.0 0.0 0.0 
+Car.Destroy(1@)
+1@ = Car.Create(13@, 16@, 17@, 18@)
+036A: put_actor 14@ in_car 1@ 
+0430: put_actor 15@ into_car 1@ passenger_seat 0 
+0825: set_helicopter 1@ instant_rotor_start 
+$CRAZY = Actor.Create(CivMale, 12@, 0.0, 0.0, 0.0)
+04C4: store_coords_to 3@ 4@ 5@ from_actor $CRAZY with_offset 0.0 0.0 150.0 
+Actor.PutAt($PLAYER_ACTOR, 3@, 4@, 5@)
+0464: put_actor $CRAZY into_turret_on_car 1@ at_car_offset 1.2 1.8 -0.95 position 1 shooting_angle_limit 0.0 with_weapon 0 
+067C: put_camera_on_actor $CRAZY with_offset 0.0 -5.0 8.0 rotation 0.0 0.0 0.0 0.0 2 
+0724: heli 1@ follow_and_attack_player $CRAZY radius 20.0 
+084E: flying_vehicle 1@ use_primary_gun 0 
+0841: flying_vehicle 1@ use_secondary_gun 1 
+11@ = Car.Angle(1@)
+11@ += 90.0 
+Actor.Angle($CRAZY) = 11@
+Player.CanMove($PLAYER_CHAR) = False
+wait 250 
+0812: AS_actor $CRAZY perform_animation "FIN_HANG_SLIP" IFP_file "FINALE" 10.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB 
+wait 3300 
+0812: AS_actor $CRAZY perform_animation "FIN_HANG_LOOP" IFP_file "FINALE" 10.0 loopA 1 lockX 0 lockY 0 lockF 0 time -1 // versionB 
+goto @HELIGRAB_820 
+goto @HELIGRAB_818 
+
+:HELIGRAB_811
+goto @HELIGRAB_22 
+
+:HELIGRAB_818
+return 
+
+:HELIGRAB_820
+wait 0 
+0819: 13@ = actor $CRAZY distance_from_ground 
+if or
+   not 13@ >= 2.5 
+00E1:   player 0 pressed_key 15 
+jf @HELIGRAB_947 
+04C4: store_coords_to 4@ 5@ 6@ from_actor $CRAZY with_offset 0.0 0.0 -2.5 
+wait 100 
+0465: remove_actor $CRAZY from_turret_mode 
+Player.CanMove($PLAYER_CHAR) = True
+Actor.PutAt($PLAYER_ACTOR, 4@, 5@, 6@)
+Camera.Restore_WithJumpCut
+Model.Destroy(12@)
+Actor.DestroyInstantly($CRAZY)
+Car.Destroy(1@)
+wait 2500 
+goto @HELIGRAB_22 
+
+:HELIGRAB_947
+wait 10 
+04C4: store_coords_to 3@ 4@ 5@ from_actor $CRAZY with_offset 0.0 0.0 150.0 
+Actor.PutAt($PLAYER_ACTOR, 3@, 4@, 5@)
+if 
+80E1:   not player 0 pressed_key 14 
+jf @HELIGRAB_1092 
+if 
+   not Actor.Animation($CRAZY) == "FIN_HANG_LOOP"
+jf @HELIGRAB_820 
+0812: AS_actor $CRAZY perform_animation "FIN_HANG_LOOP" IFP_file "FINALE" 1000.0 loopA 1 lockX 0 lockY 0 lockF 0 time -1 // versionB 
+goto @HELIGRAB_820 
+
+:HELIGRAB_1092
+wait 0 
+04ED: load_animation "TRUCK" 
+wait 100 
+
+:HELIGRAB_1109
+84EE:   not animation "TRUCK" loaded 
+jf @HELIGRAB_1136 
+wait 0 
+goto @HELIGRAB_1109 
+
+:HELIGRAB_1136
+067C: put_camera_on_actor $CRAZY with_offset 5.0 5.0 8.0 rotation 0.0 0.0 0.0 0.0 2 
+0465: remove_actor $CRAZY from_turret_mode 
+0464: put_actor $CRAZY into_turret_on_car 1@ at_car_offset 1.0 1.3 -0.3 position 0 shooting_angle_limit 0.0 with_weapon 0 
+0605: actor $CRAZY perform_animation_sequence "TRUCK_OPEN_RHS" IFP_file "TRUCK" 4.0 loop 0 1 1 0 time -1 // versionA 
+wait 530 
+0657: car 1@ open_componentA 3 
+0605: actor $CRAZY perform_animation_sequence "TRUCK_PULLOUT_RHS" IFP_file "TRUCK" 4.0 loop 0 1 1 0 time -1 // versionA 
+wait 900 
+0622: AS_actor 15@ bail_car 1@ 
+0605: actor $CRAZY perform_animation_sequence "TRUCK_GEINT_RHS" IFP_file "TRUCK" 4.0 loop 0 1 1 0 time -1 // versionA 
+wait 300 
+068A: set_car 1@ repair_componentA 3 
+04C4: store_coords_to 4@ 5@ 6@ from_actor $CRAZY with_offset 0.0 0.0 -2.5 
+0465: remove_actor $CRAZY from_turret_mode 
+Player.CanMove($PLAYER_CHAR) = True
+Camera.Restore_WithJumpCut
+Model.Destroy(12@)
+Actor.DestroyInstantly($CRAZY)
+0430: put_actor $PLAYER_ACTOR into_car 1@ passenger_seat 0 
+wait 1000 
+0622: AS_actor 14@ bail_car 1@ 
+0676: AS_actor $PLAYER_ACTOR in_car 1@ move_from_passengerseat_to_driverseat 
+wait 2500 
+goto @HELIGRAB_22 

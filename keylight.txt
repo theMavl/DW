@@ -1,0 +1,29 @@
+{$CLEO .s}
+
+/*
+TARDIS lights
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+*/
+
+//-------------MAIN---------------
+THREAD "LIG_K"
+32@ = 0
+if
+    0205: actor $PLAYER_ACTOR near_car $111 radius 90.0 90.0 90.0 flag 0
+then
+    1@ = 800
+else 
+    1@ = 9490
+end
+while 801D: 32@ > 1@
+    wait 0
+    04C4: store_coords_to 2@ 3@ 4@ from_actor $PLAYER_ACTOR with_offset 0.165 0.56 0.78 
+    09E5: create_flash_light_at 2@ 3@ 4@ RGB_mask 242 196 15 radius 0.1
+    0D53: draw_corona_with_texture 0 color 242 196 15 125 on_entity 0 at 2@ 3@ 4@ size 0.1
+    if 8611:   NOT actor $PLAYER_ACTOR performing_animation "KEY" 
+    then
+        break
+    end
+end 
+0A93: end_custom_thread

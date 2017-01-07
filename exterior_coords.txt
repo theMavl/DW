@@ -1,0 +1,33 @@
+{$cleo .cs}
+0000:
+{
+    Save exterior coordinates
+}
+thread "extcord"
+0A95: enable_thread_saving
+wait 0
+
+while true
+    wait 100
+    0AB4: 10@ = var 40
+    if 10@ == 0
+    then
+        0AB4: 0@ = var 21
+        0AB4: 1@ = var 22
+        0AB4: 2@ = var 23
+        0AB4: 3@ = var 20
+        0AB4: 4@ = var 6
+    else
+        wait 100
+        0AB3: var 21 = 0@
+        0AB3: var 22 = 1@
+        0AB3: var 23 = 2@
+        0AB3: var 20 = 3@
+        0AB3: var 6  = 4@
+        0AB3: var 40 = 0
+        if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 15.0 15.0 15.0
+        then
+            0AB3: var 24 = 1
+        end
+    end
+end

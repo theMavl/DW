@@ -1,0 +1,214 @@
+{$CLEO .cs}
+
+/*
+TARDIS lights
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+*/
+
+//-------------MAIN---------------
+THREAD "LIG2"
+
+wait 4000
+
+var
+0 : Int
+1@ : Int
+end
+
+0AB3: var 0 = 0
+
+:def
+wait 100
+if and
+Player.Defined($PLAYER_CHAR)
+Player.Controllable($PLAYER_CHAR)
+056E:   car $111 defined
+jf @def 
+
+:LIGHT_2
+wait 0
+0AB4: 1@ = var 0
+{if 1@ == 1 
+then
+    /*wait 0
+    0AB4: 2@ = var 13
+    0AB4: 3@ = var 14
+    0AB4: 4@ = var 15
+    while 20@ < 40
+    wait 0
+    20@ += 1
+    09E5: create_flash_light_at 2@ 3@ 4@ RGB_mask 224 255 255 radius 5.0
+    04D5: create_corona_at 2@ 3@ 4@ radius 1.5 type 0 flare 0 RGB 224 255 255 
+    end
+    wait 1000
+    20@=0*/
+    jump @LIGHT_2
+end }
+if or 
+1@ == 1
+1@ == 2 
+1@ == 6
+1@ == 7
+//1@ == 10
+1@ == 11
+then
+    32@ = 0
+    14@ = -1
+    15@ = 255
+    //while 32@ < 1500
+    repeat
+        wait 0
+        0407: store_coords_to 2@ 3@ 4@ from_car $111 with_offset 0.0 0.0 2.15
+        09E5: create_flash_light_at 2@ 3@ 4@ RGB_mask 236 240 241 radius 5.0
+        04D5: create_corona_at 2@ 3@ 4@ radius 1.5 type 0 flare 0 RGB 236 240 241
+        0AB4: 5@ = var 0
+        if 803B: 1@ == 5@
+        then
+            break
+        end
+        0AB4: 16@ = var 16
+        if or
+            16@ == 0
+            16@ == 3
+        then
+            if 32@ >= 1500
+            then
+                break
+            end
+        else
+            0AB4: 13@ = var 46
+            if 16@ == 1
+            then 
+                if 001D: 14@ > 13@
+                then
+                    break
+                end
+            else
+                if 001D: 13@ > 15@
+                then
+                    break
+                end
+            end
+            0085: 14@ = 13@
+            0085: 15@ = 13@
+        end
+    until false 
+    //end
+    32@ = 0
+    14@ = 255
+    15@ = -1
+    repeat
+        wait 0
+        if 803B: 1@ == 5@
+        then
+            break
+        end
+        0AB4: 16@ = var 16
+        if or
+            16@ == 0
+            16@ == 3
+        then
+            if 32@ >= 1000
+            then
+                break
+            end
+        else
+            0AB4: 13@ = var 46
+            if 16@ == 1
+            then
+                if 001D: 13@ > 14@
+                then
+                    break
+                end
+            else
+                if 001D: 15@ > 13@
+                then
+                    break
+                end
+            end
+            0085: 14@ = 13@
+            0085: 15@ = 13@
+        end
+    until false //32@ > 1000   
+end
+if or 
+1@ == 3
+1@ == 4
+1@ == 5
+1@ == 8
+1@ == 9
+then
+    32@ = 0
+    
+    repeat //while 32@ < 2000
+        wait 0
+        0407: store_coords_to 2@ 3@ 4@ from_car $111 with_offset 0.0 0.0 2.3
+        09E5: create_flash_light_at 2@ 3@ 4@ RGB_mask 255 0 0 radius 8.0
+        04D5: create_corona_at 2@ 3@ 4@ radius 1.5 type 0 flare 0 RGB 255 0 0
+        0AB4: 5@ = var 0
+        if 803B: 1@ == 5@
+        then
+            break
+        end
+        0AB4: 16@ = var 16
+        if or
+            16@ == 0
+            16@ == 3
+        then
+            if 32@ >= 2000
+            then
+                break
+            end
+        else
+            0AB4: 13@ = var 46
+            if 16@ == 1
+            then 
+                if 001D: 14@ > 13@
+                then
+                    break
+                end
+            else
+                if 001D: 13@ > 14@
+                then
+                    break
+                end
+            end
+            0085: 14@ = 13@
+        end 
+    until false //end
+    32@ = 0
+    repeat
+        wait 0
+        if 803B: 1@ == 5@
+        then
+            break
+        end
+        0AB4: 16@ = var 16
+        if or
+            16@ == 0
+            16@ == 3
+        then
+            if 32@ >= 1000
+            then
+                break
+            end
+        else
+            0AB4: 13@ = var 46
+            if 16@ == 1
+            then
+                if 001D: 13@ > 14@
+                then
+                    break
+                end
+            else
+                if 001D: 14@ > 13@
+                then
+                    break
+                end
+            end
+            0085: 14@ = 13@
+        end
+    until false //32@ > 1000     
+end
+jump @LIGHT_2             

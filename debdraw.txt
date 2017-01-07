@@ -1,0 +1,19 @@
+{$CLEO .s}
+thread "DEBDRAW"
+while $93 == 1
+    03F0: enable_text_draw 1 
+    //0937: text_draw_box_cornerA 540.0 100.0 cornerB 640.0 330.0 GXT_reference 'SWITCTI' style 4
+    045A: draw_text_1number 520.0 120.0 GXT 'SWITCH1' number 1@
+    045A: draw_text_1number 520.0 140.0 GXT 'SWITCH2' number 2@
+    045A: draw_text_1number 520.0 160.0 GXT 'SWITCH3' number 3@
+    045A: draw_text_1number 520.0 180.0 GXT 'SWITCH4' number 4@
+    045A: draw_text_1number 520.0 200.0 GXT 'SWITCH5' number 5@
+    045A: draw_text_1number 520.0 220.0 GXT 'SWITCH6' number 6@
+    045A: draw_text_1number 520.0 240.0 GXT 'SWITCH7' number 7@
+    045A: draw_text_1number 520.0 260.0 GXT 'SWITCH8' number 8@
+    045A: draw_text_1number 520.0 280.0 GXT 'SWITCH9' number 9@
+    045A: draw_text_1number 520.0 300.0 GXT 'SWITC10' number 10@
+    045A: draw_text_1number 520.0 320.0 GXT 'SWITC11' number 11@
+    wait 0
+end
+0A93: end_custom_thread

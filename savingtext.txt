@@ -1,0 +1,32 @@
+{$CLEO .cs}
+0000:
+thread "stest"
+0A95: enable_thread_saving
+
+Model.Load(#sparrow)
+
+wait 100
+038B:
+
+wait 5000
+00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@
+
+0@ = Car.Create(#SPARROW, 1@, 2@, 3@)
+wait 2000
+03D8: show_save_screen 
+ 
+
+while true
+    wait 200
+    if car.Defined(0@)
+    then
+    0AD1: show_formatted_text_highpriority "Car %d exists" time 2000 0@
+    Marker.CreateAboveCar(30@,0@)
+    wait 100
+    Marker.Disable(30@)
+    00AA: store_car 0@ position_to 1@ 2@ 3@
+    else
+    0@ = Car.Create(#SPARROW, 1@, 2@, 3@)
+    0AD1: show_formatted_text_highpriority "No such car %d" time 2000 0@
+    end
+end

@@ -1,0 +1,91 @@
+VSPW01 VEH_SPAWN
+VSPW02 press LEFT or RIGHT to switch from menue to menue~n~UP or DOWN to select button.
+VSPW03 press UP or DOWN to select button.
+VSPW04 ~k~~PED_ANSWER_PHONE~ to show Main Menue
+VSPW05 ENTER/EXIT to quit~n~PED SPRINT or JUMP to confirm the selection
+VSPW06 don't leave the van and press 7 to play again RC mode
+VSPW07 Vehicle ID: ~1~
+VSPW08 press secondary fire key to explode the RCvehicle
+VSPW09 cars, vans, trucks A
+VSPW10 bikes
+VSPW11 cars
+VSPW12 trailer
+VSPW13 boats
+VSPW14 planes
+VSPW15 helis
+VSPW16 trains
+VSPW17 special
+VSPW18 cars, vans, trucks E
+VSPW19 cars, vans, trucks M
+VSPW20 cars, vans, trucks S
+VSPW_A A
+VSPW_B B
+VSPW_C C
+VSPW_D D
+VSPW_E E
+VSPW_F F
+VSPW_G G
+VSPW_H H
+VSPW_I I/J/K/L
+VSPW_J I/J/K/L
+VSPW_K I/J/K/L
+VSPW_L I/J/K/L
+VSPW_M M
+VSPW_N N/O
+VSPW_O N/O
+VSPW_P P
+VSPW_Q Q
+VSPW_R R
+VSPW_S S
+VSPW_T T
+VSPW_U U/V
+VSPW_V U/V
+VSPW_W W
+VSPW_X W/Y/Z
+VSPW_Y W/Y/Z
+VSPW_Z W/Y/Z
+VSPOL1 Police LA
+VSPOL2 Police SF
+VSPOL3 Police VG
+VSACT1 Artict1
+VSACT2 Artict2
+VSACT3 Artict3
+VSBOX1 Bagboxa
+VSBOX2 Bagboxb
+VSFARM Farmtr1
+VSTUGS Tugstair
+VSUTIL Utiltr1
+VSSTRK Streak wagon
+VSRAN2 Rancher
+VSRAN3 Ranger
+VSTOPF Topfun
+VSBOBU Boxburg
+VSRANC Rnchlure
+VSHOTA Hotring A
+VSHOTB Hotring B
+VSMONA Monster A
+VSMONB Monster B
+VSSHIT Sadlshit
+VSGHIT Glenshit
+VSFRLA FireLA
+VSVEH press ~k~~CONVERSATION_YES~ or ~k~~PED_FIREWEAPON~ to put player on driver seat
+VSBOAT press ~k~~CONVERSATION_YES~ or ~k~~PED_FIREWEAPON~ to create the boat on water and put player on driver seat
+VSFLY press ~k~~CONVERSATION_YES~ or ~k~~PED_FIREWEAPON~ to create the plane in the air and put player on driver seat
+VSHELI press ~k~~CONVERSATION_YES~ or ~k~~PED_FIREWEAPON~ to create the heli in the air and put player on driver seat
+VSTRAN press ~k~~CONVERSATION_YES~ or ~k~~PED_FIREWEAPON~ to create the train on railroad and put player on driver seat
+VSRRC press ~k~~CONVERSATION_YES~ or ~k~~PED_FIREWEAPON~ to to activate remote controle and drive RC car
+VSTR01 Streak engine
+VSTR02 Streak train
+VSTR03 all trains
+VSTR04 random train
+VSTR05 train type: ~1~
+VSTR06 Freight engine
+VSTR07 Freight double engine
+VSTR08 Freight train long
+VSTR09 Freight train
+VSTR10 passenger in StreakC wagon
+VSTR11 Tram single
+VSTR12 Tram double
+VSTRD0 determine the drive direction
+VSTRD1 direction 1
+VSTRD2 direction 2

@@ -1,0 +1,170 @@
+// This mess is written by Mavl
+{$CLEO .cs}
+
+/*
+TARDIS Health and Energy bar
+For Doctor Who: Dalek invasion mod
+Script: Mavl
+Version: 1.0
+*/
+//-------------MAIN---------------
+thread 'BARS' 
+
+wait 6700
+
+:def
+wait 100
+if
+056D:   actor $PLAYER_ACTOR defined
+jf @def 
+
+//5@|7@ - РЕЖИМ (1 - щит обычный, 2 - щит красный, 3 - здоровье обычное, 4 - здоровье красное)|(1 - обычная, 2 - красная)
+//6@|8@ - Прошлый режим
+
+0AB3: var 8 = 1
+
+:load
+wait 0
+Model.Load(#POOLCUE)
+Model.Load(#GUN_DILDO1)
+038B: load_requested_models
+if and
+Model.Load(#POOLCUE)
+Model.Load(#GUN_DILDO1)
+jf @load
+
+:BARS_11
+wait 0
+//0AF0: 21@ = get_int_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "BARS" key "ACT" 
+if and
+0256:   player $PLAYER_ACTOR defined
+00DD:   actor $PLAYER_ACTOR driving_car_with_model #SPARROW
+jf @BARS_11
+01B2: give_actor $PLAYER_ACTOR weapon 10 ammo 1E38 
+01B2: give_actor $PLAYER_ACTOR weapon 7 ammo 1E38
+0555: remove_weapon 46 from_actor $PLAYER_ACTOR 
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+jump @BARS_78 
+
+
+:BARS_78
+wait 0
+0AB4: 20@ = var 9
+0AB4: 21@ = var 8
+if and
+    20@ == 0
+    21@ == 1
+jf @BARS_11
+04F7: status_text $Y_Royal_Casino type 1 line 1 GXT 'SHLD_S'
+059C: enable_status_text $Y_Royal_Casino flashing 0
+04F7: status_text $energy type 1 line 2 GXT 'ENER_S'
+059C: enable_status_text $energy flashing 0
+5@ = 1
+7@ = 1
+while 00DF:  actor $PLAYER_ACTOR driving
+    0085: 6@ = 5@
+    0085: 8@ = 7@
+    if 
+    0185:   car $111 health >= 1500
+    then
+        if 8185:   NOT car $111 health >= 1650
+        then
+            5@ = 2
+        else
+            5@ = 1
+        end
+    else
+        if 0185: car $111 health >= 500
+        then
+            5@ = 3
+        else
+            5@ = 4
+        end 
+    end
+    if and
+        803B: NOT 5@ == 6@
+        5@ == 1
+    then
+        0151: remove_status_text $Y_Royal_Casino
+        04F7: status_text $Y_Royal_Casino type 1 line 1 GXT 'SHLD_S'
+        059C: enable_status_text $Y_Royal_Casino flashing 0
+    else
+        if and
+            803B: NOT 5@ == 6@
+            5@ == 2
+        then
+            0151: remove_status_text $Y_Royal_Casino
+            04F7: status_text $Y_Royal_Casino type 1 line 1 GXT 'SHLD_S_R'
+            059C: enable_status_text $Y_Royal_Casino flashing 1
+        end    
+    end
+    if and
+        803B: NOT 5@ == 6@
+        5@ == 3
+    then
+        0151: remove_status_text $Y_Royal_Casino
+        04F7: status_text $Y_Royal_Casino type 1 line 1 GXT 'SHLD_H'
+        059C: enable_status_text $Y_Royal_Casino flashing 0
+    else
+        if and
+            803B: NOT 5@ == 6@
+            5@ == 4
+        then
+            0151: remove_status_text $Y_Royal_Casino
+            04F7: status_text $Y_Royal_Casino type 1 line 1 GXT 'SHLD_H_R'
+            059C: enable_status_text $Y_Royal_Casino flashing 1
+        end    
+    end
+    0AB4: 23@ = var 10
+    if 23@ >= 20
+    then
+        7@ = 1
+    else
+        7@ = 2
+    end
+    if and
+        803B: NOT 7@ == 8@
+        7@ == 1
+    then
+        0151: remove_status_text $energy
+        04F7: status_text $energy type 1 line 2 GXT 'ENER_S'
+        059C: enable_status_text $energy flashing 0
+    else
+        if and
+            803B: NOT 7@ == 8@
+            7@ == 2
+        then
+            0151: remove_status_text $energy
+            04F7: status_text $energy type 1 line 2 GXT 'ENER_SR'
+            059C: enable_status_text $energy flashing 1
+        end    
+    end
+    0AB4: 20@ = var 9
+    0AB4: 21@ = var 8
+    if or
+        20@ == 1
+        21@ == 0
+    then
+        0151: remove_status_text $Y_Royal_Casino
+        0151: remove_status_text $energy
+        break
+    end
+    03C0: 1@ = actor $PLAYER_ACTOR car
+    0227: 2@ = car 1@ health
+    if 2@ >= 1500
+    then
+    2@ -= 1500
+    0A91: 2@ = 2@ / 5
+    008A: $Y_Royal_Casino = 2@ // (int)
+    else
+    0A91: 2@ = 2@ / 15
+    008A: $Y_Royal_Casino = 2@ // (int)
+    end
+    0AB4: 23@ = var 10
+    008A: $energy = 23@
+    wait 1000
+end
+0151: remove_status_text $Y_Royal_Casino
+0151: remove_status_text $energy
+jump @BARS_11 
+

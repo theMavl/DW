@@ -1,0 +1,40 @@
+{$CLEO .cs}
+
+0000: NOP
+
+while true
+    wait 100
+    if 0ab0: 9
+    then
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
+        0992: set_player $PLAYER_CHAR weapons_scrollable 0
+        0581: enable_radar 0
+        select_interior 3
+        0860: link_actor $PLAYER_ACTOR to_interior 3
+        032A: set_behind_camera_mode_to 0
+        0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 1000 mode 1
+    	0931: camera_persist_fov 1 
+        04F9: set_extra_colours 11 fade 0
+        09BC: put_actor $PLAYER_ACTOR at 1.2393 1.929 1023.8347
+    end
+    if 0ADC: test_cheat "TARS" 
+    then
+        04C4: store_coords_to 3@ 4@ 5@ from_actor $PLAYER_ACTOR with_offset 0.0 2.5 0.0
+        0840: link_car $111 to_interior $ACTIVE_INTERIOR  
+        0A1C: set_helicopter $111 play_engine_sounds 0
+        0ABA: end_custom_thread_named 'extcalb' // Kill exterior calibration
+        
+        00AB: put_car $111 at 3@ 4@ 5@
+        
+        0174: 6@ = car $111 Z_angle 
+        0AB3: var 21 = 3@
+        0AB3: var 22 = 4@
+        0AB3: var 23 = 5@  //Set exterior coords
+        0AB3: var 20 = $ACTIVE_INTERIOR
+        0AB3: var 6 = 6@
+        
+        0574: freeze_car_position_and_dont_load_collision $111 to 1
+        0918: set_car $111 engine_operation 0
+        0AB3: var 11 = 1 
+    end
+end

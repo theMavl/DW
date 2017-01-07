@@ -1,0 +1,158 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+thread "tarsit"
+wait 0
+0@ = 0
+1@ = 0 //counter
+while true
+    wait 10
+    if or
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 1.3928 -2.3135 1024.3827 radius 0.5 0.5 1.0 on_foot
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2.7227 0.0541 1024.375 radius 0.5 0.5 1.0 on_foot
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -0.5 2.65 1024.375 radius 0.5 0.5 1.0 on_foot
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -2.55 0.865 1024.375 radius 0.5 0.5 1.0 on_foot
+    then
+        if and
+        0@ == 0
+        1@ == 150
+        then
+            0@ = 1
+            0512: show_permanent_text_box 'TARSIT'
+        else
+            1@ += 1
+        end
+    else
+        1@ = 0
+        if 0@ == 1
+        then
+            0@ = 0
+            03E6: remove_text_box 
+        end
+    end
+    if and 
+        0ab0: 69 //E
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 1.3928 -2.3135 1024.3827 radius 0.5 0.5 1.0 on_foot
+    then
+        {09BC: put_actor $PLAYER_ACTOR at  1.3928 -2.3135 1024.3827
+        }
+        call_scm_func @put_at_s 3 1.3928 -2.3135 1024.3827
+        gosub @turn_to_console
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 27.4635
+        06B0: AS_actor $PLAYER_ACTOR sit_down 99999999999999 ms 
+        gosub @sit
+    end
+    if and 
+        0ab0: 69 //E
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2.7227 0.0541 1024.375 radius 0.5 0.5 1.0 on_foot
+    then
+        {09BC: put_actor $PLAYER_ACTOR at  2.7227 0.0541 1024.375
+        }
+        call_scm_func @put_at_s 3 2.7227 0.0541 1024.375
+        gosub @turn_to_console
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 88.8075
+        06B0: AS_actor $PLAYER_ACTOR sit_down 99999999999999 ms 
+        gosub @sit
+    end
+    if and 
+        0ab0: 69 //E
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -0.5 2.65 1024.375 radius 0.5 0.5 1.0 on_foot
+    then
+        {09BC: put_actor $PLAYER_ACTOR at  -0.5 2.65 1024.375
+        }
+        call_scm_func @put_at_s 3 -0.5 2.65 1024.375
+        gosub @turn_to_console
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 190.8627
+        06B0: AS_actor $PLAYER_ACTOR sit_down 99999999999999 ms 
+        gosub @sit
+    end
+    if and 
+        0ab0: 69 //E
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -2.55 0.865 1024.375 radius 0.5 0.5 1.0 on_foot
+    then
+        {09BC: put_actor $PLAYER_ACTOR at  -2.55 0.865 1024.375
+        }
+        call_scm_func @put_at_s 3 -2.55 0.865 1024.375
+        gosub @turn_to_console
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 249.2933
+        06B0: AS_actor $PLAYER_ACTOR sit_down 99999999999999 ms 
+        gosub @sit
+    end
+end
+
+:sit
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+0512: show_permanent_text_box 'TARSTA'
+0@ = 0
+1@ = 0
+wait 1750
+repeat
+    wait 10
+    if 1@ == 300
+    then
+        03E6: remove_text_box
+    end
+    if and 
+        80FF:  NOT actor $PLAYER_ACTOR sphere 0 in_sphere 1.3928 -2.3135 1024.3827 radius 0.5 0.5 1.0 on_foot
+        80FF:  NOT actor $PLAYER_ACTOR sphere 0 in_sphere 2.7227 0.0541 1024.375 radius 0.5 0.5 1.0 on_foot
+        80FF:  NOT actor $PLAYER_ACTOR sphere 0 in_sphere -0.5 2.65 1024.375 radius 0.5 0.5 1.0 on_foot
+        80FF:  NOT actor $PLAYER_ACTOR sphere 0 in_sphere -2.55 0.865 1024.375 radius 0.5 0.5 1.0 on_foot
+    then
+        break
+    else
+        1@ += 1
+    end
+until 0AB0: 69 //E
+03E6: remove_text_box
+1@ = 0
+0605: actor $PLAYER_ACTOR perform_animation "SEAT_up" IFP "ped" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1 
+wait 1700
+return
+
+
+:turn_to_console
+//04D7: set_actor $PLAYER_ACTOR locked 1 
+06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at 0.0 0.0 1024.0 
+while true
+    wait 0
+    0172: 23@ = actor $PLAYER_ACTOR Z_angle 
+    if 0045: 23@ == 24@
+    then
+        break
+    end
+    0087: 24@ = 23@
+end                                   
+04D7: set_actor $PLAYER_ACTOR locked 0
+return
+
+:put_at_s
+00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@
+ 
+0087: 9@ = 3@ // cur X
+0087: 5@ = 0@ // in X
+0063: 9@ -= 5@
+9@ /= 1000.0 // Transition time. 9@ is now 'a' in y=ax+b for X
+
+0087: 7@ = 4@ // cur Y
+0087: 5@ = 1@ // in Y
+0063: 7@ -= 5@
+7@ /= 1000.0 // Transition time. 7@ is now 'a' in y=ax+b for Y
+32@ = 0
+repeat
+    wait 0
+    0093: 12@ = integer 32@ to_float
+    12@ -= 1000.0
+    12@ *= -1.0 
+    0087: 5@ = 9@ // store 'a' X
+    0087: 6@ = 7@ // store 'a' Y
+    
+    006B: 5@ *= 12@
+    005B: 5@ += 0@
+    
+    006B: 6@ *= 12@
+    005B: 6@ += 1@
+    //show_text "%f %f %f | %f %f %f %f" 100 0@ 1@ 2@ 5@ 6@ 2@ 12@
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 5@ 6@ 2@
+until 32@ >= 200
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0@ 1@ 2@ 
+0AB2: ret 0

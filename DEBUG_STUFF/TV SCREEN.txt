@@ -1,0 +1,78 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+
+0000:
+0AB1: call @SetupLiveScreen num_params 7 screen 0 coords 0.0441 -15.011 3.1172 width 8.0  height 4.0 angle 0.0
+0A8C: write_memory 0x50B538 size 1 value 0xEB virtual_protect 1
+while true  
+    wait 0
+    player.Defined(0)
+    jf continue
+    00FE:   actor $player_actor sphere 0 in_sphere -1.5544 -7.3015 3.1172 radius 150.0 150.0 150.0
+    jf continue
+    00C2:   sphere_onscreen -1.5544 -7.3015 3.1172 radius 10.0
+    jf continue
+    
+    0A8E: 0@ = 0xB6F028 + 0x14
+    0A8D: 1@ = read_memory 0@ size 4 virtual_protect 0
+    0A8E: 0@ = 0xB6F028 + 0xADC
+
+
+    0D05: set_matrix 1@ position 0.6261 -15.9352 3.1172
+    {0D13: set_matrix 1@ x_angle 0.147  
+    0D14: set_matrix 1@ y_angle 0.9426 
+    0D15: set_matrix 1@ z_angle 180.0726 }
+    0AA6: call_method 0x59BBC0 struct 0@ num_params 1 pop 0 1@   // CMatrix__Copy(&CCamera.TvCamMatrix, CCamera.placeable.pMatrix)
+    if 0ab0: 56
+    then
+        0A93: end_custom_thread 
+    end
+end
+
+
+:SetupLiveScreen
+0012: 0@ *= 0x30
+000A: 0@ += 0x8D5DD8
+0017: 4@ /= 2.0
+0017: 5@ /= 2.0
+02F6: 8@ = SIN 6@
+02F7: 7@ = COS 6@
+0013: 7@ *= 4@
+0013: 8@ *= 4@
+0087: 9@ = 1@
+0087: 10@ = 2@
+005B: 9@ += 7@
+005B: 10@ += 8@
+0087: 11@ = 3@
+005B: 11@ += 5@
+0087: 12@ = 1@
+0087: 13@ = 2@
+0063: 12@ -= 7@
+0063: 13@ -= 8@
+0087: 17@ = 3@
+0063: 17@ -= 5@
+0A8C: write_memory 0@ size 4 value 9@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 10@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 11@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 12@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 13@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 11@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 12@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 13@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 17@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 9@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 10@ virtual_protect 0
+000A: 0@ += 4
+0A8C: write_memory 0@ size 4 value 17@ virtual_protect 0
+0AB2: RET 0
+0A93: end_custom_thread 

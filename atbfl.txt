@@ -1,0 +1,33 @@
+//this badass is written by Mavl
+{$CLEO .s}
+{
+    After-demat basic flight locker
+    Don't enable basic flight after teleport, if speed is zero. Only in exterior mode
+}
+thread "fUTmL"
+0AAA: 5@ = thread 'bflight' pointer
+0D2E: set_thread 5@ var 13 to 1
+repeat
+    wait 0
+    0AB4: 11@ = var 11
+    if 11@ == 1
+    then
+        break
+    end
+    
+    if $94 == 0
+    then
+        0AB3: var 11 = 1
+        break
+    end
+     
+    02E3: 0@ = car $111 speed
+    if 0@ > 0.0
+    then
+        0AB3: var 11 = 0
+        break
+    end   
+until false
+0AAA: 5@ = thread 'bflight' pointer
+0D2E: set_thread 5@ var 13 to 0
+end_custom_thread

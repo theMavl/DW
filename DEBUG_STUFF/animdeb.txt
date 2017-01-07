@@ -1,0 +1,88 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+
+0000:
+04ED: load_animation "TARDIS" 
+
+//SPACE-TIME THROTTLE
+0972: put_actor $PLAYER_ACTOR at 0.0 1.377 1024.375
+0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+0AB1: call @get_toggle 1 id 1 to 0@
+if 0@ == 0
+then
+    0812: AS_actor $PLAYER_ACTOR perform_animation "throttle_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+else
+    0812: AS_actor $PLAYER_ACTOR perform_animation "throttle_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+end
+0AB1: call @move_toggle 2 id 1 to -1
+//end
+
+//RED LEVERs
+{0972: put_actor $PLAYER_ACTOR at -0.035 -1.433 1024.375
+0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
+0AB1: call @get_toggle 1 id 3 to 0@
+if 0@ == 0
+then
+    0812: AS_actor $PLAYER_ACTOR perform_animation "redLevS_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+else
+    0812: AS_actor $PLAYER_ACTOR perform_animation "redLevS_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+end
+0A92: create_custom_thread "toggles.cs" 3 -1
+0A92: create_custom_thread "toggles.cs" 4 -1 }
+
+//SELF-REPAIR
+{0972: put_actor $PLAYER_ACTOR at -0.035 -1.433 1024.375
+0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
+0812: AS_actor $PLAYER_ACTOR perform_animation "lev_Selfrepair" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+0AB1: call @move_toggle 2 id 10 to 1} 
+
+//HANDBRAKE
+{0972: put_actor $PLAYER_ACTOR at 0.0 1.377 1024.375
+0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+0AB1: call @get_toggle 1 id 2 to 0@
+if 0@ == 0
+then
+    0812: AS_actor $PLAYER_ACTOR perform_animation "handbrake_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+else
+    0812: AS_actor $PLAYER_ACTOR perform_animation "handbrake_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+end
+0AB1: call @move_toggle 2 id 2 to -1}
+
+//KEYBOARD
+{0972: put_actor $PLAYER_ACTOR at 1.208 0.746 1024.375
+0173: set_actor $PLAYER_ACTOR Z_angle_to 120.0
+0812: AS_actor $PLAYER_ACTOR perform_animation "keyboard_type" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1} 
+0A93: end_custom_thread
+
+
+
+:move_toggle
+//Input: 0@ - toggle ID, 1@ - move to
+0A92: create_custom_thread "toggles.cs" 0@ 1@
+0AB2: ret 0
+
+:set_toggle
+{
+Set selected switcher state to 
+0@ - element, 1@ - value
+Example: 0AB1: call @set_toggle 2 id 1 value 1
+} 
+wait 0
+0@ -= 1
+008B: 3@ = $112 // (int)  
+005A: 3@ += 0@ // (int)   
+0A8C: write_memory 3@ size 1 value 1@ virtual_protect 0 
+0AB2: ret 0
+
+:get_toggle
+{
+Get selecteed switcher state
+0@ - element, 1@ - value
+Example: 0AB1: call @get_toggle 1 id 0@ to 1@
+} 
+wait 0
+dec(0@)
+008B: 3@ = $112 // (int) 
+005A: 3@ += 0@ // (int) 
+0A8D: 4@ = read_memory 3@ size 1 virtual_protect 0 
+0AB2: ret 1 4@

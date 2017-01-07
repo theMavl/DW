@@ -1,0 +1,73 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+wait 5000
+
+:debug_2
+wait 0
+if 0ADC: test_cheat "go"
+jf @debug_2
+jump @start
+
+:start
+wait 0
+0AD1: show_formatted_text_highpriority "starting..." time 2000
+00A0: store_actor $PLAYER_ACTOR position_to 3@ 4@ 5@
+00AB: put_car $111 at 3@ 4@ 5@
+072A: put_actor $PLAYER_ACTOR into_car $111 driverseat 
+0AF0: 0@ = get_int_from_ini_file "cleo\DW_INTERIORS.ini" section "total" key "ints"
+wait 5000
+for 1@ = 1 to 0@
+    0093: 2@ = integer 1@ to_float 
+    0AED: 0@v = float 2@ to_string_format "%.15g"
+    0AC8: 16@ = allocate_memory_size 50
+    0AF4: 16@ = read_string_from_ini_file "cleo\DW_INTERIORS.ini" section 0@v key "string"
+    0AD4: 4@ = scan_string 16@ format "%d %f,%f,%f" 5@ 6@ 7@ 8@ //IF and SET
+    0AD1: show_formatted_text_highpriority "[%d] %f %f %f" time 5000 5@ 6@ 7@ 8@
+    wait 1000
+    04BB: select_interior 5@
+    0860: link_actor $PLAYER_ACTOR to_interior 5@ 
+    0840: link_car $111 to_interior 5@ 
+    00A1: put_actor $PLAYER_ACTOR at 6@ 7@ 8@
+    0AC9: free_allocated_memory 16@
+    0ACE: show_formatted_text_box "~g~Y ~w~for moving next, ~b~N ~w~for set new coords, ~r~O ~w~for remove, 9 for stop"
+    repeat
+        wait 100
+        if 0AB0:  key_pressed 78
+        then
+            00AA: store_car $111 position_to 10@ 11@ 12@
+            077E: get_active_interior_to 13@
+            0AC8: 16@ = allocate_memory_size 50
+            0AD3: string 16@ format "%d %f,%f,%f" 13@ 10@ 11@ 12@
+            0AF5: write_string 16@ to_ini_file "cleo\DW_INTERIORS.ini" section 0@v key "string"
+            0AD1: show_formatted_text_highpriority "saved!" time 2000         
+            wait 2000
+            break
+        end
+        if 0AB0:  key_pressed 79
+        then
+            0AF5: write_string "deleted" to_ini_file "cleo\DW_INTERIORS.ini" section 0@v key "string"
+            0AD1: show_formatted_text_highpriority "deleted!" time 2000         
+            wait 2000
+            break
+        end
+        if 0AB0:  key_pressed 57
+        then
+            30@ = 1         
+            break
+        end
+        if 
+            30@ == 1
+        then
+            break 
+        end
+    until 0AB0:  key_pressed 89
+    if 
+        30@ == 1
+    then
+        30@ = 0
+        break 
+    end
+end
+jump @debug_2

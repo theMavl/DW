@@ -1,0 +1,47 @@
+{$CLEO .s}
+0000: NOP
+{
+    Audio fade procedure
+    Input: 0@ = Audio handle, 1@ = in/out, 2@ = time, 3@ = ending (for 0-1) / release? (for 1-0)
+}
+32@ = 0
+if 1@ == 0
+then
+    5@ = -1.0
+    0093: 4@ = integer 2@ to_float 
+    0073: 5@ /= 4@
+    repeat
+        0093: 4@ = integer 32@ to_float
+        006B: 4@ *= 5@
+        4@ += 1.0
+        0ABC: set_audiostream 0@ volume 4@
+        wait 0
+    until 002D: 32@ >= 2@
+    0ABC: set_audiostream 0@ volume 0.0
+    if 3@ == 1
+    then
+        0AAE: release_audiostream 0@
+    end
+else
+    if 3@ == 0.0
+    then
+        5@ = 1.0
+    else
+        0087: 5@ = 3@
+    end
+    0093: 4@ = integer 2@ to_float 
+    0073: 5@ /= 4@
+    repeat
+        0093: 4@ = integer 32@ to_float
+        006B: 4@ *= 5@ 
+        0ABC: set_audiostream 0@ volume 4@
+        wait 0
+    until 002D: 32@ >= 2@
+    if 3@ == 0.0
+    then
+        0ABC: set_audiostream 0@ volume 1.0
+    else
+        0ABC: set_audiostream 0@ volume 3@
+    end 
+end
+0A93: end_custom_thread

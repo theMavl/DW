@@ -1,0 +1,50 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+var
+    $95: array 5 of Integer
+end
+while true
+wait 0
+    09B3: get_car $111 door_status 0@
+    if 8039: 0@ == 2
+    then
+        020A: set_car $111 door_status_to 2 
+    end
+    095F: get_car $111 componentA 2 rotation_to 6@
+    095F: get_car $111 componentA 3 rotation_to 16@
+    0087: 10@ = 16@
+    10@ *= 72.0
+    10@ /= 1.26
+    0681: attach_object $95[0] to_car $111 with_offset 0.566 -0.698 0.314 rotation 0.0 0.0 10@
+    0087: 11@ = 6@
+    11@ *= 72.0
+    11@ /= 1.26
+    0681: attach_object $95[1] to_car $111 with_offset -0.566 -0.698 0.314 rotation 0.0 0.0 11@
+    0AB4: 0@ = var 0
+    if or
+        //8039: 0@ == 2 //Not performing any teleport
+        0@ == 3
+        0@ == 0
+        0@ == 10
+    then
+        if or
+            00DB:   actor $PLAYER_ACTOR in_car $111
+            0611:   actor $PLAYER_ACTOR performing_animation "tar_one" 
+            0611:   actor $PLAYER_ACTOR performing_animation "tar_two"
+        then
+            0382: set_object $95[0] collision_detection 0
+            0382: set_object $95[1] collision_detection 0
+        else
+            0382: set_object $95[0] collision_detection 1
+            0382: set_object $95[1] collision_detection 1
+        end
+    else
+        if 00DB:   actor $PLAYER_ACTOR in_car $111
+        then
+            0382: set_object $95[0] collision_detection 0
+            0382: set_object $95[1] collision_detection 0
+        end 
+    end
+end
+0A93: end_custom_thread

@@ -1,0 +1,78 @@
+{$CLEO .s}
+0000: NOP
+0A93: end_custom_thread
+thread "toggdeb"
+0AD1: show_formatted_text_highpriority "array %d" time 2000 0@
+wait 3000
+//0AB4: 0@ = var 26
+0ADF: add_dynamic_GXT_entry "SWITCH1" text "STT  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITCH2" text "TRH  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITCH3" text "LDM  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITCH4" text "DEM_LEV  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITCH5" text "KEYBOARD  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITCH6" text "HELMIC  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITCH7" text "STABIL  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITCH8" text "VORT_LOOP  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITCH9" text "VORT_BF  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITC10" text "FRET  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITC11" text "TEL_CIR  ~1~"
+0ADF: add_dynamic_GXT_entry "SWITCTI" text "Switchers"
+0A92: create_custom_thread "DEBDRAW.s" 0 0 0 0 0 0 0 0 0 0 0 0
+while true
+    wait 0
+    if $93 == 0
+    then
+        continue
+    end 
+    0AB1: call @get_switcher 3 array 0@ element 1 size 1 to 1@
+    gosub @draw
+    wait 1                                               
+    0AB1: call @get_switcher 3 array 0@ element 2 size 1 to 2@
+    gosub @draw
+    wait 1
+    0AB1: call @get_switcher 3 array 0@ element 3 size 1 to 3@
+    gosub @draw
+    wait 1
+    0AB1: call @get_switcher 3 array 0@ element 4 size 1 to 4@
+    gosub @draw
+    wait 1
+    0AB1: call @get_switcher 3 array 0@ element 5 size 1 to 5@
+    gosub @draw
+    wait 1
+    0AB1: call @get_switcher 3 array 0@ element 6 size 1 to 6@
+    gosub @draw
+    wait 1
+    0AB1: call @get_switcher 3 array 0@ element 7 size 1 to 7@
+    gosub @draw
+    wait 1
+    0AB1: call @get_switcher 3 array 0@ element 8 size 1 to 8@
+    gosub @draw
+    wait 1
+    0AB1: call @get_switcher 3 array 0@ element 9 size 1 to 9@
+    gosub @draw
+    wait 1
+    0AB1: call @get_switcher 3 array 0@ element 10 size 1 to 10@
+    gosub @draw
+    wait 1
+    0AB1: call @get_switcher 3 array 0@ element 11 size 1 to 11@
+    gosub @draw
+    wait 1
+end
+0A93: end_custom_thread
+
+:draw
+    0ABA: end_custom_thread_named "DEBDRAW"
+    0A92: create_custom_thread "DEBDRAW.s" 0 1@ 2@ 3@ 4@ 5@ 6@ 7@ 8@ 9@ 10@ 11@  
+return
+
+:get_switcher 
+{
+Get selecteed switcher state
+0@ - array, 1@ - element, 2@ - value, 3@ = size 
+Example: 0AB1: call @readArray 3 array 0@ element 1 size 1 to 2@
+} 
+wait 0
+dec(1@) 
+005A: 0@ += 1@ // (int) 
+0A8D: 3@ = read_memory 0@ size 2@ virtual_protect 0 
+0AB2: ret 1 3@

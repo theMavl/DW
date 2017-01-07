@@ -1,0 +1,53 @@
+{$CLEO .s}
+
+//-------------MAIN---------------
+thread 'clvis'
+
+12@ = 0 // previous
+0085: 10@ = 0@
+0750: set_object 10@ visibility 0
+repeat
+    wait 0
+    0D2A: 13@ = get_car $111 number_of_collided_entites
+    0AD1: show_formatted_text_highpriority "[%d] n: %d p: %d a:%d" time 2000 11@ 13@ 12@ 8@
+    if or 
+        8039: NOT 13@ == 12@
+        03C9:   car $111 damaged 
+    then
+        if or 
+            13@ == 1
+            03C9:   car $111 damaged
+        then
+            0750: set_object 10@ visibility 1
+            wait 250
+            0750: set_object 10@ visibility 0 
+        end
+        0085: 12@ = 13@ // (int) 
+    end
+    0AB4: 11@ = var 12 
+until 11@ == 0
+0A93: end_custom_thread
+
+:fade
+0085: 3@ = 0@ //START 20
+0085: 4@ = 1@ //FINISH 90
+0085: 5@ = 2@ //TIME 2000
+{3@ *= 7
+3@ /= 5 
+3@ += 100 //CONVERTED START  128
+4@ *= 7
+4@ /= 5 
+4@ += 100 //CONVERTED FINISH  226
+0085: 7@ = 4@
+0062: 7@ -= 3@ //DELTA CONVERTED 98}
+32@ = 0
+0566: link_object 10@ to_interior $ACTIVE_INTERIOR
+repeat
+    0085: 8@ = 32@ // 100
+    006A: 8@ *= 7@ //9800
+    0072: 8@ /= 5@ //5
+    005A: 8@ += 3@ //133
+    0D11: set_object 10@ alpha 8@
+    wait 0
+until 002B: 32@ >= 5@
+return
