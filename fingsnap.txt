@@ -46,7 +46,7 @@ else
     then
         0A1A: actor $PLAYER_ACTOR perform_animation "CLICK" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
     else
-        0812: AS_actor $PLAYER_ACTOR perform_animation  "CLICK" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+        0605: actor $PLAYER_ACTOR perform_animation "CLICK" IFP "DW" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1
     end
     wait 1250                                                         
 end 
