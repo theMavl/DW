@@ -16,7 +16,7 @@ thread "SON_GUI"
 :1
 wait 100
 if and
-    02D8:   actor $PLAYER_ACTOR current_weapon == 7
+    call_scm_func @guiConds 0
     80DF:   not actor $PLAYER_ACTOR driving 
 jf @1
 
@@ -91,6 +91,7 @@ if or
     0@ == 1
     02D8:   actor $PLAYER_ACTOR current_weapon == 7
 then
+
     0485: return_true
 else
     059A: return_false
