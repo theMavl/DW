@@ -251,8 +251,7 @@ else
     else
         gosub @noflick
     end
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav" 
-    0AAD: set_audiostream LOOP perform_action 1
+    gosub @load_loop
     gosub @ssd_setlight
     wait 1100
     0AAD: set_audiostream LOOP perform_action 0
@@ -349,8 +348,7 @@ else
     else
         gosub @noflick
     end
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav" 
-    0AAD: set_audiostream LOOP perform_action 1
+    gosub @load_loop 
     gosub @ssd_setlight
     wait 1100
     0AAD: set_audiostream LOOP perform_action 0
@@ -473,8 +471,7 @@ else
     else
         gosub @noflick
     end 
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
-    0AAD: set_audiostream LOOP perform_action 1
+    gosub @load_loop
     gosub @ssd_setlight
     wait 1100
     00A7: car TARGET drive_to 0.0 0.0 0.0
@@ -509,6 +506,13 @@ jump @ssd_main
 :ssd_acc_inc
 wait 100
 gosub @removeuzi
+if 29@ == 1 // shades on
+then
+    0AAC: LOOP = load_audiostream "DWS\sgl_act.mp3"
+    0AAD: set_audiostream LOOP perform_action 1
+    wait 700
+    Audiostream.Release(LOOP)
+end
 0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
 0AAD: set_audiostream LOOP perform_action 1
 gosub @ssd_setlight_inc
@@ -547,6 +551,13 @@ end
 gosub @ssd_removelight_inc
 07CC: set_player_enter_car_button $PLAYER_CHAR to 1
 Audiostream.Release(LOOP)
+if 29@ == 1 // shades on
+then
+    0AAC: LOOP = load_audiostream "DWS\sgl_off.mp3"
+    0AAD: set_audiostream LOOP perform_action 1
+    wait 900
+    Audiostream.Release(LOOP)
+end
 jump @ssd_main
 
 :ssd_scan
@@ -713,10 +724,10 @@ else
     0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
     wait 300
     MODE = 0
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
+    0AAC: LOOP = load_audiostream "DWS\sgl_loop.mp3"
     0AAD: set_audiostream LOOP perform_action 1
     0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0
-    wait 2675
+    wait 2975
     0AAD: set_audiostream LOOP perform_action 0
     Audiostream.Release(LOOP)
 end
@@ -768,17 +779,18 @@ until 04EE:   animation "DW" loaded
 0ABA: end_custom_thread_named 'SON_GUI'
 0992: set_player $PLAYER_CHAR weapons_scrollable 0
 if
-    29@ == 0
+    29@ == 0 // shades off
 then
     0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_six" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
     //0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_six" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
     wait 650
     01B2: give_actor $PLAYER_ACTOR weapon 6 ammo 1E38
+    0AAC: ACT = load_audiostream "DWS\ssd_act.wav"
 else
     0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
     wait 250
+    0AAC: ACT = load_audiostream "DWS\sgl_act.mp3"
 end    
-0AAC: ACT = load_audiostream "DWS\ssd_act.wav"
 MODE = 1
 0AAD: set_audiostream ACT perform_action 1
 gosub @ssd_setlight
@@ -804,23 +816,23 @@ if and
 82D8: not  actor $PLAYER_ACTOR current_weapon == 13
 29@ == 0
 then
-wait 0
-0470: TEMP = actor $PLAYER_ACTOR current_weapon
-04B8: get_weapon_data_from_actor $PLAYER_ACTOR weapon_group 11 weapon 24@ ammo 25@ model 26@
-0555: remove_weapon 24@ from_actor $PLAYER_ACTOR
-if
-    28@ == 1
-then
-    01B2: give_actor $PLAYER_ACTOR weapon 10 ammo 1E38
-end
-Audiostream.Release(DLOOP)
-0AD1: show_formatted_text_highpriority "Program 'Disarmament' ~r~Terminated" time 3000
-01B2: give_actor $PLAYER_ACTOR weapon 7 ammo 1E38
-01B2: give_actor $PLAYER_ACTOR weapon TEMP ammo 1E38
-0ABA: end_custom_thread_named 'SON_CUI'
-03F0: enable_text_draw 0
-0A92: create_custom_thread "sonic_gui.s" //Launch GUI 
-jump @ssd_main  
+    wait 0
+    0470: TEMP = actor $PLAYER_ACTOR current_weapon
+    04B8: get_weapon_data_from_actor $PLAYER_ACTOR weapon_group 11 weapon 24@ ammo 25@ model 26@
+    0555: remove_weapon 24@ from_actor $PLAYER_ACTOR
+    if
+        28@ == 1
+    then
+        01B2: give_actor $PLAYER_ACTOR weapon 10 ammo 1E38
+    end
+    Audiostream.Release(DLOOP)
+    0AD1: show_formatted_text_highpriority "Program 'Disarmament' ~r~Terminated" time 3000
+    01B2: give_actor $PLAYER_ACTOR weapon 7 ammo 1E38
+    01B2: give_actor $PLAYER_ACTOR weapon TEMP ammo 1E38
+    0ABA: end_custom_thread_named 'SON_CUI'
+    03F0: enable_text_draw 0
+    0A92: create_custom_thread "sonic_gui.s" //Launch GUI 
+    jump @ssd_main  
 end
 WAIT 100
 //QT - œ≈–≈Ã≈ÕÕ¿ﬂ ƒÀﬂ  ŒŒ–ƒ»Õ¿“ÕŒ… ◊≈“¬≈–“»
@@ -1051,9 +1063,15 @@ else
     wait 250
 end
 Audiostream.Release(DLOOP)
+if 29@ == 1 // shades
+then
+    0AAC: DLOOP = load_audiostream "DWS\sgl_off.mp3"
+    0AAD: set_audiostream DLOOP perform_action 1
+end    
 0AD1: show_formatted_text_highpriority "Disarmament Mode ~r~Deactivated" time 3000
 03E6: remove_text_box
 wait 1500
+Audiostream.Release(DLOOP)
 0992: set_player $PLAYER_CHAR weapons_scrollable 1
 04EF: release_animation "DW"
 0A92: create_custom_thread "sonic_gui.s" //Launch GUI
@@ -1129,8 +1147,7 @@ else
     else
         gosub @noflick
     end
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
-    0AAD: set_audiostream LOOP perform_action 1
+    gosub @load_loop
     gosub @ssd_setlight
     wait 1100
     0AAD: set_audiostream LOOP perform_action 0
@@ -1276,8 +1293,7 @@ else
     else
         gosub @noflick
     end 
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
-    0AAD: set_audiostream LOOP perform_action 1
+    gosub @load_loop
     gosub @ssd_setlight
     wait 1100
     gosub @ssd_removelight
@@ -1538,4 +1554,16 @@ then
     end
 end
 wait 0
+return
+
+:load_loop
+if 29@ == 0
+then
+    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
+    0AAD: set_audiostream LOOP perform_action 1
+else
+    0AAC: LOOP = load_audiostream "DWS\sgl_loop.mp3"
+    0AAD: set_audiostream LOOP perform_action 1
+    wait 500
+end
 return

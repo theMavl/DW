@@ -400,35 +400,59 @@ end
 0ABA: end_custom_thread_named 'extcalb' // Kill exterior calibration
 
 04ED: load_animation "DW"
-wait 100 
-01B2: give_actor $PLAYER_ACTOR weapon 1 ammo 1E38
-Object.Create(0@, #BRASSKNUCKLE, 0.0, 0.0, 0.0)
-09CA: set_object 0@ immunities BP 1 FP 1 EP 1 CP 1 MP 1 
-070A: AS_actor  $PLAYER_ACTOR attach_to_object 0@ offset 0.0 0.0 0.0 on_bone 6 16 perform_animation "NULL" IFP_file "NULL" time 1
-//0A1A: actor $PLAYER_ACTOR perform_animation "KEY" IFP "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 1 -1 ms // versionC  
-0605: actor $PLAYER_ACTOR perform_animation "KEY" IFP "DW" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1
+wait 100
+
+0AB4: 6@ = var 51 // shades indicator
+if 6@ == 0 // if shades OFF
+then 
+    // KEY
+    01B2: give_actor $PLAYER_ACTOR weapon 1 ammo 1E38
+    Object.Create(0@, #BRASSKNUCKLE, 0.0, 0.0, 0.0)
+    09CA: set_object 0@ immunities BP 1 FP 1 EP 1 CP 1 MP 1 
+    070A: AS_actor  $PLAYER_ACTOR attach_to_object 0@ offset 0.0 0.0 0.0 on_bone 6 16 perform_animation "NULL" IFP_file "NULL" time 1
+    //0A1A: actor $PLAYER_ACTOR perform_animation "KEY" IFP "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 1 -1 ms // versionC  
+    0605: actor $PLAYER_ACTOR perform_animation "KEY" IFP "DW" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1
+else
+    // SHADES
+    0605: actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP "DW" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1
+    0AAC: 7@ = load_audiostream "DWS\sgl_loop.mp3"
+    0AAD: set_audiostream 7@ perform_action 1
+end    
+       
 if
     0205: actor $PLAYER_ACTOR near_car $111 radius 90.0 90.0 90.0 flag 0
 then
     marker.CreateAboveCar(31@,$111)
     0165: set_marker 31@ color_to 2
-    wait 850
-    0A92: create_custom_thread "keylight.s"
-    32@ = 0
-    repeat
-        wait 0
-        if 32@ >= 3450
-        then
-            0164: disable_marker 31@
-        end
-    until 8611:   NOT actor $PLAYER_ACTOR performing_animation "KEY"
-    01B2: give_actor $PLAYER_ACTOR weapon 0 ammo 1E38
-    Object.Destroy(0@)
+    wait 700
+    if 6@ == 0 // if shades OFF
+    then
+        // KEY
+        wait 150
+        0A92: create_custom_thread "keylight.s"
+        32@ = 0
+        repeat
+            wait 0
+            if 32@ >= 3450
+            then
+                0164: disable_marker 31@
+            end
+        until 8611:   NOT actor $PLAYER_ACTOR performing_animation "KEY"
+        01B2: give_actor $PLAYER_ACTOR weapon 0 ammo 1E38
+        Object.Destroy(0@)
+    else
+        32@ = 0
+        // SHADES
+        0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0 
+    end
+    
     if 075C:   marker 31@ enabled
     then
-        while 32@ < 3450
+        while 32@ < 1710
             wait 0
         end
+        0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 1
+        wait 1850
         0164: disable_marker 31@
     end 
     jump @TSPAWN_11  
@@ -442,11 +466,20 @@ wait 200
 Audiostream.PerformAction(17@, PLAY)
 0AC2: set_3d_audiostream 17@ position 3@ 4@ 5@
 0ABC: set_audiostream 17@ volume 5.0
-wait 1000
-0A92: create_custom_thread "keylight.s"
-wait 350
-0612: set_actor $PLAYER_ACTOR animation "KEY" paused 0
-wait 6650
+wait 500
+if 6@ == 0 // shades off
+then
+    wait 500
+    0A92: create_custom_thread "keylight.s"
+    wait 350
+    0612: set_actor $PLAYER_ACTOR animation "KEY" paused 0
+else
+    0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0
+    wait 850
+end
+wait 900
+0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 1
+wait 5750
 0750: set_object $95[0] visibility 0 
 0750: set_object $95[1] visibility 0 
 0750: set_object $95[3] visibility 0 
@@ -466,9 +499,15 @@ end
 wait 2840
 0AB3: var 0 = 2
 0AB3: var 28 = 1 // lock console
-0612: set_actor $PLAYER_ACTOR animation "KEY" paused 1
+if 6@ == 0 // shades OFF
+then
+    0612: set_actor $PLAYER_ACTOR animation "KEY" paused 1
+else
+    Audiostream.Release(7@)
+end
 0AB3: var 12 = 0
 00AA: store_car $111 position_to 3@ 4@ 5@
+
 0174: 6@ = car $111 Z_angle 
 
 0AB3: var 21 = 3@
@@ -484,14 +523,18 @@ wait 2840
 0A92: create_custom_thread "fade.s" 2
 32@ = 0
 1@ = 0
+0AB4: 6@ = var 51 // shades indicator
 repeat
     wait 0
-    if and
-        Object.Exists(0@) 
-        8611:   NOT actor $PLAYER_ACTOR performing_animation "KEY" 
+    if 6@ == 0 // shades OFF
     then
-        01B2: give_actor $PLAYER_ACTOR weapon 0 ammo 1E38
-        Object.Destroy(0@)
+        if and
+            Object.Exists(0@) 
+            8611:   NOT actor $PLAYER_ACTOR performing_animation "KEY" 
+        then
+            01B2: give_actor $PLAYER_ACTOR weapon 0 ammo 1E38
+            Object.Destroy(0@)
+        end
     end
     if and
         $93 == 1

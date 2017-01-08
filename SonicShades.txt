@@ -10,8 +10,9 @@ model.Load(18797)
 
 :shades
 wait 0 
-if
-056D:   actor $PLAYER_ACTOR defined
+if and
+    056D:   actor $PLAYER_ACTOR defined
+    03EE:   player $PLAYER_CHAR controllable 
 else_jump @shades 
 if and
     0AB0:   key_pressed 53
@@ -21,10 +22,13 @@ then
     if
         03CA:   object 0@ exists
     then
+        0AAC: 1@ = load_audiostream "DWS\sgl_off.mp3"
+        0AAD: set_audiostream 1@ perform_action 1
         0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
         wait 800
         Object.Destroy(0@)
         0992: set_player $PLAYER_CHAR weapons_scrollable 1
+        Audiostream.Release(1@)
         0AB3: var 51 = 0 
     else
         0@ = Object.Create(18797, 0.0, 0.0, -100.0)
