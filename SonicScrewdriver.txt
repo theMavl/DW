@@ -668,7 +668,7 @@ then
     //wait 1250
 else
     if
-    29@ == 0
+        29@ == 0
     then
         0612: set_actor $PLAYER_ACTOR animation "Sonic_eight" paused 1
         wait 850
@@ -712,6 +712,7 @@ then
 else
     0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
     wait 300
+    MODE = 0
     0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
     0AAD: set_audiostream LOOP perform_action 1
     0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0
