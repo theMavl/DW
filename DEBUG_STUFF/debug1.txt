@@ -6,22 +6,8 @@
 
 
 0000:
-Model.Load(#POOLCUE)
-038B: load_requested_models 
+04D7: set_actor $PLAYER_ACTOR locked 0
 
-        0@ = Object.Create(#POOLCUE, 0.0, 0.0, -100.0)
-        //08D2: object 0@ scale_model 0.05 
-        0382: set_object 0@ collision_detection 0
-
-        repeat
-        wait 0
-            0D0B: get_actor $PLAYER_ACTOR bone BONE_RIGHTHAND matrix_pointer_to 1@
-            0D06: get_matrix 1@ position_to 1@ 2@ 3@
-            show_text "%f %f %f" 100 1@ 2@ 3@
-            Object.PutAt(0@, 1@, 2@, 3@)  
-
-        until 0ab0: 56
-object.Destroy(0@)
 end_custom_thread
 //07CD: AS_actor $PLAYER_ACTOR walk_to 0.01 1.4 1024.375 stop_with_angle 270.0 within_radius 0.000001 
 

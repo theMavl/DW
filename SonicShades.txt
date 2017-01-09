@@ -26,10 +26,10 @@ then
         0AAD: set_audiostream 1@ perform_action 1
         0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
         wait 800
+        0AB3: var 51 = 0
         Object.Destroy(0@)
         0992: set_player $PLAYER_CHAR weapons_scrollable 1
-        Audiostream.Release(1@)
-        0AB3: var 51 = 0 
+        Audiostream.Release(1@) 
     else
         0@ = Object.Create(18797, 0.0, 0.0, -100.0)
         0382: set_object 0@ collision_detection 0

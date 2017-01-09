@@ -1,7 +1,7 @@
 {$CLEO .cs}
 0000: NOP
 /*
-Sonic Screwdriwer v 3.0
+The Sonic Screwdriwer v 1.0
 For Doctor Who: Dalek invasion mod
 Script: Mavl % Tommy
 Models: Tommy
@@ -57,13 +57,7 @@ jf @def
 :load
 wait 150
 04ED: load_animation "DW" 
-Model.Load(#SHOVEL)
-Model.Load(#POOLCUE)
-Model.Load(#GUN_VIBE1)
-Model.Load(#GUN_VIBE2)
-Model.Load(#GUN_DILDO2)
-Model.Load(18638)
-Model.Load(18639)
+Model.Load(#GOLFCLUB)
 038B: load_requested_models 
 wait 100
 if 04EE: animation "DW" loaded
@@ -73,7 +67,6 @@ jf @load
 
 :ssd_main
 wait 100
-0AB4: 29@ = var 51
 if $93 == 0
 jf @ssd_main
 if
@@ -83,33 +76,22 @@ then
 else
     28@ = 0
 end
-if
-    29@ == 1
-then
-    01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
-    0992: set_player $PLAYER_CHAR weapons_scrollable 0
-end
-if
+if and
+    0491:   actor $PLAYER_ACTOR has_weapon 2
     80DF:   NOT actor $PLAYER_ACTOR driving
-then
-    if or
-        0491:   actor $PLAYER_ACTOR has_weapon 7
-        29@ == 1
-    then
-        jump @ssd_onfoot
-    else
-        jump @ssd_main
-    end
-else
-    jump @ssd_incar
-end   
+jf @ssd_incar
+wait 0
+jump @ssd_onfoot    
 
 :ssd_onfoot
 wait 0
+0AB4: 29@ = var 51
+if
+    29@ == 0
+jf @ssd_main
 if or
-    29@ == 1
     02D8:   actor $PLAYER_ACTOR current_weapon == 0
-    02D8:   actor $PLAYER_ACTOR current_weapon == 7
+    02D8:   actor $PLAYER_ACTOR current_weapon == 2
 jf @ssd_main
 if 
 0AB0:   key_pressed 85
@@ -154,40 +136,32 @@ wait 0
 MODE = 0
 if and
     0AB0:   key_pressed 90//z
+    Actor.HasWeapon($PLAYER_ACTOR, 2)
     00DF:   actor $PLAYER_ACTOR driving
     80DD:   not actor $PLAYER_ACTOR driving_car_with_model #SPARROW 
 then
-    if or
-        Actor.HasWeapon($PLAYER_ACTOR, 7)
-        29@ == 1
-    then
-        wait 800
-        jump @ssd_lock_inc
-    end
+    wait 800
+    jump @ssd_lock_inc
 end
 
 if and
     0AB0:   key_pressed 88//x
+    Actor.HasWeapon($PLAYER_ACTOR, 2)
     00DF:   actor $PLAYER_ACTOR driving
     80DD:   not actor $PLAYER_ACTOR driving_car_with_model #bike
     80DD:   not actor $PLAYER_ACTOR driving_car_with_model #SPARROW
     80DD:   not actor $PLAYER_ACTOR driving_car_with_model #bmx
     80DD:   not actor $PLAYER_ACTOR driving_car_with_model 510 
 then
-    if or
-        Actor.HasWeapon($PLAYER_ACTOR, 7)
-        29@ == 1
+    if 04A7:   actor $PLAYER_ACTOR driving_boat
     then
-        if 04A7:   actor $PLAYER_ACTOR driving_boat
+        if 80DD: NOT actor $PLAYER_ACTOR driving_car_with_model #VORTEX 
         then
-            if 80DD: NOT actor $PLAYER_ACTOR driving_car_with_model #VORTEX 
-            then
-                jump @ssd_main
-            end
+            jump @ssd_main
         end
-        wait 800
-        jump @ssd_acc_inc
-    end 
+    end
+    wait 800
+    jump @ssd_acc_inc 
 else
     jump @ssd_main
 end
@@ -225,7 +199,7 @@ marker.CreateAboveCar(31@,TARGET)
 06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at X Y Z
 wait 1000
 if 
-02D8:   actor $PLAYER_ACTOR current_weapon == 7
+02D8:   actor $PLAYER_ACTOR current_weapon == 2
 then
     if MODE == 1 
     then
@@ -233,7 +207,7 @@ then
     else
         gosub @noflick2
     end
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
     0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight
     WAIT 1100
@@ -243,7 +217,7 @@ then
     020B: explode_car TARGET
     0164: disable_marker 31@
     wait 2000
-    gosub @ssd_stuff
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
     wait 400 
     015A: restore_camera
     04EF: release_animation "DW"  
@@ -257,7 +231,8 @@ else
     else
         gosub @noflick
     end
-    gosub @load_loop
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav" 
+    0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight
     wait 1100
     0AAD: set_audiostream LOOP perform_action 0
@@ -266,7 +241,7 @@ else
     020B: explode_car TARGET
     0164: disable_marker 31@
     wait 800
-    gosub @ssd_stuff
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
     wait 500
     01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0  
     015A: restore_camera
@@ -305,7 +280,7 @@ marker.CreateAboveCar(31@,TARGET)
 06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at X Y Z
 wait 1000
 if 
-02D8:   actor $PLAYER_ACTOR current_weapon == 7
+02D8:   actor $PLAYER_ACTOR current_weapon == 2
 then
     if MODE == 1 
     then
@@ -313,7 +288,7 @@ then
     else
         gosub @noflick2
     end
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
     0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight
     WAIT 1100
@@ -340,7 +315,7 @@ then
     end 
     end
     wait 1600
-    gosub @ssd_stuff
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
     wait 400 
     015A: restore_camera
     04EF: release_animation "DW"  
@@ -354,7 +329,8 @@ else
     else
         gosub @noflick
     end
-    gosub @load_loop 
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav" 
+    0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight
     wait 1100
     0AAD: set_audiostream LOOP perform_action 0
@@ -379,7 +355,7 @@ else
     end 
     end
     wait 0
-    gosub @ssd_stuff
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
     wait 500
     01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0  
     015A: restore_camera
@@ -435,7 +411,7 @@ marker.CreateAboveCar(31@,TARGET)
 06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at X Y Z
 wait 1000
 if 
-02D8:   actor $PLAYER_ACTOR current_weapon == 7
+02D8:   actor $PLAYER_ACTOR current_weapon == 2
 then
     if MODE == 1 
     then
@@ -443,7 +419,7 @@ then
     else
         gosub @noflick2
     end
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
     0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight
     WAIT 1000
@@ -463,7 +439,7 @@ then
     04BA: set_car TARGET speed_to 100.0
     0164: disable_marker 31@
     wait 1600
-    gosub @ssd_stuff
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
     wait 400 
     015A: restore_camera
     04EF: release_animation "DW"  
@@ -477,7 +453,8 @@ else
     else
         gosub @noflick
     end 
-    gosub @load_loop
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
+    0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight
     wait 1100
     00A7: car TARGET drive_to 0.0 0.0 0.0
@@ -496,7 +473,7 @@ else
     04BA: set_car TARGET speed_to 100.0
     0164: disable_marker 31@
     wait 0
-    gosub @ssd_stuff
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
     wait 800
     01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0  
     015A: restore_camera
@@ -512,14 +489,7 @@ jump @ssd_main
 :ssd_acc_inc
 wait 100
 gosub @removeuzi
-if 29@ == 1 // shades on
-then
-    0AAC: LOOP = load_audiostream "DWS\sgl_act.mp3"
-    0AAD: set_audiostream LOOP perform_action 1
-    wait 700
-    Audiostream.Release(LOOP)
-end
-0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
+0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
 0AAD: set_audiostream LOOP perform_action 1
 gosub @ssd_setlight_inc
 0AC0: loop_audiostream LOOP flag 1
@@ -557,13 +527,6 @@ end
 gosub @ssd_removelight_inc
 07CC: set_player_enter_car_button $PLAYER_CHAR to 1
 Audiostream.Release(LOOP)
-if 29@ == 1 // shades on
-then
-    0AAC: LOOP = load_audiostream "DWS\sgl_off.mp3"
-    0AAD: set_audiostream LOOP perform_action 1
-    wait 900
-    Audiostream.Release(LOOP)
-end
 jump @ssd_main
 
 :ssd_scan
@@ -583,7 +546,7 @@ else
 end
 wait 0
 if
-    02D8:   actor $PLAYER_ACTOR current_weapon == 7
+    02D8:   actor $PLAYER_ACTOR current_weapon == 2
 then 
     gosub @scan_11th
 else
@@ -621,17 +584,10 @@ then
     wait 0    
     015D: set_gamespeed 0.0
 else
-    if
-        29@ == 0
-    then
-        wait 1750
-        gosub @ssd_removelight
-        0612: set_actor $PLAYER_ACTOR animation "Sonic_eight" paused 0
-        wait 0
-    else
-        0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0
-        wait 0
-    end
+    wait 1750
+    gosub @ssd_removelight
+    0612: set_actor $PLAYER_ACTOR animation "Sonic_eight" paused 0
+    wait 0
     if 
         SMODE == 0
     then
@@ -673,26 +629,21 @@ if
 then
     0612: set_actor $PLAYER_ACTOR animation "Sonic_nine" paused 1
     wait 1750
-    04ED: load_animation "DW"
+    {04ED: load_animation "DW"
     repeat
     wait 10
     until 04EE:   animation "DW" loaded
     0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_seven" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
     wait 650
-    gosub @ssd_stuff
-    wait 1500
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38}
+    wait 1000
+    //01B2: give_actor $PLAYER_ACTOR weapon 7 ammo 1E38 
+    //wait 1250
 else
-    if
-        29@ == 0
-    then
-        0612: set_actor $PLAYER_ACTOR animation "Sonic_eight" paused 1
-        wait 850
-        01B2: give_actor $PLAYER_ACTOR weapon 0 ammo 1E38
-        wait 750
-    else
-        0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 1
-        wait 0
-    end
+    0612: set_actor $PLAYER_ACTOR animation "Sonic_eight" paused 1
+    wait 850
+    01B2: give_actor $PLAYER_ACTOR weapon 0 ammo 1E38
+    wait 750
 end
 wait 0
 0992: set_player $PLAYER_CHAR weapons_scrollable 1
@@ -708,33 +659,19 @@ wait 10
 until 04EE:   animation "DW" loaded
 wait 100
 0ABA: end_custom_thread_named 'SON_GUI'
-if
-    29@ == 0
-then
-    0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_eight" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
-    //0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_eight" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    wait 950
-    01B2: give_actor $PLAYER_ACTOR weapon 7 ammo 1E38
-    0992: set_player $PLAYER_CHAR weapons_scrollable 0
-    MODE = 0
-    wait 600
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
-    0AAD: set_audiostream LOOP perform_action 1
-    gosub @ssd_setlight
-    wait 2675
-    0AAD: set_audiostream LOOP perform_action 0
-    Audiostream.Release(LOOP)
-else
-    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    wait 300
-    MODE = 0
-    0AAC: LOOP = load_audiostream "DWS\sgl_loop.mp3"
-    0AAD: set_audiostream LOOP perform_action 1
-    0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0
-    wait 2975
-    0AAD: set_audiostream LOOP perform_action 0
-    Audiostream.Release(LOOP)
-end
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_eight" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+//0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_eight" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+wait 950
+01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+MODE = 0
+wait 600
+0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
+0AAD: set_audiostream LOOP perform_action 1
+gosub @ssd_setlight
+wait 2675
+0AAD: set_audiostream LOOP perform_action 0
+Audiostream.Release(LOOP)
 wait 0
 return
 
@@ -751,7 +688,7 @@ wait 100
 0992: set_player $PLAYER_CHAR weapons_scrollable 0
 MODE = 0
 wait 750
-0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
+0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
 0AAD: set_audiostream LOOP perform_action 1
 gosub @ssd_setlight
 wait 2250
@@ -760,21 +697,16 @@ gosub @ssd_removelight
 Audiostream.Release(LOOP)
 wait 550
 MODE = 1
-01B2: give_actor $PLAYER_ACTOR weapon 6 ammo 1E38
+01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
 gosub @ssd_setlight
-0AAC: ACT = load_audiostream "DWS\ssd_act.wav"
-0AAD: set_audiostream ACT perform_action 1
 wait 200
 return
 
 :ssd_dsr
 wait 100
-if 
+if and 
 00E1: key_pressed 0 6
-jf @ssd_main
-if or
-02D8:   actor $PLAYER_ACTOR current_weapon == 7
-29@ == 1
+02D8:   actor $PLAYER_ACTOR current_weapon == 2
 jf @ssd_main
 04ED: load_animation "DW"
 repeat
@@ -782,19 +714,11 @@ wait 10
 until 04EE:   animation "DW" loaded
 0ABA: end_custom_thread_named 'SON_GUI'
 0992: set_player $PLAYER_CHAR weapons_scrollable 0
-if
-    29@ == 0 // shades off
-then
-    0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_six" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
-    //0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_six" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    wait 650
-    01B2: give_actor $PLAYER_ACTOR weapon 6 ammo 1E38
-    0AAC: ACT = load_audiostream "DWS\ssd_act.wav"
-else
-    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    wait 250
-    0AAC: ACT = load_audiostream "DWS\sgl_act.mp3"
-end    
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_six" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+//0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_six" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+wait 650
+//01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
+0AAC: ACT = load_audiostream "DWS\ssd_act.wav"
 MODE = 1
 0AAD: set_audiostream ACT perform_action 1
 gosub @ssd_setlight
@@ -807,36 +731,32 @@ Audiostream.Release(ACT)
 gosub @ssd_setlight
 0AC0: loop_audiostream DLOOP flag 1
 0A92: create_custom_thread "sonic_gui.s" 1 //Launch GUI cross mode
-if
-29@ == 0
-then
-0992: set_player $PLAYER_CHAR weapons_scrollable 1
-end
 04EF: release_animation "DW"
+0992: set_player $PLAYER_CHAR weapons_scrollable 1
 wait 1300
-REPEAT
-0AB4: 29@ = var 51 
+REPEAT 
 if and
-82D8: not  actor $PLAYER_ACTOR current_weapon == 13
-29@ == 0
+82D8: not  actor $PLAYER_ACTOR current_weapon == 14
+82D8: not  actor $PLAYER_ACTOR current_weapon == 11
 then
-    wait 0
-    0470: TEMP = actor $PLAYER_ACTOR current_weapon
-    04B8: get_weapon_data_from_actor $PLAYER_ACTOR weapon_group 11 weapon 24@ ammo 25@ model 26@
-    0555: remove_weapon 24@ from_actor $PLAYER_ACTOR
-    if
-        28@ == 1
-    then
-        01B2: give_actor $PLAYER_ACTOR weapon 10 ammo 1E38
-    end
-    Audiostream.Release(DLOOP)
-    0AD1: show_formatted_text_highpriority "Program 'Disarmament' ~r~Terminated" time 3000
-    gosub @ssd_stuff
-    01B2: give_actor $PLAYER_ACTOR weapon TEMP ammo 1E38
-    0ABA: end_custom_thread_named 'SON_CUI'
-    03F0: enable_text_draw 0
-    0A92: create_custom_thread "sonic_gui.s" //Launch GUI 
-    jump @ssd_main  
+gosub @ssd_removelight
+wait 0
+0470: TEMP = actor $PLAYER_ACTOR current_weapon
+04B8: get_weapon_data_from_actor $PLAYER_ACTOR weapon_group 11 weapon 24@ ammo 25@ model 26@
+0555: remove_weapon 24@ from_actor $PLAYER_ACTOR
+if
+    28@ == 1
+then
+    01B2: give_actor $PLAYER_ACTOR weapon 10 ammo 1E38
+end
+Audiostream.Release(DLOOP)
+0AD1: show_formatted_text_highpriority "Program 'Disarmament' ~r~Terminated" time 3000
+01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
+01B2: give_actor $PLAYER_ACTOR weapon TEMP ammo 1E38
+0ABA: end_custom_thread_named 'SON_CUI'
+03F0: enable_text_draw 0
+0A92: create_custom_thread "sonic_gui.s" //Launch GUI 
+jump @ssd_main  
 end
 WAIT 100
 //QT - œ≈–≈Ã≈ÕÕ¿ﬂ ƒÀﬂ  ŒŒ–ƒ»Õ¿“ÕŒ… ◊≈“¬≈–“»
@@ -1042,7 +962,7 @@ wait 250
 Audiostream.Release(DISARM)
 //gosub @ssd_removelight
 0ABC: set_audiostream DLOOP volume 0@
-//0687: clear_actor $PLAYER_ACTOR task 
+0687: clear_actor $PLAYER_ACTOR task 
 04EF: release_animation "DW"
 //gosub @ssd_setlight
 end
@@ -1055,27 +975,14 @@ repeat
 wait 10
 until 04EE:   animation "DW" loaded
 0992: set_player $PLAYER_CHAR weapons_scrollable 0
-if
-    29@ == 0
-then
-    0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_seven" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
-    //0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_seven" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    wait 650
-    01B2: give_actor $PLAYER_ACTOR weapon 7 ammo 1E38
-else
-    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    wait 250
-end
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_seven" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+//0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_seven" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+wait 650
+01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
 Audiostream.Release(DLOOP)
-if 29@ == 1 // shades
-then
-    0AAC: DLOOP = load_audiostream "DWS\sgl_off.mp3"
-    0AAD: set_audiostream DLOOP perform_action 1
-end    
 0AD1: show_formatted_text_highpriority "Disarmament Mode ~r~Deactivated" time 3000
 03E6: remove_text_box
 wait 1500
-Audiostream.Release(DLOOP)
 0992: set_player $PLAYER_CHAR weapons_scrollable 1
 04EF: release_animation "DW"
 0A92: create_custom_thread "sonic_gui.s" //Launch GUI
@@ -1107,7 +1014,7 @@ marker.CreateAboveCar(31@,TARGET)
 06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at X Y Z
 wait 1000
 if 
-02D8:   actor $PLAYER_ACTOR current_weapon == 7
+02D8:   actor $PLAYER_ACTOR current_weapon == 2
 then
     if MODE == 1 
     then
@@ -1115,7 +1022,7 @@ then
     else
         gosub @noflick2
     end
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
     0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight
     WAIT 1100
@@ -1137,7 +1044,7 @@ then
     0164: disable_marker 31@
     wait 2000
     Audiostream.Release(LOCK)
-    gosub @ssd_stuff
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
     wait 400 
     015A: restore_camera
     04EF: release_animation "DW"  
@@ -1151,7 +1058,8 @@ else
     else
         gosub @noflick
     end
-    gosub @load_loop
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
+    0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight
     wait 1100
     0AAD: set_audiostream LOOP perform_action 0
@@ -1172,7 +1080,7 @@ else
     0164: disable_marker 31@
     wait 800
     Audiostream.Release(LOCK)
-    gosub @ssd_stuff
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
     wait 500
     01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0  
     015A: restore_camera
@@ -1196,7 +1104,7 @@ if and
 then 
     wait 100
     gosub @removeuzi
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
     0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight_inc
     wait 1250
@@ -1263,7 +1171,7 @@ marker.CreateAboveCar(31@,TARGET)
 06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at X Y Z
 wait 1000
 if 
-02D8:   actor $PLAYER_ACTOR current_weapon == 7
+02D8:   actor $PLAYER_ACTOR current_weapon == 2
 then
     if MODE == 1 
     then
@@ -1271,7 +1179,7 @@ then
     else
         gosub @noflick2
     end
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
     0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight
     WAIT 1100
@@ -1283,7 +1191,7 @@ then
     04FE: deflate_tire 4 on_car TARGET
     0164: disable_marker 31@
     wait 2000
-    gosub @ssd_stuff
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
     wait 400 
     015A: restore_camera
     04EF: release_animation "DW"  
@@ -1297,7 +1205,8 @@ else
     else
         gosub @noflick
     end 
-    gosub @load_loop
+    0AAC: LOOP = load_audiostream "DWS\ssd_new.wav"
+    0AAD: set_audiostream LOOP perform_action 1
     gosub @ssd_setlight
     wait 1100
     gosub @ssd_removelight
@@ -1308,7 +1217,7 @@ else
     04FE: deflate_tire 4 on_car TARGET
     0164: disable_marker 31@
     wait 800
-    gosub @ssd_stuff
+    01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
     wait 500
     01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0  
     015A: restore_camera
@@ -1331,27 +1240,15 @@ wait 10
 until 04EE:   animation "DW" loaded
 WAIT 100
 0ABA: end_custom_thread_named 'SON_GUI'
-wait 0
-if
-    29@ == 0
-then
-    0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_three" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
-    //0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_three" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    0992: set_player $PLAYER_CHAR weapons_scrollable 0
-    wait 550
-    01B2: give_actor $PLAYER_ACTOR weapon 7 ammo 1E38
-    wait 550
-    01B2: give_actor $PLAYER_ACTOR weapon 6 ammo 1E38
-    0AAC: ACT = load_audiostream "DWS\ssd_act.wav"
-    0AAD: set_audiostream ACT perform_action 1
-    gosub @ssd_setlight
-    wait 700
-    gosub @ssd_removelight
-    Audiostream.Release(ACT)
-else
-    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    wait 250
-end
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_three" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+//0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_three" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+wait 550
+01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
+wait 550
+gosub @ssd_setlight
+wait 700
+gosub @ssd_removelight
 return
 
 :noflick
@@ -1362,20 +1259,12 @@ wait 10
 until 04EE:   animation "DW" loaded
 WAIT 100
 0ABA: end_custom_thread_named 'SON_GUI'
-wait 0
-if
-    29@ == 0
-then
-    0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_two" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
-    //0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_two" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    0992: set_player $PLAYER_CHAR weapons_scrollable 0
-    wait 550
-    01B2: give_actor $PLAYER_ACTOR weapon 7 ammo 1E38
-    wait 1250
-else
-    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    wait 250
-end
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_two" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+//0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_two" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+wait 550
+01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
+wait 1250
 return
 
 :flick2
@@ -1386,26 +1275,14 @@ wait 10
 until 04EE:   animation "DW" loaded
 wait 100
 0ABA: end_custom_thread_named 'SON_GUI'
-wait 0
-if
-    29@ == 0
-then
-    0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_five" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
-    //0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_five" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    0992: set_player $PLAYER_CHAR weapons_scrollable 0
-    wait 1000
-    01B2: give_actor $PLAYER_ACTOR weapon 6 ammo 1E38
-    0AAC: ACT = load_audiostream "DWS\ssd_act.wav"
-    0AAD: set_audiostream ACT perform_action 1
-    gosub @ssd_setlight
-    wait 700
-    gosub @ssd_removelight
-    Audiostream.Release(ACT)
-    wait 500
-else
-    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    wait 250
-end
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_five" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+//0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_five" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+wait 1000
+gosub @ssd_setlight
+wait 700
+gosub @ssd_removelight
+wait 500
 return
 
 :noflick2
@@ -1415,19 +1292,11 @@ repeat
 wait 10
 until 04EE:   animation "DW" loaded
 wait 100
-0ABA: end_custom_thread_named 'SON_GUI'
-wait 0
-if
-    29@ == 0
-then 
-    0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_one" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
-    //0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_one" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 
-    0992: set_player $PLAYER_CHAR weapons_scrollable 0
-    wait 750
-else
-    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-    wait 250
-end
+0ABA: end_custom_thread_named 'SON_GUI' 
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_one" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+//0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_one" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+wait 750
 return
 
 :disarm
@@ -1436,15 +1305,9 @@ wait 0
 repeat
 wait 10
 until 04EE:   animation "DW" loaded
-wait 0
-if
-    29@ == 0
-then 
-    0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_four" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
-    //0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_four" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-else
-    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
-end
+wait 0 
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "Sonic_four" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+//0812: AS_actor $PLAYER_ACTOR perform_animation "Sonic_four" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
 wait 0
 return
 
@@ -1492,89 +1355,34 @@ return
 
 :ssd_setlight_inc
 wait 0
-if
-    29@ == 0
-then
-    if
-        MODE == 1
-    then
-        18@ = Object.Create(18639, 0.0, 0.0, -100.0)
-    else
-        18@ = Object.Create(18638, 0.0, 0.0, -100.0)
-    end
-    wait 0
-    0382: set_object 18@ collision_detection 0
-    Object.SetImmunities(18@, 1, 1, 1, 1, 1)
-    070A: AS_actor $PLAYER_ACTOR attach_to_object 18@ offset 0.0 0.0 0.0 on_bone 6 16 perform_animation "NULL" IFP_file "NULL" time -1
-end
+0AB3: var 52 = 1
+0A92: create_custom_thread "sonic_spin.s" //Launch SPIN
 return
 
 :ssd_removelight_inc
 wait 0
-if
-    03CA:   object 18@ exists
-then
-    Object.Destroy(18@)
-    object.RemoveReferences(18@)
-end
-wait 0
+0AB3: var 52 = -1
+0ABA: end_custom_thread_named 'SON_SPIN'
 return
 
 :ssd_setlight
 wait 0
-if
-    29@ == 0
-then
-    if
-        MODE == 1
-    then
-        01B2: give_actor $PLAYER_ACTOR weapon 13 ammo 1E38
-    else
-        01B2: give_actor $PLAYER_ACTOR weapon 12 ammo 1E38
-    end
-end
+0AB3: var 52 = 0
+0A92: create_custom_thread "sonic_spin.s" //Launch SPIN
 wait 0
 return
 
 :ssd_removelight
 wait 0
-0AB4: 29@ = var 51
+0AB3: var 52 = -1
+0ABA: end_custom_thread_named 'SON_SPIN'
+04B8: get_weapon_data_from_actor $PLAYER_ACTOR weapon_group 11 weapon 24@ ammo 25@ model 26@
+0555: remove_weapon 24@ from_actor $PLAYER_ACTOR
 if
-    29@ == 0
+    28@ == 1
 then
-    04B8: get_weapon_data_from_actor $PLAYER_ACTOR weapon_group 11 weapon 24@ ammo 25@ model 26@
-    0555: remove_weapon 24@ from_actor $PLAYER_ACTOR
-    if
-        28@ == 1
-    then
-        01B2: give_actor $PLAYER_ACTOR weapon 10 ammo 1E38
-    end
-    if
-        MODE == 1
-    then
-        01B2: give_actor $PLAYER_ACTOR weapon 6 ammo 1E38
-    else
-        01B2: give_actor $PLAYER_ACTOR weapon 7 ammo 1E38
-    end
+    01B2: give_actor $PLAYER_ACTOR weapon 10 ammo 1E38
 end
+01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
 wait 0
-return
-
-:load_loop
-if 29@ == 0
-then
-    0AAC: LOOP = load_audiostream "DWS\ssd_loop.wav"
-    0AAD: set_audiostream LOOP perform_action 1
-else
-    0AAC: LOOP = load_audiostream "DWS\sgl_loop.mp3"
-    0AAD: set_audiostream LOOP perform_action 1
-    wait 500
-end
-return
-
-:ssd_stuff
-if 29@ == 0
-then
-    01B2: give_actor $PLAYER_ACTOR weapon 7 ammo 1E38
-end
 return

@@ -2,6 +2,7 @@
 //-------------MAIN---------------
 0000: NOP
 
+
 :first
 wait 0
 if 0@ == 0
@@ -15,8 +16,20 @@ thread "SON_GUI"
 
 :1
 wait 100
+
+0AB4: 0@ = var 51
+if or
+    0@ == 1
+    02D8:   actor $PLAYER_ACTOR current_weapon == 7
+    02D8:   actor $PLAYER_ACTOR current_weapon == 2
+then
+    0@ = 1
+else
+    0@ = 0
+end
+
 if and
-    call_scm_func @guiConds 0
+    0@ == 1
     80DF:   not actor $PLAYER_ACTOR driving 
 jf @1
 
