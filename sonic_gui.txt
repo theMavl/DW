@@ -90,6 +90,7 @@ jump @1
 if or
     0@ == 1
     02D8:   actor $PLAYER_ACTOR current_weapon == 7
+    02D8:   actor $PLAYER_ACTOR current_weapon == 2
 then
 
     0485: return_true
