@@ -1,12 +1,8 @@
 {$CLEO .cs}
 //-------------MAIN---------------
 0000: NOP
-02E4: load_cutscene_data 'PROLOG1' 
 
-0244: set_cutscene_pos 1.2393 1.929 1024.3827 
-02E7: start_cutscene 
-02EA: end_cutscene 
-
+            0687: clear_actor $PLAYER_ACTOR task 
 
 end_custom_thread
 

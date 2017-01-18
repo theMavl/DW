@@ -6,6 +6,11 @@ then
     jump @camera_effect
 end
 
+if 0@ == 2
+then
+    jump @regen_texture
+end
+
 thread "dwregen"
 
 const
@@ -33,7 +38,8 @@ while true
         01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
         0223: set_actor $PLAYER_ACTOR health_to 500 
         02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1 
-        0ACE: show_formatted_text_box "You're nearly dead~n~Press Y to regenerate now or N to hold regeneration"
+        0ACE: show_formatted_text_box "You're nearly dead~n~Tap R rapidly to hold Regeneration or Press Y to Regenerate now"
+        32@ = 0
         while true
             wait 0
             0390: load_txd_dictionary 'dwload' 
@@ -41,11 +47,13 @@ while true
             038F: load_texture "regblur2" as 11
             
             015D: set_gamespeed 0.00001
-            if 0AB0: 89 // Y
+            if or
+                0AB0: 78 // N
+                32@ >= 10
             then
                 break
             end
-            if 0AB0: 78 // N
+            if 0AB0: 82 // R
             then
                 03E6: remove_text_box 
                 015D: set_gamespeed 1.0 
@@ -61,12 +69,16 @@ while true
         02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
         gosub @regen
         0223: set_actor $PLAYER_ACTOR health_to 500 
-
-        02AB: set_actor $PLAYER_ACTOR immunities BP 0 FP 0 EP 0 CP 0 MP 0 
         if $93 == 0
         then
             0992: set_player $PLAYER_CHAR weapons_scrollable 1
         end
+        repeat
+            wait 0
+            0AB4: 1@ = var 53
+        until 1@ == 0
+        02AB: set_actor $PLAYER_ACTOR immunities BP 0 FP 0 EP 0 CP 0 MP 0 
+        0ACE: show_formatted_text_box "Regeneration completed"
     end 
     if 0ADC: test_cheat "ref"
     then
@@ -129,7 +141,7 @@ call_scm_func @load 2 id 17@ specAct 2 newID 18@
 7@ += 10.0
 01E8: create_forbidden_for_cars_cube_cornerA 2@ 3@ 4@ cornerB 5@ 6@ 7@
 022B: create_forbidden_for_peds_cube_cornerA 2@ 3@ 4@ cornerB 5@ 6@ 7@
-
+0AB3: var 51 = 0 // take shades off
 call_scm_func @regenerate 3 prev 27@ new 18@ type 0//1@
 01E7: remove_forbidden_for_cars_cube_cornerA 2@ 3@ 4@ cornerB 5@ 6@ 7@
 022A: remove_forbidden_for_peds_cube_cornerA 2@ 3@ 4@ cornerB 5@ 6@ 7@ 
@@ -453,9 +465,10 @@ repeat
 until 10@ >= 99
 0151: remove_status_text $Y_Royal_Casino
 03E3: set_texture_to_be_drawn_antialiased 1
-03F0: enable_text_draw 0
+//03F0: enable_text_draw 0
 038D: draw_texture 11 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 255
 038D: draw_texture 10 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 255 
+run "regeneration.cs" 2 // regen textures blinking thread & post-regen immunities
 0AB2: ret 0 
 
 
@@ -464,22 +477,48 @@ wait 0
 {
     Params: 0@ - prev skin, 1@ - new skin, 2@ - reg type
 }
+0AB4: 30@ = var 53
+
+if 30@ == 0
+then
+    run "regeneration.cs" 2
+end
+
+if 00DF:   actor $PLAYER_ACTOR driving 
+then
+    03C0: 30@ = actor $PLAYER_ACTOR car 
+    0622: AS_actor $PLAYER_ACTOR bail_car 30@ 
+    while true
+        wait 0
+        if and
+            80DF:  NOT actor $PLAYER_ACTOR driving
+            03EE:   player $PLAYER_CHAR controllable 
+        then
+            break
+        end
+    end
+else
+    repeat
+        wait 0
+    until 03EE:   player $PLAYER_CHAR controllable 
+end
 
 0085: 27@ = 0@ // previous skin 
 0085: 28@ = 1@ // new skin
 0085: 24@ = 2@ // regen type
 
 //04D7: set_actor $PLAYER_ACTOR locked 1 
-Player.CanMove($PLAYER_CHAR, 0)      
-    
+Player.CanMove($PLAYER_CHAR, 0)     
 wait 500
 009A: 30@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172
 009A: 25@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172 // invisible fake ped
 02AB: set_actor 25@ immunities BP 1 FP 1 EP 1 CP 1 MP 1 
 02AB: set_actor 30@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
 0446: set_actor 25@ immune_to_headshots 1 
-0446: set_actor 30@ immune_to_headshots 1  
-//0337: set_actor 25@ visibility 0 
+0446: set_actor 30@ immune_to_headshots 1 
+0946: set_actor 25@ actions_uninterupted_by_weapon_fire 1 
+0946: set_actor 30@ actions_uninterupted_by_weapon_fire 1  
+0337: set_actor 25@ visibility 0 
 
 0245: set_actor 30@ walk_style_to "MAN" 
 0245: set_actor 25@ walk_style_to "MAN" 
@@ -533,10 +572,15 @@ end
    
 if 24@ == 0
 then
+    0687: clear_actor $PLAYER_ACTOR task 
+    0687: clear_actor 30@ task 
+
     0812: AS_actor $PLAYER_ACTOR perform_animation "regen_Allons-y" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
     //0812: AS_actor 30@ perform_animation "regen_Allons-y" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
     //0605: actor $PLAYER_ACTOR perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
-    0605: actor 30@ perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
+    //0812: actor 30@ perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
+    0812: AS_actor 30@ perform_animation "regen_Allons-y" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB 
+
 
     Player.CanMove($PLAYER_CHAR, 1)
     02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
@@ -551,12 +595,12 @@ then
     0AAC: 17@ = load_audiostream "DWS\hbin.mp3"
     02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
     0AAD: set_audiostream 17@ perform_action 1
+    :resetpoint
     16@ = 0
     32@ = 0
     repeat
         wait 0
         if 8184:   not actor $PLAYER_ACTOR health >= 15 
-
         then
             04D7: set_actor $PLAYER_ACTOR locked 0
             0687: clear_actor $PLAYER_ACTOR task
@@ -578,6 +622,23 @@ then
             end_custom_thread
             0AB2: ret 0
         end
+        
+        if or
+            8611:   not actor $PLAYER_ACTOR performing_animation "regen_Allons-y"
+            8611:   not actor 30@ performing_animation "regen_Allons-y"
+        then
+            0687: clear_actor $PLAYER_ACTOR task 
+            0687: clear_actor 30@ task
+            wait 500     
+            0812: AS_actor $PLAYER_ACTOR perform_animation "regen_Allons-y" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            0812: AS_actor 30@ perform_animation "regen_Allons-y" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            //0605: actor 30@ perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
+            32@ = 0
+            0AAD: set_audiostream 15@ perform_action 0
+            0AAD: set_audiostream 17@ perform_action 0
+            0AAD: set_audiostream 17@ perform_action 1
+        end
+        
         04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.0 
         0093: 26@ = integer 32@ to_float 
         26@ *= 0.031875
@@ -601,11 +662,29 @@ then
     064C: make_particle 14@ visible
     
     repeat
-        wait 0
+        wait 0 
         04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.0 
         09E5: create_flash_light_at 1@ 2@ 3@ RGB_mask 255 179 0 radius 2.0
-        0613: 26@ = actor $PLAYER_ACTOR animation "regen_Allons-y" time 
-    until 26@ >= 0.54
+        
+        if or
+            8611:   not actor $PLAYER_ACTOR performing_animation "regen_Allons-y"
+            8611:   not actor 30@ performing_animation "regen_Allons-y"
+        then
+            0687: clear_actor $PLAYER_ACTOR task 
+            0687: clear_actor 30@ task 
+            wait 500     
+            0812: AS_actor $PLAYER_ACTOR perform_animation "regen_Allons-y" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            0812: AS_actor 30@ perform_animation "regen_Allons-y" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            //0605: actor 30@ perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
+            32@ = 0
+            0AAD: set_audiostream 15@ perform_action 0
+            0AAD: set_audiostream 17@ perform_action 0
+            0AAD: set_audiostream 17@ perform_action 1
+            064E: stop_particle 14@ 
+            jump @resetpoint
+        end
+        0613: 26@ = actor $PLAYER_ACTOR animation "regen_Allons-y" time               
+    until 26@ >= 0.54   
     064C: make_particle 11@ visible  
     064C: make_particle 10@ visible
     064C: make_particle 12@ visible  
@@ -614,7 +693,7 @@ then
     29@ = 0
     repeat
         wait 0
-    
+        
         04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.0 
         09E5: create_flash_light_at 1@ 2@ 3@ RGB_mask 255 179 0 radius 2.0
         if and
@@ -687,6 +766,7 @@ then
         09E5: create_flash_light_at 1@ 2@ 3@ RGB_mask 26@ 27@ 0 radius 2.0
     until 32@ > 20000
     Actor.DestroyInstantly(25@)
+    0619: enable_actor $PLAYER_ACTOR collision_detection 1
     04D7: set_actor $PLAYER_ACTOR locked 0
     wait 1500
     0AAE: release_audiostream 15@
@@ -824,6 +904,7 @@ then
         09E5: create_flash_light_at 1@ 2@ 3@ RGB_mask 26@ 27@ 0 radius 2.0
     until 32@ > 10000
     Actor.DestroyInstantly(25@)
+    0619: enable_actor $PLAYER_ACTOR collision_detection 1
     04D7: set_actor $PLAYER_ACTOR locked 0
     0AB2: ret 0
 end
@@ -957,6 +1038,7 @@ then
         09E5: create_flash_light_at 1@ 2@ 3@ RGB_mask 26@ 27@ 0 radius 2.0
     until 32@ > 10000
     Actor.DestroyInstantly(25@)
+    0619: enable_actor $PLAYER_ACTOR collision_detection 1
     04D7: set_actor $PLAYER_ACTOR locked 0
     0AB2: ret 0
 end
@@ -1104,6 +1186,7 @@ then
         09E5: create_flash_light_at 1@ 2@ 3@ RGB_mask 26@ 27@ 0 radius 2.0
     until 32@ > 10000
     Actor.DestroyInstantly(25@)
+    0619: enable_actor $PLAYER_ACTOR collision_detection 1
     04D7: set_actor $PLAYER_ACTOR locked 0
     0AB2: ret 0
 end
@@ -1129,9 +1212,14 @@ for 30@ = 0 to 35584 step 0x100
             87D6:   not ped == $PLAYER_ACTOR // integer vars 
             803B: not ped == 0@
             803B: not ped == 1@
+            86EE:  NOT actor ped in_group $PLAYER_GROUP 
             Actor.Defined(ped)
         then
             05DA: AS_actor ped run_away_in_panic_from 2@ 3@ 4@ away_radius 1000.0 timelimit 15000 
+            if $ONMISSION == 0
+            then
+                Actor.RemoveReferences(ped)
+            end
         end
     end
 end
@@ -1171,4 +1259,74 @@ then
     wait 4000
     Camera.Restore()
 end
+end_custom_thread
+
+
+//////////////////////////////////////////////////////////
+
+:regen_texture
+thread "dwregtx"
+0AB3: var 53 = 1
+10@ = 100
+1@ = 0
+11@ = 1000
+repeat
+    32@ = 0
+    repeat
+        wait 0
+        
+        03E3: set_texture_to_be_drawn_antialiased 1
+        03F0: enable_text_draw 1
+        0093: 12@ = integer 10@ to_float 
+        12@ *= 2.57575757
+        0092: 12@ = float 12@ to_integer 
+ 
+        
+        //038D: draw_texture 11 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 12@
+        
+        0093: 15@ = integer 32@ to_float 
+        0093: 13@ = integer 11@ to_float
+        13@ /= 2.0
+        if 0025: 15@ > 13@
+        then
+        //14@ = 128.0
+            13@ *= -2.0
+            0093: 14@ = integer 12@ to_float
+            0073: 14@ /= 13@
+            006B: 15@ *= 14@
+            0092: 15@ = float 15@ to_integer
+            005A: 15@ += 12@
+            if 15@ < 0
+            then
+                15@ = 0
+            end
+            038D: draw_texture 10 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 15@
+            0062: 15@ -= 12@
+            15@ *= -1
+            038D: draw_texture 11 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 15@
+           // show_text "down %d %d" 1000 12@ 15@
+        else
+            13@ *= 2.0
+            0093: 14@ = integer 12@ to_float
+            0073: 14@ /= 13@
+            006B: 15@ *= 14@
+            0092: 15@ = float 15@ to_integer
+            038D: draw_texture 10 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 15@
+            0062: 15@ -= 12@
+            15@ *= -1
+            038D: draw_texture 11 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 15@
+            //show_text "up %d %d" 1000 12@ 15@
+        end 
+        
+    until 002D: 32@ >= 11@
+    
+    10@ -= 1
+    
+    //show_text "%d %d" 1000 10@ 11@
+until 10@ < 1
+03E3: set_texture_to_be_drawn_antialiased 1
+//03F0: enable_text_draw 0
+//038D: draw_texture 11 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 255
+//038D: draw_texture 10 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 255
+0AB3: var 53 = 0
 end_custom_thread

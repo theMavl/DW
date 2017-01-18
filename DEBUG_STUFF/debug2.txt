@@ -1,7 +1,21 @@
 {$CLEO .cs}
 //-------------MAIN---------------
 0000: NOP
-0D10: set_actor $PLAYER_ACTOR alpha 255  
+Model.Load(#NULL)
+038B: load_requested_models 
+00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
+1@ += 1.0
+10@ = 0
+
+for 10@ = 0 to 10 step 1
+    wait 100
+    11@ = Actor.Create(6,#NULL, 0@, 1@, 2@)
+    06E4: AS_actor 11@ attempt_to_bust_actor $PLAYER_ACTOR 
+
+    //05E2: AS_actor 11@ kill_actor $PLAYER_ACTOR
+    1@ += 1.0
+
+end
 
 end_custom_thread
 //0224: set_car $111 health_to 300

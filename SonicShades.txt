@@ -13,7 +13,24 @@ wait 0
 if and
     056D:   actor $PLAYER_ACTOR defined
     03EE:   player $PLAYER_CHAR controllable 
-else_jump @shades 
+else_jump @shades
+
+0AB4: 1@ = var 51
+if and   // if var 51 == 0 but shades are on
+    1@ == 0
+    03CA:   object 0@ exists
+then
+    0AAC: 1@ = load_audiostream "DWS\sgl_off.mp3"
+    0AAD: set_audiostream 1@ perform_action 1
+    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+    wait 800
+    0AB3: var 51 = 0
+    Object.Destroy(0@)
+    0992: set_player $PLAYER_CHAR weapons_scrollable 1
+    Audiostream.Release(1@)
+    jump @shades 
+end 
+
 if and
     0AB0:   key_pressed 53
     02D8:   actor $PLAYER_ACTOR current_weapon == 0 

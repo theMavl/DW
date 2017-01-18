@@ -6,8 +6,173 @@
 
 
 0000:
-04D7: set_actor $PLAYER_ACTOR locked 0
+Model.load(18695)
+Model.load(18700)
+Model.load(18701)
+Model.load(18702)
+Model.load(18710)
+Model.load(18696)
+Model.load(18697)
+Model.load(18698)
+Model.load(18703)
+Model.load(18704)
+Model.load(18783)
+Model.load(18705)
+Model.load(18706)
+Model.load(18770)
+Model.load(18771)
+Model.load(18772)
+Model.load(18773)
+Model.load(18774)
+Model.load(18775)
+Model.load(18776)
+Model.load(18777)
+Model.load(18778)
+Model.load(18779)
+Model.load(18780)
+Model.load(18781)
+Model.load(18708)
+Model.load(18709)
+Model.load(18723)
 
+038B: load_requested_models
+
+0@ = object.Create(18695, 0.0, 0.0, 5.0)
+1@ = object.Create(18700, 0.0, 0.0, 5.0)
+2@ = object.Create(18701, 0.0, 0.0, 5.0)
+3@ = object.Create(18702, 0.0, 0.0, 5.0)
+4@ = object.Create(18710, 0.0, 0.0, 5.0)
+5@ = object.Create(18696, 0.0, 0.0, 5.0)
+6@ = object.Create(18697, 0.0, 0.0, 5.0)
+7@ = object.Create(18698, 0.0, 0.0, 5.0)
+8@ = object.Create(18703, -0.295, 0.921, 5.420000000000073)
+9@ = object.Create(18704, 0.343, 0.959, 5.412000000000035)
+10@ = object.Create(18783, 0.246, 0.732, 5.474999999999909)
+11@ = object.Create(18705, -0.275, -0.933, 5.435999999999922)
+12@ = object.Create(18706, 0.275, -0.933, 5.435999999999922)
+13@ = object.Create(18770, -0.134, 0.65, 5.480000000000018)
+14@ = object.Create(18771, -0.067, 0.65, 5.480000000000018)
+15@ = object.Create(18772, 0.0, 0.65, 5.480000000000018)
+16@ = object.Create(18773, 0.067, 0.65, 5.480000000000018)
+17@ = object.Create(18774, 0.134, 0.65, 5.480000000000018)
+18@ = object.Create(18775, 0.255, -0.756, 5.47199999999998)
+19@ = object.Create(18776, 0.0, 0.0, 5.0)
+20@ = object.Create(18777, 0.0, 0.0, 5.0)
+21@ = object.Create(18778, 0.0, 0.0, 5.0)
+22@ = object.Create(18779, 0.0, 0.0, 5.0)
+23@ = object.Create(18780, 0.0, 0.0, 5.0)
+24@ = object.Create(18781, 0.0, 0.0, 5.0)
+25@ = object.Create(18778, 0.0, 0.0, 5.0)
+26@ = object.Create(18779, 0.0, 0.0, 5.0)
+27@ = object.Create(18780, 0.0, 0.0, 5.0)
+28@ = object.Create(18781, 0.0, 0.0, 5.0)
+29@ = object.Create(18708, 0.0, 0.0, 5.0)
+30@ = object.Create(18709, 0.0, 0.0, 5.0)
+31@ = object.Create(18723, 0.0, 0.0, 5.0)
+
+
+Object.PutAt(0@, 0.0, 0.0, 5.0)
+Object.PutAt(1@, 0.0, 0.0, 5.0)
+Object.PutAt(2@, 0.0, 0.0, 5.0)
+Object.PutAt(3@, 0.0, 0.0, 5.0)
+Object.PutAt(4@, 0.0, 0.0, 5.0)
+Object.PutAt(5@, 0.0, 0.0, 5.0)
+Object.PutAt(6@, 0.0, 0.0, 5.0)
+Object.PutAt(7@, 0.0, 0.0, 5.0)
+Object.PutAt(8@, -0.295, 0.921, 5.420000000000073)
+Object.PutAt(9@, 0.343, 0.959, 5.412000000000035)
+Object.PutAt(10@, 0.246, 0.732, 5.474999999999909)
+Object.PutAt(11@, -0.275, -0.933, 5.435999999999922)
+Object.PutAt(12@, 0.275, -0.933, 5.435999999999922)
+Object.PutAt(13@, -0.134, 0.65, 5.480000000000018)
+Object.PutAt(14@, -0.067, 0.65, 5.480000000000018)
+Object.PutAt(15@, 0.0, 0.65, 5.480000000000018)
+Object.PutAt(16@, 0.067, 0.65, 5.480000000000018)
+Object.PutAt(17@, 0.134, 0.65, 5.480000000000018)
+Object.PutAt(18@, 0.255, -0.756, 5.47199999999998)
+Object.PutAt(19@, 0.0, 0.0, 5.0)
+Object.PutAt(20@, 0.0, 0.0, 5.0)
+Object.PutAt(21@, 0.0, 0.0, 5.0)
+Object.PutAt(22@, 0.0, 0.0, 5.0)
+Object.PutAt(23@, 0.0, 0.0, 5.0)
+Object.PutAt(24@, 0.0, 0.0, 5.0)
+Object.PutAt(25@, 0.0, 0.0, 5.0)
+Object.PutAt(26@, 0.0, 0.0, 5.0)
+Object.PutAt(27@, 0.0, 0.0, 5.0)
+Object.PutAt(28@, 0.0, 0.0, 5.0)
+Object.PutAt(29@, 0.0, 0.0, 5.0)
+Object.PutAt(30@, 0.0, 0.0, 5.0)
+Object.PutAt(31@, 0.0, 0.0, 5.0)
+
+
+07C4: set_object 0@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 1@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 2@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 3@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 4@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 5@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 6@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 7@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 8@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 9@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 10@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 11@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 12@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 13@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 14@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 15@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 16@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 17@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 18@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 19@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 20@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 21@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 22@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 23@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 24@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 25@ axis_angle_relation_to 0.0 0.0 0.984808009006 -0.173646725847
+07C4: set_object 26@ axis_angle_relation_to 0.0 0.0 0.984808009006 -0.173646725847
+07C4: set_object 27@ axis_angle_relation_to 0.0 0.0 0.984808009006 -0.173646725847
+07C4: set_object 28@ axis_angle_relation_to 0.0 0.0 0.984808009006 -0.173646725847
+07C4: set_object 29@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 30@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+07C4: set_object 31@ axis_angle_relation_to 0.0 0.0 0.0 1.0
+repeat
+wait 0
+until 0AB0: 56
+
+Object.Destroy(0@)
+Object.Destroy(1@)
+Object.Destroy(2@)
+Object.Destroy(3@)
+Object.Destroy(4@)
+Object.Destroy(5@)
+Object.Destroy(6@)
+Object.Destroy(7@)
+Object.Destroy(8@)
+Object.Destroy(9@)
+Object.Destroy(10@)
+Object.Destroy(11@)
+Object.Destroy(12@)
+Object.Destroy(13@)
+Object.Destroy(14@)
+Object.Destroy(15@)
+Object.Destroy(16@)
+Object.Destroy(17@)
+Object.Destroy(18@)
+Object.Destroy(19@)
+Object.Destroy(20@)
+Object.Destroy(21@)
+Object.Destroy(22@)
+Object.Destroy(23@)
+Object.Destroy(24@)
+Object.Destroy(25@)
+Object.Destroy(26@)
+Object.Destroy(27@)
+Object.Destroy(28@)
+Object.Destroy(29@)
+Object.Destroy(30@)
+Object.Destroy(31@)
 end_custom_thread
 //07CD: AS_actor $PLAYER_ACTOR walk_to 0.01 1.4 1024.375 stop_with_angle 270.0 within_radius 0.000001 
 

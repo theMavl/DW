@@ -14,7 +14,7 @@ while true
     then
         if and
         0@ == 0
-        1@ == 150
+        1@ == 125
         then
             0@ = 1
             0512: show_permanent_text_box 'TARSIT'
@@ -33,10 +33,9 @@ while true
         0ab0: 69 //E
         00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 1.3928 -2.3135 1024.3827 radius 0.5 0.5 1.0 on_foot
     then
-        {09BC: put_actor $PLAYER_ACTOR at  1.3928 -2.3135 1024.3827
-        }
-        call_scm_func @put_at_s 3 1.3928 -2.3135 1024.3827
-        gosub @turn_to_console
+        09BC: put_actor $PLAYER_ACTOR at  1.3928 -2.3135 1024.3827
+        //0AB1: call_scm_func @put_at_s 3 1.3928 -2.3135 1024.3827
+        //gosub @turn_to_console
         0173: set_actor $PLAYER_ACTOR Z_angle_to 27.4635
         06B0: AS_actor $PLAYER_ACTOR sit_down 99999999999999 ms 
         gosub @sit
@@ -45,10 +44,9 @@ while true
         0ab0: 69 //E
         00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2.7227 0.0541 1024.375 radius 0.5 0.5 1.0 on_foot
     then
-        {09BC: put_actor $PLAYER_ACTOR at  2.7227 0.0541 1024.375
-        }
-        call_scm_func @put_at_s 3 2.7227 0.0541 1024.375
-        gosub @turn_to_console
+        09BC: put_actor $PLAYER_ACTOR at  2.7227 0.0541 1024.375
+        //0AB1: call_scm_func @put_at_s 3 2.7227 0.0541 1024.375
+        //gosub @turn_to_console
         0173: set_actor $PLAYER_ACTOR Z_angle_to 88.8075
         06B0: AS_actor $PLAYER_ACTOR sit_down 99999999999999 ms 
         gosub @sit
@@ -57,10 +55,9 @@ while true
         0ab0: 69 //E
         00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -0.5 2.65 1024.375 radius 0.5 0.5 1.0 on_foot
     then
-        {09BC: put_actor $PLAYER_ACTOR at  -0.5 2.65 1024.375
-        }
-        call_scm_func @put_at_s 3 -0.5 2.65 1024.375
-        gosub @turn_to_console
+        09BC: put_actor $PLAYER_ACTOR at  -0.5 2.65 1024.375  
+        //0AB1: call_scm_func @put_at_s 3 -0.5 2.65 1024.375
+        //gosub @turn_to_console
         0173: set_actor $PLAYER_ACTOR Z_angle_to 190.8627
         06B0: AS_actor $PLAYER_ACTOR sit_down 99999999999999 ms 
         gosub @sit
@@ -69,10 +66,9 @@ while true
         0ab0: 69 //E
         00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -2.55 0.865 1024.375 radius 0.5 0.5 1.0 on_foot
     then
-        {09BC: put_actor $PLAYER_ACTOR at  -2.55 0.865 1024.375
-        }
-        call_scm_func @put_at_s 3 -2.55 0.865 1024.375
-        gosub @turn_to_console
+        09BC: put_actor $PLAYER_ACTOR at  -2.55 0.865 1024.375
+        //0AB1: call_scm_func @put_at_s 3 -2.55 0.865 1024.375
+        //gosub @turn_to_console
         0173: set_actor $PLAYER_ACTOR Z_angle_to 249.2933
         06B0: AS_actor $PLAYER_ACTOR sit_down 99999999999999 ms 
         gosub @sit
@@ -82,7 +78,12 @@ end
 :sit
 01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
 0992: set_player $PLAYER_CHAR weapons_scrollable 0
-0512: show_permanent_text_box 'TARSTA'
+if 0185:   car $111 health >= 400
+then
+    0512: show_permanent_text_box 'TARSTA'
+else
+    0512: show_permanent_text_box 'TARSIR'
+end
 0@ = 0
 1@ = 0
 wait 1750

@@ -253,11 +253,11 @@ while true
             //0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375
             0AB1: call @put_at_s 3 0.01 1.4 1024.375
             gosub @turn_to_console
-             0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.01 1.4 1024.375
             0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
-            0687: clear_actor $PLAYER_ACTOR task   
+            //// RECENT 0687: clear_actor $PLAYER_ACTOR task   
             if TMP_VAL == 0
             then
                 0812: AS_actor $PLAYER_ACTOR perform_animation "handbrake_on" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
@@ -278,11 +278,11 @@ while true
         then
             0AB1: call @put_at_s 3 0.01 1.4 1024.375
             gosub @turn_to_console
-            0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.01 1.4 1024.375
             0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
-            0687: clear_actor $PLAYER_ACTOR task   
+            // RECENT 0687: clear_actor $PLAYER_ACTOR task   
             if TMP_VAL == 0
             then
                 0812: AS_actor $PLAYER_ACTOR perform_animation "throttle_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
@@ -302,11 +302,11 @@ while true
         then
             0AB1: call @put_at_s 3 -0.003 -1.43 1024.375
             gosub @turn_to_console
-            0972: put_actor $PLAYER_ACTOR at -0.003 -1.43 1024.375
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to -0.003 -1.43 1024.375
             0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
-            0687: clear_actor $PLAYER_ACTOR task 
+            // RECENT 0687: clear_actor $PLAYER_ACTOR task 
             if TMP_VAL == 0
             then
                 0812: AS_actor $PLAYER_ACTOR perform_animation "redLevL_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
@@ -326,11 +326,11 @@ while true
         then
             0AB1: call @put_at_s 3 -0.003 -1.43 1024.375
             gosub @turn_to_console
-            0972: put_actor $PLAYER_ACTOR at -0.003 -1.43 1024.375
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to -0.003 -1.43 1024.375
             0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
-            0687: clear_actor $PLAYER_ACTOR task 
+            // RECENT 0687: clear_actor $PLAYER_ACTOR task 
             if TMP_VAL == 0
             then
                 0812: AS_actor $PLAYER_ACTOR perform_animation "redLevR_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
@@ -371,11 +371,11 @@ while true
             end
             0AB1: call @put_at_s 3 -0.003 -1.4 1024.375
             gosub @turn_to_console
-            0972: put_actor $PLAYER_ACTOR at -0.003 -1.4 1024.375
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to -0.003 -1.4 1024.375
             0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
-            0687: clear_actor $PLAYER_ACTOR task 
+            // RECENT 0687: clear_actor $PLAYER_ACTOR task 
             if TMP_VAL == 0
             then
                 0812: AS_actor $PLAYER_ACTOR perform_animation "lev_Selfrepair" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
@@ -401,11 +401,11 @@ while true
             then
                 0AB1: call @put_at_s 3 -0.003 -1.43 1024.375
                 gosub @turn_to_console
-                0972: put_actor $PLAYER_ACTOR at -0.003 -1.43 1024.375
+                09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to -0.003 -1.43 1024.375
                 0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
                 01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
                 0992: set_player $PLAYER_CHAR weapons_scrollable 0
-                0687: clear_actor $PLAYER_ACTOR task 
+                // RECENT 0687: clear_actor $PLAYER_ACTOR task 
                 0812: AS_actor $PLAYER_ACTOR perform_animation "redLevS_On" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
                 0A92: create_custom_thread "toggles.cs" 3 -1
                 0A92: create_custom_thread "toggles.cs" 4 -1
@@ -420,11 +420,11 @@ while true
                 then
                     0AB1: call @put_at_s 3 -0.003 -1.43 1024.375
                     gosub @turn_to_console
-                    0972: put_actor $PLAYER_ACTOR at -0.003 -1.43 1024.375
+                    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to -0.003 -1.43 1024.375
                     0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
                     01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
                     0992: set_player $PLAYER_CHAR weapons_scrollable 0
-                    0687: clear_actor $PLAYER_ACTOR task 
+                    // RECENT 0687: clear_actor $PLAYER_ACTOR task 
                     0812: AS_actor $PLAYER_ACTOR perform_animation "redLevS_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
                     0A92: create_custom_thread "toggles.cs" 3 -1
                     0A92: create_custom_thread "toggles.cs" 4 -1
@@ -466,11 +466,11 @@ while true
         then
             0AB1: call @put_at_s 3 0.01 1.4 1024.375 
             gosub @turn_to_console
-            0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375 
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.01 1.4 1024.375 
             0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
-            0687: clear_actor $PLAYER_ACTOR task 
+            // RECENT 0687: clear_actor $PLAYER_ACTOR task 
             if TMP_VAL == 0
             then
                 0812: AS_actor $PLAYER_ACTOR perform_animation "toggles_Time_on" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
@@ -507,7 +507,7 @@ while true
         then
             0AB1: call @put_at_s 3 0.01 1.4 1024.375 
             gosub @turn_to_console
-            0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375 
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.01 1.4 1024.375 
             0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
@@ -567,12 +567,12 @@ while true
             end
             0AB1: call @put_at_s 3 1.76 -2.03 1024.37 
             gosub @turn_to_sub 
-            0972: put_actor $PLAYER_ACTOR at 1.76 -2.03 1024.37
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 1.76 -2.03 1024.37
             04D7: set_actor $PLAYER_ACTOR locked 1 
             0173: set_actor $PLAYER_ACTOR Z_angle_to -130.0
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
-            0687: clear_actor $PLAYER_ACTOR task 
+            // RECENT 0687: clear_actor $PLAYER_ACTOR task 
             if TMP_VAL == 0
             then
                 0812: AS_actor $PLAYER_ACTOR perform_animation "allocator_cloak_off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
@@ -609,12 +609,12 @@ while true
             end
             0AB1: call @put_at_s 3 1.76 -2.03 1024.37
             gosub @turn_to_sub
-            0972: put_actor $PLAYER_ACTOR at 1.76 -2.03 1024.37
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 1.76 -2.03 1024.37
             04D7: set_actor $PLAYER_ACTOR locked 1 
             0173: set_actor $PLAYER_ACTOR Z_angle_to -130.0
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
-            0687: clear_actor $PLAYER_ACTOR task 
+            // RECENT 0687: clear_actor $PLAYER_ACTOR task 
             if TMP_VAL == 0
             then
                 0812: AS_actor $PLAYER_ACTOR perform_animation "allocator_hads_off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
@@ -660,12 +660,12 @@ while true
             then
                 0AB1: call @put_at_s 3 1.2 -0.7 1024.37
                 gosub @turn_to_console
-                0972: put_actor $PLAYER_ACTOR at 1.2 -0.7 1024.37
+                09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 1.2 -0.7 1024.37
                 04D7: set_actor $PLAYER_ACTOR locked 1 
                 0173: set_actor $PLAYER_ACTOR Z_angle_to 60.0
                 01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
                 0992: set_player $PLAYER_CHAR weapons_scrollable 0
-                0687: clear_actor $PLAYER_ACTOR task 
+                // RECENT 0687: clear_actor $PLAYER_ACTOR task 
                 if TMP_VAL == 0
                 then
                     0812: AS_actor $PLAYER_ACTOR perform_animation "switcher_hads_on" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
@@ -701,7 +701,7 @@ while true
             then
                 0AB1: call @put_at_s 3 0.01 1.4 1024.375
                 gosub @turn_to_console
-                0972: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375  
+                09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.01 1.4 1024.375  
                 0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
                 if TMP_VAL == 0
                 then
