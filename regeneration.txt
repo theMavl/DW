@@ -15,41 +15,65 @@ thread "dwregen"
 
 const
     SPECIAL = 25@
+    REGENS = 26@
+    EXPLOS = 24@
 end
 
 25@ = -1
-
+REGENS = 0
 while true
     wait 0
+    0AB4: 1@ = var 54 // TimeLord status
+    
+    if 1@ == 0
+    then 
+        continue
+    end
+    
     if or
         8184:   not actor $PLAYER_ACTOR health >= 15
         0ADC: test_cheat "reg"
     then
-        if 
+        if or
             8184:   not actor $PLAYER_ACTOR health >= 1
+            REGENS > 11
         then
-            // Cj is dead
+            // the Doctor is dead
             repeat
-                wait 1000
-            until 0184:  actor $PLAYER_ACTOR health >= 50
-            continue
+                wait 0
+            until 0118:   actor $PLAYER_ACTOR dead
+            0ACE: show_formatted_text_box "Timelord is dead."
+            00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@
+
+            016E: override_restart at 1@ 2@ 3@ angle 355.2978 
+ 
+            0003: shake_camera 0
+            //015D: set_gamespeed 0.0
+            end_custom_thread
         end
         0992: set_player $PLAYER_CHAR weapons_scrollable 0 
         01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
         0223: set_actor $PLAYER_ACTOR health_to 500 
         02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1 
-        0ACE: show_formatted_text_box "You're nearly dead~n~Tap R rapidly to hold Regeneration or Press Y to Regenerate now"
+        0ACE: show_formatted_text_box "You're nearly dead~n~Tap R rapidly to hold Regeneration or Press Y to Regenerate now" 
         32@ = 0
+        
+        0AB3: var 55 = 1000
+        0AB3: var 56 = 300
+        run "hbeat.s"
+        
+        EXPLOS = 0
+        
         while true
             wait 0
+            0391: release_txd_dictionary 
             0390: load_txd_dictionary 'dwload' 
             038F: load_texture "regblur" as 10
             038F: load_texture "regblur2" as 11
             
             015D: set_gamespeed 0.00001
-            if or
-                0AB0: 78 // N
-                32@ >= 10
+            if
+                0AB0: 89 // Y
             then
                 break
             end
@@ -58,7 +82,8 @@ while true
                 03E6: remove_text_box 
                 015D: set_gamespeed 1.0 
                 02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
-                0ACE: show_formatted_text_box "Mash R to hold regeneration~n~Press Y to regenerate now"
+                0ACE: show_formatted_text_box "Mash R to hold regeneration~n~Hold Y to regenerate now"
+                EXPLOS = 1
                 call_scm_func @holdRegen 0
                 06AF: set_player $PLAYER_CHAR sprint_mode 0
                 break
@@ -68,6 +93,9 @@ while true
         03E6: remove_text_box 
         02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
         gosub @regen
+        
+        REGENS += 1
+        
         0223: set_actor $PLAYER_ACTOR health_to 500 
         if $93 == 0
         then
@@ -78,7 +106,11 @@ while true
             0AB4: 1@ = var 53
         until 1@ == 0
         02AB: set_actor $PLAYER_ACTOR immunities BP 0 FP 0 EP 0 CP 0 MP 0 
-        0ACE: show_formatted_text_box "Regeneration completed"
+        0AB4: 1@ = var 54
+        if 1@ == 1
+        then
+            0ACE: show_formatted_text_box "Regeneration completed"
+        end
     end 
     if 0ADC: test_cheat "ref"
     then
@@ -142,7 +174,7 @@ call_scm_func @load 2 id 17@ specAct 2 newID 18@
 01E8: create_forbidden_for_cars_cube_cornerA 2@ 3@ 4@ cornerB 5@ 6@ 7@
 022B: create_forbidden_for_peds_cube_cornerA 2@ 3@ 4@ cornerB 5@ 6@ 7@
 0AB3: var 51 = 0 // take shades off
-call_scm_func @regenerate 3 prev 27@ new 18@ type 0//1@
+call_scm_func @regenerate 4 prev 27@ new 18@ type 1@ explosions EXPLOS
 01E7: remove_forbidden_for_cars_cube_cornerA 2@ 3@ 4@ cornerB 5@ 6@ 7@
 022A: remove_forbidden_for_peds_cube_cornerA 2@ 3@ 4@ cornerB 5@ 6@ 7@ 
 
@@ -379,7 +411,16 @@ end
 
 
 :holdRegen
+
+if 00DF:   actor $PLAYER_ACTOR driving 
+then
+    03C0: 30@ = actor $PLAYER_ACTOR car 
+    0622: AS_actor $PLAYER_ACTOR bail_car 30@ 
+end
+
 06AF: set_player $PLAYER_CHAR sprint_mode 1
+07CC: set_player $PLAYER_CHAR button_15 0 
+
 $Y_Royal_Casino = 0
 04F7: status_text $Y_Royal_Casino type 1 line 1 GXT "REGBAR"
 059C: enable_status_text $Y_Royal_Casino flashing 0
@@ -410,9 +451,22 @@ repeat
         0093: 12@ = integer 10@ to_float 
         12@ *= 2.57575757
         0092: 12@ = float 12@ to_integer 
- 
-        
         038D: draw_texture 11 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 12@
+        
+        //beats frequency
+        0093: 15@ = integer 10@ to_float 
+        15@ *= -6.5
+        15@ += 1000.0
+        0092: 15@ = float 15@ to_integer 
+        0AB3: var 55 = 15@
+        
+        //delay between beats
+        0093: 15@ = integer 10@ to_float 
+        15@ *= -2.0
+        15@ += 300.0
+        0092: 15@ = float 15@ to_integer 
+        0AB3: var 56 = 15@
+
         
         0093: 15@ = integer 32@ to_float 
         0093: 13@ = integer 11@ to_float
@@ -452,7 +506,10 @@ repeat
     059C: enable_status_text $Y_Royal_Casino flashing 0
     if 0AB0: 89 // Y
     then
-        break
+        //break
+        11@ = 1
+        show_text "~y~Forcing..." 100
+        continue
     end
     11@ -= 20
     if 11@ < 100
@@ -460,7 +517,7 @@ repeat
         11@ = 100
     end
     
-    
+    01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
     //show_text "%d %d" 1000 10@ 11@
 until 10@ >= 99
 0151: remove_status_text $Y_Royal_Casino
@@ -469,13 +526,14 @@ until 10@ >= 99
 038D: draw_texture 11 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 255
 038D: draw_texture 10 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 255 
 run "regeneration.cs" 2 // regen textures blinking thread & post-regen immunities
+07CC: set_player $PLAYER_CHAR button_15 1
 0AB2: ret 0 
 
 
 :regenerate
 wait 0
 {
-    Params: 0@ - prev skin, 1@ - new skin, 2@ - reg type
+    Params: 0@ - prev skin, 1@ - new skin, 2@ - reg type, 3@ - explosions
 }
 0AB4: 30@ = var 53
 
@@ -506,9 +564,12 @@ end
 0085: 27@ = 0@ // previous skin 
 0085: 28@ = 1@ // new skin
 0085: 24@ = 2@ // regen type
-
+0085: 29@ = 3@ // explosion
+                            
 //04D7: set_actor $PLAYER_ACTOR locked 1 
-Player.CanMove($PLAYER_CHAR, 0)     
+Player.CanMove($PLAYER_CHAR, 0)  
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+   
 wait 500
 009A: 30@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172
 009A: 25@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172 // invisible fake ped
@@ -535,7 +596,7 @@ wait 500
 05B9: task_pause 25@ time 999999
 
 04D7: set_actor 25@ locked 1
-04D7: set_actor 30@ locked 1
+
 
 00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@  
 09BC: set_char_coordinates_dont_warp_gang_no_offset 30@ at 1@ 2@ 3@
@@ -544,7 +605,13 @@ wait 500
 09C7: change_player $PLAYER_CHAR model_to 28@
 0D10: set_actor $PLAYER_ACTOR alpha 0 
 //run "regeneration.cs" 1 0
-wait 1500
+repeat
+    wait 0
+until 84F0: NOT is_char_waiting_for_world_collision 30@ // is ped ready
+
+04D7: set_actor 30@ locked 1
+
+//wait 1500
 // sync player's and fake ped's cords
 0819: 10@ = actor $PLAYER_ACTOR distance_from_ground 
 0819: 12@ = actor 30@ distance_from_ground
@@ -592,9 +659,9 @@ then
     04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 -0.03 0.7
     064B: 14@ = create_particle "flame" at 1@ 2@ 3@ type 1 
     0AAC: 15@ = load_audiostream "DWS\regen_a.mp3"
-    0AAC: 17@ = load_audiostream "DWS\hbin.mp3"
+
     02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
-    0AAD: set_audiostream 17@ perform_action 1
+
     :resetpoint
     16@ = 0
     32@ = 0
@@ -635,8 +702,7 @@ then
             //0605: actor 30@ perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
             32@ = 0
             0AAD: set_audiostream 15@ perform_action 0
-            0AAD: set_audiostream 17@ perform_action 0
-            0AAD: set_audiostream 17@ perform_action 1
+
         end
         
         04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.0 
@@ -678,8 +744,7 @@ then
             //0605: actor 30@ perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
             32@ = 0
             0AAD: set_audiostream 15@ perform_action 0
-            0AAD: set_audiostream 17@ perform_action 0
-            0AAD: set_audiostream 17@ perform_action 1
+
             064E: stop_particle 14@ 
             jump @resetpoint
         end
@@ -689,6 +754,9 @@ then
     064C: make_particle 10@ visible
     064C: make_particle 12@ visible  
     064C: make_particle 13@ visible
+    
+    gosub @explosions
+    
     call_scm_func @run_away 2 30@ 25@
     29@ = 0
     repeat
@@ -770,40 +838,17 @@ then
     04D7: set_actor $PLAYER_ACTOR locked 0
     wait 1500
     0AAE: release_audiostream 15@
-    0AAE: release_audiostream 17@
     
     0AB2: ret 0
 end
 if 24@ == 1
 then
-    {0085: 27@ = 0@ // previous skin 
-    0085: 28@ = 1@ // new skin
-    
-    04D7: set_actor $PLAYER_ACTOR locked 1 
-    Player.CanMove($PLAYER_CHAR, 0)              
-    
-    wait 500
-    009A: 30@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172
-    0245: set_actor 30@ walk_style_to "MAN" 
-    0245: set_actor $PLAYER_ACTOR walk_style_to "MAN" 
-    0172: 1@ = actor $PLAYER_ACTOR Z_angle 
-    0173: set_actor 30@ Z_angle_to 1@
-    0619: enable_actor $PLAYER_ACTOR collision_detection 0
-    
-    00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@  
-    09BC: set_char_coordinates_dont_warp_gang_no_offset 30@ at 1@ 2@ 3@
-    
-    09C7: change_player $PLAYER_CHAR model_to 28@
-    0D10: set_actor $PLAYER_ACTOR alpha 0 
-    02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
-     //run "regeneration.cs" 1 0
-    wait 1500
-    02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
-    0619: enable_actor 30@ collision_detection 0
-    0619: enable_actor $PLAYER_ACTOR collision_detection 1} 
+    0687: clear_actor $PLAYER_ACTOR task 
+    0687: clear_actor 30@ task 
     
     0812: AS_actor $PLAYER_ACTOR perform_animation "regen_Geronimo" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
     0812: AS_actor 30@ perform_animation "regen_Geronimo" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+    
     Player.CanMove($PLAYER_CHAR, 1)
     02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1  
     066A: 10@ = attach_particle "regenergy" to_actor $PLAYER_ACTOR with_offset 0.325 -0.15 0.55 rotation 45.0 -10.0 25.0 flag 1 
@@ -812,11 +857,30 @@ then
     04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 0.0
     064B: 11@ = create_particle "explosion_small" at 1@ 2@ 3@ type 1
     04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 -0.15 0.7
-    064B: 14@ = create_particle "flame" at 1@ 2@ 3@ type 1          
-    02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1     
+    064B: 14@ = create_particle "flame" at 1@ 2@ 3@ type 1 
+    0AAC: 15@ = load_audiostream "DWS\reg_geronimo.mp3"
+    0AAD: set_audiostream 15@ perform_action 1         
+    0223: set_actor $PLAYER_ACTOR health_to 500 
+    02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1 
+        
     32@ = 0
     repeat
         wait 0
+        if or
+            8611:   not actor $PLAYER_ACTOR performing_animation "regen_Geronimo"
+            8611:   not actor 30@ performing_animation "regen_Geronimo"
+        then
+            0687: clear_actor $PLAYER_ACTOR task 
+            0687: clear_actor 30@ task
+            wait 500     
+            0812: AS_actor $PLAYER_ACTOR perform_animation "regen_Geronimo" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            0812: AS_actor 30@ perform_animation "regen_Geronimo" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            //0605: actor 30@ perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
+            32@ = 0
+            0AAD: set_audiostream 15@ perform_action 0
+            0AAD: set_audiostream 15@ perform_action 1
+        end
+        
         04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.0 
         0093: 26@ = integer 32@ to_float 
         26@ *= 0.15454
@@ -828,11 +892,17 @@ then
         0613: 26@ = actor $PLAYER_ACTOR animation "regen_Geronimo" time      
     until 26@ > 0.165
     
+    0223: set_actor $PLAYER_ACTOR health_to 500 
+    02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1 
+    
     064C: make_particle 14@ visible
     064C: make_particle 11@ visible  
     064C: make_particle 10@ visible
     064C: make_particle 12@ visible  
     064C: make_particle 13@ visible
+    
+    gosub @explosions
+    
     call_scm_func @run_away 2 30@ 25@
     29@ = 0
     repeat
@@ -906,38 +976,18 @@ then
     Actor.DestroyInstantly(25@)
     0619: enable_actor $PLAYER_ACTOR collision_detection 1
     04D7: set_actor $PLAYER_ACTOR locked 0
+    wait 1500
+    0AAE: release_audiostream 15@
     0AB2: ret 0
 end
 if 24@ == 2
 then
-    {0085: 27@ = 0@ // previous skin 
-    0085: 28@ = 1@ // new skin
-    
-    04D7: set_actor $PLAYER_ACTOR locked 1 
-    Player.CanMove($PLAYER_CHAR, 0)              
-    
-    wait 500
-    009A: 30@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172
-    0245: set_actor 30@ walk_style_to "MAN" 
-    0245: set_actor $PLAYER_ACTOR walk_style_to "MAN" 
-    0172: 1@ = actor $PLAYER_ACTOR Z_angle 
-    0173: set_actor 30@ Z_angle_to 1@
-    0619: enable_actor $PLAYER_ACTOR collision_detection 0
-    
-    00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@  
-    09BC: set_char_coordinates_dont_warp_gang_no_offset 30@ at 1@ 2@ 3@
-    
-    09C7: change_player $PLAYER_CHAR model_to 28@
-    0D10: set_actor $PLAYER_ACTOR alpha 0 
-    02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
-     //run "regeneration.cs" 1 0
-    wait 1500
-    02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
-    0619: enable_actor 30@ collision_detection 0
-    0619: enable_actor $PLAYER_ACTOR collision_detection 1} 
-    
+    0687: clear_actor $PLAYER_ACTOR task 
+    0687: clear_actor 30@ task
+       
     0812: AS_actor $PLAYER_ACTOR perform_animation "regen_Fantastic" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
     0812: AS_actor 30@ perform_animation "regen_Fantastic" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+    
     Player.CanMove($PLAYER_CHAR, 1)
     02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
     066A: 10@ = attach_particle "regenergy" to_actor $PLAYER_ACTOR with_offset -0.215 -0.06 0.30 rotation -45.0 0.0 -95.0 flag 1 
@@ -946,11 +996,28 @@ then
     04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 0.0
     064B: 11@ = create_particle "explosion_small" at 1@ 2@ 3@ type 1
     04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 -0.09 0.7
-    064B: 14@ = create_particle "flame" at 1@ 2@ 3@ type 1  
+    064B: 14@ = create_particle "flame" at 1@ 2@ 3@ type 1
+    0AAC: 15@ = load_audiostream "DWS\reg_fantastic.mp3" 
+    0AAD: set_audiostream 15@ perform_action 1 
  
     32@ = 0
     repeat
         wait 0
+        if or
+            8611:   not actor $PLAYER_ACTOR performing_animation "regen_Fantastic"
+            8611:   not actor 30@ performing_animation "regen_Fantastic"
+        then
+            0687: clear_actor $PLAYER_ACTOR task 
+            0687: clear_actor 30@ task
+            wait 500     
+            0812: AS_actor $PLAYER_ACTOR perform_animation "regen_Fantastic" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            0812: AS_actor 30@ perform_animation "regen_Fantastic" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            //0605: actor 30@ perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
+            32@ = 0
+            0AAD: set_audiostream 15@ perform_action 0
+            0AAD: set_audiostream 15@ perform_action 1 
+        end
+        
         04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.0 
         0093: 26@ = integer 32@ to_float 
         26@ *= 0.0772
@@ -967,6 +1034,7 @@ then
     064C: make_particle 10@ visible
     064C: make_particle 12@ visible  
     064C: make_particle 13@ visible
+    gosub @explosions
     call_scm_func @run_away 2 30@ 25@
     29@ = 0
     repeat
@@ -1040,38 +1108,18 @@ then
     Actor.DestroyInstantly(25@)
     0619: enable_actor $PLAYER_ACTOR collision_detection 1
     04D7: set_actor $PLAYER_ACTOR locked 0
+    wait 1500
+    0AAE: release_audiostream 15@
     0AB2: ret 0
 end
 if 24@ == 3
 then
-    {0085: 27@ = 0@ // previous skin 
-    0085: 28@ = 1@ // new skin
-    
-    04D7: set_actor $PLAYER_ACTOR locked 1 
-    Player.CanMove($PLAYER_CHAR, 0)              
-    
-    wait 500
-    009A: 30@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172
-    0245: set_actor 30@ walk_style_to "MAN" 
-    0245: set_actor $PLAYER_ACTOR walk_style_to "MAN" 
-    0172: 1@ = actor $PLAYER_ACTOR Z_angle 
-    0173: set_actor 30@ Z_angle_to 1@
-    0619: enable_actor $PLAYER_ACTOR collision_detection 0
-    
-    00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@  
-    09BC: set_char_coordinates_dont_warp_gang_no_offset 30@ at 1@ 2@ 3@
-    
-    09C7: change_player $PLAYER_CHAR model_to 28@
-    0D10: set_actor $PLAYER_ACTOR alpha 0 
-     //run "regeneration.cs" 1 0
-    02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
-    wait 1500
-    02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
-    0619: enable_actor 30@ collision_detection 0
-    0619: enable_actor $PLAYER_ACTOR collision_detection 1} 
+    0687: clear_actor $PLAYER_ACTOR task 
+    0687: clear_actor 30@ task
     
     0812: AS_actor $PLAYER_ACTOR perform_animation "regen_War" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
     0812: AS_actor 30@ perform_animation "regen_War" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+    
     Player.CanMove($PLAYER_CHAR, 1)
     02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
     066A: 10@ = attach_particle "regenergy" to_actor $PLAYER_ACTOR with_offset -0.315 0.15 0.365 rotation -60.0 90.0 0.0 flag 1 
@@ -1080,11 +1128,29 @@ then
     04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 0.0
     064B: 11@ = create_particle "explosion_small" at 1@ 2@ 3@ type 1
     04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 -0.03 0.7
-    064B: 14@ = create_particle "flame" at 1@ 2@ 3@ type 1  
+    064B: 14@ = create_particle "flame" at 1@ 2@ 3@ type 1 
+    0AAC: 15@ = load_audiostream "DWS\reg_war.mp3" 
+    0AAD: set_audiostream 15@ perform_action 1
  
     32@ = 0
     repeat
         wait 0
+        
+        if or
+            8611:   not actor $PLAYER_ACTOR performing_animation "regen_War"
+            8611:   not actor 30@ performing_animation "regen_War"
+        then
+            0687: clear_actor $PLAYER_ACTOR task 
+            0687: clear_actor 30@ task
+            wait 500     
+            0812: AS_actor $PLAYER_ACTOR perform_animation "regen_War" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            0812: AS_actor 30@ perform_animation "regen_War" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
+            //0605: actor 30@ perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
+            32@ = 0
+            0AAD: set_audiostream 15@ perform_action 0
+            0AAD: set_audiostream 15@ perform_action 1
+        end
+        
         04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.0 
         0093: 26@ = integer 32@ to_float 
         26@ *= 0.06
@@ -1115,6 +1181,7 @@ then
     064C: make_particle 10@ visible
     064C: make_particle 12@ visible  
     064C: make_particle 13@ visible
+    gosub @explosions
     call_scm_func @run_away 5 30@ 25@ 1@ 2@ 3@ 
     29@ = 0
     repeat
@@ -1188,6 +1255,8 @@ then
     Actor.DestroyInstantly(25@)
     0619: enable_actor $PLAYER_ACTOR collision_detection 1
     04D7: set_actor $PLAYER_ACTOR locked 0
+    wait 1500
+    0AAE: release_audiostream 15@
     0AB2: ret 0
 end
 0AB2: ret 0
@@ -1224,6 +1293,27 @@ for 30@ = 0 to 35584 step 0x100
     end
 end
 0AB2: ret 0
+
+:explosions
+    if 29@ == 1
+    then
+        04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 0.0 
+        020C: create_explosion_with_radius 10 at 1@ 2@ 3@ 
+        1@ += 1.0
+        2@ += 1.0
+        020C: create_explosion_with_radius 10 at 1@ 2@ 3@
+        1@ -= 2.0
+        020C: create_explosion_with_radius 10 at 1@ 2@ 3@
+        2@ -= 2.0
+        020C: create_explosion_with_radius 10 at 1@ 2@ 3@
+        1@ += 2.0
+        020C: create_explosion_with_radius 10 at 1@ 2@ 3@
+        if $93 == 1
+        then
+            0224: set_car $111 health_to 400
+        end        
+    end
+return
 
 //////////////////////////////////////////////////////////
 
@@ -1274,13 +1364,31 @@ repeat
     32@ = 0
     repeat
         wait 0
-        
+        02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1 
+        0AB4: 15@ = var 54
+        if 15@ == 0
+        then
+            break
+        end
         03E3: set_texture_to_be_drawn_antialiased 1
         03F0: enable_text_draw 1
         0093: 12@ = integer 10@ to_float 
         12@ *= 2.57575757
         0092: 12@ = float 12@ to_integer 
  
+        //beats frequency
+        0093: 15@ = integer 10@ to_float 
+        15@ *= -6.5
+        15@ += 1000.0
+        0092: 15@ = float 15@ to_integer 
+        0AB3: var 55 = 15@
+        
+        //delay between beats
+        0093: 15@ = integer 10@ to_float 
+        15@ *= -2.0
+        15@ += 300.0
+        0092: 15@ = float 15@ to_integer 
+        0AB3: var 56 = 15@
         
         //038D: draw_texture 11 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 12@
         
@@ -1316,7 +1424,14 @@ repeat
             15@ *= -1
             038D: draw_texture 11 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 15@
             //show_text "up %d %d" 1000 12@ 15@
-        end 
+        end
+        
+        if 0ADC: test_cheat "nuff"
+        then
+            10@ = 0
+            break
+        end
+ 
         
     until 002D: 32@ >= 11@
     
@@ -1329,4 +1444,8 @@ until 10@ < 1
 //038D: draw_texture 11 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 255
 //038D: draw_texture 10 position 320.0 220.0 size 640.0 480.0 RGBA 255 255 255 255
 0AB3: var 53 = 0
+
+//kill hbeat
+0AB3: var 55 = 0
+0AB3: var 56 = 0
 end_custom_thread

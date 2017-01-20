@@ -230,7 +230,7 @@ then
     0AB3: var 45 = 1 // hide vortex clock
     fade 0 500
     wait 500
-    0687: clear_actor $PLAYER_ACTOR task 
+    // RECENT 0687: clear_actor $PLAYER_ACTOR task 
     07CC: set_player_enter_car_button $PLAYER_CHAR to 0
     00A0: store_actor $PLAYER_ACTOR position_to 26@ 27@ 28@
     0AB4: 3@ = var 9 // in vortex
@@ -278,6 +278,7 @@ then
     //fade 1 0
 
     036A: put_actor $PLAYER_ACTOR in_car $111
+    0D10: set_actor $PLAYER_ACTOR alpha 0
     wait 1000
     0AB4: 3@ = var 9 // in vortex
     0AB4: 24@ = var 24 // IS refreshing coordinates required
@@ -368,6 +369,7 @@ then
             wait 5000
             EXTERIOR = 0
             07CC: set_player_enter_car_button $PLAYER_CHAR to 1
+            0D10: set_actor $PLAYER_ACTOR alpha 255
             jump @pickup
         end
         
@@ -485,6 +487,7 @@ then
     09BC: put_actor $PLAYER_ACTOR at 0.01 1.4 1024.375
     04D7: set_actor $PLAYER_ACTOR locked 1 
     0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+    0D10: set_actor $PLAYER_ACTOR alpha 255
     call_scm_func @get_toggle 1 id 1 to 3@
     if 3@ == 0
     then
@@ -587,7 +590,7 @@ until 00EC:   actor $PLAYER_ACTOR 0 near_point 3@ 4@ radius 0.4 0.4
 0097: make 0@ absolute_float
 if 0@ > 0.3                               // if tardis is too high relatively CJ
 then
-    0687: clear_actor $PLAYER_ACTOR task
+    // RECENT 0687: clear_actor $PLAYER_ACTOR task
     0AB3: var 19 = 0
     jump @pickup
 end
@@ -699,7 +702,7 @@ until 00EC:   actor $PLAYER_ACTOR 0 near_point 3@ 4@ radius 0.4 0.4
 0097: make 0@ absolute_float
 if 0@ > 0.3                               // if tardis is too high relatively CJ
 then
-    0687: clear_actor $PLAYER_ACTOR task
+    // RECENT 0687: clear_actor $PLAYER_ACTOR task
     0AB3: var 19 = 0
     jump @pickup
 end

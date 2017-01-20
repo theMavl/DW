@@ -511,7 +511,7 @@ while true
             0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
-            0687: clear_actor $PLAYER_ACTOR task
+            // RECENT 0687: clear_actor $PLAYER_ACTOR task
             //0AB1: call @get_toggle 1 id 6 to TMP_VAL 
             if TMP_VAL == 0
             then

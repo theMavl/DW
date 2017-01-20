@@ -45,8 +45,17 @@ while true
         0AB3: var 0 = 10
         0ABC: set_audiostream 20@ volume 0.0
         03E5: show_text_box "SRPTXT"
+        0924: enable_screen_darkness 1 with_value 150
+        4@ = 0 // temporal darkness flag
         while true
             wait 0
+            if and
+                $93 == 0
+                4@ == 0 // darkness wasn't refreshed yet
+            then
+                0924: enable_screen_darkness 1 with_value 0
+                4@ = 1
+            end
             0AB4: 0@ = var 19
             if and
                 0@ == 0
@@ -55,7 +64,7 @@ while true
             then
                 break
             end
-        end
+        end  
         03E6: remove_text_box
         0227: 4@ = car $111 health
         5@ = 2000

@@ -1,0 +1,14 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+thread "hbeat"
+0AAC: 1@ = load_audiostream "DWS\hb_in.mp3" //IF and SET
+0AAC: 2@ = load_audiostream "DWS\hb_out.mp3" //IF and SET
+
+Audiostream.PerformAction(1@, 1)
+wait 0@
+Audiostream.PerformAction(2@, 1)
+wait 500
+Audiostream.Release(1@)
+Audiostream.Release(2@)
+end_custom_thread

@@ -1,8 +1,95 @@
 {$CLEO .cs}
 //-------------MAIN---------------
 0000: NOP
+{0AB3: var 54 = 1           }
+{03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_doors to #NULL
+Model.Load(18798)
+Model.Load(18799)
+038B: load_requested_models 
 
-            0687: clear_actor $PLAYER_ACTOR task 
+Object.Create(0@, 18798, 0.0, 0.0, 0.0)
+Object.Create(1@, 18799, 0.0, 0.0, 0.0)
+Object.PutAt(0@, 0.549, -6.574, 1024.745)
+Object.PutAt(1@, -0.57, -6.574, 1024.745)
+
+show_text "%d %d" 10000 0@ 1@   }
+{0AB3: var 0 = 2
+0177: set_object 43780 Z_angle_to -75.0
+0177: set_object 44036 Z_angle_to 75.0}
+
+Model.Load(92)
+Model.Load(14467)
+038B: load_requested_models
+00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
+1@ += 5.0
+3@ = Actor.Create(18 ,92, 0@, 1@, 2@)
+4@ = Object.Create(14467, 0@, 1@, 2@)
+	0A09: shut_char_up_for_scripted_speech 3@ to 1
+Object.PutAt(4@, 0@, 1@, 2@)
+//03B6: replace_model_at 2547.5198 -1291.8685 1054.6406 radius 20.0 from 14467 to 0
+//Object.PutAt(4@, 2547.3191, -1289.5845, 1056.5406)
+
+//0337: set_actor 3@ visibility 0 
+04F4: put_actor 3@ into_turret_on_object 4@ offset_from_object_origin 0.0 0.0 0.0 orientation 0 both_side_angle_limit 180.0 lock_weapon 1 
+//0159: camera_on_ped $PLAYER_ACTOR mode 45 switchstyle 1
+
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+
+repeat
+wait 0
+if
+    09ED:   actor $PLAYER_ACTOR  is_within_field_of_view_actor  3@
+then
+    //show_text "Spotted!"  100
+else
+    //show_text "Careful!"  100
+    00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
+    01BB: store_object 4@ position_to 0@ 1@ 2@
+   
+    0382: set_object 4@ collision_detection 0 
+    0465: remove_actor 3@ from_turret_mode
+    02CE: 2@ = ground_z_at 0@ 1@ 3000.0
+    Actor.PutAt(3@, 0@, 1@, 2@) 
+
+    //Object.PutAt(4@, 0.0, 0.0, 0.0)
+     
+    //0850: AS_actor 3@ follow_actor $PLAYER_ACTOR 
+    07A5: AS_actor 3@ attack_actor $PLAYER_ACTOR 1000 ms 
+
+    07A1: set_walk_speed 7
+    //05D9: AS_actor 3@ run_to_actor $PLAYER_ACTOR timelimit 500000 stop_within_radius 1.0 
+    32@ = 0
+    repeat
+        wait 0
+        if 32@ > 1000
+        then
+        //show_text "run u dickhead!"  1000
+            //0850: AS_actor 3@ follow_actor $PLAYER_ACTOR 
+            07A5: AS_actor 3@ attack_actor $PLAYER_ACTOR 1000 ms
+            32@ = 0
+        end
+        {if 00F3:   actor 3@ near_actor $PLAYER_ACTOR radius 1.0 1.0 0 on_foot
+        then
+            show_text "Rest in peace" 1000
+            0321: kill_actor $PLAYER_ACTOR
+        end}
+        if 0ab0: 56
+        then
+            break
+        end
+    until 09ED:   actor $PLAYER_ACTOR  is_within_field_of_view_actor  3@
+    00A0: store_actor 3@ position_to 0@ 1@ 2@
+    0172: 10@ = actor 3@ Z_angle 
+    10@ -= 180.0
+    2@ += 1.6
+    Object.PutAt(4@, 0@, 1@, 2@)
+    0382: set_object 4@ collision_detection 1
+    0177: set_object 4@ Z_angle_to 10@
+    04F4: put_actor 3@ into_turret_on_object 4@ offset_from_object_origin 0.0 0.0 0.0 orientation 0 both_side_angle_limit 180.0 lock_weapon 1 
+end
+until 0ab0: 56
+Object.Destroy(4@)
+Actor.DestroyInstantly(3@)
 
 end_custom_thread
 

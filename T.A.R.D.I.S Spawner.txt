@@ -56,6 +56,11 @@ wait 0
 0AB3: var 50 = 0
 0AB3: var 51 = 0
 0AB3: var 52 = 0
+0AB3: var 53 = 0
+//0AB3: var 54 = 0 // Overrided by another thread
+0AB3: var 55 = 0
+0AB3: var 56 = 0
+
 $94 = 0
 $93 = 0
 $111 = -1

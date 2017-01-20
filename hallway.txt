@@ -1,9 +1,24 @@
 {$CLEO .cs}
 {
-Don't ask why, but there is SONIC and PAPER pickups
+Mavl: Don't ask why, but there is SONIC and PAPER pickups
+Tommy: Just ignore him
 }
 //-------------MAIN---------------
 0000: NOP
+15@ = 0
+0AF0: 21@ = get_int_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "DOCTOR" key "TIME_LORD"
+0AB3: var 54 = 21@
+if $Mission_Intro_Passed == 0
+then
+    0AB3: var 54 = 0
+    21@ = 0
+    0AF1: write_int 0 to_ini_file "cleo\DW_CUSTOM_SETTINGS.ini" section "DOCTOR" key "TIME_LORD"
+end
+wait 100
+if 21@ == 1
+then
+    09C7: change_player $PLAYER_CHAR model_to #WMYVA2
+end    
 //0A93: end_custom_thread
 
 :main
@@ -17,22 +32,32 @@ repeat
     0AB4: 30@ = var 39
 until 30@ == 1
 
-Model.Load(18649)
-Model.Load(18650)
+0247: load_model 18647
+0247: load_model 18648
+0247: load_model 18649
+0247: load_model 18650
+0247: load_model #WMYVA2
 038B: load_requested_models 
 repeat
     wait 0
-until Model.Available(18650)
-Object.Create(1@, 18649, -0.003, 0.003, 1024.003)     
-Object.Create(2@, 18650, -0.003, -0.003, 1024.003)
-Object.PutAt(1@, -0.003, 0.003, 1024.003)
-Object.PutAt(2@, -0.003, -0.003, 1024.003)
+until 0248:   model #WMYVA2 available
+0107: 7@ = create_object 18647 at -0.003 0.0 1024.003
+0107: 8@ = create_object 18648 at 0.003 0.0 1024.003
+0107: 1@ = create_object 18649 at -0.003 0.003 1024.003            
+0107: 2@ = create_object 18650 at -0.003 -0.003 1024.003
+01BC: put_object 1@ at -0.003 0.003 1024.003
+01BC: put_object 2@ at -0.003 -0.003 1024.003 
+01BC: put_object 7@ at -0.003 0.0 1024.003
+01BC: put_object 8@ at 0.003 0.0 1024.003
 0566: link_object 1@ to_interior 3
 0566: link_object 2@ to_interior 3
+0566: link_object 7@ to_interior 3
+0566: link_object 8@ to_interior 3
 00A0: store_actor $PLAYER_ACTOR position_to 4@ 5@ 6@
 gosub @weap_pickups
 while true
-    wait 1
+    wait 0
+    gosub @weap_exterminator
     if or
         00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 1.6648 -4.1851 1022.6484 radius 2.0 2.0 1.0 on_foot 
         00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -1.4763 -4.397 1022.6484 radius 2.0 2.0 1.0 on_foot
@@ -70,7 +95,7 @@ while true
                 end
             until 80ED:   NOT actor $PLAYER_ACTOR 0 near_point 9.1063 1.7505 radius 2.0 2.0 on_foot
             03E6: remove_text_box 
-            camera.Restore()
+            015A: restore_camera 
             032A: set_behind_camera_mode_to 0
             continue
         end
@@ -130,26 +155,107 @@ while true
             end
         until 80ED:   NOT actor $PLAYER_ACTOR 0 near_point 9.1063 1.7505 radius 2.0 2.0 on_foot
         03E6: remove_text_box 
-        camera.Restore()
+        015A: restore_camera 
         032A: set_behind_camera_mode_to 0
         //0992: set_player $PLAYER_CHAR weapons_scrollable 1
         gosub @weap_pickups   
     end
     if and
         $93 == 1   
-        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -0.0854 6.1923 1022.6484 radius 0.5 0.5 1.0 on_foot                                      
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 6.2 1022.6484 radius 0.5 0.5 1.0 on_foot                                      
         //00ED:   actor $PLAYER_ACTOR 0 near_point 0.137 7.9193 radius 1.0 1.0 on_foot
         //6@ == 1022.6484 
     then
         0512: show_permanent_text_box 'NOHUMAN'
         0460: set_camera_transverse_delay 0.0 time 700 
         015F: set_camera_position 0.0749 3.7604 1023.5557 rotation 0.0 0.0 0.0
-        0159: camera_on_ped $PLAYER_ACTOR 15 1 
+        0159: camera_on_ped $PLAYER_ACTOR 15 1
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+        0992: set_player $PLAYER_CHAR weapons_scrollable 0
         repeat
-            wait 250
-        until 80FF:   NOT actor $PLAYER_ACTOR sphere 0 in_sphere 0.137 7.9193 1022.6484 radius 2.3 2.3 1.0 on_foot
+            wait 0
+            0AB4: 16@ = var 51
+            if and
+                00ED:   actor $PLAYER_ACTOR 0 near_point 0.0 7.5 radius 0.5 0.5 on_foot
+                0ab0: 69
+                16@ == 0
+            then
+                wait 0
+                0AAC: 3@ = load_audiostream "dws\hall_door_open.mp3" //IF and SET
+                0AAD: set_audiostream 3@ perform_action 1
+                repeat
+                    wait 5
+                    034E: move_object 7@ to -5.003 0.0 1024.003 speed 0.04 0.04 0.0 flag 0 
+                    034E: move_object 8@ to 5.003 0.0 1024.003 speed 0.04 0.04 0.0 flag 0
+                    15@ += 5
+                until 15@ == 65
+                15@ = 0
+                01B4: set_player $PLAYER_CHAR can_move 0
+                05D3: AS_actor $PLAYER_ACTOR goto_point 0.0 10.0 1022.6484 mode 4 1500 ms // versionA
+                wait 1500
+                0209: 3@ = random_int_in_ranges 0 2
+                if 3@ == 1
+                then
+                    05D3: AS_actor $PLAYER_ACTOR goto_point 2.5 9.5 1022.6244 mode 4 2000 ms // versionA
+                else
+                    05D3: AS_actor $PLAYER_ACTOR goto_point -2.5 9.5 1022.6244 mode 4 2000 ms // versionA
+                end
+                wait 1750
+                0AB4: 14@ = var 54
+                if 14@ == 0
+                then
+                    09C7: change_player $PLAYER_CHAR model_to #WMYVA2
+                    0AB3: var 54 = 1
+                    0AF1: write_int 1 to_ini_file "cleo\DW_CUSTOM_SETTINGS.ini" section "DOCTOR" key "TIME_LORD"
+                else
+                    09C7: change_player $PLAYER_CHAR model_to #null
+                    0AB3: var 54 = 0
+                    0AF1: write_int 0 to_ini_file "cleo\DW_CUSTOM_SETTINGS.ini" section "DOCTOR" key "TIME_LORD"
+                end
+                wait 0
+                00A0: store_actor $PLAYER_ACTOR position_to 18@ 19@ 20@
+                0159: camera_on_ped $PLAYER_ACTOR 15 0    
+                if 3@ == 1
+                then
+                    0920: point_camera 18@ 19@ 20@ transverse_to -2.5 10.0 1022.6244 time 700 mode 1 
+                    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to -2.5 10.0 1022.6244
+                    05D3: AS_actor $PLAYER_ACTOR goto_point 0.2 9.5 1022.6484 mode 4 1750 ms // versionA
+                else
+                    0920: point_camera 18@ 19@ 20@ transverse_to 2.5 10.0 1022.6244 time 700 mode 1
+                    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2.5 10.0 1022.6244
+                    05D3: AS_actor $PLAYER_ACTOR goto_point -0.2 9.5 1022.6484 mode 4 1750 ms // versionA
+                end
+                0920: point_camera 18@ 19@ 20@ transverse_to 0.0 9.5 1022.6244 time 1750 mode 1
+                wait 1750
+                0159: camera_on_ped $PLAYER_ACTOR 15 1
+                05D3: AS_actor $PLAYER_ACTOR goto_point 0.0 5.5 1022.6484 mode 4 3000 ms // versionA
+                0215: destroy_pickup 29@
+                0215: destroy_pickup 30@
+                gosub @weap_pickups
+                if 0491:   actor $PLAYER_ACTOR has_weapon 7  
+                then
+                    0555: remove_weapon 7 from_actor $PLAYER_ACTOR
+                else
+                    if 0491:   actor $PLAYER_ACTOR has_weapon 2 
+                    then
+                        0555: remove_weapon 2 from_actor $PLAYER_ACTOR
+                    end
+                end
+                wait 3000
+                0AAC: 3@ = load_audiostream "dws\hall_door_open.mp3" //IF and SET
+                0AAD: set_audiostream 3@ perform_action 1
+                repeat
+                    wait 5
+                    034E: move_object 7@ to -0.003 0.0 1024.003 speed 0.04 0.04 0.0 flag 0 
+                    034E: move_object 8@ to 0.003 0.0 1024.003 speed 0.04 0.04 0.0 flag 0
+                    15@ += 5
+                until 15@ == 65
+                15@ = 0    
+                01B4: set_player $PLAYER_CHAR can_move 1 
+            end
+        until 80FF:   NOT actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 8.0 1022.6484 radius 2.3 2.3 1.0 on_foot
         03E6: remove_text_box
-        camera.Restore()
+        015A: restore_camera 
         032A: set_behind_camera_mode_to 0    
     end 
 end
@@ -159,27 +265,62 @@ wait 0
 if 0@ == 1
 jf @main
 0AAC: 3@ = load_audiostream "dws\hall_door_open.mp3" //IF and SET
-Audiostream.PerformAction(3@, 1)
+0AAD: set_audiostream 3@ perform_action 1
 repeat
     wait 0
     034E: move_object 1@ to -0.003 0.503 1024.003 speed 0.04 0.04 0.0 flag 0 
     034E: move_object 2@ to -0.003 -0.503 1024.003 speed 0.04 0.04 0.0 flag 0
 until fading //00ED:   actor $PLAYER_ACTOR 0 near_point 11.2376 -0.4537 radius 0.5 0.5 on_foot 
 wait 100
-Object.PutAt(1@, -0.003, 0.003, 1024.003)
-Object.PutAt(2@, -0.003, -0.003, 1024.003)
-Audiostream.Release(3@)
+01BC: put_object 1@ at -0.003 0.003 1024.003 
+01BC: put_object 2@ at -0.003 -0.003 1024.003
+0AAE: release_audiostream 3@
 0A93: end_custom_thread
 
 :weap_pickups
 wait 0
-Model.Load(#poolcue)
-Model.Load(#GUN_DILDO1)
-032B: 30@ = create_weapon_pickup #poolcue type 2 ammo 1 at 1.0498 -4.7474 1022.2484
+0247: load_model #GOLFCLUB
+0247: load_model #POOLCUE
+0247: load_model #GUN_DILDO1
+0AB4: 14@ = var 54
+if 14@ == 1
+then
+    032B: 30@ = create_weapon_pickup #GOLFCLUB type 2 ammo 1 at 1.0498 -4.7474 1022.2484
+    //01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
+    //01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+    0881: set_player $PLAYER_CHAR able_to_shoot_weapons 0
+else    
+    032B: 30@ = create_weapon_pickup #POOLCUE type 2 ammo 1 at 1.0498 -4.7474 1022.2484
+    0881: set_player $PLAYER_CHAR able_to_shoot_weapons 1
+end
 032B: 29@ = create_weapon_pickup #GUN_DILDO1 type 2 ammo 1 at -1.4554 -4.7398 1022.2484
-Model.Destroy(#poolcue)
-Model.Destroy(#GUN_DILDO1)
+0108: destroy_object #GOLFCLUB
+0108: destroy_object #POOLCUE
+0108: destroy_object #GUN_DILDO1
 return
 
-
-
+:weap_exterminator
+wait 0
+if and
+    $93 == 0
+    $94 == 0
+then
+    0215: destroy_pickup 29@
+    0215: destroy_pickup 30@
+else
+    wait 0
+    if 
+        $93 == 1
+    then
+        wait 0
+        if and
+            09D1:   does_pickup_exist 30@
+            09D1:   does_pickup_exist 29@
+        then
+            return
+        else
+            gosub @weap_pickups
+        end
+    end
+end
+return

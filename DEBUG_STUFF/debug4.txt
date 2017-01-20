@@ -1,6 +1,23 @@
 {$CLEO .cs}
 {$INCLUDE stdc}
 //-------------MAIN---------------
+Model.Load(14467)
+038B: load_requested_models
+
+00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
+1@ += 5.0
+
+4@ = Object.Create(14467, 0@, 1@, 2@)
+2@ += 1.6
+Object.PutAt(4@, 0@, 1@, 2@)
+
+repeat
+wait 0
+until 0ab0: 56
+
+Object.Destroy(4@)
+Model.Destroy(14467)
+end_custom_thread
 //0D10: set_actor $PLAYER_ACTOR alpha 255
 //09C7: change_player $PLAYER_CHAR model_to #null
 32@ = 0
