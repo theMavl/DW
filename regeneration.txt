@@ -1,6 +1,5 @@
 {$CLEO .cs}
 //-------------MAIN---------------
-
 if 0@ == 1
 then
     jump @camera_effect
@@ -39,16 +38,13 @@ while true
             REGENS > 11
         then
             // the Doctor is dead
-            repeat
-                wait 0
-            until 0118:   actor $PLAYER_ACTOR dead
             0ACE: show_formatted_text_box "Timelord is dead."
             00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@
 
             016E: override_restart at 1@ 2@ 3@ angle 355.2978 
  
             0003: shake_camera 0
-            //015D: set_gamespeed 0.0
+            015D: set_gamespeed 0.0
             end_custom_thread
         end
         0992: set_player $PLAYER_CHAR weapons_scrollable 0 
