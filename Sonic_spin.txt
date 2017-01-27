@@ -1,0 +1,56 @@
+//written by Tommy
+{$CLEO .s}
+
+//-------------MAIN---------------
+
+thread "SON_SPIN"  
+Model.Load(#FLOWERA)
+Model.Load(#GUN_DILDO2)
+038B: load_requested_models 
+
+:ssd_spin
+wait 0
+0AB4: 0@ = var 52
+if
+    0@ == 0
+then 
+    While True
+        0AB4: 0@ = var 52
+        if
+            0@ == 0
+        then
+            01B2: give_actor $PLAYER_ACTOR weapon 11 ammo 1E38
+            wait 150
+            01B2: give_actor $PLAYER_ACTOR weapon 14 ammo 1E38
+            wait 150
+        else
+            04B8: get_weapon_data_from_actor $PLAYER_ACTOR weapon_group 11 weapon 24@ ammo 25@ model 26@
+            0555: remove_weapon 24@ from_actor $PLAYER_ACTOR
+            01B2: give_actor $PLAYER_ACTOR weapon 10 ammo 1E38
+            01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
+            break
+        end
+    End
+else
+    wait 0
+    While True
+        1@ = Object.Create(#FLOWERA, 0.0, 0.0, -100.0)
+        2@ = Object.Create(#GUN_DILDO2, 0.0, 0.0, -100.0)
+        0AB4: 0@ = var 52
+        if
+            0@ == 1
+        then
+            070A: AS_actor $PLAYER_ACTOR attach_to_object 1@ offset 0.0 0.0 0.0 on_bone 6 16 perform_animation "NULL" IFP_file "NULL" time -1
+            wait 150
+            070A: AS_actor $PLAYER_ACTOR attach_to_object 2@ offset 0.0 0.0 0.0 on_bone 6 16 perform_animation "NULL" IFP_file "NULL" time -1
+            wait 150
+            0687: clear_actor $PLAYER_ACTOR task
+        else
+            Object.Destroy(1@)
+            Object.Destroy(2@)
+            wait 0
+            break
+        end
+    End
+End
+jump @ssd_spin  

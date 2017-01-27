@@ -58,6 +58,7 @@ jf @def
 wait 150
 04ED: load_animation "DW" 
 Model.Load(#GOLFCLUB)
+Model.Load(#GUN_DILDO1)
 038B: load_requested_models 
 wait 100
 if 04EE: animation "DW" loaded
@@ -732,31 +733,21 @@ gosub @ssd_setlight
 0AC0: loop_audiostream DLOOP flag 1
 0A92: create_custom_thread "sonic_gui.s" 1 //Launch GUI cross mode
 04EF: release_animation "DW"
-0992: set_player $PLAYER_CHAR weapons_scrollable 1
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
 wait 1300
-REPEAT 
-if and
-82D8: not  actor $PLAYER_ACTOR current_weapon == 14
-82D8: not  actor $PLAYER_ACTOR current_weapon == 11
-then
-gosub @ssd_removelight
-wait 0
-0470: TEMP = actor $PLAYER_ACTOR current_weapon
-04B8: get_weapon_data_from_actor $PLAYER_ACTOR weapon_group 11 weapon 24@ ammo 25@ model 26@
-0555: remove_weapon 24@ from_actor $PLAYER_ACTOR
+REPEAT
+0AB4: 19@ = var 57
 if
-    28@ == 1
+   19@ == 1
 then
-    01B2: give_actor $PLAYER_ACTOR weapon 10 ammo 1E38
-end
-Audiostream.Release(DLOOP)
-0AD1: show_formatted_text_highpriority "Program 'Disarmament' ~r~Terminated" time 3000
-01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
-01B2: give_actor $PLAYER_ACTOR weapon TEMP ammo 1E38
-0ABA: end_custom_thread_named 'SON_CUI'
-03F0: enable_text_draw 0
-0A92: create_custom_thread "sonic_gui.s" //Launch GUI 
-jump @ssd_main  
+    gosub @ssd_removelight
+    Audiostream.Release(DLOOP)
+    0AD1: show_formatted_text_highpriority "Program 'Disarmament' ~r~Terminated" time 3000
+    0ABA: end_custom_thread_named 'SON_CUI'
+    03F0: enable_text_draw 0
+    0A92: create_custom_thread "sonic_gui.s" //Launch GUI 
+    01B2: give_actor $PLAYER_ACTOR weapon 0 ammo 1E38
+    jump @ssd_main  
 end
 WAIT 100
 //QT - оепелеммюъ дкъ йннпдхмюрмни вербепрх
@@ -1375,7 +1366,7 @@ return
 :ssd_removelight
 wait 0
 0AB3: var 52 = -1
-0ABA: end_custom_thread_named 'SON_SPIN'
+{0ABA: end_custom_thread_named 'SON_SPIN'
 04B8: get_weapon_data_from_actor $PLAYER_ACTOR weapon_group 11 weapon 24@ ammo 25@ model 26@
 0555: remove_weapon 24@ from_actor $PLAYER_ACTOR
 if
@@ -1383,6 +1374,6 @@ if
 then
     01B2: give_actor $PLAYER_ACTOR weapon 10 ammo 1E38
 end
-01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38
+01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1E38}
 wait 0
 return

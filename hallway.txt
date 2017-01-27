@@ -5,15 +5,16 @@ Tommy: Just ignore him
 }
 //-------------MAIN---------------
 0000: NOP
+0226: 31@ = actor $PLAYER_ACTOR health
 15@ = 0
 0AF0: 21@ = get_int_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "DOCTOR" key "TIME_LORD"
 0AB3: var 54 = 21@
-if $Mission_Intro_Passed == 0
+{if $Mission_Intro_Passed == 0
 then
     0AB3: var 54 = 0
     21@ = 0
     0AF1: write_int 0 to_ini_file "cleo\DW_CUSTOM_SETTINGS.ini" section "DOCTOR" key "TIME_LORD"
-end
+end}
 wait 100
 if 21@ == 1
 then
@@ -201,6 +202,7 @@ while true
                     05D3: AS_actor $PLAYER_ACTOR goto_point -2.5 9.5 1022.6244 mode 4 2000 ms // versionA
                 end
                 wait 1750
+                0223: set_actor $PLAYER_ACTOR health_to 31@ 
                 0AB4: 14@ = var 54
                 if 14@ == 0
                 then
