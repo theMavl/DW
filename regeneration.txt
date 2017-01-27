@@ -567,8 +567,8 @@ Player.CanMove($PLAYER_CHAR, 0)
 01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
    
 wait 500
-009A: 30@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172
-009A: 25@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172 // invisible fake ped
+009A: 30@ = create_actor_pedtype 19 model 27@ at -0.2326 -4.205 3.1172
+009A: 25@ = create_actor_pedtype 19 model 27@ at -0.2326 -4.205 3.1172 // invisible fake ped
 02AB: set_actor 25@ immunities BP 1 FP 1 EP 1 CP 1 MP 1 
 02AB: set_actor 30@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
 0446: set_actor 25@ immune_to_headshots 1 
