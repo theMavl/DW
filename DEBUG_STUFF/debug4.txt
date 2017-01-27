@@ -1,22 +1,47 @@
 {$CLEO .cs}
 {$INCLUDE stdc}
 //-------------MAIN---------------
-Model.Load(14467)
-038B: load_requested_models
+0AB3: var 54 = 1
+end_custom_thread    
+model.Load(#tfade)
+model.Load(#BAGBOXA)
+038B: load_requested_models 
 
-00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
-1@ += 5.0
-
-4@ = Object.Create(14467, 0@, 1@, 2@)
-2@ += 1.6
-Object.PutAt(4@, 0@, 1@, 2@)
+11@ = object.Create(#tfade, 0.0, 0.0, 0.0)
+12@ = object.Create(#tfade, 0.0, 0.0, 0.0)
+Object.CollisionDetection(11@, 0)
+Object.CollisionDetection(12@, 0)
+08D2: object 11@ scale_model 0.1 
+08D2: object 12@ scale_model 0.3 
 
 repeat
-wait 0
-until 0ab0: 56
+    wait 0
+    04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 1.0 
 
-Object.Destroy(4@)
-Model.Destroy(14467)
+    
+    
+    10@ = 0.0
+    repeat
+        wait 0
+        10@ += 5.0
+        04C4: store_coords_to 4@ 5@ 6@ from_actor $PLAYER_ACTOR with_offset 0.0 10@ 1.0   
+    until 86BD: not no_obstacles_between 1@ 2@ 3@ and 4@ 5@ 6@ solid 1 car 1 actor 1 object 1 particle 0
+    050A: 14@ = distance_between_XYZ 1@ 2@ 3@ and_XYZ 4@ 5@ 6@
+    {Object.PutAt(11@, 1@, 2@, 3@) 
+    Object.PutAt(12@, 4@,5@, 6@)} 
+    show_text "%f" 100 14@
+    14@ /= 5.0
+    if 06B3:   searchlight 27@ active 
+    then
+        06B2: destroy_searchlight 27@ 
+    end
+    06B1: 27@ = create_searchlight_at 1@ 2@ 3@ radius 1.0 target 4@ 5@ 6@ radius 14@
+    //0A02: set_searchlight 27@ lights_through_obstacles 0
+until 0ab0: 56
+if 06B3:   searchlight 27@ active 
+    then
+        06B2: destroy_searchlight 27@ 
+    end
 end_custom_thread
 //0D10: set_actor $PLAYER_ACTOR alpha 255
 //09C7: change_player $PLAYER_CHAR model_to #null
