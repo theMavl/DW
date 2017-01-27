@@ -31,14 +31,16 @@ while true
     
     if or
         8184:   not actor $PLAYER_ACTOR health >= 15
-        0ADC: test_cheat "reg"
+        0ADC: test_cheat "idontwanttogo"
     then
+        0226: $dontbepissed = actor $PLAYER_ACTOR health 
         if or
             8184:   not actor $PLAYER_ACTOR health >= 1
             REGENS > 11
         then
             // the Doctor is dead
-            0ACE: show_formatted_text_box "Timelord is dead."
+            03E5: show_text_box 'REGEN1'
+            //0ACE: show_formatted_text_box "The Timelord is dead"
             00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@
 
             016E: override_restart at 1@ 2@ 3@ angle 355.2978 
@@ -50,12 +52,14 @@ while true
         0992: set_player $PLAYER_CHAR weapons_scrollable 0 
         01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
         0223: set_actor $PLAYER_ACTOR health_to 500 
-        02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1 
-        0ACE: show_formatted_text_box "You're nearly dead~n~Tap R rapidly to hold Regeneration or Press Y to Regenerate now" 
+        02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
+        03E5: show_text_box 'REGEN2' 
+        //0ACE: show_formatted_text_box "Press Y to Regenerate~n~Press R to hold Regeneration" 
         32@ = 0
         
         0AB3: var 55 = 1000
         0AB3: var 56 = 300
+        0AB3: var 57 = 1
         run "hbeat.s"
         
         EXPLOS = 0
@@ -78,7 +82,8 @@ while true
                 03E6: remove_text_box 
                 015D: set_gamespeed 1.0 
                 02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1
-                0ACE: show_formatted_text_box "Mash R to hold regeneration~n~Hold Y to regenerate now"
+                03E5: show_text_box 'REGEN3'
+                //0ACE: show_formatted_text_box "Tap R rapidly to hold Regeneration Longer or Press Y to Regenerate Now"
                 EXPLOS = 1
                 call_scm_func @holdRegen 0
                 06AF: set_player $PLAYER_CHAR sprint_mode 0
@@ -105,20 +110,20 @@ while true
         0AB4: 1@ = var 54
         if 1@ == 1
         then
-            0ACE: show_formatted_text_box "Regeneration completed"
+            //0ACE: show_formatted_text_box "Regeneration Completed"
         end
     end 
-    if 0ADC: test_cheat "ref"
+    {if 0ADC: test_cheat "ref"
     then
         run "regeneration.cs"
         end_custom_thread
-    end
+    end }
 end
 
 :regen
 wait 0
-0209: 1@ = random_int_in_ranges 0 290
-if 1@ > 33 
+0209: 1@ = random_int_in_ranges 0 100
+if 1@ > 50 
 then
     0209: 17@ = random_int_in_ranges 7 289    
 else
@@ -126,8 +131,12 @@ else
     then
         17@ = 0
     else
-        0209: 17@ = random_int_in_ranges 1000 1033
-        
+        if 1@ > 25
+        then
+            0209: 17@ = random_int_in_ranges 6011 6034
+        else
+            0209: 17@ = random_int_in_ranges 1000 1033
+        end      
     end
 end
 
@@ -147,13 +156,20 @@ else
 end
 
 
-if 17@ > 999
+if and
+    17@ > 999
+    1033 > 17@
 then
     0085: 25@ = 17@
 else
     25@ = -1
 end
 0209: 1@ = random_int_in_ranges 0 4 // regen type
+if
+    0028:   $dontbepissed >= 15 
+then
+    1@ = 0
+end 
 
 //show_text "%d" 1000 1@ 
 
@@ -219,12 +235,15 @@ then
     0@ = 1000 
 end 
 
-if 0019: 0@ > 1032 
-then 
-    0@ = 0 
+if
+    0028:   $dontbepissed >= 15
+then
+    0@ = 6033
 end
 
-if 0@ > 999
+if and 
+0@ > 999
+1033 > 0@
 then
     if 0@ == 1000
     then
@@ -377,6 +396,7 @@ then
     0AB2: ret 1 10@
 else
     model.Load(0@)
+    model.Load(6014)
     038B: load_requested_models 
 
     repeat
@@ -504,7 +524,7 @@ repeat
     then
         //break
         11@ = 1
-        show_text "~y~Forcing..." 100
+        //show_text "~y~Forcing..." 100
         continue
     end
     11@ -= 20
@@ -562,13 +582,17 @@ end
 0085: 24@ = 2@ // regen type
 0085: 29@ = 3@ // explosion
                             
-//04D7: set_actor $PLAYER_ACTOR locked 1 
+if
+    0028:   $dontbepissed >= 15
+then
+    27@ =  6014
+end 
 Player.CanMove($PLAYER_CHAR, 0)  
 01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
    
 wait 500
-009A: 30@ = create_actor_pedtype 19 model 27@ at -0.2326 -4.205 3.1172
-009A: 25@ = create_actor_pedtype 19 model 27@ at -0.2326 -4.205 3.1172 // invisible fake ped
+009A: 30@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172
+009A: 25@ = create_actor_pedtype 21 model 27@ at -0.2326 -4.205 3.1172 // invisible fake ped
 02AB: set_actor 25@ immunities BP 1 FP 1 EP 1 CP 1 MP 1 
 02AB: set_actor 30@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
 0446: set_actor 25@ immune_to_headshots 1 
@@ -636,8 +660,17 @@ end
 if 24@ == 0
 then
     0687: clear_actor $PLAYER_ACTOR task 
-    0687: clear_actor 30@ task 
-
+    0687: clear_actor 30@ task
+    
+    if
+        0028:   $dontbepissed >= 15
+    then
+        wait 1500
+        run "regeneration.cs" 1
+        wait 1500
+        29@ = 1
+    end
+     
     0812: AS_actor $PLAYER_ACTOR perform_animation "regen_Allons-y" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
     //0812: AS_actor 30@ perform_animation "regen_Allons-y" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB
     //0605: actor $PLAYER_ACTOR perform_animation_sequence "regen_Allons-y" IFP_file "DW" 4.0 loop 0 0 0 0 time -1 // versionA 
@@ -676,8 +709,9 @@ then
 
             0160: set_camera_point_at 1@ 2@ 3@ mode 1 
             015F: set_camera_position 1@ 2@ 9999.9 rotation 0.0 0.0 0.0 
-            show_text "Game over. Being a TimeLord doesn't mean being invincible." 20000
+            show_text "Being a Time Lord doesn't mean being invincible - Mavl 2017" 20000
             0AAE: release_audiostream 15@
+            0AB3: var 57 = 0
         
             0612: set_actor $PLAYER_ACTOR animation "regen_Allons-y"  paused 0 
             wait 5000
@@ -750,7 +784,7 @@ then
     064C: make_particle 10@ visible
     064C: make_particle 12@ visible  
     064C: make_particle 13@ visible
-    
+    0AB3: var 57 = 0
     gosub @explosions
     
     call_scm_func @run_away 2 30@ 25@
@@ -896,7 +930,7 @@ then
     064C: make_particle 10@ visible
     064C: make_particle 12@ visible  
     064C: make_particle 13@ visible
-    
+    0AB3: var 57 = 0
     gosub @explosions
     
     call_scm_func @run_away 2 30@ 25@
@@ -1030,6 +1064,7 @@ then
     064C: make_particle 10@ visible
     064C: make_particle 12@ visible  
     064C: make_particle 13@ visible
+    0AB3: var 57 = 0
     gosub @explosions
     call_scm_func @run_away 2 30@ 25@
     29@ = 0
@@ -1177,6 +1212,7 @@ then
     064C: make_particle 10@ visible
     064C: make_particle 12@ visible  
     064C: make_particle 13@ visible
+    0AB3: var 57 = 0
     gosub @explosions
     call_scm_func @run_away 5 30@ 25@ 1@ 2@ 3@ 
     29@ = 0
@@ -1315,8 +1351,8 @@ return
 
 :camera_effect
 thread "dwregca"
-if 1@ == 0
-then
+//if 1@ == 0
+//then
     0460: set_camera_transverse_delay 0.0 time 6000
     04C4: store_coords_to 0@ 1@ 2@ from_actor $PLAYER_ACTOR with_offset 0.5 2.0 0.75
     
@@ -1344,7 +1380,7 @@ then
     0160: set_camera_point_at 0@ 1@ 2@ mode 2 
     wait 4000
     Camera.Restore()
-end
+//end
 end_custom_thread
 
 
@@ -1422,11 +1458,11 @@ repeat
             //show_text "up %d %d" 1000 12@ 15@
         end
         
-        if 0ADC: test_cheat "nuff"
+        {if 0ADC: test_cheat "nuff"
         then
             10@ = 0
             break
-        end
+        end}
  
         
     until 002D: 32@ >= 11@
