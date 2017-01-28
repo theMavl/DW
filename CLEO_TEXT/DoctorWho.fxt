@@ -1,0 +1,147 @@
+SPARROW T.A.R.D.I.S.
+RHINO Dalek
+RCCAM K-9
+PSY Seems that person has no imagination...
+CHIC He ditched you...
+CAMERAT Close-Up Camera Activated
+CAMERAF Close-Up Camera Deactivated
+UNLOCK The Car is Unlocked!
+LOCK The Car is Locked!
+LCK Lock the TARDIS
+HADS H.A.D.S. Settings
+TMMENU Control Panel
+TDMENU System Interface
+MANUAL Manual Teleport
+RANDOM Random Teleport
+PROGRAM Programming Teleport
+TSHIFT Time Travel
+VORTEX Vortex Flight
+RNDFLT Random Flight
+EXT Close Panel
+FRETURN Fast Return
+TLOCK M.D.L.M. Control
+INVCON Cloaking System Control
+SPSI Show System Interface
+SYSR Display System Readouts
+EXTI Close Interface
+SHLD_S Shield
+SHLD_S_R ~r~Shield
+SHLD_H Shell
+SHLD_H_R ~r~Shell
+ENER_S Energy
+ENER_SR ~r~Energy
+TUNLCK Doors unlocked
+TLCK Doors locked
+SHBAR H.U.D. Switch
+CORD1 tardismemorbank
+CORD2 tardismemorbank
+CORD3 tardismemorbank
+CORD4 tardismemorbank
+CORD5 tardismemorbank
+CORD6 tardismemorbank
+CORD7 tardismemorbank
+CORD8 tardismemorbank
+CORD9 tardismemorbank
+CORD10 tardismemorbank
+SAVEC Save Current Coordinates
+SAVEMES Select a Memory Bank to save
+LOCLIST Location List
+EXTL Close List
+SREPT Self-Repair Trigger
+SREPTEXT Self-Repair Activated~n~Leave the ship~n~To initiate
+HADSED Enable/Disable HADS
+HADSF HADS water switch
+HADSW HADS fire switch
+SPINS Spin settings
+SPINM Press ~b~UP/DOWN ARROWS~w~ to increase/decrease spinning speed~n~~b~0~w~ to disable~n~~b~D~w~ to set default (40)~b~SPACE~w~ to apply settings~n~~n~Positive value - anti-clockiwise spinning~n~Negative - clockwise spinning
+PREVH P for location preview~n~ENTER to exit
+SONICT Thermal Scanning~n~Completed
+SONICN Photon Scanning~n~Completed
+k9aval K-9 AVAILABLE
+k9lost Last position of K-9 is marked on the radar
+k9bonl There you find the metal dog again xD
+k9hcan K-9 got ur message and dematerialized away ;)
+k9tout K-9 is pissed off about how you left him like that so he just go dematerialized :(
+k9tcan K-9 TARGET CANCELLED
+NOHUMAN Press E to switch characters
+TARSAV Press E to save game
+TARSIT Press E to sit down
+TARSTA Press E to stand up
+TARSIR Seriously?
+FAILCL Function Failing: ~r~Cloaking is Enabled
+HADSON H.A.D.S. ~g~Activated
+HADSOF H.A.D.S. ~r~Deactivated
+ENERLA ~r~Initial Energy Lacking
+CL_FIR Function Failing: ~r~Cloaking is Enabled
+HS_FIR Function Failing: ~r~H.A.D.S. is Enabled
+ENSUPD ~r~Energy suplly is disabled!
+SOLSYS Solar Sys, Sol-3
+SLSYSF Solar system, Sol-3
+UNKLOC Unknown
+TIMESET Destination Time Set~n~Autopilot ~g~Enabled
+FRTACT Fast Return ~g~Activated
+STAT1 In Vortex
+STAT2 IDLE
+STAT3 Materialising
+STAT4 Dematerialising
+STAT5 Triangulating
+FAILCL Function Failing: ~r~Cloaking is Enabled
+APDIS Autopilot ~r~Disabled
+HADSON H.A.D.S. ~g~Activated
+HADSOF H.A.D.S. ~r~Deactivated
+ENERLA ~r~Initial Energy Lacking
+ENSUPD Function Failing: ~r~Energy Supply Disabled
+SOLSYS Solar Sys, Sol-3
+SLSYSF Solar system, Sol-3
+UNKLOC Unknown
+FRTACT Fast Return ~g~Activated
+AFIRON Fire Reaction ~g~Enabled
+AFIROF Fire Reaction ~r~Disabled
+AWATON Water Reaction ~g~Enabled
+AWATOF Water Reaction ~r~Disabled
+PRGCAN Cancel
+PRGSAV0 Coordinates ~r~Unsaved
+PRGSAV1 Coordinates ~g~Saved
+ALOCCLO Cloaking Energy ~g~Allocated
+ALOCHAD H.A.D.S. Energy ~g~Allocated
+REMECLO Cloaking Energy ~r~Released
+REMEHAD H.A.D.S. Energy ~r~Released
+SH_S Shield
+SH_S_R ~r~Shield
+SH_H Shell
+SH_H_R ~r~Shell
+SRNODAM No Critical Damage Detected
+SRPTXT Self-Repair Activated~n~Leave the ship~n~To initiate
+DRIFTD TARDIS just drifted because you didn't turn the Handbrake On
+DRIFTF TARDIS Available~n~Use the Key if she is in a different Timeline
+DRIFTT TARDIS new location marked on map by T
+DRIFTM Use any Sonic Device to scan and locate the current position of TARDIS
+BT1 J;yï93:ÝýÏUy
+BT2 9àÍÞóxPÆ0Clzç.I[8
+BT3 Û0(kOïlàÉ8N:
+BT4 c0SöÄ]áenÒH_9
+BT5 U3i%?9zûÆÕÿG
+BT6 8¨ÿÅ1RC7MÆvt%ød(
+BT7 JãÛMf%ÐC4¹09hdÔñ
+BT8 tïJÞûa×7}0Ó,Xnù
+BT9 dã0×=Pb4DÇ
+BT10 Îä6f&Ez
+BT11 Nåõs2Ún$Ã
+BT12 ðF[1ãtßp]ÀÄbT9R0
+BT13 {Ý5xëTH¸4zc)Ë
+BT14 ÔÜ;lÓASâ0c$tþ63O
+BT15 ËgÀówwW4(&9øùH
+HPRTXT Hold F12 for the console helper
+BFLAIR Function Failing: ~r~TARDIS Not Landed
+VRTREV Vortex ~g~Reversed
+REGEN1 The Timelord is dead
+REGEN2 Press Y to Regenerate~n~Press R to hold Regeneration
+REGEN3 Tap R rapidly to hold Regeneration Longer or Press Y to Regenerate Now
+TUTABLE Press E to check
+TUTON Tutorial Hints ~g~Enabled
+TUTOFF Tutorial Hints ~r~Disabled
+TUTSONI 1 - Thermal Scan~n~2 - (Un)Lock~n~3 - Photon Scan~n~U - Explode Vehicles~n~H - Deflate Tires~n~J - Accelerate Vehicles~n~K - Break Engine~n~RMB+Z - Disarm Mode
+TUTAR Z - Handbrake~n~T - Throttle~n~C - Cloak Switcher~n~LMB - Accelerate
+TUTVOR LMB - Reverse Vortex~n~Z - Exit Vortex
+TUTPSY Press 2 to target any pedestrian to be your New Companion
+TUTGAY9 RMB+R - Select Target~n~4 - Cancel Target~n~9 - Leave

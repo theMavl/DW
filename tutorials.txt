@@ -1,0 +1,80 @@
+{$CLEO .cs}
+//written by Tommy coz he fired Mavl coz it felt good even Mavl was never hired
+
+//-------------MAIN---------------
+0000: NOP
+
+thread "tutorials"
+wait 100
+While True
+    wait 0
+    0AB4: 1@ = var 58
+    if 1@ == 1
+    then
+        0AB4: 0@ = var 51
+        0AB4: 2@ = var 9
+        if
+            02D8:   actor $PLAYER_ACTOR current_weapon == 2
+        then
+            03E5: show_text_box 'TUTSONI'
+            repeat
+                wait 0
+            until 82D8: not  actor $PLAYER_ACTOR current_weapon == 2
+            03E6: remove_text_box
+        end
+        wait 0
+        if
+            02D8:   actor $PLAYER_ACTOR current_weapon == 7  
+        then
+            03E5: show_text_box 'TUTSONI'
+            repeat
+                wait 0
+            until 82D8: not  actor $PLAYER_ACTOR current_weapon == 7
+            03E6: remove_text_box
+        end
+        wait 0
+        if 
+            0@ == 1
+        then
+            03E5: show_text_box 'TUTSONI'
+            repeat
+                wait 0
+                0AB4: 0@ = var 51
+            until 0@ == 0
+            03E6: remove_text_box
+        end
+        wait 0
+        if and 
+            2@ == 1
+            $94 == 1
+        then
+            03E5: show_text_box 'TUTVOR'
+            repeat
+                wait 0
+                0AB4: 2@ = var 9
+            until 2@ == 0
+            03E6: remove_text_box
+        end
+        wait 0
+        if
+            $94 == 1
+        then
+            03E5: show_text_box 'TUTAR'
+            repeat
+                wait 0
+            until $94 == 0
+            03E6: remove_text_box
+        end
+        if
+           02D8:   actor $PLAYER_ACTOR current_weapon == 10
+        then
+           03E5: show_text_box 'TUTPSY'
+           repeat
+                wait 0
+           until 82D8: not  actor $PLAYER_ACTOR current_weapon == 10
+           03E6: remove_text_box
+        end 
+    end 
+    wait 0 
+end
+0A93: end_custom_thread

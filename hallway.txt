@@ -9,6 +9,8 @@ Tommy: Just ignore him
 15@ = 0
 0AF0: 21@ = get_int_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "DOCTOR" key "TIME_LORD"
 0AB3: var 54 = 21@
+0AF0: 25@ = get_int_from_ini_file "CLEO\DW_CUSTOM_SETTINGS.ini" section "TUTORIAL" key "TEXT_BOX"
+0AB3: var 58 = 25@
 {if $Mission_Intro_Passed == 0
 then
     0AB3: var 54 = 0
@@ -259,7 +261,34 @@ while true
         03E6: remove_text_box
         015A: restore_camera 
         032A: set_behind_camera_mode_to 0    
-    end 
+    end
+    if and
+        $93 == 1   
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere -4.1418 -4.8583 1026.1406 radius 0.5 0.5 1.0 on_foot                                      
+    then
+        0512: show_permanent_text_box 'TUTABLE'
+        repeat
+            wait 0
+            if 0ab0: 69
+            then
+                0AB4: 27@ = var 58
+                if 27@ == 0
+                then
+                    0AB3: var 58 = 1
+                    0AF1: write_int 1 to_ini_file "cleo\DW_CUSTOM_SETTINGS.ini" section "TUTORIAL" key "TEXT_BOX"
+                    03E5: show_text_box 'TUTON'
+                    wait 500
+                else
+                    0AB3: var 58 = 0
+                    0AF1: write_int 0 to_ini_file "cleo\DW_CUSTOM_SETTINGS.ini" section "TUTORIAL" key "TEXT_BOX"
+                    03E5: show_text_box 'TUTOFF'
+                    wait 500
+                end
+            end
+            wait 0    
+        until 80FF:   NOT actor $PLAYER_ACTOR sphere 0 in_sphere -4.1418 -4.8583 1026.1406 radius 0.5 0.5 1.0 on_foot
+        03E6: remove_text_box
+    end  
 end
 
 :opend

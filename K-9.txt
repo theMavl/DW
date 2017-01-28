@@ -42,6 +42,11 @@ if and
     0AB0:   key_pressed 57//9
     80DB:   NOT actor $PLAYER_ACTOR in_car $111
 jf @a
+0AB4: 25@ = var 58
+if 25@ == 1
+then
+    03E5: show_text_box 'TUTGAY9'
+end
 jump @K9
 
 :K9
