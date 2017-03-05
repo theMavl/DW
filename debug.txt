@@ -17,19 +17,43 @@ while true
         0A92: create_custom_thread "DEBUG_STUFF/debug3.cs"
     end
     if 0ADC: test_cheat "do4"
-    then 
-        0A92: create_custom_thread "DEBUG_STUFF/debug4.cs"
+    then
+        04BB: select_interior 2
+        00A1: put_actor $PLAYER_ACTOR at 2551.1758 -1287.3268 1060.9844 
+        model.load(18813)
+        object.create(12@, 18813, 2526.16 -1299.09 1047.205) 
+        0177: set_object 12@ Z_angle_to 270.0
+        0382: set_object 12@ collision_detection 0
     end
-    if 0ADC: test_cheat "evil"
-    then 
-        0A92: create_custom_thread "master.s"
+    if 0ADC: test_cheat "do5"
+    then
+        04BB: select_interior 2
+        0860: link_actor $PLAYER_ACTOR to_interior 2
+        00A1: put_actor $PLAYER_ACTOR at 2551.1758 -1287.3268 1060.9844
+        0924: enable_screen_darkness 1 with_value 255
+        Camera.OnPed($PLAYER_ACTOR, 45, 2)
+        Player.CanMove($PLAYER_CHAR, 0) 
+        0A92: create_custom_thread "AngelicPhase2.s"
     end
-    if 0ADC: test_cheat "golig"
+    if 0ADC: test_cheat "do6"
     then 
-        0A92: create_custom_thread "DEBUG_STUFF/lightcyc.cs"
+        04BB: select_interior 2
+        0860: link_actor $PLAYER_ACTOR to_interior 2
+        00A1: put_actor $PLAYER_ACTOR at 2523.4907 -1301.9862 1048.2891
     end
-    if 0ADC: test_cheat "opty"
+    if 0ADC: test_cheat "do7"
+    then
+        04BB: select_interior 2
+        00A1: put_actor $PLAYER_ACTOR at 2527.1841 -1315.4974 1031.4219
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+    end
+    if 0ADC: test_cheat "do8"
     then 
-        0A92: create_custom_thread "DEBUG_STUFF/TV SCREEN.cs"
+        model.load(14843)
+        04BB: select_interior 2
+        00A1: put_actor $PLAYER_ACTOR at 2528.5833 -1293.948 1032.0
+        object.create(6@, 14843, 2526.9268 -1316.1886 1030.5)
+        //0177: set_object 6@ Z_angle_to 180.0
+        //0750: set_object 6@ visibility 0
     end
 end

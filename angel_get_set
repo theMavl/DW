@@ -1,0 +1,28 @@
+
+:getAngelVar
+{   
+    Input: 0@ - angel ID, 1@ - var 
+    Output: var
+}
+0AD3: string 30@v format "ANG%d" 0@
+0AAA: 17@ = thread 30@v pointer
+if 17@ == 0x0
+then
+    0AB2: ret 1 -1
+else    
+    0D2F: 15@ = get_thread 17@ var 1@
+    0AB2: ret 1 15@ 
+end   
+0AB2: ret 1 -1
+
+:setAngelVar
+{   
+    Input: 0@ - angel ID, 1@ - var, 2@ - set to
+}
+0AD3: string 30@v format "ANG%d" 0@
+0AAA: 17@ = thread 30@v pointer
+if 8039: NOT 17@ == 0x0
+then 
+    0D2E: set_thread 17@ var 1@ to 2@   
+end 
+0AB2: ret 0

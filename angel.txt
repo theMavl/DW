@@ -1,0 +1,426 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+
+:main
+if 0@ == 0
+jf @an_angel
+
+1@ = 0 // Angels counter
+wait 5000
+run "vars/angels.s" // angels monitor
+
+while true
+    wait 600
+    if 0ADC: test_cheat "BLINK"
+    then
+        00A0: store_actor $PLAYER_ACTOR position_to 5@ 6@ 7@ 
+        6@ += 5.0
+        
+        0AB3: var 61 = -1                
+        run "angel.cs" -1 5@ 6@ 7@ 0.0 40.0 1 1
+        repeat
+            wait 0
+            0AB4: 7@ = var 61
+        until 8039: NOT 7@ == -1
+        if 7@ > 0
+        then
+            //NEW_ANGEL = 7@
+            show_text "Angel %d created" 1000 7@
+        else
+            show_text "Too much angels"
+        end
+               
+    end
+end
+end_custom_thread
+
+:an_angel
+{
+    Input:  0@ - angel ID (int) OR -1 to pick first available slot (RECOMMENDED)
+            1-3@ -  X Y Z (float)
+            4@ - Angle    (float)
+            5@ - Distance limit (default - 40.0)
+            6@ - Follow flag (0/1)
+            7@ - Kill flag (0/1)
+            8@ - Script control (1 - active, 3 - end thread)           
+}
+if 0@ == -1
+then
+    0AAA: 17@ = thread "ANGELS" pointer
+    // Take first available angels slot
+    FOR 16@ = 1 to 30 step 1
+        wait 0
+        0D2F: 15@ = get_thread 17@ var 16@
+        if 15@ == 0
+        then
+            0085: 0@ = 16@
+            0D2E: set_thread 17@ var 16@ to 1
+            //show_text "Angel %d created" 1000 16@ 
+            0AB3: var 61 = 16@
+            break
+        end
+    end
+            
+    if 8039: not 0@ == -1
+    then        
+
+    else
+        //show_text "Too many angels"
+        0AB3: var 61 = 0
+        end_custom_thread
+    end    
+end
+
+0AD3: string 30@v format "ANG%d" 0@
+
+thread 30@v // Dynamic thread name
+
+const
+    ID = 0@
+    Bitch = 13@
+    Angel = 14@
+    X = 1@
+    Y = 2@
+    Z = 3@
+    tmpX = 9@
+    tmpY = 10@
+    tmpZ = 11@
+    ang = 4@
+    Distance = 5@
+    tmpDistance = 17@
+    Follow = 6@
+    Kill = 7@
+    Status = 8@
+    Model = 22@
+    GLOBAL_DONTKILL = 20@
+    GLOBAL_DONTFOLLOW = 21@
+    GLOBAL_SUICIDE = 23@
+    GLOBAL_DARKNESS = 24@
+    SFX = 25@
+    runSpeed = 26@
+end
+
+var
+    1@ : Float
+    2@ : Float
+    3@ : Float
+    4@ : Float
+    5@ : Float
+    6@ : Int
+    7@ : Int
+    8@ : Int    
+end
+
+Status = 1
+runSpeed = 2.5
+ 
+wait 0
+Model.Load(#bmybe)
+Model.Load(18812)
+038B: load_requested_models
+
+
+Bitch = Actor.Create(18, #bmybe, X, Y, Z)
+Angel = Object.Create(18812, X, Y, Z)
+Model.Destroy(18812)
+0245: set_actor Bitch walk_style_to "MAN"
+
+0860: link_actor Bitch to_interior $ACTIVE_INTERIOR 
+0A09: shut_char_up_for_scripted_speech Bitch to 1
+Object.PutAt(Angel, X, Y, Z)
+Actor.PutAt(Bitch, X, Y, Z)
+
+//Marker.CreateAboveObject(30@, Angel)
+
+0177: set_object Angel Z_angle_to ang
+0173: set_actor Bitch Z_angle_to ang
+
+0337: set_actor Bitch visibility 0 
+04F4: put_actor Bitch into_turret_on_object Angel offset_from_object_origin 0.0 0.0 0.0 orientation 0 both_side_angle_limit 180.0 lock_weapon 1                                                                
+
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+repeat
+    wait 0
+    
+    0AB4: GLOBAL_SUICIDE = var 62
+    if GLOBAL_SUICIDE == 1
+    then
+        Status = 3
+        jump @onDestroy
+    end
+    
+    if Status == 1
+    jf @onDestroy
+
+    if 0104:   actor Bitch near_actor $PLAYER_ACTOR radius Distance Distance Distance sphere 0
+    jf continue
+    
+    0AB4: GLOBAL_DARKNESS = var 63
+ 
+    if and
+        GLOBAL_DARKNESS == 0
+        09ED:   actor $PLAYER_ACTOR  is_within_field_of_view_actor Bitch
+    then
+        //show_text "Spotted!"  100
+    else
+        //show_text "Careful!"  100
+        0AB4: GLOBAL_DONTFOLLOW = var 59
+        if and
+            follow == 1
+            GLOBAL_DONTFOLLOW == 0
+        jf continue 
+        
+        00A0: store_actor $PLAYER_ACTOR position_to X Y Z
+        01BB: store_object Angel position_to X Y Z
+        0382: set_object Angel collision_detection 0 
+        0465: remove_actor Bitch from_turret_mode
+        09BC: set_char_coordinates_dont_warp_gang_no_offset Bitch to X Y Z
+        07A5: AS_actor Bitch attack_actor $PLAYER_ACTOR 1000 ms 
+    
+        //07A1: set_walk_speed 7
+        
+        32@ = 0
+        repeat
+            wait 0
+            
+            0AB4: GLOBAL_SUICIDE = var 62
+            if GLOBAL_SUICIDE == 1
+            then
+                Status = 3
+                jump @onDestroy
+            end
+            
+            if Status == 1
+            jf @onDestroy 
+
+            if or
+                8104:   not actor Bitch near_actor $PLAYER_ACTOR radius Distance Distance Distance sphere 0
+                Follow == 0
+            then
+                break
+            end 
+            
+            gosub @applySpeed
+            
+            if 32@ > 1000
+            then
+                //show_text "run u dickhead!"  1000
+                //0850: AS_actor Bitch follow_actor $PLAYER_ACTOR 
+                07A5: AS_actor Bitch attack_actor $PLAYER_ACTOR 1000 ms
+                32@ = 0
+            end
+            
+            0AB4: GLOBAL_DONTKILL = var 60
+            if and
+                0104:   actor Bitch near_actor $PLAYER_ACTOR radius 1.0 1.0 1.0 sphere 0
+                Kill == 1 
+                GLOBAL_DONTKILL == 0
+            then
+                show_text "Rest in peace" 1000
+                0AAC: SFX = load_audiostream "DWS\ang_rip.wav"
+                0AAD: set_audiostream SFX perform_action 1
+                01B4: set_player $PLAYER_CHAR can_move 0            
+                00A0: store_actor Bitch position_to X Y Z 
+                0172: ang = actor Bitch Z_angle 
+                ang -= 180.0           
+                0209: Model = random_int_in_ranges 10 13
+                Model += 18800
+                if 89CC: NOT  object Angel model_is Model
+                then
+                    Model.Load(Model)
+                    038B: load_requested_models 
+                    Object.Destroy(Angel)
+                    Object.Create(Angel, Model, 0.0, 0.0, 0.0)
+                    Model.Destroy(Model)
+                end
+                Object.PutAt(Angel, X, Y, Z)
+                0382: set_object Angel collision_detection 1
+                0177: set_object Angel Z_angle_to ang
+                04F4: put_actor Bitch into_turret_on_object Angel offset_from_object_origin 0.0 0.0 0.0 orientation 0 both_side_angle_limit 180.0 lock_weapon 1
+                04C4: store_coords_to X Y Z from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.0 
+                Object.PutAt(Angel, X, Y, Z)
+                
+                0400: store_coords_to X Y Z from_object Angel with_offset 0.0 -1.5 0.0
+                00A1: put_actor $PLAYER_ACTOR at X Y Z
+                04D7: set_actor $PLAYER_ACTOR locked 1 
+
+                0400: store_coords_to X Y Z from_object Angel with_offset 0.0 0.0 0.85
+                0160: set_camera_point_at X Y Z mode 2
+                0400: store_coords_to X Y Z from_object Angel with_offset 0.0 -1.0 0.85
+                
+                015F: set_camera_position X Y Z rotation 0.0 0.0 0.0 
+                0922: set_camera_zoom_in_factor 55.0 out_factor 35.0 timelimit 1500 mode 2
+                wait 200
+                0922: set_camera_zoom_in_factor 35.0 out_factor 35.0 timelimit 1000 mode 2
+                wait 500
+                X += 5.0
+                Y += 5.0 
+                Z += 5.0
+                0160: set_camera_point_at X Y Z mode 1
+                0460: set_camera_transverse_delay 0.0 time 500
+                fade 0 500
+                wait 2000
+                
+                04D7: set_actor $PLAYER_ACTOR locked 0
+                fade 1 2000
+                Audiostream.Release(SFX)             
+                01B4: set_player $PLAYER_CHAR can_move 1
+                Camera.OnPed($PLAYER_ACTOR, 45, 2)
+                jump @onDestroy                            
+                //0321: kill_actor $PLAYER_ACTOR
+            end
+            
+            00A0: store_actor Bitch position_to X Y Z
+            00A0: store_actor $PLAYER_ACTOR position_to tmpX tmpY tmpZ
+            050A: tmpDistance = distance_between_XYZ X Y Z and_XYZ tmpX tmpY tmpZ    
+            if
+                tmpDistance <= 2.0
+            then
+                0AAA: SFX = thread "angbre" pointer
+                if SFX == 0x0
+                then
+                    run "angel_sfx.s" 2 Bitch
+                end
+            end
+            
+            0AB4: GLOBAL_DARKNESS = var 63
+            if and
+                09ED:   actor $PLAYER_ACTOR  is_within_field_of_view_actor  Bitch
+                GLOBAL_DARKNESS == 0
+            then
+                break
+            end                    
+        until False 
+        
+        00A0: store_actor Bitch position_to X Y Z
+        00A0: store_actor $PLAYER_ACTOR position_to tmpX tmpY tmpZ
+        050A: tmpDistance = distance_between_XYZ X Y Z and_XYZ tmpX tmpY tmpZ    
+        0172: ang = actor Bitch Z_angle 
+        ang -= 180.0   
+        if tmpDistance > 25.0
+        then
+            Model = 3
+        end
+        if and
+            tmpDistance <= 25.0
+            tmpDistance > 15.0
+        then
+            0209: Model = random_int_in_ranges 8 10
+        end
+        if and
+            tmpDistance <= 15.0
+            tmpDistance > 5.0
+        then
+            0209: Model = random_int_in_ranges 4 8
+        end
+        if
+            tmpDistance <= 5.0
+        then
+            0209: Model = random_int_in_ranges 10 13          
+        end
+        Model += 18800
+        if 89CC: NOT  object Angel model_is Model
+        then
+            Model.Load(Model)
+            038B: load_requested_models 
+            Object.Destroy(Angel)
+            Object.Create(Angel, Model, 0.0, 0.0, 0.0)
+            Model.Destroy(Model)
+        end
+        
+        if
+            tmpDistance <= 1.5
+        then
+            0AAA: SFX = thread "angsfx" pointer
+            if SFX == 0x0
+            then
+                run "angel_sfx.s" 1 -1
+            end
+        end
+            
+        Object.PutAt(Angel, X, Y, Z)
+        0382: set_object Angel collision_detection 1
+        0177: set_object Angel Z_angle_to ang
+        04F4: put_actor Bitch into_turret_on_object Angel offset_from_object_origin 0.0 0.0 0.0 orientation 0 both_side_angle_limit 180.0 lock_weapon 1 
+    end
+until False //0ab0: 56
+end_custom_thread
+{Object.Destroy(Angel)
+Actor.DestroyInstantly(Bitch)
+end_custom_thread  }
+
+:applySpeed
+    if  
+        Actor.Animation(Bitch) == "RUN_CIVI"
+    then
+        0393: actor Bitch perform_animation "RUN_CIVI" at runSpeed times_normal_rate 
+    end    
+    if  
+        Actor.Animation(Bitch) == "WALK_CIVI"
+    then
+        0393: actor Bitch perform_animation "WALK_CIVI" at runSpeed times_normal_rate 
+    end    
+    if  
+        Actor.Animation(Bitch) == "SPRINT_CIVI"
+    then
+        0393: actor Bitch perform_animation "SPRINT_CIVI" at runSpeed times_normal_rate 
+    end    
+    if  
+        Actor.Animation(Bitch) == "FIGHTIDLE"
+    then
+        0393: actor Bitch perform_animation "FIGHTIDLE" at runSpeed times_normal_rate 
+    end    
+    if  
+        Actor.Animation(Bitch) == "FightShB"
+    then
+        0393: actor Bitch perform_animation "FightShB" at runSpeed times_normal_rate 
+    end    
+    if  
+        Actor.Animation(Bitch) == "FightShF"
+    then
+        0393: actor Bitch perform_animation "FightShF" at runSpeed times_normal_rate 
+    end
+    if  
+        Actor.Animation(Bitch) == "FightSh_BWD"
+    then
+        0393: actor Bitch perform_animation "FightSh_BWD" at runSpeed times_normal_rate 
+    end
+    if  
+        Actor.Animation(Bitch) == "FightSh_FWD"
+    then
+        0393: actor Bitch perform_animation "FightSh_FWD" at runSpeed times_normal_rate 
+    end
+    if  
+        Actor.Animation(Bitch) == "FightSh_Left"
+    then
+        0393: actor Bitch perform_animation "FightSh_Left" at runSpeed times_normal_rate 
+    end
+    if  
+        Actor.Animation(Bitch) == "FightSh_Right"
+    then
+        0393: actor Bitch perform_animation "FightSh_Right" at runSpeed times_normal_rate 
+    end    
+    if  
+        Actor.Animation(Bitch) == "FightA_1"
+    then
+        0393: actor Bitch perform_animation "FightA_1" at runSpeed times_normal_rate 
+    end
+    if  
+        Actor.Animation(Bitch) == "FightA_2"
+    then
+        0393: actor Bitch perform_animation "FightA_2" at runSpeed times_normal_rate 
+    end
+    if  
+        Actor.Animation(Bitch) == "FightA_3"
+    then
+        0393: actor Bitch perform_animation "FightA_3" at runSpeed times_normal_rate 
+    end
+return
+
+:onDestroy
+Object.Destroy(Angel)
+Actor.DestroyInstantly(Bitch)
+0AAA: 30@ = thread "ANGELS" pointer
+0D2E: set_thread 30@ var ID to 0
+end_custom_thread

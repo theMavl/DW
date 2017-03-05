@@ -60,6 +60,12 @@ wait 0
 //0AB3: var 54 = 0 // Overrided by another thread
 0AB3: var 55 = 0
 0AB3: var 56 = 0
+// Angels
+0AB3: Var 59 = 0 //- Global Angels DON’T follow flag (0/1)
+0AB3: Var 60 = 0 //- Global Angels DON’T kill flag (0/1)
+0AB3: Var 61 = 0 //- Active angels counter
+0AB3: Var 62 = 0 //- End all angel threads
+0AB3: Var 63 = 0 //- Global darkness flag
 
 $94 = 0
 $93 = 0

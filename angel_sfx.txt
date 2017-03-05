@@ -1,0 +1,68 @@
+{$CLEO .s}
+//-------------MAIN---------------
+0000: NOP
+{
+    Input: 0@ - mode (1 - spooky sfx, 2 - breathing), 1@ - sfx id (-1 - random)
+}
+:spooky
+if 0@ == 1
+jf @breath
+thread "angsfx"
+
+if 1@ == -1
+then
+    0209: 1@ = random_int_in_ranges 0 3
+end
+
+if 1@ == 0 
+then
+    0AAC: 2@ = load_audiostream "DWS\ang_far.wav"
+end
+if 1@ == 1
+then
+    0AAC: 2@ = load_audiostream "DWS\ang_close.wav"
+end
+if 1@ == 2
+then
+    0AAC: 2@ = load_audiostream "DWS\ang_rip.wav"    
+end
+0003: shake_camera 100
+0AAD: set_audiostream 2@ perform_action 1
+0AAF: 11@ = get_audiostream 2@ length
+if 11@ == 0
+then
+    11@ = 1
+end
+11@ *= 1000
+wait 11@
+0AAE: release_audiostream 2@
+end_custom_thread
+
+
+
+
+:breath
+if 0@ == 2
+jf @end
+{
+    Input: 0@ - mode (1 - spooky sfx, 2 - breathing), 1@ - Bitch ID
+}
+thread "angbre"
+0AAC: 10@ = load_audiostream "DWS\ang_afraid.wav"
+0AC0: loop_audiostream 10@ flag 1
+0AAD: set_audiostream 10@ perform_action 1
+
+repeat
+    wait 0
+    if Actor.Defined(1@)
+    then
+        00A0: store_actor 1@ position_to 3@ 4@ 5@
+        00A0: store_actor $PLAYER_ACTOR position_to 6@ 7@ 8@
+        050A: 11@ = distance_between_XYZ 3@ 4@ 5@ and_XYZ 6@ 7@ 8@
+    else
+        break
+    end
+until 11@ > 2.0
+run "audio_fade.s" 10@ 0 500 1
+:end
+end_custom_thread
