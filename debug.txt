@@ -27,19 +27,24 @@ while true
     end
     if 0ADC: test_cheat "do5"
     then
-        04BB: select_interior 2
+        {04BB: select_interior 2
         0860: link_actor $PLAYER_ACTOR to_interior 2
         00A1: put_actor $PLAYER_ACTOR at 2551.1758 -1287.3268 1060.9844
         0924: enable_screen_darkness 1 with_value 255
         Camera.OnPed($PLAYER_ACTOR, 45, 2)
         Player.CanMove($PLAYER_CHAR, 0) 
-        0A92: create_custom_thread "AngelicPhase2.s"
+        0A92: create_custom_thread "AngelicPhase2.s"}
+        04BB: select_interior 0
+        0860: link_actor $PLAYER_ACTOR to_interior 0
+        00A1: put_actor $PLAYER_ACTOR at 2363.3198 -648.8942 127.8815
+        //0A92: create_custom_thread "AngelicPhase3.s"
     end
     if 0ADC: test_cheat "do6"
     then 
-        04BB: select_interior 2
-        0860: link_actor $PLAYER_ACTOR to_interior 2
-        00A1: put_actor $PLAYER_ACTOR at 2523.4907 -1301.9862 1048.2891
+        04BB: select_interior 15
+        0860: link_actor $PLAYER_ACTOR to_interior 15
+        00A1: put_actor $PLAYER_ACTOR at 2227.4714 -1150.5691 1029.7969
+        0A92: create_custom_thread "AngelicPhase3.s"
     end
     if 0ADC: test_cheat "do7"
     then

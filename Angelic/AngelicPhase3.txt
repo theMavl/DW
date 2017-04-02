@@ -1,0 +1,696 @@
+//written by another Weeping Angel
+{$CLEO .s}
+
+//-------------MAIN---------------
+thread "AMY_3"
+
+29@ = 0 //counter
+023C: load_special_actor 'CLAUDE' as 1
+model.load(2927)
+model.load(18812)
+model.load(18815)
+model.load(18816)
+Model.Load(#bmybe) 
+Model.Load(#BRASSKNUCKLE)
+Model.Load(#BUCCANEE)
+Model.Load(#WMYVA2)
+038B: load_requested_models 
+ 
+repeat
+    wait 0
+until 023D:   special_actor 1 loaded 
+0AAC: 1@ = load_audiostream "DWS\AngelicSFX\angelic_Flicker3.wav"
+0AAC: 2@ = load_audiostream "DWS\AngelicSFX\angelic_Ambience2.mp3"
+0AAC: 17@ = load_audiostream "DWS\ang_far.wav"
+0AAC: 22@ = load_audiostream "DWS\AngelicSFX\angelic_Keydrop.mp3"
+0AAC: 23@ = load_audiostream "DWS\AngelicSFX\The_Futurekind.mp3"
+0AC1: 18@ = load_audiostream_with_3d_support "DWS\AngelicSFX\angelic_TV.mp3"
+0AC2: set_3d_audiostream 18@ position 2200.87 -1158.88 1030.05
+audiostream.PerformAction(2@, play)
+0AC0: loop_audiostream 2@ flag 1
+04BB: select_interior 15
+{0860: link_actor $PLAYER_ACTOR to_interior 15
+00A1: put_actor $PLAYER_ACTOR at 2221.0684 -1152.5104 1025.7969}
+0924: enable_screen_darkness 1 with_value 127
+
+//jump @DEBUG_JUMP
+
+object.create(8@, 2927, 2214.8484 -1150.4873 1025.7969)
+0177: set_object 8@ Z_angle_to 270.0
+0750: set_object 8@ visibility 0
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+0AD1: show_formatted_text_highpriority "If he is really here, then so must be the Weeping Angels." time 5000
+wait 0
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2241.1809 -1161.1575 1029.7969 radius 2.0 2.0 1.0 on_foot
+0ACE: show_formatted_text_box "Check each room for the survivor"
+//wait 5500
+run "angel.cs" 21 2230.8057 -1150.5022 1029.7969 0.0 40.0 1 1
+run "angel.cs" 22 2247.7046 -1188.1881 1029.8043 180.0 10.0 1 1
+wait 500
+0AAA: 0@ = thread 'ANG21' pointer
+0D2E: set_thread 0@ var 26 to 1.5
+wait 500
+0AAA: 0@ = thread 'ANG22' pointer
+0D2E: set_thread 0@ var 26 to 1.5
+wait 0
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2225.2791 -1188.6777 1029.7969 radius 2.0 2.0 1.0 on_foot
+audiostream.PerformAction(1@, play)
+009A: 5@ = create_actor_pedtype 21 model #SPECIAL01 at 2205.7375 -1157.6238 1029.7969
+0173: set_actor 5@ Z_angle_to 0.0 
+0860: link_actor 5@ to_interior 15
+06B0: AS_actor 5@ sit_down 99999999999999 ms
+0924: enable_screen_darkness 1 with_value 255
+wait 150
+0924: enable_screen_darkness 1 with_value 127
+wait 50
+0924: enable_screen_darkness 1 with_value 255
+wait 50
+0924: enable_screen_darkness 1 with_value 127
+wait 300
+0924: enable_screen_darkness 1 with_value 255
+run "angel.cs" 23 2225.78 -1179.1461 1029.7969 0.0 40.0 1 1
+wait 50
+0924: enable_screen_darkness 1 with_value 127
+wait 550
+0924: enable_screen_darkness 1 with_value 255
+0AAA: 0@ = thread 'ANG23' pointer
+0D2E: set_thread 0@ var 26 to 1.5
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+wait 2000
+0AD1: show_formatted_text_highpriority "I must proceed with extra cautious, one wrong move the last Time-Lord is gone." time 5000
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2193.1282 -1183.3086 1029.7969 radius 1.5 1.5 1.0 on_foot
+0924: enable_screen_darkness 1 with_value 255
+run "angel.cs" 24 2193.2327 -1178.8654 1029.7969 0.0 7.5 1 1
+wait 50
+0924: enable_screen_darkness 1 with_value 127
+wait 450
+0AAA: 0@ = thread 'ANG24' pointer
+0D2E: set_thread 0@ var 26 to 1.5
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2196.0417 -1157.233 1029.7969 radius 1.0 1.0 1.0 on_foot
+//end all angels
+0AB3: var 62 = 1
+actor.SetImmunities(5@, 1, 1, 1, 1, 1)
+03BF: set_player $PLAYER_CHAR ignored_by_everyone 1 
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2205.7375 -1157.6238 1029.7969 radius 1.2 1.2 1.0 on_foot
+model.load(18803)
+038B: load_requested_models 
+wait 0
+0AB3: var 62 = 0 
+0605: actor 5@ perform_animation "SEAT_up" IFP "ped" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1
+0AD1: show_formatted_text_highpriority "There you are, you don't need to introduce to me, party is over it is time to leave." time 5000
+object.Create(6@, 18803, 2196.0417 -1157.233 1028.75)
+0177: set_object 6@ Z_angle_to 90.0
+repeat
+    wait 0
+until 80FF: not actor $PLAYER_ACTOR sphere 0 in_sphere 2205.7375 -1157.6238 1029.7969 radius 2.0 2.0 1.0 on_foot
+0AD1: show_formatted_text_highpriority "Oh great, Claude keep your eyes on that angel!" time 3000 
+wait 1000
+05D3: AS_actor 5@ goto_point 2197.2271 -1157.4686 1029.7969 mode 7 4000 ms // versionA 
+wait 2000
+0AD1: show_formatted_text_highpriority "~b~...!" time 2000
+wait 2500
+audiostream.PerformAction(18@, play)
+009A: 10@ = create_actor_pedtype 21 model #BMYBE at 2200.5955 -1158.6948 1029.0
+0337: set_actor 10@ visibility 0
+0619: enable_actor 10@ collision_detection 0
+0350: set_actor 5@ maintain_position_when_attacked 1 
+0350: set_actor 10@ maintain_position_when_attacked 1
+wait 1000
+0AD1: show_formatted_text_highpriority "What was that?!" time 2500
+model.load(18814) 
+038B: load_requested_models 
+object.Create(9@, 18814, 2200.87 -1158.88 1030.05)
+0382: set_object 9@ collision_detection 0
+wait 1000
+0ACE: show_formatted_text_box "Keep your eyes on the TV" 
+wait 1900
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+0AD1: show_formatted_text_highpriority "Okay soldier, look away from the Angel whenever I say it!" time 3500
+gosub @angel_TV
+wait 2800
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+wait 2800
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+0AD1: show_formatted_text_highpriority "Wait for it..." time 2500
+gosub @angel_TV
+wait 2600
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+wait 2600
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+0AD1: show_formatted_text_highpriority "Wait for it..." time 2500
+gosub @angel_TV
+wait 2300
+object.Destroy(9@)
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+audiostream.PerformAction(17@, play)
+object.Create(19@, 18815, 2200.2668 -1158.7831 1028.75)
+wait 1
+0D11: set_object 19@ alpha 128  
+0177: set_object 19@ Z_angle_to 252.0 
+//run "angel.cs" 26 2200.2668 -1158.7831 1029.7969 252.0 15.0 1 0
+0AD1: show_formatted_text_highpriority "NOW!!!" time 2500
+0ACE: show_formatted_text_box "Look Away from the Angel!"
+03BF: set_player $PLAYER_CHAR ignored_by_everyone 0
+0850: AS_actor 5@ follow_actor $PLAYER_ACTOR 
+wait 500
+//0AAA: 0@ = thread 'ANG26' pointer
+wait 1750
+object.Destroy(6@)
+if 09ED:   actor $PLAYER_ACTOR  is_within_field_of_view_actor 10@
+then
+    //0D2F: 13@ = get_thread 0@ var 14
+    object.Destroy(19@)
+    object.Create(20@, 18816, 2200.2668 -1158.7831 1028.75)
+    wait 1
+    0D11: set_object 20@ alpha 128  
+    0177: set_object 20@ Z_angle_to 252.0 
+    0400: store_coords_to 14@ 15@ 16@ from_object 20@ with_offset 0.0 0.0 0.85
+    0160: set_camera_point_at 14@ 15@ 16@ mode 2
+    0400: store_coords_to 14@ 15@ 16@ from_object 20@ with_offset 0.0 -1.0 0.85
+    015F: set_camera_position 14@ 15@ 16@ rotation 0.0 0.0 0.0 
+    0922: set_camera_zoom_in_factor 55.0 out_factor 35.0 timelimit 1500 mode 2
+    wait 200
+    0922: set_camera_zoom_in_factor 35.0 out_factor 35.0 timelimit 1000 mode 2
+    wait 500
+    14@ += 5.0
+    15@ += 5.0 
+    16@ += 5.0
+    0160: set_camera_point_at 14@ 15@ 16@ mode 1
+    0460: set_camera_transverse_delay 0.0 time 500
+    //game over
+else
+    //0AAD: set_audiostream 18@ perform_action 0
+    object.Destroy(19@)
+    0D2E: set_thread 0@ var 8 to 3
+    object.Create(11@, 18812, 2197.8577 -1158.4297 1028.75)
+    0177: set_object 11@ Z_angle_to 90.0
+    object.Create(12@, 18816, 2199.7205 -1158.7332 1028.75)
+    wait 1
+    0D11: set_object 12@ alpha 128
+    0177: set_object 12@ Z_angle_to 270.0
+    0382: set_object 12@ collision_detection 0
+end
+0AD1: show_formatted_text_highpriority "Nicely done! Now they are dead-locked with each other." time 3500
+wait 4500
+0AD1: show_formatted_text_highpriority "~b~......" time 2000
+wait 2000
+0A1A: actor 5@ perform_walk_animation "IDLE_chat" IFP "ped" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+0AD1: show_formatted_text_highpriority "~b~Let's get the hell out of here shall we?" time 3000
+wait 3000
+0AD1: show_formatted_text_highpriority "I don't know which is more scary, Weeping Angels or you start talking." time 5000
+0ACE: show_formatted_text_box "Return to the exit"
+object.Destroy(8@)
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2233.9465 -1188.7262 1029.7969 radius 1.5 1.5 1.0 on_foot
+
+0AD1: show_formatted_text_highpriority "So how did the new unprofessional Leader of SA UNIT ended up here?" time 5000
+run "angel.cs" 21 2215.4592 -1152.0072 1025.7969 250.0 40.0 1 1
+run "angel.cs" 22 2215.4563 -1149.0697 1025.7969 310.0 40.0 1 1
+run "angel.cs" 23 2215.4614 -1150.5978 1025.7969 270.0 40.0 1 1
+run "angel.cs" 24 2216.583 -1148.8014 1025.7969 96.0 40.0 1 1
+0AB3: var 59 = 1
+wait 7500
+0AD1: show_formatted_text_highpriority "Anyway, you are very much welcome." time 3000
+:DEBUG_JUMP
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2227.4714 -1150.5691 1029.7969 radius 1.0 1.0 1.0 on_foot
+wait 250
+01B4: set_player $PLAYER_CHAR can_move 0
+0173: set_actor $PLAYER_ACTOR Z_angle_to 90.0
+0AD1: show_formatted_text_highpriority "~b~......!!!" time 3000
+wait 3000
+0AD1: show_formatted_text_highpriority "Yes, they block the only way out and Shut up if you don't plan to talk." time 4500
+wait 6000
+0AD1: show_formatted_text_highpriority "Okay I am taking a chance, I hope it pays off." time 4500
+wait 5000
+camera.Restore()
+21@ = Object.Create(#BRASSKNUCKLE, 0.0, 0.0, -100.0)
+0382: set_object 21@ collision_detection 0
+Object.SetImmunities(21@, 1, 1, 1, 1, 1)
+070A: AS_actor $PLAYER_ACTOR attach_to_object 21@ offset 0.0 0.0 0.0 on_bone 6 16 perform_animation "NULL" IFP_file "NULL" time -1
+0ACE: show_formatted_text_box "Press E to toss the TARDIS Key"
+repeat
+    wait 0
+until 0AB0:  key_pressed 69 
+0812: AS_actor $PLAYER_ACTOR perform_animation "WEAPON_throw" IFP_file "GRENADE" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB 
+0AB3: var 59 = 0
+//0AB3: var 63 = 1
+wait 650
+Object.Destroy(21@)
+object.RemoveReferences(21@)
+0924: enable_screen_darkness 1 with_value 255
+wait 500
+audiostream.PerformAction(22@, play)
+wait 500
+05D3: AS_actor $PLAYER_ACTOR goto_point 2227.2437 -1142.5566 1029.7969 mode 7 2500 ms // versionA
+wait 1000
+0AAD: set_audiostream 2@ perform_action 0
+audiostream.PerformAction(23@, play)
+0ABC: set_audiostream 23@ volume 0.5
+01B4: set_player $PLAYER_CHAR can_move 1
+0924: enable_screen_darkness 1 with_value 127
+//0AB3: var 63 = 0
+0AB3: var 60 = 1
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+0AD1: show_formatted_text_highpriority "RUN!!!" time 2500
+wait 1000
+0ACE: show_formatted_text_box "You heard The Doctor"  
+repeat
+    wait 100
+    29@ += 1
+    if 29@ >= 100
+    then
+        0AB3: var 60 = 0
+    end
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2229.02 -1159.8 25.7981 radius 1.0 1.0 1.0 on_foot
+03DE: set_pedestrians_density_multiplier_to 0.0
+01EB: set_traffic_density_multiplier_to 0.0 
+042B: clear_peds_from_cube_cornerA -3000.0 -3000.0 -1000.0 cornerB 3000.0 3000.0 1000.0
+03BA: clear_cars_from_cube_cornerA -3000.0 -3000.0 -1000.0 cornerB 3000.0 3000.0 1000.0 
+009B: destroy_actor 5@
+0AB3: var 62 = 1
+04BB: select_interior 0
+01B6: set_weather 9 
+00A5: 24@ = create_car #BUCCANEE at 2206.1416 -1168.6749 25.4652
+0229: set_car 24@ primary_color_to 0 secondary_color_to 0 
+0175: set_car 24@ Z_angle_to 90.0
+car.SetImmunities(24@, 1, 1, 1, 1, 1)  
+0860: link_actor $PLAYER_ACTOR to_interior 0
+09C7: change_player $PLAYER_CHAR model_to #SPECIAL01
+0AB3: var 51 = 0
+0AB3: var 54 = 0
+009A: 26@ = create_actor_pedtype 21 model #WMYVA2 at 2230.9678 -1158.7205 25.8327  
+actor.SetImmunities(26@, 1, 1, 1, 1, 1)
+0860: link_actor 26@ to_interior 0   
+0186: 25@ = create_marker_above_car 24@
+07AF: 28@ = player $PLAYER_CHAR group
+0630: put_actor $PLAYER_ACTOR in_group 28@ as_leader
+0631: put_actor 26@ in_group 28@
+0555: remove_weapon 28 from_actor $PLAYER_ACTOR
+0555: remove_weapon 29 from_actor $PLAYER_ACTOR
+0555: remove_weapon 32 from_actor $PLAYER_ACTOR 
+0AB3: var 62 = 0
+run "angel.cs" 21 2219.4106 -1154.4352 26.2266 60.0 40.0 1 1
+run "angel.cs" 22 2202.5208 -1162.845 29.7969 82.0 40.0 1 1
+run "angel.cs" 23 2217.3811 -1172.0787 25.7266 180.0 40.0 1 1
+run "angel.cs" 24 2208.4709 -1155.5312 25.7266 40.0 40.0 1 1
+run "angel.cs" 25 2228.1414 -1145.0609 25.7969 325.0 10.0 1 1
+wait 500
+Camera.Restore_WithJumpCut()
+wait 500
+//0AD1: show_formatted_text_highpriority "~b~(You're Claude now)" time 2500
+0ACE: show_formatted_text_box "Get into your car and escape!"
+0AB3: var 60 = 1
+0AB3: var 59 = 1                                                
+repeat
+    wait 10    
+until 00DB:   actor 26@ in_car 24@
+//020A: set_car 24@ door_status_to 2 
+//camera.Restore_WithJumpCut()
+0AD1: show_formatted_text_highpriority "Claude, Take This!" time 2000
+0AB3: var 60 = 0
+0AB3: var 59 = 0
+run "angel.cs" 26 2215.1907 -1146.313 25.7733 90.0 10.0 1 1
+run "angel.cs" 27 2227.7559 -1139.2346 25.625 335.0 10.0 1 1
+run "angel.cs" 28 2248.1277 -1141.2448 26.109 260.0 20.0 1 1
+run "angel.cs" 29 2168.2505 -1110.0065 25.5779 70.0 20.0 1 1
+run "angel.cs" 30 2218.4758 -1114.6658 25.6697 0.0 20.0 1 1
+marker.Disable(25@) 
+wait 1000
+0581: enable_radar 1
+02A7: 27@ = create_icon_marker_and_sphere 5 at 2363.3198 -648.8942 127.8815
+0ACE: show_formatted_text_box "Hold X to accelerate the car"
+29@ = 0
+12@ = 0 // just for camera
+camera.Restore()
+repeat
+    wait 10
+    29@ += 1
+    if 00DB:   actor $PLAYER_ACTOR in_car 24@
+    then
+        if 12@ == 0
+        then
+            //020A: set_car 24@ door_status_to 2 
+            //Camera.Restore_WithJumpCut()
+            //12@ = 1
+            067C: put_camera_on_actor $PLAYER_ACTOR offset 0.015 -0.4 0.625 rotation 0.0 180.0 0.0 tilt 0.0 switchstyle 2
+        end 
+    else
+        //12@ = 0
+        //020A: set_car 24@ door_status_to 0
+        0186: 25@ = create_marker_above_car 24@
+        Camera.OnPed($PLAYER_ACTOR, 45, 2)
+        repeat
+            wait 10
+            0AD1: show_formatted_text_highpriority "Return to your ~g~vehicle" time 2000 0x0AD1
+        until 00DB:   actor $PLAYER_ACTOR in_car 24@
+        marker.Disable(25@)
+        067C: put_camera_on_actor $PLAYER_ACTOR offset 0.015 -0.4 0.625 rotation 0.0 180.0 0.0 tilt 0.0 switchstyle 2
+    end
+    wait 0
+    if 29@ == 1000
+    then
+        12@ = 1
+        0AD1: show_formatted_text_highpriority "OMG Where did you get your driver license?!" time 3500
+        wait 4000
+        0AD1: show_formatted_text_highpriority "~b~....@#" time 2500
+        0ACE: show_formatted_text_box "Hold X to accelerate the car"
+        camera.Restore_WithJumpCut()
+    end 
+    if 29@ == 2000
+    then
+        0AAD: set_audiostream 2@ perform_action 1
+        0AD1: show_formatted_text_highpriority "Honestly, I hope you know where on Gallifrey we are going." time 3750
+        wait 4000
+        0AD1: show_formatted_text_highpriority "~b~....#@" time 2500
+    end
+    if 29@ == 3000
+    then
+        0AD1: show_formatted_text_highpriority "We should have gotten rid of them, how did u get yourself into a mess that bad?" time 5000
+        wait 4500
+        0AD1: show_formatted_text_highpriority "~b~......" time 2500
+    end
+    if 29@ == 5000
+    then
+        0AD1: show_formatted_text_highpriority "This car reminds me of two brothers who thought I was a Time-Traveling Demon." time 5000
+        wait 5500
+        0AD1: show_formatted_text_highpriority "Oh I really liked those two idjits." time 3000
+    end 
+until 0100:   actor 26@ in_sphere 2363.3198 -648.8942 127.8815 radius 3.0 3.0 3.0 sphere 0 in_car 
+marker.Disable(27@)
+camera.Restore()
+Actor.DestroyInstantly(26@)
+29@ = 0
+0AD1: show_formatted_text_highpriority "Nice driving. No sarcasm intended." time 3000
+01B4: set_player $PLAYER_CHAR can_move 0
+0AAD: set_audiostream 2@ perform_action 0
+wait 3000
+fade 0 1000
+wait 1000
+Model.Load(#MAVERICK)
+Model.Load(#ARMY)
+038B: load_requested_models
+09C7: change_player $PLAYER_CHAR model_to #WMYVA2
+0430: put_actor $PLAYER_ACTOR into_car 24@ passenger_seat 0 
+Actor.Create(26@, 7, #SPECIAL01, 0.0, 0.0, 0.0)
+072A: put_actor 26@ into_car 24@ driverseat 
+Car.PutAt(24@, 2363.3198, -648.8942, 127.8815)
+0175: set_car 24@ Z_angle_to 132.8401
+02A3: toggle_widescreen 1
+0A48: enable_menu_access_in_widescreen_mode 1
+fade 1 1000
+067A: put_camera_on_car 24@ with_offset 0.0 2.0 0.9 point_to_car 24@ tilt 0.0 2 
+0AD1: show_formatted_text_highpriority "I believe you drove us here for a reason, Claude?" time 4000
+0967: actor $PLAYER_ACTOR move_mouth 4000 ms 
+wait 1500
+0633: AS_actor 26@ exit_car  
+wait 2500
+0729: AS_actor 26@ hold_cellphone 1
+015F: set_camera_position 2359.2939 -647.3691 128.1552 rotation 0.0 0.0 0.0 
+0159: camera_on_ped $PLAYER_ACTOR 15 2 
+0633: AS_actor $PLAYER_ACTOR exit_car
+while 00DB:   actor $PLAYER_ACTOR in_car 24@
+    wait 0
+end 
+0AD1: show_formatted_text_highpriority "Whatever mate, time to relocate my TARDIS." time 4000
+0967: actor $PLAYER_ACTOR move_mouth 4000 ms 
+0687: clear_actor $PLAYER_ACTOR task 
+015F: set_camera_position 2359.2939 -647.3691 128.1552 rotation 0.0 0.0 0.0 
+0159: camera_on_ped $PLAYER_ACTOR 15 1 
+07A1: set_walk_speed 7
+07CD: AS_actor $PLAYER_ACTOR walk_to 2362.5298 -644.8391 128.072 stop_with_angle 166.036 within_radius 0.5
+wait 2000
+05C8: AS_actor $PLAYER_ACTOR look_around
+wait 2000
+04ED: load_animation "DW"
+wait 100
+0107: 6@ = create_object 18797 at 0.0 0.0 -100.0 
+0382: set_object 6@ collision_detection 0
+0AAC: 29@ = load_audiostream "DWS\sgl_loop.mp3"
+0AAD: set_audiostream 29@ perform_action 1
+0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+wait 250
+070A: AS_actor $PLAYER_ACTOR attach_to_object 6@ offset 0.0 0.0 0.0 on_bone 2 16 perform_animation "NULL" IFP_file "NULL" time -1
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+wait 300
+0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0
+wait 500
+0AD1: show_formatted_text_highpriority "~b~..." time 1000
+0967: actor $PLAYER_ACTOR move_mouth 5000 ms   
+wait 1000
+0AD1: show_formatted_text_highpriority "~b~.....?" time 4000 
+0159: camera_on_ped 26@ 15 1
+wait 2000
+Audiostream.Release(29@) 
+0AAC: 29@ = load_audiostream "DWS\sgl_off.mp3"
+0AAD: set_audiostream 29@ perform_action 1
+0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 1
+Object.Destroy(6@)
+0687: clear_actor $PLAYER_ACTOR task
+0AD1: show_formatted_text_highpriority "~b~.....!" time 2500  
+wait 3000
+Audiostream.Release(29@)
+074D: AS_actor $PLAYER_ACTOR turns_to_and_look_at_actor 26@ timelimit -2 
+04C4: store_coords_to 10@ 11@ 12@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.7
+015F: set_camera_position  10@ 11@ 12@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 10@ 11@ 12@ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 0.7 
+0160: set_camera_point_at  10@ 11@ 12@ mode 2 
+wait 500
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "fucku" IFP "ped" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+0AD1: show_formatted_text_highpriority "Oh now you are talking to someone on a phone? It's really a roller coaster with you!" time 5000 
+wait 5000
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "IDLE_chat" IFP "ped" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+0AD1: show_formatted_text_highpriority "Another Time-Lord with a Time Capsule will be quite helpful." time 3500 
+wait 3500
+0AD1: show_formatted_text_highpriority "Do you happen to have one in your friend list?" time 3000 
+wait 2000
+0967: actor 26@ move_mouth 4000 ms 
+067E: put_camera_on_actor 26@ with_offset 1.0 2.0 1.0 point_to_actor 26@ 0.0 mode 2
+0687: clear_actor $PLAYER_ACTOR task
+wait 3000
+0AD1: show_formatted_text_highpriority "'The Master' doesn't count by the way." time 3000
+04C4: store_coords_to 10@ 11@ 12@ from_actor $PLAYER_ACTOR with_offset 0.0 0.5 0.7
+015F: set_camera_position  10@ 11@ 12@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 10@ 11@ 12@ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 0.7 
+0160: set_camera_point_at  10@ 11@ 12@ mode 2 
+Car.Create(8@, #MAVERICK, 0.0, 0.0, 0.0)
+0175: set_car 8@ Z_angle_to 132.8401
+Actor.Create(21@, 7, #ARMY, 0.0, 0.0, 0.0)
+Model.Destroy(#MAVERICK)
+MODEL.Destroy(#ARMY)
+072A: put_actor 21@ into_car 8@ driverseat 
+0825: set_helicopter 8@ instant_rotor_start 
+Car.PutAt(8@, 2408.4563, -608.9534, 200.2744)
+04A2: set_heli 8@ fly_to 2390.804 -639.3628 126.8353 altitude_between 0.0 and 0.5
+wait 2500
+05C8: AS_actor $PLAYER_ACTOR look_around
+0AD1: show_formatted_text_highpriority "What is this noise...Ah Yes! Thank you! That is exactly what I needed!" time 5000
+0967: actor $PLAYER_ACTOR move_mouth 4000 ms 
+wait 2000
+00AA: store_car 8@ position_to 10@ 11@ 12@
+06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at 10@ 11@ 12@ 
+wait 500
+0460: set_camera_transverse_delay 0.0 time 2500 
+0160: set_camera_point_at  10@ 11@ 12@ mode 1
+wait 2500
+067B: put_camera_on_car 8@ with_offset -2.0 1.5 1.5 point_to_actor $PLAYER_ACTOR tilt 6.0 2 
+0AD1: show_formatted_text_highpriority "Like skydiving out of the Presidential Aircraft two times were still not enough." time 5000
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "IDLE_chat" IFP "ped" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+wait 3000
+015F: set_camera_position 2360.1973 -656.625 129.1599 rotation 0.0 0.0 0.0 
+0159: camera_on_ped 26@ 15 2
+0729: AS_actor 26@ hold_cellphone 0
+wait 2000
+0581: enable_radar 0
+0AD1: show_formatted_text_highpriority "I should have closed your little office while I had chance." time 4000
+07CD: AS_actor 26@ walk_to 2390.804 -639.3628 126.8353 stop_with_angle 166.036 within_radius 1.0
+wait 5000
+0AD1: show_formatted_text_highpriority "Miss the old days when Harkness and Torchwood were still around..." time 4500 
+067B: put_camera_on_car 8@ with_offset 2.0 -2.5 3.5 point_to_actor $PLAYER_ACTOR tilt 6.0 2 
+while 01F3:   car 8@ in_air 
+    wait 0
+end
+0574: set_car 8@ keep_position 1 
+camera.Restore()
+01B4: set_player $PLAYER_CHAR can_move 1 
+05CA: AS_actor 26@ enter_car 8@ passenger_seat 0 10000 ms 
+0ACE: show_formatted_text_box "Head for the UNIT Specialized Helicopter" 
+02A3: toggle_widescreen 0
+0A48: enable_menu_access_in_widescreen_mode 0
+repeat
+    wait 0
+until 0203:   actor $PLAYER_ACTOR near_car 8@ radius 2.5 2.5 flag 0 on_foot 
+02A3: toggle_widescreen 1
+0A48: enable_menu_access_in_widescreen_mode 1
+067B: put_camera_on_car 8@ with_offset -2.0 5.0 1.0 point_to_actor $PLAYER_ACTOR tilt 6.0 2 
+05CA: AS_actor $PLAYER_ACTOR enter_car 8@ passenger_seat 1 2000 ms 
+32@ = 0
+repeat
+    wait 0
+    if 32@ > 1500
+    then
+        05CA: AS_actor $PLAYER_ACTOR enter_car 8@ passenger_seat 1 2000 ms 
+        32@ = 0
+    end   
+until 00DB:   actor $PLAYER_ACTOR in_car 8@ 
+020A: set_car 8@ door_status_to 4
+wait 1000
+
+Camera.Restore_WithJumpCut()
+09AD: set_vehicle_camera_mode 5
+093D: lock_camera_on_cinematic_view 1 
+//07BB: set_heli 8@ horizontal_thrust_power 10 
+04A2: set_heli 8@ fly_to 159.0 1838.0 21.0 altitude_between 0.0 and 200.0
+0574: set_car 8@ keep_position 0
+wait 6000
+067E: put_camera_on_actor 26@ with_offset -0.45 0.0 1.1 point_to_actor $PLAYER_ACTOR 0.0 mode 2 
+0AD1: show_formatted_text_highpriority "There is no time to waste!" time 1750
+wait 2000
+//0A1A: actor $PLAYER_ACTOR perform_walk_animation "IDLE_chat" IFP "ped" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+0AD1: show_formatted_text_highpriority "As the President of Earth I demand you to take us to this Coordinates." time 5000
+wait 4000
+04C4: store_coords_to 10@ 11@ 12@ from_actor $PLAYER_ACTOR with_offset 6.0 5.0 1.0
+015F: set_camera_position 10@ 11@ 12@ rotation 0.0 0.0 0.0 
+0159: camera_on_ped 26@ 15 2 
+wait 1000
+wait 2500
+0AD1: show_formatted_text_highpriority "Come on, PE! We have to find the Tardis before those Angels." time 4000
+02A3: toggle_widescreen 0
+0A48: enable_menu_access_in_widescreen_mode 0
+Camera.Restore()
+093D: lock_camera_on_cinematic_view 0
+wait 2500   
+repeat
+    wait 100
+    29@ += 1
+    if 29@ == 30
+    then
+        0AD1: show_formatted_text_highpriority "~b~......" time 2000
+    end
+    if 29@ == 55
+    then
+        0AD1: show_formatted_text_highpriority "Questions Claude?" time 2000
+    end
+    if 29@ == 85
+    then
+        0AD1: show_formatted_text_highpriority "Answer: The weeping Angels now have obtained the TARDIS Key." time 4000
+    end
+    if 29@ == 125
+    then
+        0AD1: show_formatted_text_highpriority "But thanks to a decision I made earlier on, they still have to find my TARDIS." time 5000
+    end
+    if 29@ == 185
+    then
+        0AD1: show_formatted_text_highpriority "And let's be honest, it won't take them too much time to figure out." time 4000
+        04A2: set_heli 8@ fly_to 2429.0581 1096.689 0.6719 altitude_between 0.0 and 200.0
+    end
+    if 29@ == 240
+    then
+        0AD1: show_formatted_text_highpriority "~g~UNIT Pilot: What kind of risks are we talking if the Angels get your TARDIS?" time 4500
+    end
+    if 29@ == 295
+    then
+        0AD1: show_formatted_text_highpriority "The consequences of letting a nest of Weeping Angels to have infinite energy will be bad." time 6500
+    end
+    if 29@ == 360
+    then
+        0AD1: show_formatted_text_highpriority "It will be beyond your pudding brains' understanding, that is how bad it is." time 5500
+    end
+    if 29@ == 435
+    then
+        0AD1: show_formatted_text_highpriority "~b~Understood, We will try our best to assist you." time 3500
+    end
+until 00EC:   actor $PLAYER_ACTOR 0 near_point 2429.0581 1096.689 radius 80.0 80.0 
+04A2: set_heli 8@ fly_to 2429.0581 1096.689 0.6719 altitude_between 0.0 and 0.1
+0AD1: show_formatted_text_highpriority "......" time 2000
+wait 5000
+0AD1: show_formatted_text_highpriority "The Earth's darkest hour and mine...He would want me to trust you." time 6000
+wait 9000
+0AD1: show_formatted_text_highpriority "Thanks for being here." time 3000
+wait 10000
+0AD1: show_formatted_text_highpriority "~g~We are almost there, Doctor. Your Time Vessel should be right inside of that building." time 6000
+repeat
+    wait 0
+until 00EF:   actor $PLAYER_ACTOR 0 near_point 2429.0581 1096.689 radius 11.0 11.0 stopped
+0AD1: show_formatted_text_highpriority "~b~Best of the luck Doctor. There is an east wind coming, the earth needs you." time 6000
+0ACE: show_formatted_text_box "Enter the Planning Departament" 
+020A: set_car 8@ door_status_to 0
+0581: enable_radar 0
+while 00DB:   actor $PLAYER_ACTOR in_car 8@ 
+    wait 0
+end
+020A: set_car 8@ door_status_to 2
+04A2: set_heli 8@ fly_to 159.0 1838.0 21.0 altitude_between 0.0 and 200.0
+0AB3: var 54 = 1
+0581: enable_radar 0
+wait 5000
+0AD1: show_formatted_text_highpriority "The Universe needs me." time 3000 
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+07FB: set_interior 'PAPER' access 1  // Planning Departament
+0581: enable_radar 0
+while $ACTIVE_INTERIOR == 0
+    wait 0
+end
+0581: enable_radar 0 
+Actor.DestroyInstantly(26@)
+Actor.DestroyInstantly(21@)
+Car.Destroy(8@)
+//start phase4 
+0A93: end_custom_thread
+
+:angel_TV
+wait 0
+if 09ED:   actor $PLAYER_ACTOR  is_within_field_of_view_actor 10@
+then
+    return
+else
+    object.Create(19@, 18816, 2200.2668 -1158.7831 1028.75)
+    wait 1
+    0D11: set_object 19@ alpha 128  
+    0177: set_object 19@ Z_angle_to 252.0 
+    //run "angel.cs" 25 2199.7205 -1158.7332 1029.7969 270.0 15.0 1 1
+    wait 500
+    //0AAA: 0@ = thread 'ANG25' pointer
+    wait 500
+    //0D2F: 13@ = get_thread 0@ var 14 
+    0400: store_coords_to 14@ 15@ 16@ from_object 19@ with_offset 0.0 0.0 0.85
+    0160: set_camera_point_at 14@ 15@ 16@ mode 2
+    0400: store_coords_to 14@ 15@ 16@ from_object 19@ with_offset 0.0 -1.0 0.85
+    015F: set_camera_position 14@ 15@ 16@ rotation 0.0 0.0 0.0 
+    0922: set_camera_zoom_in_factor 55.0 out_factor 35.0 timelimit 1500 mode 2
+    wait 200
+    0922: set_camera_zoom_in_factor 35.0 out_factor 35.0 timelimit 1000 mode 2
+    wait 500
+    14@ += 5.0
+    15@ += 5.0 
+    16@ += 5.0
+    0160: set_camera_point_at 14@ 15@ 16@ mode 1
+    0460: set_camera_transverse_delay 0.0 time 500
+    //game over
+end
+return 

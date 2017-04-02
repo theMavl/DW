@@ -66,6 +66,7 @@ wait 0
 0AB3: Var 61 = 0 //- Active angels counter
 0AB3: Var 62 = 0 //- End all angel threads
 0AB3: Var 63 = 0 //- Global darkness flag
+0AB3: Var 64 = 0 //- angel killed player (FOR MISSION ONLY)
 
 $94 = 0
 $93 = 0

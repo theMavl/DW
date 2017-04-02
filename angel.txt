@@ -219,7 +219,7 @@ repeat
             then
                 show_text "Rest in peace" 1000
                 0AAC: SFX = load_audiostream "DWS\ang_rip.wav"
-                0AAD: set_audiostream SFX perform_action 1
+                0AAD: set_audiostream SFX perform_action 1               
                 01B4: set_player $PLAYER_CHAR can_move 0            
                 00A0: store_actor Bitch position_to X Y Z 
                 0172: ang = actor Bitch Z_angle 
@@ -259,16 +259,23 @@ repeat
                 Z += 5.0
                 0160: set_camera_point_at X Y Z mode 1
                 0460: set_camera_transverse_delay 0.0 time 500
-                fade 0 500
+                fade 0 500                
                 wait 2000
-                
                 04D7: set_actor $PLAYER_ACTOR locked 0
+                if $ONMISSION == 1
+                then
+                    0AB3: var 64 = 1 // Angel killed player flag
+                    0970: teleport_in_override_restart
+                else
+                    0321: kill_actor $PLAYER_ACTOR                            
+                    //0321: kill_actor $PLAYER_ACTOR
+                end
                 fade 1 2000
                 Audiostream.Release(SFX)             
                 01B4: set_player $PLAYER_CHAR can_move 1
                 Camera.OnPed($PLAYER_ACTOR, 45, 2)
-                jump @onDestroy                            
-                //0321: kill_actor $PLAYER_ACTOR
+                jump @onDestroy
+                
             end
             
             00A0: store_actor Bitch position_to X Y Z

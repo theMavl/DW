@@ -1,6 +1,463 @@
 {$CLEO .cs}
 //-------------MAIN---------------
 0000: NOP
+03CF: load_wav 3401 as 3
+03D1: play_wav 3
+end_custom_thread
+04BB: select_interior 2
+0840: link_car $111 to_interior 2
+00AB: put_car $111 at 2550.7527 -1294.0162 1058.8
+0860: link_actor $PLAYER_ACTOR to_interior 2
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2551.0046 -1292.1531 1061.0
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+0A94: start_custom_mission 'test_mission' 
+
+016E: override_restart at 2551.0046 -1292.1531 1061.0 angle 355.2978 
+wait 2000
+//0AB3: var 64 = 0
+0321: kill_actor $PLAYER_ACTOR
+while true
+    wait 0
+    if $ONMISSION == 0
+    then
+        repeat
+            wait 0
+        until 03EE:   player $PLAYER_CHAR controllable
+        0581: enable_radar 0 
+        0826: enable_hud 0 
+        04BB: select_interior 3 
+        0860: link_actor $PLAYER_ACTOR to_interior 3
+        09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 6.2531 1.1072 1026.1406
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 269.4919
+        0373: set_camera_directly_behind_player 
+        032A: set_behind_camera_mode_to 0
+        0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 100 mode 1
+    	0931: camera_persist_fov 1  
+        04F9: set_extra_colours 11 fade 0
+        
+        01B4: set_player $PLAYER_CHAR can_move 0
+        0ACE: show_formatted_text_box "Y to return to the mission~n~N to leave"
+        32@ = 0
+        repeat
+            wait 0
+            if 0ab0: 78 // N
+            then
+                01B4: set_player $PLAYER_CHAR can_move 1
+                0826: enable_hud 1
+                03E6: remove_text_box
+                // TODO: Restore TARDIS exterior coordinate!!! 
+                end_custom_thread
+            end
+        until 0ab0: 89 // Y
+        fade 0 1500
+        wait 1500
+        01B4: set_player $PLAYER_CHAR can_move 1
+        0931: camera_persist_fov 0
+        04BB: select_interior 2 
+        04F9: set_extra_colours 1 fade 0
+        0860: link_actor $PLAYER_ACTOR to_interior 2
+        09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2551.0046 -1292.1531 1061.0
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 360.0
+        0373: set_camera_directly_behind_player 
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
+        0992: set_player $PLAYER_CHAR weapons_scrollable 0 
+        0A94: start_custom_mission 'test_mission'
+        wait 500
+        fade 1 1000
+        
+        continue
+    end
+end
+end_custom_thread
+
+Model.Load(#MAVERICK)
+Model.Load(#BUCCANEE)
+023C: load_special_actor 'CLAUDE' as 1
+0247: load_model 18797
+//Model.Load(#WMYVA2)
+038B: load_requested_models
+//0376: 18@ = create_random_actor_at -1576.88 55.26 8.57 
+//0376: 19@ = create_random_actor_at -1576.88 55.26 8.57 
+Actor.Create(18@, 7, #SPECIAL01, 0.0, 0.0, 0.0)
+01B4: set_player $PLAYER_CHAR can_move 0
+Car.Create(24@, #BUCCANEE, 2363.3198, -648.8942, 127.8815)
+0175: set_car 24@ Z_angle_to 132.8401
+072A: put_actor 26@ into_car 24@ driverseat 
+0430: put_actor $PLAYER_ACTOR into_car 24@ passenger_seat 0 
+02A3: toggle_widescreen 1
+0A48: enable_menu_access_in_widescreen_mode 1
+067A: put_camera_on_car 24@ with_offset 0.0 2.0 0.9 point_to_car 24@ tilt 0.0 2 
+
+0AD1: show_formatted_text_highpriority "Come on! What are we doing here, Claude?" time 4000
+0967: actor $PLAYER_ACTOR move_mouth 4000 ms 
+
+wait 1500
+0633: AS_actor 26@ exit_car 
+ 
+wait 2500
+0729: AS_actor 26@ hold_cellphone 1
+015F: set_camera_position 2359.2939 -647.3691 128.1552 rotation 0.0 0.0 0.0 
+0159: camera_on_ped $PLAYER_ACTOR 15 2 
+0633: AS_actor $PLAYER_ACTOR exit_car
+
+
+while 00DB:   actor $PLAYER_ACTOR in_car 24@
+    wait 0
+end 
+0AD1: show_formatted_text_highpriority "Yeah, right. Do ur stuff and I try to track my wheels" time 4000
+0967: actor $PLAYER_ACTOR move_mouth 4000 ms 
+0687: clear_actor $PLAYER_ACTOR task 
+015F: set_camera_position 2359.2939 -647.3691 128.1552 rotation 0.0 0.0 0.0 
+0159: camera_on_ped $PLAYER_ACTOR 15 1 
+
+07A1: set_walk_speed 7
+07CD: AS_actor $PLAYER_ACTOR walk_to 2362.5298 -644.8391 128.072 stop_with_angle 166.036 within_radius 0.5
+wait 2000
+05C8: AS_actor $PLAYER_ACTOR look_around
+wait 2000
+04ED: load_animation "DW"
+wait 100
+
+0107: 6@ = create_object 18797 at 0.0 0.0 -100.0 
+0382: set_object 6@ collision_detection 0
+0AAC: 29@ = load_audiostream "DWS\sgl_loop.mp3"
+0AAD: set_audiostream 29@ perform_action 1
+0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+wait 250
+070A: AS_actor $PLAYER_ACTOR attach_to_object 6@ offset 0.0 0.0 0.0 on_bone 2 16 perform_animation "NULL" IFP_file "NULL" time -1
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+wait 300
+0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0
+wait 500
+0AD1: show_formatted_text_highpriority "Of course" time 1000
+0967: actor $PLAYER_ACTOR move_mouth 5000 ms   
+wait 1000
+0AD1: show_formatted_text_highpriority "No chance you moved somewhere nearby, no fucking chance" time 4000 
+0159: camera_on_ped 26@ 15 1
+wait 2000
+Audiostream.Release(29@) 
+0AAC: 29@ = load_audiostream "DWS\sgl_off.mp3"
+0AAD: set_audiostream 29@ perform_action 1
+0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 1
+Object.Destroy(6@)
+0687: clear_actor $PLAYER_ACTOR task
+0AD1: show_formatted_text_highpriority "Every time..." time 2500  
+wait 3000
+Audiostream.Release(29@)
+074D: AS_actor $PLAYER_ACTOR turns_to_and_look_at_actor 26@ timelimit -2 
+
+04C4: store_coords_to 10@ 11@ 12@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.7
+015F: set_camera_position  10@ 11@ 12@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 10@ 11@ 12@ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 0.7 
+0160: set_camera_point_at  10@ 11@ 12@ mode 2 
+wait 500
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "fucku" IFP "ped" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+0AD1: show_formatted_text_highpriority "Who are you calling to?" time 1500 
+wait 2000
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "IDLE_chat" IFP "ped" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+0AD1: show_formatted_text_highpriority "Another timelord with time capcule would be quite helpful." time 2500 
+wait 2500
+0AD1: show_formatted_text_highpriority "Do you have one in friends list?" time 2500 
+
+wait 2000
+0967: actor 26@ move_mouth 4000 ms 
+067E: put_camera_on_actor 26@ with_offset 1.0 2.0 1.0 point_to_actor 26@ 0.0 mode 2
+0687: clear_actor $PLAYER_ACTOR task
+wait 3000
+
+0AD1: show_formatted_text_highpriority "No?" time 3000
+04C4: store_coords_to 10@ 11@ 12@ from_actor $PLAYER_ACTOR with_offset 0.0 0.5 0.7
+015F: set_camera_position  10@ 11@ 12@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 10@ 11@ 12@ from_actor $PLAYER_ACTOR with_offset 0.0 0.0 0.7 
+0160: set_camera_point_at  10@ 11@ 12@ mode 2 
+
+Car.Create(3@, #MAVERICK, 0.0, 0.0, 0.0)
+0175: set_car 3@ Z_angle_to 132.8401
+0560: create_random_actor_in_car 3@ handle_as 4@ 
+0825: set_helicopter 3@ instant_rotor_start 
+Car.PutAt(3@, 2408.4563, -608.9534, 200.2744)
+
+//0780: heli 1@ hover_above actor $PLAYER_ACTOR car -1 altitude 0.0 0.5
+04A2: set_heli 3@ fly_to 2390.804 -639.3628 126.8353 altitude_between 0.0 and 0.5
+
+wait 2500
+05C8: AS_actor $PLAYER_ACTOR look_around
+0AD1: show_formatted_text_highpriority "Wha... What is this noise?" time 4500
+0967: actor $PLAYER_ACTOR move_mouth 4000 ms 
+wait 2000
+00AA: store_car 3@ position_to 10@ 11@ 12@
+
+06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at 10@ 11@ 12@ 
+wait 500
+0460: set_camera_transverse_delay 0.0 time 2500 
+0160: set_camera_point_at  10@ 11@ 12@ mode 1
+wait 3000
+
+067B: put_camera_on_car 3@ with_offset -2.0 1.5 1.5 point_to_actor $PLAYER_ACTOR tilt 6.0 2 
+0AD1: show_formatted_text_highpriority "Yeah, fucking awesome. Like jumping out from burning president's plane wasn't enough" time 5000
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "IDLE_chat" IFP "ped" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+wait 3000
+015F: set_camera_position 2360.1973 -656.625 129.1599 rotation 0.0 0.0 0.0 
+0159: camera_on_ped 26@ 15 2
+0729: AS_actor 26@ hold_cellphone 0
+wait 2000
+0AD1: show_formatted_text_highpriority "I should have closed your little office while I had chance" time 3000
+07CD: AS_actor 26@ walk_to 2390.804 -639.3628 126.8353 stop_with_angle 166.036 within_radius 1.0
+
+wait 3000
+0AD1: show_formatted_text_highpriority "Who could ever know..." time 2000 
+067B: put_camera_on_car 3@ with_offset 2.0 -2.5 3.5 point_to_actor $PLAYER_ACTOR tilt 6.0 2 
+
+
+while 01F3:   car 3@ in_air 
+    wait 0
+end
+0574: set_car 3@ keep_position 1 
+camera.Restore()
+01B4: set_player $PLAYER_CHAR can_move 1 
+05CA: AS_actor 26@ enter_car 3@ passenger_seat 0 10000 ms 
+0ACE: show_formatted_text_box "Go to the chapter" 
+02A3: toggle_widescreen 0
+0A48: enable_menu_access_in_widescreen_mode 0
+repeat
+    wait 0
+until 0203:   actor $PLAYER_ACTOR near_car 3@ radius 2.5 2.5 flag 0 on_foot 
+02A3: toggle_widescreen 1
+0A48: enable_menu_access_in_widescreen_mode 1
+067B: put_camera_on_car 3@ with_offset -2.0 5.0 1.0 point_to_actor $PLAYER_ACTOR tilt 6.0 2 
+
+05CA: AS_actor $PLAYER_ACTOR enter_car 3@ passenger_seat 1 10000 ms 
+repeat
+    wait 0
+until 00DB:   actor $PLAYER_ACTOR in_car 3@ 
+//0633: AS_actor $PLAYER_ACTOR exit_car 
+wait 1000
+Camera.Restore_WithJumpCut()
+09AD: set_vehicle_camera_mode 5
+093D: lock_camera_on_cinematic_view 1 
+07BB: set_heli 3@ horizontal_thrust_power 10 
+
+04A2: set_heli 3@ fly_to 159.0 1838.0 21.0 altitude_between 0.0 and 200.0
+0574: set_car 3@ keep_position 0
+wait 6000
+067E: put_camera_on_actor 26@ with_offset -0.45 0.0 1.1 point_to_actor $PLAYER_ACTOR 0.0 mode 2 
+0A1A: actor $PLAYER_ACTOR perform_walk_animation "IDLE_chat" IFP "ped" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+0AD1: show_formatted_text_highpriority "Where do you think you going?!" time 3000
+wait 4000
+0AD1: show_formatted_text_highpriority "We need to get to the Planning Departament" time 3000
+wait 4000
+
+04C4: store_coords_to 10@ 11@ 12@ from_actor $PLAYER_ACTOR with_offset 6.0 5.0 1.0
+015F: set_camera_position 10@ 11@ 12@ rotation 0.0 0.0 0.0 
+0159: camera_on_ped 26@ 15 2 
+
+07BB: set_heli 3@ horizontal_thrust_power 10 
+04A2: set_heli 3@ fly_to 2024.0 1116.0 9.8 altitude_between 0.0 and 150.0
+wait 5000
+02A3: toggle_widescreen 0
+0A48: enable_menu_access_in_widescreen_mode 0
+Camera.Restore()
+093D: lock_camera_on_cinematic_view 0 
+07FB: set_interior 'PAPER' access 1  // Planning Departament
+    
+repeat
+wait 0
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point 2024.0 1116.0 radius 200.0 200.0
+    then
+        04A2: set_heli 3@ fly_to 2024.0 1116.0 0.0 altitude_between 0.0 and 50.0
+    end
+until 0ab0: 56
+car.Destroy(3@)
+actor.DestroyInstantly(4@)    
+car.Destroy(2@)
+actor.DestroyInstantly(26@)
+camera.Restore_WithJumpCut()
+
+
+
+end_custom_thread
+
+0AB3: var 0 = 0
+02A3: toggle_widescreen 1
+0A48: enable_menu_access_in_widescreen_mode 1
+
+04ED: load_animation "DW" 
+0247: load_model 18797
+038B: load_requested_models
+
+00AB: put_car $111 at 2221.6589 -1151.2786  1025.7969 
+0840: link_car $111 to_interior $ACTIVE_INTERIOR
+0175: set_car $111 Z_angle_to 180.0 
+
+015F: set_camera_position 2217.9231 -1146.9338 1025.7969 rotation 0.0 0.0 0.0 
+0159: camera_on_ped $PLAYER_ACTOR 15 2 
+
+07CD: AS_actor $PLAYER_ACTOR walk_to 2221.5256 -1147.5781 1025.7969 stop_with_angle 187.1078 within_radius 0.2 
+
+wait 2000
+0107: 0@ = create_object 18797 at 0.0 0.0 -100.0 
+0382: set_object 0@ collision_detection 0
+0AAC: 1@ = load_audiostream "DWS\sgl_loop.mp3"
+0AAD: set_audiostream 1@ perform_action 1
+0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+wait 250
+070A: AS_actor $PLAYER_ACTOR attach_to_object 0@ offset 0.0 0.0 0.0 on_bone 2 16 perform_animation "NULL" IFP_file "NULL" time -1
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+wait 300
+0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0 
+
+0AB3: var 30 = 0.0  // x
+0AB3: var 31 = 0.0  // y
+0AB3: var 32 = 0.0   // z
+0AB3: var 33 = 0  // interior
+0AB3: var 34 = 180.0  // angle
+0AB1: call_scm_func @move_toggle 2 move_toggle 3 to 1
+0AB1: call_scm_func @move_toggle 2 move_toggle 4 to 0
+0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 1
+0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 0
+
+wait 2000
+0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 1
+wait 250
+0108: destroy_object 0@
+0992: set_player $PLAYER_CHAR weapons_scrollable 1
+0AAE: release_audiostream 1@ 
+Model.Destroy(18797)
+
+
+015F: set_camera_position 2219.1819 -1154.1328 1029.7969 rotation 0.0 0.0 0.0 
+0159: camera_on_ped $PLAYER_ACTOR 15 2
+wait 7000
+Camera.Restore()
+02A3: toggle_widescreen 0
+0A48: enable_menu_access_in_widescreen_mode 0
+end_custom_thread
+
+04ED: load_animation "TARDIS"
+0AB3: var 28 = 1 // lock console
+0AB3: var 30 = -1 // unset destination coords
+0AB1: call_scm_func @move_toggle 2 move_toggle 3 to 1
+0AB1: call_scm_func @move_toggle 2 move_toggle 4 to 0
+0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 0
+
+0AB1: call_scm_func @get_toggle 1 get_toggle 6 to 30@
+if 30@ == 0
+then
+    0AB1: call_scm_func @set_toggle 2 set_toggle 6 to 2
+else
+    0AB1: call_scm_func @set_toggle 2 set_toggle 6 to 1
+end
+
+
+01B4: set_player $PLAYER_CHAR can_move 0
+wait 1000
+0AD1: show_formatted_text_highpriority "I should try to trace that call..." time 3000
+0AB3: var 28 = 1 // lock console
+015F: set_camera_position -1.9856 -0.9875 1024.975 rotation 0.0 0.0 0.0 
+0159: camera_on_ped $PLAYER_ACTOR 15 2
+ 
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.2966 -4.4253 1024.5703
+07CD: AS_actor $PLAYER_ACTOR walk_to 1.3 0.72 1024.375 stop_with_angle 120.0 within_radius 0.1
+0AB3: var 28 = 1 // lock console
+wait 3000
+0AB3: var 28 = 1 // lock console
+0460: set_camera_transverse_delay 0.0 time 3000 
+0159: camera_on_ped $PLAYER_ACTOR 15 1
+015F: set_camera_position 0.0302 1.4535 1024.975 rotation 0.0 0.0 0.0 
+0AB3: var 28 = 1 // lock console
+wait 1000
+0AB3: var 28 = 1 // lock console
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 1.3 0.72 1024.375
+0173: set_actor $PLAYER_ACTOR Z_angle_to 120.0
+0812: AS_actor $PLAYER_ACTOR perform_animation "keyboard_type" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 
+wait 3000
+0AD1: show_formatted_text_highpriority "Gotcha. Huh, that was easier than I expected" time 3000
+wait 1000
+
+0159: camera_on_ped $PLAYER_ACTOR 15 2
+015F: set_camera_position -1.4733 -1.5951 1025.375 rotation 0.0 0.0 0.0 
+
+wait 100
+
+0460: set_camera_transverse_delay 0.0 time 3000 
+0159: camera_on_ped $PLAYER_ACTOR 15 1
+015F: set_camera_position -1.5559 -0.2105 1025.375 rotation 0.0 0.0 0.0 
+
+07CD: AS_actor $PLAYER_ACTOR walk_to 0.01 1.4 1025.375 stop_with_angle 180.0 within_radius 0.1
+wait 1000
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.01 1.4 1024.375
+0173: set_actor $PLAYER_ACTOR Z_angle_to 180.0
+0812: AS_actor $PLAYER_ACTOR perform_animation "throttle_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+
+0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 1
+
+// set destination coordinate
+0AB3: var 30 = 2221.6589  // x
+0AB3: var 31 = -1151.2786  // y
+0AB3: var 32 = 1025.7969   // z
+0AB3: var 33 = 15  // interior
+0AB3: var 34 = 180.0  // angle
+
+0460: set_camera_transverse_delay 0.0 time 5000 
+0160: set_camera_point_at 0.0 0.0 1025.0 mode 1 
+015F: set_camera_position -1.8658 2.8762 1026.5703 rotation 0.0 0.0 0.0
+wait 5000
+Camera.Restore()
+02A3: toggle_widescreen 0
+01B4: set_player $PLAYER_CHAR can_move 1
+repeat
+    wait 0
+    0AB4: 31@ = var 0
+    0AB3: var 28 = 1 // lock console
+until 31@ == 0
+
+0ACE: show_formatted_text_box "Leave the TARDIS"
+repeat
+    wait 0
+    //0AB3: var 28 = 1 // lock console
+until $93 == 0
+0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 1 // put the handbrake on
+0AB1: call_scm_func @set_toggle 2 set_toggle 6 to 30@
+0ACE: show_formatted_text_box "Phase3"
+0AB3: var 28 = 0 // unlock console
+end_custom_thread
+
+{$INCLUDE CLEO/move_set_get}
+Model.Load(18812)
+038B: load_requested_models
+0@ = Object.Create(18812, 0.0, 0.0, 0.0)
+
+Model.Destroy(18812)
+
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 1.0 0.0 
+Object.PutAt(0@, 1@, 2@, 3@)
+0400: store_coords_to 1@ 2@ 3@ from_object 0@ with_offset 0.0 0.0 0.85
+0160: set_camera_point_at 1@ 2@ 3@ mode 2
+0400: store_coords_to 1@ 2@ 3@ from_object 0@ with_offset 0.0 -1.0 0.85
+
+015F: set_camera_position 1@ 2@ 3@ rotation 0.0 0.0 0.0 
+0922: set_camera_zoom_in_factor 55.0 out_factor 35.0 timelimit 1500 mode 2
+wait 200
+0922: set_camera_zoom_in_factor 35.0 out_factor 35.0 timelimit 1000 mode 2
+wait 500
+3@ += 5.0
+2@ += 5.0 
+1@ += 5.0
+0160: set_camera_point_at 1@ 2@ 3@ mode 1
+0460: set_camera_transverse_delay 0.0 time 500
+fade 0 500 
+
+repeat
+wait 0
+until 0ab0: 56
+object.Destroy(0@)
+camera.Restore()
+
+fade 1 1
+end_custom_thread
 {0AB3: var 54 = 1           }
 {03B6: replace_model_at 0.0 0.0 1024.0 radius 20.0 from #tar_doors to #NULL
 Model.Load(18798)
@@ -18,25 +475,34 @@ show_text "%d %d" 10000 0@ 1@   }
 0177: set_object 44036 Z_angle_to 75.0}
 
 Model.Load(92)
-Model.Load(14467)
+Model.Load(18812)
 038B: load_requested_models
 00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
 1@ += 5.0
 3@ = Actor.Create(18 ,92, 0@, 1@, 2@)
-4@ = Object.Create(14467, 0@, 1@, 2@)
+4@ = Object.Create(18812, 0@, 1@, 2@)
+Model.Destroy(18812)
+Marker.CreateAboveActor(30@, 3@)
+Marker.CreateAboveObject(30@, 4@)
+0860: link_actor 3@ to_interior $ACTIVE_INTERIOR 
 	0A09: shut_char_up_for_scripted_speech 3@ to 1
 Object.PutAt(4@, 0@, 1@, 2@)
+Actor.PutAt(3@, 0@, 1@, 2@)
 //03B6: replace_model_at 2547.5198 -1291.8685 1054.6406 radius 20.0 from 14467 to 0
 //Object.PutAt(4@, 2547.3191, -1289.5845, 1056.5406)
 
-//0337: set_actor 3@ visibility 0 
+0337: set_actor 3@ visibility 0 
 04F4: put_actor 3@ into_turret_on_object 4@ offset_from_object_origin 0.0 0.0 0.0 orientation 0 both_side_angle_limit 180.0 lock_weapon 1 
-//0159: camera_on_ped $PLAYER_ACTOR mode 45 switchstyle 1
+//0159: camera_on_ped $PLAYER_ACTOR mode 45 switchstyle 1                                                                         
 
 Camera.OnPed($PLAYER_ACTOR, 45, 2)
 
 repeat
-wait 0
+    wait 0
+
+    if 0104:   actor 3@ near_actor $PLAYER_ACTOR radius 40.0 40.0 40.0 sphere 0
+    jf continue
+ 
 if
     09ED:   actor $PLAYER_ACTOR  is_within_field_of_view_actor  3@
 then
@@ -45,11 +511,14 @@ else
     //show_text "Careful!"  100
     00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
     01BB: store_object 4@ position_to 0@ 1@ 2@
-   
     0382: set_object 4@ collision_detection 0 
     0465: remove_actor 3@ from_turret_mode
-    02CE: 2@ = ground_z_at 0@ 1@ 3000.0
-    Actor.PutAt(3@, 0@, 1@, 2@) 
+    {if $ACTIVE_INTERIOR == 0
+    then
+        02CE: 2@ = ground_z_at 0@ 1@ 3000.0
+    end}
+    
+    09BC: set_char_coordinates_dont_warp_gang_no_offset 3@ to 0@ 1@ 2@
 
     //Object.PutAt(4@, 0.0, 0.0, 0.0)
      
@@ -61,6 +530,11 @@ else
     32@ = 0
     repeat
         wait 0
+        if 8104:   not actor 3@ near_actor $PLAYER_ACTOR radius 40.0 40.0 40.0 sphere 0
+        then
+            break
+        end 
+        
         if 32@ > 1000
         then
         //show_text "run u dickhead!"  1000
@@ -68,20 +542,96 @@ else
             07A5: AS_actor 3@ attack_actor $PLAYER_ACTOR 1000 ms
             32@ = 0
         end
-        {if 00F3:   actor 3@ near_actor $PLAYER_ACTOR radius 1.0 1.0 0 on_foot
+        
+        if 0104:   actor 3@ near_actor $PLAYER_ACTOR radius 1.0 1.0 1.0 sphere 0 
         then
             show_text "Rest in peace" 1000
-            0321: kill_actor $PLAYER_ACTOR
-        end}
+            01B4: set_player $PLAYER_CHAR can_move 0
+            
+            00A0: store_actor 3@ position_to 0@ 1@ 2@
+            
+            0172: 10@ = actor 3@ Z_angle 
+            10@ -= 180.0
+            //2@ += 1.6
+            
+            0209: 22@ = random_int_in_ranges 10 13
+            22@ += 18800
+            if 89CC: NOT  object 4@ model_is 22@
+            then
+                Model.Load(22@)
+                038B: load_requested_models 
+                Object.Destroy(4@)
+                Object.Create(4@, 22@, 0.0, 0.0, 0.0)
+                Model.Destroy(22@)
+            end
+            Object.PutAt(4@, 0@, 1@, 2@)
+            0382: set_object 4@ collision_detection 1
+            0177: set_object 4@ Z_angle_to 10@
+            04F4: put_actor 3@ into_turret_on_object 4@ offset_from_object_origin 0.0 0.0 0.0 orientation 0 both_side_angle_limit 180.0 lock_weapon 1 
+            //0930: lock_camera_position 1
+            2@ += 0.85            
+            0160: set_camera_point_at 0@ 1@ 2@ mode 1
+            00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
+            2@ += 0.85
+            015F: set_camera_position 0@ 1@ 2@ rotation 0.0 0.0 0.0 
+
+            0922: set_camera_zoom_in_factor 55.0 out_factor 55.0 timelimit 3000 mode 2 
+   
+
+
+            wait 3000
+            
+            01B4: set_player $PLAYER_CHAR can_move 1
+            Camera.OnPed($PLAYER_ACTOR, 45, 2)
+            wait 2000 
+            continue
+            //0321: kill_actor $PLAYER_ACTOR
+        end
         if 0ab0: 56
         then
             break
         end
     until 09ED:   actor $PLAYER_ACTOR  is_within_field_of_view_actor  3@
+    
     00A0: store_actor 3@ position_to 0@ 1@ 2@
+    00A0: store_actor $PLAYER_ACTOR position_to 6@ 7@ 8@
+    050A: 17@ = distance_between_XYZ 0@ 1@ 2@ and_XYZ 6@ 7@ 8@
+    
     0172: 10@ = actor 3@ Z_angle 
     10@ -= 180.0
-    2@ += 1.6
+    //2@ += 1.6
+    
+    if 17@ > 25.0
+    then
+        22@ = 3
+    end
+    if and
+        17@ <= 25.0
+        17@ > 15.0
+    then
+        0209: 22@ = random_int_in_ranges 8 10
+    end
+    if and
+        17@ <= 15.0
+        17@ > 5.0
+    then
+        0209: 22@ = random_int_in_ranges 4 8
+    end
+    if
+        17@ <= 5.0
+    then
+        0209: 22@ = random_int_in_ranges 10 13
+    end
+    22@ += 18800
+    if 89CC: NOT  object 4@ model_is 22@
+    then
+        Model.Load(22@)
+        038B: load_requested_models 
+        Object.Destroy(4@)
+        Object.Create(4@, 22@, 0.0, 0.0, 0.0)
+        Model.Destroy(22@)
+    end
+            
     Object.PutAt(4@, 0@, 1@, 2@)
     0382: set_object 4@ collision_detection 1
     0177: set_object 4@ Z_angle_to 10@

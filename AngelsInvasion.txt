@@ -1,0 +1,121 @@
+//written by a Weeping Angel
+{$CLEO .cs}
+
+//-------------MAIN---------------
+thread "AMY_0" 
+
+const
+    MISSION_PASSED = 0@
+    CURRENT_STAGE = 1@
+    MISSION_POINTER = 2@
+end
+
+MISSION_PASSED = 0
+0AB4: CURRENT_STAGE = var 64
+
+
+while true
+    wait 100
+    if
+        00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 6.3007 0.6043 1026.1406 radius 1.0 1.0 0.3
+    then
+        if 0AB0: 69 // E
+        then
+            gosub @launcher
+        end    
+    end
+end
+
+:launcher
+if CURRENT_STAGE == 0
+then 
+    $ONMISSION = 1  
+    0ACE: show_formatted_text_box "There should be an opening cutscene, but it's not here. Obviously."
+    0AB3: var 30 = 2550.7527   // x
+    0AB3: var 31 = -1294.0162   // y
+    0AB3: var 32 = 1058.8   // z
+    0AB3: var 33 = 2  // interior
+    0AB3: var 34 = 180.0  // angle
+    0AB1: call_scm_func @move_toggle 2 move_toggle 3 to 1
+    0AB1: call_scm_func @move_toggle 2 move_toggle 4 to 0
+    0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 1
+    0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 0
+
+    0A94: start_custom_mission 'Angelic/Phase1' 
+    wait 1000
+    repeat
+        wait 0
+        0AB4: CURRENT_STAGE = var 64
+    until $ONMISSION == 0
+    if CURRENT_STAGE == 0
+    then
+        repeat
+            wait 0
+        until 03EE:   player $PLAYER_CHAR controllable
+        0581: enable_radar 0 
+        0826: enable_hud 0 
+        04BB: select_interior 3 
+        0860: link_actor $PLAYER_ACTOR to_interior 3
+        09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 6.2531 1.1072 1026.1406
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 269.4919
+        0373: set_camera_directly_behind_player 
+        032A: set_behind_camera_mode_to 0
+        0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 100 mode 1
+    	0931: camera_persist_fov 1  
+        04F9: set_extra_colours 11 fade 0
+        01B4: set_player $PLAYER_CHAR can_move 0
+        0ACE: show_formatted_text_box "Y to return to the mission~n~N to leave (all progress will be erased)"
+        32@ = 0
+        repeat
+            wait 0
+            if 0ab0: 78 // N
+            then
+                01B4: set_player $PLAYER_CHAR can_move 1
+                0826: enable_hud 1
+                03E6: remove_text_box
+                0AB3: var 64 = 0
+                // TODO: Restore TARDIS exterior coordinate!!! 
+                return
+            end
+        until 0ab0: 89 // Y
+        fade 0 1500
+        wait 1500
+        01B4: set_player $PLAYER_CHAR can_move 1
+        0931: camera_persist_fov 0
+        04BB: select_interior 2 
+        04F9: set_extra_colours 1 fade 0
+        0860: link_actor $PLAYER_ACTOR to_interior 2
+        09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2551.0046 -1292.1531 1061.0
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 360.0
+        0373: set_camera_directly_behind_player 
+        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
+        0992: set_player $PLAYER_CHAR weapons_scrollable 0 
+        0A94: start_custom_mission 'Angelic/Phase1'
+        wait 500
+        fade 1 1000
+    end
+end
+if CURRENT_STAGE == 1
+then
+    run "Angelic/AngelicPhase2.s"
+    wait 1000
+    repeat
+        wait 0
+        0AAA: MISSION_POINTER = thread 'AMY_2' pointer
+    until MISSION_POINTER == 0x0 // Thread has reached its end
+    CURRENT_STAGE += 1
+end
+if CURRENT_STAGE == 2
+then
+    run "Angelic/AngelicPhase3.s"
+    wait 1000
+    repeat
+        wait 0
+        0AAA: MISSION_POINTER = thread 'AMY_3' pointer
+    until MISSION_POINTER == 0x0 // Thread has reached its end
+    CURRENT_STAGE += 1
+end
+return
+
+end_custom_thread
+{$INCLUDE move_set_get} 

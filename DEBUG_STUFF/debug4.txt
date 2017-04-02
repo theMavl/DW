@@ -1,7 +1,8 @@
 {$CLEO .cs}
 {$INCLUDE stdc}
 //-------------MAIN---------------
-0AB3: var 54 = 1
+0321: kill_actor $PLAYER_ACTOR
+
 end_custom_thread    
 model.Load(#tfade)
 model.Load(#BAGBOXA)
