@@ -1,0 +1,205 @@
+  //written by a sad person
+{$CLEO .s}
+
+//-------------MAIN---------------
+thread "AngelicPhase4"
+04BB: select_interior 3
+0860: link_actor $PLAYER_ACTOR to_interior 3
+0924: enable_screen_darkness 1 with_value 127 
+model.load(2927)
+model.load(#GEN_DOORINT01)
+model.Load(#KMB_LOCKEDDOOR)
+object.create(0@, 2927, 390.7681 174.1426 1007.5)
+{
+13@ = Object.Init(#GEN_DOORINT01, 371.2516, 166.6324, 1007.359)
+0453: set_object 13@ XY_rotation 0.0 0.0 angle 0.0 
+Object.KeepInMemory(13@) = True
+14@ = Object.Create(#KMB_LOCKEDDOOR, 370.8048, 179.0889, 1018.958)
+Object.Angle(14@) = 88.5679
+15@ = Object.Create(#GEN_DOORINT01, 368.8954, 161.5299, 1013.274)
+0453: set_object 15@ XY_rotation 0.0 0.0 angle 90.0 
+0905: set_door 15@ openable 1
+0905: set_door 14@ openable 1
+0905: set_door 13@ openable 1
+}   
+0AC1: 2@ = load_audiostream_with_3d_support "DWS\AngelicSFX\angelic_Ring.mp3"
+0AC1: 3@ = load_audiostream_with_3d_support "DWS\mat_long.mp3"
+0AAC: 17@ = load_audiostream "DWS\AngelicSFX\angelic_Ambience3.mp3"
+0AAC: 18@ = load_audiostream "DWS\AngelicSFX\angelic_Siren.mp3"
+0AC2: set_3d_audiostream 2@ position 381.6512 170.0081 1008.3828
+0AC2: set_3d_audiostream 3@ position 364.4674 173.8182 1008.0
+audiostream.PerformAction(17@, play)
+0AC0: loop_audiostream 17@ flag 1
+0ABC: set_audiostream 17@ volume 0.3
+0177: set_object 0@ Z_angle_to 90.0
+0750: set_object 0@ visibility 0
+1@ = 0 //counter
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+wait 3000
+audiostream.PerformAction(2@, play)
+0AC0: loop_audiostream 2@ flag 1
+wait 1000
+0ACE: show_formatted_text_box "Answer the call"
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 381.6512 170.0081 1008.3828 radius 1.0 1.0 1.0 on_foot
+01B4: set_player $PLAYER_CHAR can_move 0
+audiostream.Release(2@)
+0AD1: show_formatted_text_highpriority "Thanks for the jumpscare, WHAT?!" time 3000
+wait 3000
+0AD1: show_formatted_text_highpriority "~g~Sorry about that sir." time 1500
+0AD1: show_formatted_text_highpriority "~g~On our way back we witnessed a large amount of Weeping Angels coming towards your location." time 5000
+wait 5000
+0AD1: show_formatted_text_highpriority "~g~Boss would like to let you be aware of that." time 3000
+wait 4000
+0AD1: show_formatted_text_highpriority "~g~You may want to find your time capsule fast..." time 3000
+wait 3000
+01B4: set_player $PLAYER_CHAR can_move 1
+jump @angelic_loops3
+
+:angelic_loops3
+wait 0
+while true
+    wait 100
+    1@ += 1
+    if or
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 346.0175 159.0573 1014.1875 radius 2.0 2.0 1.0 on_foot
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 331.4742 177.2723 1019.9912 radius 3.0 3.0 1.0 on_foot
+        //00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 346.0076 162.1451 1025.7964 radius 3.0 3.0 1.0 on_foot
+    then
+        jump @angelic_race
+    end
+    wait 0
+    if 1@ == 100
+    then
+        run "angel.cs" 1 388.1128 174.0034 1008.3828 270.0 250.0 1 1
+    end
+    wait 0
+    if 1@ == 200
+    then
+        run "angel.cs" 2 359.9377 207.2128 1008.3828 225.0 250.0 1 1
+    end
+    wait 0
+    if 1@ == 300
+    then
+        run "angel.cs" 3 375.7668 163.5518 1014.1875 270.0 250.0 1 1
+    end
+    wait 0
+    if 1@ == 400
+    then
+        run "angel.cs" 4 366.981 158.0085 1019.9844 38.0 250.0 1 1
+    end
+    wait 0
+    if 1@ == 500
+    then
+        run "angel.cs" 5 349.1407 193.8107 1014.1797 90.0 250.0 1 1
+    end
+    wait 0
+    if 1@ == 600
+    then
+        run "angel.cs" 6 323.1841 186.993 1014.1875 190.0 250.0 1 1
+    end
+    wait 0
+    if 1@ == 700
+    then
+        run "angel.cs" 7 328.9005 153.6421 1014.1875 308.0 250.0 1 1
+    end
+    wait 0
+    if 1@ == 800
+    then
+        run "angel.cs" 8 347.0028 162.6632 1014.1875 355.0 250.0 1 1
+    end
+    wait 0
+    if 1@ == 900
+    then
+        run "angel.cs" 9 375.5886 163.4715 1019.9844 270.0 250.0 1 1
+    end
+    if 1@ == 1000
+    then
+        run "angel.cs" 10 369.3358 174.1136 1019.9844 280.0 250.0 1 1
+    end
+    if 1@ == 1100
+    then
+        run "angel.cs" 11 358.3291 197.3838 1019.9844 176.0 250.0 1 1
+    end
+    if 1@ == 1200
+    then
+        run "angel.cs" 12 355.3755 161.5468 1019.9844 180.0 250.0 1 1
+    end
+    if 1@ == 1300
+    then
+        run "angel.cs" 13 327.7347 178.1349 1019.9844 225.0 250.0 1 1
+    end
+    if 1@ == 1400
+    then
+        run "angel.cs" 14 374.6917 162.5793 1025.7891 270.0 250.0 1 1
+    end
+    if 1@ == 1500
+    then
+        run "angel.cs" 15 347.5998 161.947 1025.7891 270.0 250.0 1 1
+    end
+end
+
+:angelic_race
+0840: link_car $111 to_interior 3
+00AB: put_car $111 at 364.4674 173.8182 1007.8
+0175: set_car $111 Z_angle_to 90.0
+0ABC: set_audiostream 17@ volume 0.1 
+audiostream.PerformAction(3@, play)
+wait 1000
+0AD1: show_formatted_text_highpriority "That is? But..." time 3000
+wait 3000
+0AD1: show_formatted_text_highpriority "Of course! This is why I couldn't find her anywhere!" time 3000
+wait 3000
+0AD1: show_formatted_text_highpriority "Because she was in a different time!" time 2500
+wait 2500
+//play alarm
+audiostream.PerformAction(18@, play)
+0AC0: loop_audiostream 18@ flag 1
+0ABC: set_audiostream 18@ volume 0.5
+0669: 4@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 0.0 2.0 flag 1 
+0669: 5@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 2.0 1.8 flag 1 
+0669: 6@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 -2.0 2.0 flag 1 
+0669: 7@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 1.0 5.0 1.5 flag 1 
+0669: 8@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset -1.0 8.0 1.8 flag 1 
+0669: 9@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 2.0 0.0 1.5 flag 1 
+0669: 10@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset -2.0 0.0 1.5 flag 1 
+0669: 11@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset -2.0 2.0 1.5 flag 1 
+0669: 12@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 2.0 2.0 1.5 flag 1 
+08FD: enable_heat_visuals 1 
+064C: make_particle 4@ visible 
+064C: make_particle 5@ visible 
+064C: make_particle 6@ visible 
+064C: make_particle 7@ visible 
+064C: make_particle 8@ visible 
+064C: make_particle 9@ visible 
+064C: make_particle 10@ visible 
+064C: make_particle 11@ visible 
+064C: make_particle 12@ visible
+$5 = 30000
+03C3: set_timer_to $5 type 1 GXT 'ANGELIT' // global_variable  // Time
+wait 2000
+0AD1: show_formatted_text_highpriority "Oh no, the Angels must have triggered the alarm!" time 3000
+audiostream.Release(17@)
+wait 4500
+0AD1: show_formatted_text_highpriority "We will not let them win." time 2500
+wait 3500
+0AD1: show_formatted_text_highpriority "NOT THIS TIME!!!" time 2500
+audiostream.Release(3@) 
+32@ = 10000
+repeat
+    wait 0
+    if
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 364.4674 173.8182 1008.0 radius 3.5 3.5 1.0 on_foot
+    then
+        014F: stop_timer $5
+        //jump to Good Ending
+        0A93: end_custom_thread
+    end 
+until 32@ > 30000
+wait 0
+repeat
+    wait 0    
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 364.4674 173.8182 1008.0 radius 3.5 3.5 1.0 on_foot
+//jump to Bad Ending
+0A93: end_custom_thread 

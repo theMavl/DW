@@ -2,73 +2,64 @@
 {$CLEO .s}
 
 //-------------MAIN---------------
-thread "AMY_2"
-if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 2550.7527 -1294.0162 1060.5 radius 5.0 5.0 5.0
-then
-    //00C0: set_current_time_hours_to 0 minutes_to 0
-    0AAC: 8@ = load_audiostream "DWS\AngelicSFX\angelic_Flicker4.wav"
-    0AAC: 15@ = load_audiostream "DWS\AngelicSFX\angelic_Flicker2.wav"
-    0AAC: 13@ = load_audiostream "DWS\AngelicSFX\angelic_Knocks2.mp3"
-    0AAC: 17@ = load_audiostream "DWS\AngelicSFX\angelic_Ring.mp3"
-    //0AAC: 18@ = load_audiostream "DWS\AngelicSFX\angelic_FlashLO.wav"
-    0AC1: 14@ = load_audiostream_with_3d_support "DWS\AngelicSFX\DontBlink.mp3"
-    0AC1: 16@ = load_audiostream_with_3d_support "DWS\AngelicSFX\angelic_Storm.mp3"
-    0AC1: 19@ = load_audiostream_with_3d_support "DWS\AngelicSFX\angelic_Statics.mp3"
-    0AAC: 20@ = load_audiostream "DWS\sgl_loop.mp3"
-    0AC2: set_3d_audiostream 14@ position 2526.16 -1299.09 1047.205
-    0AC2: set_3d_audiostream 19@ position 2526.16 -1299.09 1047.205
-    0AC2: set_3d_audiostream 16@ position 2561.9426 -1280.2491 1031.4219
-    Player.CanMove($PLAYER_CHAR, 0)
-    Camera.Restore_WithJumpCut()
-    model.load(2927)
-    model.load(18797)
-    model.load(14843)
-    04ED: load_animation "DW"
-    04BB: select_interior 2
-    0860: link_actor $PLAYER_ACTOR to_interior 2  
-    0AAC: 4@ = load_audiostream "DWS\AngelicSFX\angelic_Scare.wav" //IF and SET
-    wait 3000
-    0ACE: show_formatted_text_box "Press E to sonic the power back on"
-    repeat
-        wait 0
-    until 0AB0:  key_pressed 69 
-    audiostream.PerformAction(20@, play)
-    00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
-    3@ = actor.Angle($PLAYER_ACTOR)
-    3@ += 180
-    1@ -= 0.5
-    run "angel.cs" 1 0@ 1@ 2@ 3@ 40.0 1 0
-    wait 2500
-    03E6: remove_text_box 
-    0AAA: 5@ = thread 'ANG1' pointer
-    0D2F: 9@ = get_thread 5@ var 14 
-    0D2F: 10@ = get_thread 5@ var 13
-    0924: enable_screen_darkness 1 with_value 127
-    0A1D: AS_actor $PLAYER_ACTOR rotate_to_and_look_at_actor 10@
-    audiostream.PerformAction(4@, play)
-    0D10: set_actor $PLAYER_ACTOR alpha 0
-    0AAA: 5@ = thread 'ANG1' pointer
-    0D2F: 9@ = get_thread 5@ var 14 
-    0400: store_coords_to 0@ 1@ 2@ from_object 9@ with_offset 0.0 0.0 0.85
-    0160: set_camera_point_at 0@ 1@ 2@ mode 2
-    0400: store_coords_to 0@ 1@ 2@ from_object 9@ with_offset 0.0 -1.0 0.85
-    015F: set_camera_position 0@ 1@ 2@ rotation 0.0 0.0 0.0 
-    0922: set_camera_zoom_in_factor 55.0 out_factor 35.0 timelimit 1500 mode 2
-    wait 200
-    0922: set_camera_zoom_in_factor 35.0 out_factor 35.0 timelimit 1000 mode 2
-    wait 500
-    0@ += 5.0
-    1@ += 5.0 
-    2@ += 5.0
-    0160: set_camera_point_at 0@ 1@ 2@ mode 1
-    0460: set_camera_transverse_delay 0.0 time 500
-else
-    run "angel.cs" 1 0@ 1@ 2@ 3@ 40.0 1 0
-    wait 100    
-    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2554.2568 -1286.2474 1060.9844
-    0173: set_actor $PLAYER_ACTOR Z_angle_to 161.6844
-end
-
+thread "AngelicPhase2"
+0860: link_actor $PLAYER_ACTOR to_interior 2
+//00C0: set_current_time_hours_to 0 minutes_to 0
+0AAC: 8@ = load_audiostream "DWS\AngelicSFX\angelic_Flicker4.wav"
+0AAC: 15@ = load_audiostream "DWS\AngelicSFX\angelic_Flicker2.wav"
+0AAC: 13@ = load_audiostream "DWS\AngelicSFX\angelic_Knocks2.mp3"
+0AAC: 17@ = load_audiostream "DWS\AngelicSFX\angelic_Ring.mp3"
+//0AAC: 18@ = load_audiostream "DWS\AngelicSFX\angelic_FlashLO.wav"
+0AC1: 14@ = load_audiostream_with_3d_support "DWS\AngelicSFX\DontBlink.mp3"
+0AC1: 16@ = load_audiostream_with_3d_support "DWS\AngelicSFX\angelic_Storm.mp3"
+0AC1: 19@ = load_audiostream_with_3d_support "DWS\AngelicSFX\angelic_Statics.mp3"
+0AAC: 20@ = load_audiostream "DWS\sgl_loop.mp3"
+0AC2: set_3d_audiostream 14@ position 2526.16 -1299.09 1047.205
+0AC2: set_3d_audiostream 19@ position 2526.16 -1299.09 1047.205
+0AC2: set_3d_audiostream 16@ position 2561.9426 -1280.2491 1031.4219
+Player.CanMove($PLAYER_CHAR, 0)
+Camera.Restore_WithJumpCut()
+model.load(2927)
+model.load(18797)
+model.load(14843)
+04ED: load_animation "DW"
+04BB: select_interior 2  
+0AAC: 4@ = load_audiostream "DWS\AngelicSFX\angelic_Scare.wav" //IF and SET
+wait 3000
+0ACE: show_formatted_text_box "Press E to sonic the power back on"
+repeat
+    wait 0
+until 0AB0:  key_pressed 69 
+audiostream.PerformAction(20@, play)
+00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
+3@ = actor.Angle($PLAYER_ACTOR)
+3@ += 180
+1@ -= 0.5
+run "angel.cs" 1 0@ 1@ 2@ 3@ 40.0 1 0
+wait 2500
+03E6: remove_text_box 
+0AAA: 5@ = thread 'ANG1' pointer
+0D2F: 9@ = get_thread 5@ var 14 
+0D2F: 10@ = get_thread 5@ var 13
+0924: enable_screen_darkness 1 with_value 127
+0A1D: AS_actor $PLAYER_ACTOR rotate_to_and_look_at_actor 10@
+audiostream.PerformAction(4@, play)
+0D10: set_actor $PLAYER_ACTOR alpha 0
+0AAA: 5@ = thread 'ANG1' pointer
+0D2F: 9@ = get_thread 5@ var 14 
+0400: store_coords_to 0@ 1@ 2@ from_object 9@ with_offset 0.0 0.0 0.85
+0160: set_camera_point_at 0@ 1@ 2@ mode 2
+0400: store_coords_to 0@ 1@ 2@ from_object 9@ with_offset 0.0 -1.0 0.85
+015F: set_camera_position 0@ 1@ 2@ rotation 0.0 0.0 0.0 
+0922: set_camera_zoom_in_factor 55.0 out_factor 35.0 timelimit 1500 mode 2
+wait 200
+0922: set_camera_zoom_in_factor 35.0 out_factor 35.0 timelimit 1000 mode 2
+wait 500
+0@ += 5.0
+1@ += 5.0 
+2@ += 5.0
+0160: set_camera_point_at 0@ 1@ 2@ mode 1
+0460: set_camera_transverse_delay 0.0 time 500
 Camera.OnPed($PLAYER_ACTOR, 45, 2)               
 Player.CanMove($PLAYER_CHAR, 1)
 0D10: set_actor $PLAYER_ACTOR alpha 255
@@ -253,7 +244,6 @@ while True
     else
         if 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2527.8418 -1293.9687 1031.4219 radius 1.0 1.0 1.0 on_foot
         then
-            Object.Destroy(12@) // destroy Angelic TV
             object.create(6@, 2927, 2529.1941 -1294.0127 1031.0)
             0177: set_object 6@ Z_angle_to 270.0
             0750: set_object 6@ visibility 0
@@ -303,8 +293,6 @@ while True
                 wait 0
             until $93 == 1
             0924: enable_screen_darkness 1 with_value 0
-            Audiostream.Release(13@)
-            Audiostream.Release(4@)
             Audiostream.Release(8@)
             Audiostream.Release(14@)
             Audiostream.Release(15@)
@@ -502,7 +490,7 @@ Camera.Restore()
 02A3: toggle_widescreen 0
 0A48: enable_menu_access_in_widescreen_mode 0
 01B4: set_player $PLAYER_CHAR can_move 1
-//0A92: create_custom_thread "AngelicPhase3.s"
+0A92: create_custom_thread "AngelicPhase3.s"
 {wait 0
 if and
     00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2527.1841 -1315.4974 1031.4219 radius 2.0 2.0 1.0 on_foot

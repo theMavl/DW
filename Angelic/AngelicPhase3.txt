@@ -2,8 +2,7 @@
 {$CLEO .s}
 
 //-------------MAIN---------------
-thread "AMY_3"
-
+thread "AngelicPhase3"
 29@ = 0 //counter
 023C: load_special_actor 'CLAUDE' as 1
 model.load(2927)
@@ -33,7 +32,7 @@ audiostream.PerformAction(2@, play)
 00A1: put_actor $PLAYER_ACTOR at 2221.0684 -1152.5104 1025.7969}
 0924: enable_screen_darkness 1 with_value 127
 
-//jump @DEBUG_JUMP
+jump @DEBUG_JUMP
 
 object.create(8@, 2927, 2214.8484 -1150.4873 1025.7969)
 0177: set_object 8@ Z_angle_to 270.0
@@ -539,7 +538,8 @@ end
 camera.Restore()
 01B4: set_player $PLAYER_CHAR can_move 1 
 05CA: AS_actor 26@ enter_car 8@ passenger_seat 0 10000 ms 
-0ACE: show_formatted_text_box "Head for the UNIT Specialized Helicopter" 
+0ACE: show_formatted_text_box "Head for the UNIT Specialized Helicopter"
+01B6: set_weather 16  
 02A3: toggle_widescreen 0
 0A48: enable_menu_access_in_widescreen_mode 0
 repeat
@@ -636,7 +636,7 @@ wait 10000
 0AD1: show_formatted_text_highpriority "~g~We are almost there, Doctor. Your Time Vessel should be right inside of that building." time 6000
 repeat
     wait 0
-until 00EF:   actor $PLAYER_ACTOR 0 near_point 2429.0581 1096.689 radius 11.0 11.0 stopped
+until 00EF:   actor $PLAYER_ACTOR 0 near_point 2429.0581 1096.689 radius 13.5 13.5 stopped
 0AD1: show_formatted_text_highpriority "~b~Best of the luck Doctor. There is an east wind coming, the earth needs you." time 6000
 0ACE: show_formatted_text_box "Enter the Planning Departament" 
 020A: set_car 8@ door_status_to 0
@@ -660,7 +660,7 @@ end
 Actor.DestroyInstantly(26@)
 Actor.DestroyInstantly(21@)
 Car.Destroy(8@)
-//start phase4 
+0A92: create_custom_thread "AngelicPhase4.s" 
 0A93: end_custom_thread
 
 :angel_TV
