@@ -41,6 +41,7 @@ return
     0AAC: 25@ = load_audiostream "DWS\AngelicSFX\angelic_Switch.mp3" //IF and SET
     0AAC: 27@ = load_audiostream "DWS\AngelicSFX\angelic_Scare.wav" //IF and SET
     0AAC: 30@ = load_audiostream "DWS\AngelicSFX\angelic_Ambience.mp3" //IF and SET
+    0AAC: 40@ = load_audiostream "DWS\sgl_loop.mp3"
     3@ = 1 //toggle follow
     4@ = 1 //toggle scare1
     7@ = 1 //toggle switch
@@ -56,7 +57,7 @@ return
     object.Create(9@, 2927, 2561.2676 -1290.25 1054.0)  //block party1
     object.Create(10@, 2927, 2561.0645 -1298.5 1054.0) //block party2
     object.create(14@, 2606, 2521.1, -1282.9, 1054.4) //switch
-    0750: set_object 2@ visibility 0 
+    //0750: set_object 2@ visibility 0 
     0750: set_object 0@ visibility 0 
     0750: set_object 42@ visibility 0 
     0750: set_object 8@ visibility 0 
@@ -82,7 +83,7 @@ repeat
     wait 0
 until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2551.2192 -1288.01 1060.9844 radius 5.0 5.0 5.0 on_foot
 
-016E: override_restart at 2551.0046 -1292.1531 1061.0 angle 355.2978
+016E: override_restart at 0.0 0.0 1024.0 angle 355.2978
 0924: enable_screen_darkness 1 with_value 127
 00C0: set_current_time_hours_to 0 minutes_to 0 
 04F9: set_extra_colours 1 fade 0
@@ -93,7 +94,6 @@ until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2551.2192 -1288.01 1060.984
 audiostream.PerformAction(30@, play)
 0ABC: set_audiostream 30@ volume 0.1
 0AC0: loop_audiostream 30@ flag 1
-0AD1: show_formatted_text_highpriority "Amy? Where are you?" time 3000
 
 //------------------------Phase 1-------------------------
 
@@ -214,11 +214,11 @@ while True
                         wait 3000
                         0729: AS_actor $PLAYER_ACTOR hold_cellphone 1 
                         wait 2000
-                        0AD1: show_formatted_text_highpriority "Amy? What's going on? Where are you?" time 2000
+                        0AD1: show_formatted_text_highpriority "Hello?" time 2000
                         wait 3000
                         0AD1: show_formatted_text_highpriority "~b~Help... I can't hold them much longer." time 4000
                         wait 5000
-                        0AD1: show_formatted_text_highpriority "What?.. Who the hell... Ah, I am the Doctor, and I am here to save you!" time 3000
+                        0AD1: show_formatted_text_highpriority "I am the Doctor, and I am here to save you!" time 3000
                         wait 5000
                         0AD1: show_formatted_text_highpriority "~b~They are coming, there is no time, just remember-" time 3000
                         wait 4000
@@ -230,7 +230,7 @@ while True
                         wait 1500
                         Player.CanMove($PLAYER_CHAR, 1)
                         Camera.OnPed($PLAYER_ACTOR, 45, 2)
-                        0AD1: show_formatted_text_highpriority "I need to return to the Tardis fast so I can help him." time 4000
+                        0AD1: show_formatted_text_highpriority "I need to return to the TARDIS fast so I can help him." time 4000
                         0209: 5@ = random_int_in_ranges 0 2
                         if 5@ == 0
                         then
@@ -253,10 +253,10 @@ while True
                     0750: set_object 8@ visibility 0
                     0382: set_object 8@ collision_detection 0
                     Player.CanMove($PLAYER_CHAR, 0)
-                    00A0: store_actor $PLAYER_ACTOR position_to 0@ 12@ 8@
+                    00A0: store_actor $PLAYER_ACTOR position_to 3@ 12@ 8@
                     12@ += 1.25
                     8@ += 0.75
-                    015F: set_camera_position 0@ 12@ 8@ rotation 0.0 0.0 0.0
+                    015F: set_camera_position 3@ 12@ 8@ rotation 0.0 0.0 0.0
                     0160: set_camera_point_at 2550.7527 -1294.0162 1060.5 mode 2
                     0AD1: show_formatted_text_highpriority "I am pretty sure she was just right there a minute ago..." time 3000 
                     wait 3000
@@ -266,6 +266,46 @@ while True
                     0924: enable_screen_darkness 1 with_value 255
                     0AAD: set_audiostream 22@ perform_action 0
                     0AAD: set_audiostream 30@ perform_action 0
+                    
+                    wait 3000
+                    0ACE: show_formatted_text_box "Press E to sonic the power back on"
+                    repeat
+                        wait 0
+                    until 0AB0:  key_pressed 69 
+                    audiostream.PerformAction(40@, play)
+                    00A0: store_actor $PLAYER_ACTOR position_to 50@ 51@ 52@
+                    53@ = actor.Angle($PLAYER_ACTOR)
+                    53@ += 180
+                    51@ -= 0.5
+                    run "angel.cs" 1 50@ 51@ 52@ 53@ 40.0 1 0
+                    wait 2500
+                    03E6: remove_text_box 
+                    0AAA: 55@ = thread 'ANG1' pointer
+                    0D2F: 59@ = get_thread 55@ var 14 
+                    0D2F: 510@ = get_thread 55@ var 13
+                    0924: enable_screen_darkness 1 with_value 127
+                    0A1D: AS_actor $PLAYER_ACTOR rotate_to_and_look_at_actor 510@
+                    audiostream.PerformAction(27@, play)
+                    0D10: set_actor $PLAYER_ACTOR alpha 0
+                    0AAA: 55@ = thread 'ANG1' pointer
+                    0D2F: 59@ = get_thread 55@ var 14 
+                    0400: store_coords_to 50@ 51@ 52@ from_object 59@ with_offset 0.0 0.0 0.85
+                    0160: set_camera_point_at 50@ 51@ 52@ mode 2
+                    0400: store_coords_to 50@ 51@ 52@ from_object 59@ with_offset 0.0 -1.0 0.85
+                    015F: set_camera_position 50@ 51@ 52@ rotation 0.0 0.0 0.0 
+                    0922: set_camera_zoom_in_factor 55.0 out_factor 35.0 timelimit 1500 mode 2
+                    wait 200
+                    0922: set_camera_zoom_in_factor 35.0 out_factor 35.0 timelimit 1000 mode 2
+                    wait 500
+                    50@ += 5.0
+                    51@ += 5.0 
+                    52@ += 5.0
+                    0160: set_camera_point_at 50@ 51@ 52@ mode 1
+                    0460: set_camera_transverse_delay 0.0 time 500
+                    Camera.OnPed($PLAYER_ACTOR, 45, 2)               
+                    Player.CanMove($PLAYER_CHAR, 1)
+                    0D10: set_actor $PLAYER_ACTOR alpha 255
+                    wait 1000
                     //12@ += 1.5
                     //run "angel.cs" 1 0@ 12@ 8@ 0.0 40.0 1 0
                     //0A92: create_custom_thread "AngelicPhase2.s"
@@ -334,7 +374,7 @@ return
 
 :MISSION_PASSED
 //01E3: text_1number_styled 'M_PASSD' 0 5000 ms 1
-0AB3: var 64 = 1 // Progress ++
+0AB3: var 64 = 2 // Progress ++
 return
 
 :MISSION_FAILED
@@ -350,6 +390,11 @@ Object.Destroy(9@)
 Object.Destroy(10@)
 Object.Destroy(42@)
 Object.Destroy(14@)
+model.Destroy(18803)
+model.Destroy(18812)
+model.Destroy(2927)
+model.Destroy(2606)
+model.Destroy(#CELLPHONE)
 Audiostream.Release(16@)
 Audiostream.Release(17@)
 Audiostream.Release(18@)
@@ -362,6 +407,7 @@ Audiostream.Release(24@)
 Audiostream.Release(25@)
 Audiostream.Release(27@)
 Audiostream.Release(30@)
+Audiostream.Release(40@)
 mission_cleanup
 end_thread
 return

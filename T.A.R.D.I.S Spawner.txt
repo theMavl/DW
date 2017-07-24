@@ -292,7 +292,19 @@ while true
     
     wait 0
     
+        
+    if 
+        0491:   actor $PLAYER_ACTOR has_weapon 1 
+    then
+        0555: remove_weapon 1 from_actor $PLAYER_ACTOR 
+    end
+    
     if    03EE:   player $PLAYER_CHAR controllable
+    jf continue
+    
+    0AB4: 0@ = var 64 // Angels Invasion mission
+    
+    if 0@ == 0 // Mission is not launched
     jf continue
      
     0AB4: 0@ = var 0
@@ -318,12 +330,7 @@ while true
     then
         jump @TSPAWN2_57
     end
-    
-    if 
-        0491:   actor $PLAYER_ACTOR has_weapon 1 
-    then
-        0555: remove_weapon 1 from_actor $PLAYER_ACTOR 
-    end
+
     
     if and
         0AB0:  key_pressed 71

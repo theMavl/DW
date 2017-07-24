@@ -1,0 +1,434 @@
+{$CLEO .cm}
+0000:
+
+:HEAD
+thread 'AMY_3'
+
+gosub @MISSION_START
+
+if
+    wasted_or_busted
+then
+    gosub @MISSION_FAILED 
+end
+gosub @MISSION_CLEANUP 
+
+:MISSION_START
+    gosub @LOAD
+    gosub @MISSION
+    gosub @MISSION_PASSED
+return
+
+:LOAD
+29@ = 0 //counter
+023C: load_special_actor 'CLAUDE' as 1
+model.load(2927)
+model.load(18812)
+model.load(18815)
+model.load(18816)
+model.load(18803)
+model.load(18814) 
+Model.Load(#bmybe) 
+Model.Load(#BRASSKNUCKLE)
+Model.Load(#BUCCANEE)
+Model.Load(#WMYVA2)
+Model.Load(#MAVERICK)
+Model.Load(#ARMY)
+038B: load_requested_models 
+04ED: load_animation "TARDIS"
+04ED: load_animation "DW"
+0AAC: 1@ = load_audiostream "DWS\AngelicSFX\angelic_Flicker3.wav"
+0AAC: 2@ = load_audiostream "DWS\AngelicSFX\angelic_Ambience2.mp3"
+0AAC: 17@ = load_audiostream "DWS\ang_far.wav"
+0AAC: 22@ = load_audiostream "DWS\AngelicSFX\angelic_Keydrop.mp3"
+0AAC: 23@ = load_audiostream "DWS\AngelicSFX\The_Futurekind.mp3"
+0AC1: 18@ = load_audiostream_with_3d_support "DWS\AngelicSFX\angelic_TV.mp3"
+0AC2: set_3d_audiostream 18@ position 2200.87 -1158.88 1030.05
+audiostream.PerformAction(2@, play)
+0AC0: loop_audiostream 2@ flag 1
+04BB: select_interior 15
+0924: enable_screen_darkness 1 with_value 127
+
+object.create(8@, 2927, 2214.8484 -1150.4873 1025.7969)
+0177: set_object 8@ Z_angle_to 270.0
+0750: set_object 8@ visibility 0
+
+object.Create(6@, 18803, 2196.0417 -1157.233 1028.75)
+0177: set_object 6@ Z_angle_to 90.0
+0750: set_object 6@ visibility 0
+0382: set_object 6@ collision_detection 0 
+
+object.Create(9@, 18814, 2200.87 -1158.88 1030.05)
+0382: set_object 9@ collision_detection 0
+0750: set_object 9@ visibility 0
+
+object.Create(20@, 18816, 2200.2668 -1158.7831 1028.75)
+wait 1
+0D11: set_object 20@ alpha 128  
+0177: set_object 20@ Z_angle_to 252.0
+0382: set_object 20@ collision_detection 0
+0750: set_object 20@ visibility 0
+
+object.Create(19@, 18815, 2200.2668 -1158.7831 1028.75)
+wait 1
+0D11: set_object 19@ alpha 128  
+0177: set_object 19@ Z_angle_to 252.0 
+0382: set_object 19@ collision_detection 0
+0750: set_object 19@ visibility 0
+
+object.Create(11@, 18812, 2197.8577 -1158.4297 1028.75)
+0177: set_object 11@ Z_angle_to 90.0
+0382: set_object 11@ collision_detection 0
+0750: set_object 11@ visibility 0
+object.Create(12@, 18816, 2199.7205 -1158.7332 1028.75)
+wait 1
+0D11: set_object 12@ alpha 128
+0177: set_object 12@ Z_angle_to 270.0
+0382: set_object 12@ collision_detection 0
+0750: set_object 12@ visibility 0
+
+009A: 5@ = create_actor_pedtype 21 model #SPECIAL01 at 2205.7375 -1157.6238 1029.7969
+0173: set_actor 5@ Z_angle_to 0.0 
+0860: link_actor 5@ to_interior 15
+06B0: AS_actor 5@ sit_down 99999999999999 ms
+
+009A: 10@ = create_actor_pedtype 21 model #BMYBE at 2200.5955 -1158.6948 1029.0
+0337: set_actor 10@ visibility 0
+0619: enable_actor 10@ collision_detection 0
+0350: set_actor 10@ maintain_position_when_attacked 1
+04D7: set_actor 10@ locked 1  
+return
+
+:MISSION
+increment_mission_attempts
+$ONMISSION = 1
+016E: override_restart at 0.0 0.0 1024.0 angle 355.2978
+//-------------------------------------PART 1-------------------------------------
+00C0: set_current_time_hours_to 0 minutes_to 0 
+04F9: set_extra_colours 1 fade 0
+0581: enable_radar 0 
+0826: enable_hud 0
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+0AB3: var 62 = 1 // kill all angels
+wait 500
+0AB3: var 62 = 0
+0AD1: show_formatted_text_highpriority "If he is really here, then so must be the Weeping Angels." time 5000
+wait 0
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2241.1809 -1161.1575 1029.7969 radius 2.0 2.0 1.0 on_foot
+0ACE: show_formatted_text_box "Check each room for the survivor"
+//wait 5500
+run "angel.cs" 21 2230.8057 -1150.5022 1029.7969 0.0 40.0 1 1
+run "angel.cs" 22 2247.7046 -1188.1881 1029.8043 180.0 10.0 1 1
+wait 500
+0AAA: 0@ = thread 'ANG21' pointer
+0D2E: set_thread 0@ var 26 to 1.5
+wait 500
+0AAA: 0@ = thread 'ANG22' pointer
+0D2E: set_thread 0@ var 26 to 1.5
+wait 0
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2225.2791 -1188.6777 1029.7969 radius 2.0 2.0 1.0 on_foot
+audiostream.PerformAction(1@, play)
+0924: enable_screen_darkness 1 with_value 255
+wait 150
+0924: enable_screen_darkness 1 with_value 127
+wait 50
+0924: enable_screen_darkness 1 with_value 255
+wait 50
+0924: enable_screen_darkness 1 with_value 127
+wait 300
+0924: enable_screen_darkness 1 with_value 255
+run "angel.cs" 23 2225.78 -1179.1461 1029.7969 0.0 40.0 1 1
+wait 50
+0924: enable_screen_darkness 1 with_value 127
+wait 550
+0924: enable_screen_darkness 1 with_value 255
+0AAA: 0@ = thread 'ANG23' pointer
+0D2E: set_thread 0@ var 26 to 1.5
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+wait 2000
+0AD1: show_formatted_text_highpriority "I must proceed with extra cautious, one wrong move - the last Time Lord is gone." time 5000
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2193.1282 -1183.3086 1029.7969 radius 1.5 1.5 1.0 on_foot
+0924: enable_screen_darkness 1 with_value 255
+run "angel.cs" 24 2193.2327 -1178.8654 1029.7969 0.0 7.5 1 1
+wait 50
+0924: enable_screen_darkness 1 with_value 127
+wait 450
+0AAA: 0@ = thread 'ANG24' pointer
+0D2E: set_thread 0@ var 26 to 1.5
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2196.0417 -1157.233 1029.7969 radius 1.0 1.0 1.0 on_foot
+//end all angels
+0AB3: var 62 = 1
+actor.SetImmunities(5@, 1, 1, 1, 1, 1)
+03BF: set_player $PLAYER_CHAR ignored_by_everyone 1 
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2205.7375 -1157.6238 1029.7969 radius 1.2 1.2 1.0 on_foot
+wait 0
+0AB3: var 62 = 0 
+0605: actor 5@ perform_animation "SEAT_up" IFP "ped" framedelta 4.0 loop 0 lockX 0 lockY 0 lockF 0 time -1
+0AD1: show_formatted_text_highpriority "There you are, you don't need to introduce to me, party is over it is time to leave." time 5000
+0750: set_object 6@ visibility 1
+0382: set_object 6@ collision_detection 1
+repeat
+    wait 0
+until 80FF: not actor $PLAYER_ACTOR sphere 0 in_sphere 2205.7375 -1157.6238 1029.7969 radius 2.0 2.0 1.0 on_foot
+0AD1: show_formatted_text_highpriority "Oh great, Claude keep your eyes on that angel!" time 3000 
+wait 1000
+05D3: AS_actor 5@ goto_point 2197.2271 -1157.4686 1029.7969 mode 7 4000 ms // versionA 
+wait 2000
+0AD1: show_formatted_text_highpriority "~b~...!" time 2000
+wait 2500
+audiostream.PerformAction(18@, play) 
+0350: set_actor 5@ maintain_position_when_attacked 1 
+wait 1000
+0AD1: show_formatted_text_highpriority "What was that?!" time 2500
+0750: set_object 9@ visibility 1
+
+wait 1000
+0ACE: show_formatted_text_box "Keep your eyes on the TV" 
+wait 1900
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+0AD1: show_formatted_text_highpriority "Okay soldier, look away from the Angel whenever I say it!" time 3500
+gosub @angel_TV
+wait 2800
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+wait 2800
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+0AD1: show_formatted_text_highpriority "Wait for it..." time 2500
+gosub @angel_TV
+wait 2600
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+wait 2600
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+0AD1: show_formatted_text_highpriority "Wait for it..." time 2500
+gosub @angel_TV
+wait 2300
+0750: set_object 9@ visibility 0
+0382: set_object 9@ collision_detection 0
+0924: enable_screen_darkness 1 with_value 255
+wait 200
+0924: enable_screen_darkness 1 with_value 127
+audiostream.PerformAction(17@, play)
+0382: set_object 19@ collision_detection 1
+0750: set_object 19@ visibility 1
+0AD1: show_formatted_text_highpriority "NOW!!!" time 2500
+0ACE: show_formatted_text_box "Look Away from the Angel!"
+03BF: set_player $PLAYER_CHAR ignored_by_everyone 0
+0850: AS_actor 5@ follow_actor $PLAYER_ACTOR 
+wait 500
+//0AAA: 0@ = thread 'ANG26' pointer
+wait 1750
+0750: set_object 6@ visibility 0
+0382: set_object 6@ collision_detection 0
+if 09ED:   actor $PLAYER_ACTOR  is_within_field_of_view_actor 10@
+then
+    //0D2F: 13@ = get_thread 0@ var 14
+    0750: set_object 19@ visibility 0
+    0382: set_object 19@ collision_detection 0
+    0382: set_object 20@ collision_detection 1
+    0750: set_object 20@ visibility 1
+    0400: store_coords_to 14@ 15@ 16@ from_object 20@ with_offset 0.0 0.0 0.85
+    0160: set_camera_point_at 14@ 15@ 16@ mode 2
+    0400: store_coords_to 14@ 15@ 16@ from_object 20@ with_offset 0.0 -1.0 0.85
+    015F: set_camera_position 14@ 15@ 16@ rotation 0.0 0.0 0.0 
+    0922: set_camera_zoom_in_factor 55.0 out_factor 35.0 timelimit 1500 mode 2
+    wait 200
+    0922: set_camera_zoom_in_factor 35.0 out_factor 35.0 timelimit 1000 mode 2
+    wait 500
+    14@ += 5.0
+    15@ += 5.0 
+    16@ += 5.0
+    0160: set_camera_point_at 14@ 15@ 16@ mode 1
+    0460: set_camera_transverse_delay 0.0 time 500
+    //GAME OVER
+    0970: teleport_in_override_restart
+else
+    //0AAD: set_audiostream 18@ perform_action 0
+    0750: set_object 19@ visibility 0
+    0382: set_object 19@ collision_detection 0
+    0D2E: set_thread 0@ var 8 to 3
+    0382: set_object 11@ collision_detection 1
+    0750: set_object 11@ visibility 1
+    0750: set_object 12@ visibility 1
+end
+0687: clear_actor 5@ task 
+0850: AS_actor 5@ follow_actor $PLAYER_ACTOR 
+0AD1: show_formatted_text_highpriority "Nicely done! Now they are dead-locked with each other." time 3500
+wait 4500
+0AD1: show_formatted_text_highpriority "~b~......" time 2000
+wait 2000
+0A1A: actor 5@ perform_walk_animation "IDLE_chat" IFP "ped" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 -1 ms // versionC
+0AD1: show_formatted_text_highpriority "~b~Let's get the hell out of here shall we?" time 3000
+wait 3000
+0687: clear_actor 5@ task 
+0850: AS_actor 5@ follow_actor $PLAYER_ACTOR 
+0AD1: show_formatted_text_highpriority "I don't know which is more scary, Weeping Angels or you start talking." time 5000
+0ACE: show_formatted_text_box "Return to the exit"
+0750: set_object 8@ visibility 0
+0382: set_object 8@ collision_detection 0
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2233.9465 -1188.7262 1029.7969 radius 1.5 1.5 1.0 on_foot
+
+0AD1: show_formatted_text_highpriority "So how did the new unprofessional Leader of SA UNIT ended up here?" time 5000
+run "angel.cs" 21 2215.4592 -1152.0072 1025.7969 250.0 40.0 1 1
+run "angel.cs" 22 2215.4563 -1149.0697 1025.7969 310.0 40.0 1 1
+run "angel.cs" 23 2215.4614 -1150.5978 1025.7969 270.0 40.0 1 1
+run "angel.cs" 24 2216.583 -1148.8014 1025.7969 96.0 40.0 1 1
+0AB3: var 59 = 1
+wait 7500
+0AD1: show_formatted_text_highpriority "Anyway, you are very much welcome." time 3000
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2227.4714 -1150.5691 1029.7969 radius 1.0 1.0 1.0 on_foot
+wait 250
+01B4: set_player $PLAYER_CHAR can_move 0
+0173: set_actor $PLAYER_ACTOR Z_angle_to 90.0
+0AD1: show_formatted_text_highpriority "~b~......!!!" time 3000
+wait 3000
+0AD1: show_formatted_text_highpriority "Yes, they block the only way out and Shut up if you don't plan to talk." time 4500
+wait 6000
+0AD1: show_formatted_text_highpriority "Okay I am taking a chance, I hope it pays off." time 4500
+
+camera.Restore_WithJumpCut()
+wait 2000
+21@ = Object.Create(#BRASSKNUCKLE, 0.0, 0.0, -100.0)
+0382: set_object 21@ collision_detection 0
+Object.SetImmunities(21@, 1, 1, 1, 1, 1)
+070A: AS_actor $PLAYER_ACTOR attach_to_object 21@ offset 0.0 0.0 0.0 on_bone 6 16 perform_animation "NULL" IFP_file "NULL" time -1
+0ACE: show_formatted_text_box "Press E to toss the TARDIS Key"
+repeat
+    wait 0
+until 0AB0:  key_pressed 69 
+0812: AS_actor $PLAYER_ACTOR perform_animation "WEAPON_throw" IFP_file "GRENADE" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 // versionB 
+0AB3: var 59 = 0
+//0AB3: var 63 = 1
+wait 650
+Object.Destroy(21@)
+object.RemoveReferences(21@)
+0924: enable_screen_darkness 1 with_value 255
+wait 500
+audiostream.PerformAction(22@, play)
+wait 500
+05D3: AS_actor $PLAYER_ACTOR goto_point 2227.2437 -1142.5566 1029.7969 mode 7 2500 ms // versionA
+wait 1000
+0AAD: set_audiostream 2@ perform_action 0
+audiostream.PerformAction(23@, play)
+0ABC: set_audiostream 23@ volume 0.5
+01B4: set_player $PLAYER_CHAR can_move 1
+0924: enable_screen_darkness 1 with_value 127
+//0AB3: var 63 = 0
+0AB3: var 60 = 1
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+0AD1: show_formatted_text_highpriority "RUN!!!" time 2500
+wait 1000
+0ACE: show_formatted_text_box "You heard The Doctor"
+repeat
+    wait 100
+    29@ += 1
+    if 29@ >= 100
+    then
+        0AB3: var 60 = 0
+    end
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2229.02 -1159.8 25.7981 radius 1.0 1.0 1.0 on_foot
+//-------------------------------------END OF PART 1-------------------------------------
+
+return
+
+:MISSION_PASSED
+//01E3: text_1number_styled 'M_PASSD' 0 5000 ms 1
+0AB3: var 64 = 5 // Progress ++
+return
+
+:MISSION_FAILED
+00BA: text_styled 'M_FAIL' 5000 ms 1
+return
+
+:MISSION_CLEANUP
+$ONMISSION = 0
+model.Destroy(2927)
+model.Destroy(18812)
+model.Destroy(18815)
+model.Destroy(18816)
+model.Destroy(18803)
+model.Destroy(18814) 
+Model.Destroy(#bmybe) 
+Model.Destroy(#BRASSKNUCKLE)
+0AAE: release_audiostream 1@
+0AAE: release_audiostream 2@
+0AAE: release_audiostream 17@
+0AAE: release_audiostream 22@
+0AAE: release_audiostream 23@
+0AAE: release_audiostream 18@
+Object.Destroy(8@)
+Object.Destroy(6@)
+Object.Destroy(9@)
+Object.Destroy(20@)
+Object.Destroy(19@)
+Object.Destroy(11@)
+Object.Destroy(12@)
+if Object.Exists(59@)
+then
+    object.Destroy(59@)
+end
+Actor.DestroyInstantly(5@)
+Actor.DestroyInstantly(10@)
+04EF: release_animation "TARDIS"
+04EF: release_animation "DW"
+mission_cleanup
+end_thread
+return
+
+:angel_TV
+wait 0
+if 09ED:   actor $PLAYER_ACTOR  is_within_field_of_view_actor 10@
+then
+    return
+else
+    object.Create(59@, 18816, 2200.2668 -1158.7831 1028.75)
+    wait 1
+    0D11: set_object 59@ alpha 128  
+    0177: set_object 59@ Z_angle_to 252.0 
+    //run "angel.cs" 25 2199.7205 -1158.7332 1029.7969 270.0 15.0 1 1
+    wait 500
+    //0AAA: 0@ = thread 'ANG25' pointer
+    wait 500
+    //0D2F: 13@ = get_thread 0@ var 14 
+    0400: store_coords_to 14@ 15@ 16@ from_object 59@ with_offset 0.0 0.0 0.85
+    0160: set_camera_point_at 14@ 15@ 16@ mode 2
+    0400: store_coords_to 14@ 15@ 16@ from_object 59@ with_offset 0.0 -1.0 0.85
+    015F: set_camera_position 14@ 15@ 16@ rotation 0.0 0.0 0.0 
+    0922: set_camera_zoom_in_factor 55.0 out_factor 35.0 timelimit 1500 mode 2
+    wait 200
+    0922: set_camera_zoom_in_factor 35.0 out_factor 35.0 timelimit 1000 mode 2
+    wait 500
+    14@ += 5.0
+    15@ += 5.0 
+    16@ += 5.0
+    0160: set_camera_point_at 14@ 15@ 16@ mode 1
+    0460: set_camera_transverse_delay 0.0 time 500
+    0970: teleport_in_override_restart
+    return
+    //game over
+end
+return
+{$INCLUDE CLEO/move_set_get}

@@ -45,9 +45,10 @@ end_custom_thread
             7@ - Kill flag (0/1)
             8@ - Script control (1 - active, 3 - end thread)           
 }
+0AAA: 17@ = thread "ANGELS" pointer
 if 0@ == -1
 then
-    0AAA: 17@ = thread "ANGELS" pointer
+    
     // Take first available angels slot
     FOR 16@ = 1 to 30 step 1
         wait 0
@@ -70,8 +71,15 @@ then
         0AB3: var 61 = 0
         end_custom_thread
     end    
+else
+    0D2F: 15@ = get_thread 17@ var 0@
+    if 15@ == 1
+    then
+        // Angel already exists
+        end_custom_thread
+    end    
 end
-
+0D2E: set_thread 17@ var 0@ to 1
 0AD3: string 30@v format "ANG%d" 0@
 
 thread 30@v // Dynamic thread name
@@ -217,7 +225,7 @@ repeat
                 Kill == 1 
                 GLOBAL_DONTKILL == 0
             then
-                show_text "Rest in peace" 1000
+                
                 0AAC: SFX = load_audiostream "DWS\ang_rip.wav"
                 0AAD: set_audiostream SFX perform_action 1               
                 01B4: set_player $PLAYER_CHAR can_move 0            
@@ -264,11 +272,10 @@ repeat
                 04D7: set_actor $PLAYER_ACTOR locked 0
                 if $ONMISSION == 1
                 then
-                    0AB3: var 64 = 1 // Angel killed player flag
                     0970: teleport_in_override_restart
                 else
-                    0321: kill_actor $PLAYER_ACTOR                            
-                    //0321: kill_actor $PLAYER_ACTOR
+                    0321: kill_actor $PLAYER_ACTOR
+                    show_text "Rest in peace" 1000                            
                 end
                 fade 1 2000
                 Audiostream.Release(SFX)             

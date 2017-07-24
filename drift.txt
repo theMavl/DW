@@ -8,6 +8,7 @@ while true
     10@ = 0
     if $ONMISSION == 0
     jf continue
+    
     0AB4: 0@ = var 0
     0AB4: 11@ = var 11
     call_scm_func @get_toggle 1 2 1@
@@ -26,6 +27,7 @@ while true
                 8039: 0@ == 0
                 8039: 1@ == 0
                 8039: 11@ == 1
+                $ONMISSION == 1
             then
                 10@ = -1
                 break

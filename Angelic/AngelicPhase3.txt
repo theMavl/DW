@@ -529,7 +529,7 @@ wait 2000
 0AD1: show_formatted_text_highpriority "I should have closed your little office while I had chance." time 4000
 07CD: AS_actor 26@ walk_to 2390.804 -639.3628 126.8353 stop_with_angle 166.036 within_radius 1.0
 wait 5000
-0AD1: show_formatted_text_highpriority "Miss the old days when Harkness and Torchwood were still around..." time 4500 
+0AD1: show_formatted_text_highpriority "Miss the old days when Jack and Torchwood were still around..." time 4500 
 067B: put_camera_on_car 8@ with_offset 2.0 -2.5 3.5 point_to_actor $PLAYER_ACTOR tilt 6.0 2 
 while 01F3:   car 8@ in_air 
     wait 0
@@ -579,7 +579,7 @@ wait 4000
 0159: camera_on_ped 26@ 15 2 
 wait 1000
 wait 2500
-0AD1: show_formatted_text_highpriority "Come on, PE! We have to find the Tardis before those Angels." time 4000
+0AD1: show_formatted_text_highpriority "Come on, PE! We have to find the TARDIS before those Angels." time 4000
 02A3: toggle_widescreen 0
 0A48: enable_menu_access_in_widescreen_mode 0
 Camera.Restore()
@@ -637,7 +637,7 @@ wait 10000
 repeat
     wait 0
 until 00EF:   actor $PLAYER_ACTOR 0 near_point 2429.0581 1096.689 radius 13.5 13.5 stopped
-0AD1: show_formatted_text_highpriority "~b~Best of the luck Doctor. There is an east wind coming, the earth needs you." time 6000
+0AD1: show_formatted_text_highpriority "~b~Best of the luck Doctor. There is an east wind coming, the Earth needs you." time 6000
 0ACE: show_formatted_text_box "Enter the Planning Departament" 
 020A: set_car 8@ door_status_to 0
 0581: enable_radar 0

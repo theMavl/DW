@@ -1,4 +1,4 @@
-//written by a Weeping Angel
+//written by Mavl
 {$CLEO .cs}
 
 //-------------MAIN---------------
@@ -8,9 +8,16 @@ const
     MISSION_PASSED = 0@
     CURRENT_STAGE = 1@
     MISSION_POINTER = 2@
+    MISSION_ABORT = 3@
+    LAST_X = 4@
+    LAST_Y = 5@
+    LAST_Z = 6@
+    LAST_INT = 7@
+    LAST_ANG = 8@
 end
 
 MISSION_PASSED = 0
+MISSION_ABORT = 0
 0AB4: CURRENT_STAGE = var 64
 
 
@@ -21,16 +28,25 @@ while true
     then
         if 0AB0: 69 // E
         then
+            0AB3: var 64 = 1
+            CURRENT_STAGE = 1
             gosub @launcher
         end    
     end
 end
 
 :launcher
-if CURRENT_STAGE == 0
+if CURRENT_STAGE == 1
 then 
     $ONMISSION = 1  
     0ACE: show_formatted_text_box "There should be an opening cutscene, but it's not here. Obviously."
+    // Save last coords
+    0AB4: LAST_X = var 21
+    0AB4: LAST_Y = var 22
+    0AB4: LAST_Z = var 23
+    0AB4: LAST_INT = var 20
+    0AB4: LAST_ANG = var 6    
+    
     0AB3: var 30 = 2550.7527   // x
     0AB3: var 31 = -1294.0162   // y
     0AB3: var 32 = 1058.8   // z
@@ -43,79 +59,267 @@ then
 
     0A94: start_custom_mission 'Angelic/Phase1' 
     wait 1000
-    repeat
+    while true
         wait 0
-        0AB4: CURRENT_STAGE = var 64
-    until $ONMISSION == 0
-    if CURRENT_STAGE == 0
-    then
         repeat
             wait 0
-        until 03EE:   player $PLAYER_CHAR controllable
-        0581: enable_radar 0 
-        0826: enable_hud 0 
-        04BB: select_interior 3 
-        0860: link_actor $PLAYER_ACTOR to_interior 3
-        09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 6.2531 1.1072 1026.1406
-        0173: set_actor $PLAYER_ACTOR Z_angle_to 269.4919
-        0373: set_camera_directly_behind_player 
-        032A: set_behind_camera_mode_to 0
-        0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 100 mode 1
-    	0931: camera_persist_fov 1  
-        04F9: set_extra_colours 11 fade 0
-        01B4: set_player $PLAYER_CHAR can_move 0
-        0ACE: show_formatted_text_box "Y to return to the mission~n~N to leave (all progress will be erased)"
-        32@ = 0
-        repeat
-            wait 0
-            if 0ab0: 78 // N
+            0AB4: CURRENT_STAGE = var 64
+        until $ONMISSION == 0
+        if CURRENT_STAGE == 1
+        then
+            gosub @retry
+            if MISSION_ABORT == 1
             then
-                01B4: set_player $PLAYER_CHAR can_move 1
-                0826: enable_hud 1
-                03E6: remove_text_box
-                0AB3: var 64 = 0
-                // TODO: Restore TARDIS exterior coordinate!!! 
+                MISSION_ABORT = 0
                 return
             end
-        until 0ab0: 89 // Y
-        fade 0 1500
-        wait 1500
-        01B4: set_player $PLAYER_CHAR can_move 1
-        0931: camera_persist_fov 0
-        04BB: select_interior 2 
-        04F9: set_extra_colours 1 fade 0
-        0860: link_actor $PLAYER_ACTOR to_interior 2
-        09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2551.0046 -1292.1531 1061.0
-        0173: set_actor $PLAYER_ACTOR Z_angle_to 360.0
-        0373: set_camera_directly_behind_player 
-        01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
-        0992: set_player $PLAYER_CHAR weapons_scrollable 0 
-        0A94: start_custom_mission 'Angelic/Phase1'
-        wait 500
-        fade 1 1000
+            04BB: select_interior 2 
+            04F9: set_extra_colours 1 fade 0
+            0860: link_actor $PLAYER_ACTOR to_interior 2
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2551.0046 -1292.1531 1061.0
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 360.0
+            0373: set_camera_directly_behind_player 
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            03E6: remove_text_box  
+            0A94: start_custom_mission 'Angelic/Phase1'
+            wait 500
+            fade 1 1000
+        else
+            // Mission completed
+            break
+        end
     end
 end
-if CURRENT_STAGE == 1
+if or
+    CURRENT_STAGE == 2
+    CURRENT_STAGE == 3
 then
-    run "Angelic/AngelicPhase2.s"
+    0A94: start_custom_mission 'Angelic/Phase2'
     wait 1000
-    repeat
+    while true
         wait 0
-        0AAA: MISSION_POINTER = thread 'AMY_2' pointer
-    until MISSION_POINTER == 0x0 // Thread has reached its end
-    CURRENT_STAGE += 1
+        repeat
+            wait 0
+            0AB4: CURRENT_STAGE = var 64
+        until $ONMISSION == 0
+        if or
+            CURRENT_STAGE == 2
+            CURRENT_STAGE == 3
+        then
+            gosub @retry
+            if MISSION_ABORT == 1
+            then
+                MISSION_ABORT = 0
+                return
+            end
+            04BB: select_interior 2 
+            04F9: set_extra_colours 1 fade 0
+            0860: link_actor $PLAYER_ACTOR to_interior 2
+            if CURRENT_STAGE == 2
+            then
+                09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2553.7502 -1285.7343 1060.9844
+                0173: set_actor $PLAYER_ACTOR Z_angle_to 166.4817
+            else
+                09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2524.3381 -1301.827 1048.2891
+                0173: set_actor $PLAYER_ACTOR Z_angle_to 337.0977
+            end
+            
+            0373: set_camera_directly_behind_player 
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            03E6: remove_text_box  
+            0A94: start_custom_mission 'Angelic/Phase2'
+            wait 500
+            fade 1 1000
+        else
+            // Mission completed
+            break
+        end
+    end
 end
-if CURRENT_STAGE == 2
+if CURRENT_STAGE == 4
 then
-    run "Angelic/AngelicPhase3.s"
+    0A94: start_custom_mission 'Angelic/Phase3'
     wait 1000
-    repeat
+    while true
         wait 0
-        0AAA: MISSION_POINTER = thread 'AMY_3' pointer
-    until MISSION_POINTER == 0x0 // Thread has reached its end
-    CURRENT_STAGE += 1
+        repeat
+            wait 0
+            0AB4: CURRENT_STAGE = var 64
+        until $ONMISSION == 0
+        if
+            CURRENT_STAGE == 4
+        then
+            gosub @retry
+            if MISSION_ABORT == 1
+            then
+                MISSION_ABORT = 0
+                return
+            end
+            04BB: select_interior 15 
+            04F9: set_extra_colours 1 fade 0
+            0860: link_actor $PLAYER_ACTOR to_interior 15
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2221.0093 -1147.1144 1025.7969
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 357.6021
+            0373: set_camera_directly_behind_player 
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            03E6: remove_text_box  
+            0A94: start_custom_mission 'Angelic/Phase3'
+            wait 500
+            fade 1 1000
+        else
+            // Mission completed
+            break
+        end
+    end
+end
+if CURRENT_STAGE == 5
+then
+    01F0: set_max_wanted_level_to 0
+    0A94: start_custom_mission 'Angelic/Phase3t'
+    wait 1000
+    while true
+        wait 0
+        repeat
+            wait 0
+            0AB4: CURRENT_STAGE = var 64
+        until $ONMISSION == 0
+        if
+            CURRENT_STAGE == 5
+        then
+            gosub @retry
+            if MISSION_ABORT == 1
+            then
+                MISSION_ABORT = 0
+                01F0: set_max_wanted_level_to 6
+                return
+            end
+            04BB: select_interior 0 
+            //04F9: set_extra_colours 1 fade 0
+            04FA: reset_interior 0 colors 
+            01B7: release_weather 
+            0860: link_actor $PLAYER_ACTOR to_interior 0
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2229.02 -1159.7859 25.7981
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 90.0
+            0373: set_camera_directly_behind_player 
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            03E6: remove_text_box  
+            0A94: start_custom_mission 'Angelic/Phase3t'
+            wait 500
+            fade 1 1000
+        else
+            01F0: set_max_wanted_level_to 6 
+            // Mission completed
+            break
+        end
+    end
+end
+if CURRENT_STAGE == 6
+then
+    0A94: start_custom_mission 'Angelic/Phase4'
+    wait 1000
+    while true
+        wait 0
+        repeat
+            wait 0
+            0AB4: CURRENT_STAGE = var 64
+        until $ONMISSION == 0
+        if
+            CURRENT_STAGE == 6
+        then
+            gosub @retry
+            if MISSION_ABORT == 1
+            then
+                MISSION_ABORT = 0
+                return
+            end
+            04BB: select_interior 3 
+            04F9: set_extra_colours 1 fade 0 
+            0860: link_actor $PLAYER_ACTOR to_interior 3
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 388.1753 173.9903 1008.3828
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 90.0
+            0373: set_camera_directly_behind_player 
+            01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
+            0992: set_player $PLAYER_CHAR weapons_scrollable 0
+            03E6: remove_text_box  
+            0A94: start_custom_mission 'Angelic/Phase4'
+            wait 500
+            fade 1 1000
+        else
+            // Mission completed
+            0581: enable_radar 0 
+            0826: enable_hud 0 
+            04BB: select_interior 3 
+            0860: link_actor $PLAYER_ACTOR to_interior 3
+            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 6.2531 1.1072 1026.1406
+            0173: set_actor $PLAYER_ACTOR Z_angle_to 269.4919
+            0373: set_camera_directly_behind_player 
+            032A: set_behind_camera_mode_to 0
+            0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 100 mode 1
+            0931: camera_persist_fov 1  
+            04F9: set_extra_colours 11 fade 0
+            0AB3: var 62 = 1 // kill all angels
+            wait 500
+            0AB3: var 62 = 0
+            
+            // Return to the beginning
+            0AB3: var 64 = 0
+            CURRENT_STAGE = 0
+            break
+        end
+    end
 end
 return
 
+:retry
+repeat
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 50.0 50.0 50.0 on_foot 
+0581: enable_radar 0 
+0826: enable_hud 0 
+04BB: select_interior 3 
+0860: link_actor $PLAYER_ACTOR to_interior 3
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 6.2531 1.1072 1026.1406
+0173: set_actor $PLAYER_ACTOR Z_angle_to 269.4919
+0373: set_camera_directly_behind_player 
+032A: set_behind_camera_mode_to 0
+0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 100 mode 1
+0931: camera_persist_fov 1  
+04F9: set_extra_colours 11 fade 0
+01B4: set_player $PLAYER_CHAR can_move 0
+0ACE: show_formatted_text_box "Y to return to the mission~n~N to leave (all progress will be erased)"
+0AB3: var 62 = 1 // kill all angels
+wait 500
+0AB3: var 62 = 0
+32@ = 0
+repeat
+    wait 0
+    if 0ab0: 78 // N
+    then
+        01B4: set_player $PLAYER_CHAR can_move 1
+        0826: enable_hud 1
+        03E6: remove_text_box
+        0AB3: var 64 = 0
+        CURRENT_STAGE = 0
+        MISSION_ABORT = 1
+        // TODO: Restore TARDIS exterior coordinate!!! 
+        0AB3: var 21 = LAST_X   // x
+        0AB3: var 22 = LAST_Y  // y
+        0AB3: var 23 = LAST_Z   // z
+        0AB3: var 20 = LAST_INT // interior
+        0AB3: var 6 = LAST_ANG  // angle
+        0840: link_car $111 to_interior LAST_INT
+        0AB3: var 24 = 1 // request refreshing coordinates
+        return
+    end
+until 0ab0: 89 // Y
+fade 0 1500
+wait 1500
+01B4: set_player $PLAYER_CHAR can_move 1
+0931: camera_persist_fov 0
+return
 end_custom_thread
 {$INCLUDE move_set_get} 

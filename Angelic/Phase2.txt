@@ -1,0 +1,510 @@
+{$CLEO .cm}
+0000:
+
+:HEAD
+thread 'AMY_2'
+
+gosub @MISSION_START
+
+if
+    wasted_or_busted
+then
+    gosub @MISSION_FAILED 
+end
+gosub @MISSION_CLEANUP 
+
+:MISSION_START
+    gosub @LOAD
+    gosub @MISSION
+    gosub @MISSION_PASSED
+return
+
+:LOAD
+model.load(2927)
+model.load(18797)
+model.load(14843)
+model.load(#CELLPHONE)
+038B: load_requested_models 
+04ED: load_animation "TARDIS"
+
+04ED: load_animation "DW"
+0AAC: 8@ = load_audiostream "DWS\AngelicSFX\angelic_Flicker4.wav"
+0AAC: 4@ = load_audiostream "DWS\AngelicSFX\angelic_Scare.wav" //IF and SET
+0AAC: 15@ = load_audiostream "DWS\AngelicSFX\angelic_Flicker2.wav"
+0AAC: 13@ = load_audiostream "DWS\AngelicSFX\angelic_Knocks2.mp3"
+0AAC: 17@ = load_audiostream "DWS\AngelicSFX\angelic_Ring.mp3"
+0AC1: 14@ = load_audiostream_with_3d_support "DWS\AngelicSFX\DontBlink.mp3"
+0AC1: 16@ = load_audiostream_with_3d_support "DWS\AngelicSFX\angelic_Storm.mp3"
+0AC1: 19@ = load_audiostream_with_3d_support "DWS\AngelicSFX\angelic_Statics.mp3"
+0AAC: 20@ = load_audiostream "DWS\sgl_loop.mp3"
+0AAC: 39@ = load_audiostream "dws\keypad.wav" //IF and SET
+0AC2: set_3d_audiostream 14@ position 2526.16 -1299.09 1047.205
+0AC2: set_3d_audiostream 19@ position 2526.16 -1299.09 1047.205
+0AC2: set_3d_audiostream 16@ position 2561.9426 -1280.2491 1031.4219 
+
+object.create(7@, 2927, 2530.3486 -1305.6823 1047.0) 
+object.create(6@, 2927, 2522.4294 -1301.7384 1047.0) //blocks
+object.create(36@, 2927, 2529.1941 -1294.0127 1031.0)
+object.create(52@, 2927,  2551.0046 -1290.5 1063.0) //gatehole behind player is immediately blocked once he steps outside
+Object.PutAt(52@, 2551.0046 -1290.5 1064.25)
+0177: set_object 6@ Z_angle_to 270.0
+0177: set_object 7@ Z_angle_to 270.0
+0750: set_object 6@ visibility 0
+0750: set_object 7@ visibility 0
+0382: set_object 6@ collision_detection 0 
+0382: set_object 7@ collision_detection 0 
+0177: set_object 36@ Z_angle_to 270.0
+0750: set_object 36@ visibility 0
+0382: set_object 36@ collision_detection 0   
+return
+
+:MISSION
+increment_mission_attempts
+$ONMISSION = 1
+00AB: put_car $111 at 2527.0342 -1319.1777 1031.4219
+0840: link_car $111 to_interior 2 
+00C0: set_current_time_hours_to 0 minutes_to 0 
+04F9: set_extra_colours 1 fade 0
+0581: enable_radar 0 
+0826: enable_hud 0
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+016E: override_restart at 0.0 0.0 1024.0 angle 141.8709
+//------------------------Part 1-------------------------
+if 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2553.0591 -1287.6471 1060.9844 radius 5.0 5.0 2.0 on_foot 
+then
+    0924: enable_screen_darkness 1 with_value 127
+    00A0: store_actor $PLAYER_ACTOR position_to 0@ 1@ 2@
+    3@ = actor.Angle($PLAYER_ACTOR)
+    3@ += 180
+    1@ -= 1.5
+    run "angel.cs" 1 0@ 1@ 2@ 3@ 40.0 1 0
+    run "angel.cs" 2 2562.4492 -1281.8569 1065.3672 270.0 8.5 1 1
+    run "angel.cs" 3 2576.7532 -1300.4098 1060.9844 270.0 10.0 1 0
+    run "angel.cs" 4 2576.8452 -1280.2499 1054.6406 140.0 8.5 1 1 
+    run "angel.cs" 5 2555.4519 -1294.4055 1054.6406 270.0 6.0 1 0
+    run "angel.cs" 6 2537.5759 -1297.7681 1054.6406 0.0 5.0 1 1 
+    run "angel.cs" 7 2521.75 -1285.7643 1054.6406 90.0 14.5 1 0
+    audiostream.PerformAction(16@, play)
+    0AC0: loop_audiostream 16@ flag 1
+    wait 5000
+    0AAA: 5@ = thread 'ANG1' pointer
+    0D2E: set_thread 5@ var 7 to 1 
+    0ACE: show_formatted_text_box "Escape from the Angels"
+end
+//------------------------Part 2-------------------------
+while true
+    wait 0
+    if 
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2524.3381 -1301.827 1048.2891 radius 1.0 1.0 1.0 on_foot
+    then
+        0AB3: var 64 = 3 // Progress ++ between phase parts
+        0AB3: var 62 = 1 // kill all angels
+        wait 500
+        0AB3: var 62 = 0
+        016E: override_restart at 0.0 0.0 1024.0 angle 141.8709
+        0924: enable_screen_darkness 1 with_value 127
+        00C0: set_current_time_hours_to 0 minutes_to 0 
+        04F9: set_extra_colours 1 fade 0
+        0581: enable_radar 0 
+        0826: enable_hud 0
+        Camera.OnPed($PLAYER_ACTOR, 45, 2)
+        //object.create(11@, 14843, 2526.9268 -1316.1886 1030.5)
+        0382: set_object 6@ collision_detection 1 
+        0382: set_object 7@ collision_detection 1 
+
+        0AD1: show_formatted_text_highpriority "That was close, where did they even come from?!" time 2500
+        wait 2500
+        //play TV
+        audiostream.PerformAction(19@, play)
+        wait 3000
+        model.load(18813)
+        038B: load_requested_models 
+        object.create(12@, 18813, 2526.16 -1299.09 1047.205) 
+        0177: set_object 12@ Z_angle_to 270.0
+        0382: set_object 12@ collision_detection 0
+        0AAD: set_audiostream 19@ perform_action 0
+        audiostream.PerformAction(14@, play)
+        wait 13000
+        0AD1: show_formatted_text_highpriority "It was a set-up! They know who I am and they are coming for the TARDIS." time 4000
+        0AAD: set_audiostream 19@ perform_action 1
+        0AC0: loop_audiostream 19@ flag 1
+        wait 5000
+        0AD1: show_formatted_text_highpriority "There is no way I am giving them the key this easily." time 3000
+        wait 3000
+        run "angel.cs" 1 2521.3455 -1301.8585 1048.2891 0.0 40.0 1 1
+        wait 500
+        0AAA: 21@ = thread 'ANG1' pointer
+        //object.Destroy(6@)
+        0382: set_object 6@ collision_detection 0
+        audiostream.PerformAction(8@,play)
+        0D2E: set_thread 21@ var 26 to 4.0
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 200
+        0924: enable_screen_darkness 1 with_value 127
+        //0AB3: var 63 = 0
+        wait 400
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 300
+        0924: enable_screen_darkness 1 with_value 127
+        0AB3: var 63 = 0
+        wait 550
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 100
+        0924: enable_screen_darkness 1 with_value 127
+        //0AB3: var 63 = 0
+        wait 400
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 150
+        0924: enable_screen_darkness 1 with_value 127
+        0AB3: var 63 = 0
+        wait 450
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 100
+        0924: enable_screen_darkness 1 with_value 127
+        //0AB3: var 63 = 0
+        wait 200
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 100
+        0924: enable_screen_darkness 1 with_value 127
+        0AB3: var 63 = 0
+        wait 50
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 100
+        0924: enable_screen_darkness 1 with_value 127
+        //0AB3: var 63 = 0
+        wait 100
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 50
+        0924: enable_screen_darkness 1 with_value 127
+        0AB3: var 63 = 0
+        wait 100
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 200
+        0924: enable_screen_darkness 1 with_value 127
+        //0AB3: var 63 = 0
+        wait 500
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 200
+        0924: enable_screen_darkness 1 with_value 127
+        0AB3: var 63 = 0
+        0D2E: set_thread 21@ var 26 to 2.5
+        //object.Destroy(7@)
+        0382: set_object 7@ collision_detection 0
+        run "angel.cs" 8 2570.7507 -1280.2491 1048.2891 140.0 15.0 1 0
+        wait 5000
+        0ACE: show_formatted_text_box "Relocate the TARDIS"
+        break
+    else
+        if 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2560.834 -1294.3762 1054.6406 radius 3.0 3.0 1.0 on_foot
+        then
+            wait 0
+            audiostream.PerformAction(13@, play)
+            repeat
+                wait 0
+            until 80FF: not actor $PLAYER_ACTOR sphere 0 in_sphere 2560.834 -1294.3762 1054.6406 radius 3.0 3.0 1.0 on_foot
+        end
+    end
+end
+
+while True
+    wait 0
+    if
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2542.4143 -1281.896 1048.2891 radius 2.0 2.0 1.0 on_foot
+    then
+        0ABC: set_audiostream 19@ volume 0.5
+        audiostream.PerformAction(15@, play)
+        0924: enable_screen_darkness 1 with_value 255
+        0AB3: var 62 = 1 // kill all angels
+        wait 300
+        0AB3: var 62 = 0
+        run "angel.cs" 2 2530.0715 -1292.4858 1048.2891 270.0 8.5 1 1
+        run "angel.cs" 3 2530.2471 -1296.7601 1048.2891 270.0 10.0 1 0
+        run "angel.cs" 4 2530.2476 -1300.6365 1048.2891 140.0 8.5 1 1 
+        run "angel.cs" 5 2526.6165 -1293.2919 1048.2891 335.0 7.5 1 0
+        0924: enable_screen_darkness 1 with_value 127
+        wait 500
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 300
+        0AB3: var 63 = 0
+        0924: enable_screen_darkness 1 with_value 127
+        wait 550
+        0AB3: var 63 = 1
+        0924: enable_screen_darkness 1 with_value 255
+        wait 150
+        0924: enable_screen_darkness 1 with_value 127
+        0AB3: var 63 = 0
+        //spawn them once player reaches the end of long hallway
+        run "angel.cs" 9 2532.863 -1289.5876 1045.2306 180.0 5.0 1 1
+        run "angel.cs" 10 2540.6987 -1287.1801 1044.125 270.0 5.0 1 0
+        run "angel.cs" 11 2539.6189 -1301.7483 1044.125 180.0 15.0 1 1
+        run "angel.cs" 12 2564.0015 -1287.0748 1044.125 270.0 13.0 1 0
+        run "angel.cs" 13 2563.9978 -1300.6294 1044.125 270.0 13.0 1 1
+        run "angel.cs" 14 2574.9382 -1305.8134 1048.0021 180.0 7.0 1 0
+        wait 1500 //next area
+        run "angel.cs" 15 2581.1587 -1286.0283 1044.125 0.0 5.0 1 1
+        run "angel.cs" 16 2575.4504 -1288.8939 1031.4219 0.0 5.0 1 0
+        run "angel.cs" 17 2575.863 -1286.1312 1037.7734 0.0 3.0 1 1
+        run "angel.cs" 18 2529.8508 -1307.0481 1031.4219 315.0 10.0 1 0
+        run "angel.cs" 19 2541.9541 -1280.2495 1031.4219 180.0 10.0 1 1
+        run "angel.cs" 20 2561.9426 -1280.2491 1031.4219 180.0 5.0 1 0
+    else
+        if 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2527.8418 -1293.9687 1031.4219 radius 1.0 1.0 1.0 on_foot
+        then
+            0382: set_object 36@ collision_detection 1
+            0AAD: set_audiostream 16@ perform_action 0
+            0AAD: set_audiostream 19@ perform_action 0
+            wait 1000
+            0AD1: show_formatted_text_highpriority "Oh Hello Sexy." time 2000
+            0AB3: var 0 = 12 // Lock TARDIS door
+            repeat
+                wait 0
+            until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2526.7722 -1309.7361 1031.4219 radius 2.0 2.0 1.0 on_foot
+            0AB3: var 62 = 1
+            wait 2000
+            //phone call
+            Camera.Restore_WithJumpCut()
+            Audiostream.PerformAction(17@, play)
+            wait 3000
+            Player.CanMove($PLAYER_CHAR, 0)
+            0729: AS_actor $PLAYER_ACTOR hold_cellphone 1
+            wait 2000
+            0AD1: show_formatted_text_highpriority "There are too many of them, tell me where I can find you NOW!" time 3500
+            wait 6000
+            0AD1: show_formatted_text_highpriority "Hello? Are you there? Are you okay?!" time 3500
+            wait 6500
+            0AD1: show_formatted_text_highpriority "~b~......" time 3000
+            wait 3000
+            0AD1: show_formatted_text_highpriority "~b~0..." time 1500
+            wait 1500
+            0AD1: show_formatted_text_highpriority "~b~9..." time 1500
+            wait 1500
+            0AD1: show_formatted_text_highpriority "~b~1..." time 1500
+            wait 1500
+            0AD1: show_formatted_text_highpriority "~b~2..." time 1500
+            wait 3000
+            0729: AS_actor $PLAYER_ACTOR hold_cellphone 0
+            wait 1500
+            Player.CanMove($PLAYER_CHAR, 1)
+            Camera.OnPed($PLAYER_ACTOR, 45, 2)
+            0AD1: show_formatted_text_highpriority "You are really not much a talker, aren't you." time 3000
+            wait 1500
+            0ACE: show_formatted_text_box "Enter the TARDIS"
+            0AB3: var 0 = 0 // Unlock TARDIS door 
+            0AB1: call_scm_func @move_toggle 2 move_toggle 3 to 1
+            0AB1: call_scm_func @move_toggle 2 move_toggle 4 to 0
+            0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 0
+            0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 0           
+            repeat
+                wait 0
+            until $93 == 1
+            0924: enable_screen_darkness 1 with_value 0          
+            break           
+        end
+    end
+end
+//-------------------------TARDIS Cutscene-------------------------
+
+0AB3: var 28 = 1 // lock console
+0AB3: var 30 = -1 // unset destination coords
+0AB1: call_scm_func @get_toggle 1 get_toggle 6 to 30@
+if 30@ == 0
+then
+    0AB1: call_scm_func @set_toggle 2 set_toggle 6 to 2
+else
+    0AB1: call_scm_func @set_toggle 2 set_toggle 6 to 1
+end
+
+01B4: set_player $PLAYER_CHAR can_move 0
+wait 1000
+0AD1: show_formatted_text_highpriority "I should try to trace that call..." time 3000
+0AB3: var 28 = 1 // lock console
+015F: set_camera_position -1.9856 -0.9875 1024.975 rotation 0.0 0.0 0.0 
+0159: camera_on_ped $PLAYER_ACTOR 15 2
+02A3: toggle_widescreen 1
+0A48: enable_menu_access_in_widescreen_mode 1 
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.2966 -4.4253 1024.5703
+07CD: AS_actor $PLAYER_ACTOR walk_to 1.3 0.72 1024.375 stop_with_angle 120.0 within_radius 0.1
+0AB3: var 28 = 1 // lock console
+wait 3000
+0AB3: var 28 = 1 // lock console
+0460: set_camera_transverse_delay 0.0 time 3000 
+0159: camera_on_ped $PLAYER_ACTOR 15 1
+015F: set_camera_position 0.0302 1.4535 1024.975 rotation 0.0 0.0 0.0 
+0AB3: var 28 = 1 // lock console
+wait 1000
+0AB3: var 28 = 1 // lock console
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 1.3 0.72 1024.375
+0173: set_actor $PLAYER_ACTOR Z_angle_to 120.0
+0812: AS_actor $PLAYER_ACTOR perform_animation "keyboard_type" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1 
+wait 700
+0AAD: set_audiostream 39@ perform_action 1
+wait 2300
+0AD1: show_formatted_text_highpriority "Gotcha. Huh, that was easier than I expected." time 3000
+wait 1000
+0159: camera_on_ped $PLAYER_ACTOR 15 2
+015F: set_camera_position -1.4733 -1.5951 1025.375 rotation 0.0 0.0 0.0 
+wait 100
+0460: set_camera_transverse_delay 0.0 time 3000 
+0159: camera_on_ped $PLAYER_ACTOR 15 1
+015F: set_camera_position -1.5559 -0.2105 1025.375 rotation 0.0 0.0 0.0 
+07CD: AS_actor $PLAYER_ACTOR walk_to 0.01 1.4 1025.375 stop_with_angle 180.0 within_radius 0.1
+wait 1250
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.01 1.4 1024.375
+05D4: AS_actor $PLAYER_ACTOR rotate_angle 180.0
+wait 1000 
+0812: AS_actor $PLAYER_ACTOR perform_animation "throttle_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 1
+
+// set destination coordinate
+0AB3: var 30 = 2221.6589  // x
+0AB3: var 31 = -1151.2786  // y
+0AB3: var 32 = 1025.7969   // z
+0AB3: var 33 = 15  // interior
+0AB3: var 34 = 180.0  // angle
+
+0460: set_camera_transverse_delay 0.0 time 5000 
+0160: set_camera_point_at 0.0 0.0 1025.0 mode 1 
+015F: set_camera_position -1.8658 2.8762 1026.5703 rotation 0.0 0.0 0.0
+wait 5000
+Camera.Restore()
+02A3: toggle_widescreen 0
+0A48: enable_menu_access_in_widescreen_mode 0
+01B4: set_player $PLAYER_CHAR can_move 1
+repeat
+    wait 0
+    0AB4: 31@ = var 0
+    0AB3: var 28 = 1 // lock console
+until 31@ == 0
+0ACE: show_formatted_text_box "Exit the TARDIS"
+repeat
+    wait 0
+    0AB3: var 28 = 1 // lock console
+until $93 == 0
+0924: enable_screen_darkness 1 with_value 127
+//0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 1 // put the handbrake on
+0AB1: call_scm_func @set_toggle 2 set_toggle 6 to 30@
+0AB3: var 28 = 0 // unlock console
+0AB3: var 62 = 0
+01B4: set_player $PLAYER_CHAR can_move 0
+repeat
+    wait 0
+    0AB4: 31@ = var 19  // IS going in/out sequence performing
+until 31@ == 0
+02A3: toggle_widescreen 1
+0A48: enable_menu_access_in_widescreen_mode 1
+015F: set_camera_position 2217.9231 -1146.9338 1025.7969 rotation 0.0 0.0 0.0 
+0159: camera_on_ped $PLAYER_ACTOR 15 2
+00AB: put_car $111 at 2221.6589 -1151.2786  1025.7969 
+0840: link_car $111 to_interior $ACTIVE_INTERIOR
+0175: set_car $111 Z_angle_to 180.0 
+07CD: AS_actor $PLAYER_ACTOR walk_to 2221.5256 -1147.5781 1025.7969 stop_with_angle 187.1078 within_radius 0.2 
+wait 1500
+0AD1: show_formatted_text_highpriority "It is too dangerous for you to be here." time 3000
+0AB4: 31@ = var 51
+if 31@ == 1
+then
+    0AAD: set_audiostream 20@ perform_action 1
+    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+    wait 250
+    01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+    0992: set_player $PLAYER_CHAR weapons_scrollable 0
+    wait 300
+    0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0     
+else
+    0107: 46@ = create_object 18797 at 0.0 0.0 -100.0 
+    0382: set_object 46@ collision_detection 0
+    0AAD: set_audiostream 20@ perform_action 1
+    0812: AS_actor $PLAYER_ACTOR perform_animation "Wearable_Tech" IFP_file "DW" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+    wait 250
+    070A: AS_actor $PLAYER_ACTOR attach_to_object 46@ offset 0.0 0.0 0.0 on_bone 2 16 perform_animation "NULL" IFP_file "NULL" time -1
+    01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+    0992: set_player $PLAYER_CHAR weapons_scrollable 0
+    wait 300
+    0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 0 
+end
+0AB3: var 30 = 0.0  // x
+0AB3: var 31 = 0.0  // y
+0AB3: var 32 = 0.0   // z
+0AB3: var 33 = 10  // interior - just hide the damn box in the pocket between 2 universes
+0AB3: var 34 = 180.0  // angle
+0AB1: call_scm_func @move_toggle 2 move_toggle 3 to 1
+0AB1: call_scm_func @move_toggle 2 move_toggle 4 to 0
+0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 1
+0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 0
+wait 2000
+0612: set_actor $PLAYER_ACTOR animation "Wearable_Tech" paused 1
+wait 250
+if Object.Exists(46@)
+then
+    0108: destroy_object 46@
+end
+0992: set_player $PLAYER_CHAR weapons_scrollable 0
+01B4: set_player $PLAYER_CHAR can_move 0
+015F: set_camera_position 2219.1819 -1154.1328 1029.7969 rotation 0.0 0.0 0.0 
+0159: camera_on_ped $PLAYER_ACTOR 15 2
+01B4: set_player $PLAYER_CHAR can_move 0
+wait 5000
+repeat
+    wait 0
+    0AB4: 30@ = var 0
+until 30@ == 0
+0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 1
+0AB3: var 0 = 12 // lock TARDIS door
+Camera.Restore()
+02A3: toggle_widescreen 0
+0A48: enable_menu_access_in_widescreen_mode 0
+01B4: set_player $PLAYER_CHAR can_move 1
+return
+
+:MISSION_PASSED
+//01E3: text_1number_styled 'M_PASSD' 0 5000 ms 1
+0AB3: var 64 = 4 // Progress ++
+return
+
+:MISSION_FAILED
+00BA: text_styled 'M_FAIL' 5000 ms 1
+return
+
+:MISSION_CLEANUP
+$ONMISSION = 0
+if Object.Exists(12@)
+then
+    model.destroy(18813)
+    object.Destroy(12@) // TV
+end
+Audiostream.Release(8@)
+Audiostream.Release(4@)
+Audiostream.Release(15@)
+Audiostream.Release(13@)
+Audiostream.Release(17@)
+Audiostream.Release(14@)
+Audiostream.Release(16@)
+Audiostream.Release(19@)
+Audiostream.Release(20@)
+Audiostream.Release(39@)
+Object.Destroy(6@)
+Object.Destroy(7@)
+Object.Destroy(36@)
+Object.Destroy(52@)
+model.Destroy(2927)
+model.Destroy(18797)
+model.Destroy(14843)
+model.Destroy(#CELLPHONE)
+04EF: release_animation "TARDIS"
+04EF: release_animation "DW"
+mission_cleanup
+end_thread
+return
+
+{$INCLUDE CLEO/move_set_get}
