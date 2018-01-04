@@ -214,6 +214,7 @@ while True
                         wait 3000
                         0729: AS_actor $PLAYER_ACTOR hold_cellphone 1 
                         wait 2000
+                        0707: start_scene_skip_to @call_end
                         0AD1: show_formatted_text_highpriority "Hello?" time 2000
                         wait 3000
                         0AD1: show_formatted_text_highpriority "~b~Help... I can't hold them much longer." time 4000
@@ -226,6 +227,8 @@ while True
                         wait 2000
                         0AD1: show_formatted_text_highpriority "~b~Blink..." time 2000
                         wait 2000
+                        0701: end_scene_skip
+                        :call_end
                         0729: AS_actor $PLAYER_ACTOR hold_cellphone 0
                         wait 1500
                         Player.CanMove($PLAYER_CHAR, 1)
@@ -253,10 +256,10 @@ while True
                     0750: set_object 8@ visibility 0
                     0382: set_object 8@ collision_detection 0
                     Player.CanMove($PLAYER_CHAR, 0)
-                    00A0: store_actor $PLAYER_ACTOR position_to 3@ 12@ 8@
+                    00A0: store_actor $PLAYER_ACTOR position_to 3@ 12@ 88@
                     12@ += 1.25
-                    8@ += 0.75
-                    015F: set_camera_position 3@ 12@ 8@ rotation 0.0 0.0 0.0
+                    88@ += 0.75
+                    015F: set_camera_position 3@ 12@ 88@ rotation 0.0 0.0 0.0
                     0160: set_camera_point_at 2550.7527 -1294.0162 1060.5 mode 2
                     0AD1: show_formatted_text_highpriority "I am pretty sure she was just right there a minute ago..." time 3000 
                     wait 3000

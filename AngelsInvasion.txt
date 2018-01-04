@@ -28,35 +28,63 @@ while true
     then
         if 0AB0: 69 // E
         then
-            0AB3: var 64 = 1
-            CURRENT_STAGE = 1
+            0AB3: var 64 = 6 // -1
+            CURRENT_STAGE = 6 // -1
             gosub @launcher
         end    
     end
 end
 
 :launcher
-if CURRENT_STAGE == 1
+if CURRENT_STAGE == -1
 then 
     $ONMISSION = 1  
-    0ACE: show_formatted_text_box "There should be an opening cutscene, but it's not here. Obviously."
-    // Save last coords
-    0AB4: LAST_X = var 21
-    0AB4: LAST_Y = var 22
-    0AB4: LAST_Z = var 23
-    0AB4: LAST_INT = var 20
-    0AB4: LAST_ANG = var 6    
+    //0ACE: show_formatted_text_box "There should be an opening cutscene, but it's not here. Obviously."
     
-    0AB3: var 30 = 2550.7527   // x
-    0AB3: var 31 = -1294.0162   // y
-    0AB3: var 32 = 1058.8   // z
-    0AB3: var 33 = 2  // interior
-    0AB3: var 34 = 180.0  // angle
-    0AB1: call_scm_func @move_toggle 2 move_toggle 3 to 1
-    0AB1: call_scm_func @move_toggle 2 move_toggle 4 to 0
-    0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 1
-    0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 0
+    // Save last coords
+//    0AB4: LAST_X = var 21
+//    0AB4: LAST_Y = var 22
+//    0AB4: LAST_Z = var 23
+//    0AB4: LAST_INT = var 20
+//    0AB4: LAST_ANG = var 6    
+//    
+//    0AB3: var 30 = 2550.7527   // x
+//    0AB3: var 31 = -1294.0162   // y
+//    0AB3: var 32 = 1058.8   // z
+//    0AB3: var 33 = 2  // interior
+//    0AB3: var 34 = 180.0  // angle
+//    0AB1: call_scm_func @move_toggle 2 move_toggle 3 to 1
+//    0AB1: call_scm_func @move_toggle 2 move_toggle 4 to 0
+//    0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 1
+//    0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 0
+    run "Angelic/Intro1.s"
+    repeat
+        wait 0
+        0AB4: CURRENT_STAGE = var 64
+    until CURRENT_STAGE == 0
+    
+    select_interior 2
+    
+    0860: link_actor $PLAYER_ACTOR to_interior 2
+    0840: link_car $111 to_interior 2
+    00AB: put_car $111 at 2550.7527 -1294.0162 1058.8
+    0175: set_car $111 Z_angle_to 180.0
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2553.5947 -1298.348 1062.0068
+    04E4: refresh_game_renderer_at 2550.7527 -1294.0162
 
+
+    0924: enable_screen_darkness 1 with_value 127
+    00C0: set_current_time_hours_to 0 minutes_to 0 
+    04F9: set_extra_colours 1 fade 0
+    0581: enable_radar 0 
+    0826: enable_hud 0
+    
+    run "Angelic/Intro2.s"
+    repeat
+        wait 0
+        0AB4: CURRENT_STAGE = var 64
+    until CURRENT_STAGE == 1
+    
     0A94: start_custom_mission 'Angelic/Phase1' 
     wait 1000
     while true

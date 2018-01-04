@@ -1,0 +1,47 @@
+{$CLEO .s}
+{$INCLUDE stdc}
+
+thread "dwmai2"
+
+0AB3: var 0 = 1
+0AAC: 5@ = load_audiostream "dws\out_fastmat_short.mp3" //IF and SET
+0AC1: 6@ = load_audiostream_with_3d_support "do.mp3" //IF and SET
+0AC1: 7@ = load_audiostream_with_3d_support "dc.mp3" //IF and SET
+0AAD: set_audiostream 5@ perform_action 1
+
+01B4: set_player $PLAYER_CHAR can_move 0
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2553.5947 -1298.348 1062.0068
+0338: set_car $111 visibility 0
+
+run "fade.s" 7
+wait 500
+fade 1 2000
+
+015F: set_camera_position 2549.0686 -1298.3387 1063.3179 rotation 0.0 0.0 0.0
+0160: set_camera_point_at 2550.7527 -1294.0162 1061.55 switchstyle 2
+wait 3000
+
+0AB3: var 0 = 0
+0AD0: show_formatted_text_lowpriority "Sometimes the only choices you have are bad ones" time 3000   
+wait 1000
+0AC2: set_3d_audiostream 6@ position 2550.7249 -1292.9563 1060.9844
+0AC2: set_3d_audiostream 7@ position 2550.7249 -1292.9563 1060.9844
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2550.7249 -1292.9563 1060.9844
+0173: set_actor $PLAYER_ACTOR Z_angle_to 0
+0AAD: set_audiostream 6@ perform_action 1
+wait 700
+0AAD: set_audiostream 7@ perform_action 1
+wait 700
+015F: set_camera_position 2550.8457 -1291.7606 1060.9844 rotation 0.0 0.0 0.0
+0160: set_camera_point_at 2550.7249 -1292.9563 1061.9844 switchstyle 2
+0AD0: show_formatted_text_lowpriority "but you still have to choose." time 3000   
+wait 3000
+camera.Restore()
+07CD: AS_actor $PLAYER_ACTOR walk_to 2550.8333 -1291.1823 1060.9844 stop_with_angle 0 within_radius 0.5
+01B4: set_player $PLAYER_CHAR can_move 1
+
+Audiostream.Release(5@)
+Audiostream.Release(6@)
+Audiostream.Release(7@)
+0AB3: var 64 = 1 // Stage++
+end_custom_thread

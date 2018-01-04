@@ -279,6 +279,7 @@ while True
             Player.CanMove($PLAYER_CHAR, 0)
             0729: AS_actor $PLAYER_ACTOR hold_cellphone 1
             wait 2000
+            0707: start_scene_skip_to @call_end
             0AD1: show_formatted_text_highpriority "There are too many of them, tell me where I can find you NOW!" time 3500
             wait 6000
             0AD1: show_formatted_text_highpriority "Hello? Are you there? Are you okay?!" time 3500
@@ -293,6 +294,8 @@ while True
             wait 1500
             0AD1: show_formatted_text_highpriority "~b~2..." time 1500
             wait 3000
+            0701: end_scene_skip
+            :call_end
             0729: AS_actor $PLAYER_ACTOR hold_cellphone 0
             wait 1500
             Player.CanMove($PLAYER_CHAR, 1)

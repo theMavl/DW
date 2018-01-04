@@ -21,12 +21,8 @@ return
 
 :LOAD
     model.load(2927)
-    model.load(#GEN_DOORINT01)
-    model.Load(#KMB_LOCKEDDOOR)
     038B: load_requested_models
     
-    0AC1: 2@ = load_audiostream_with_3d_support "DWS\AngelicSFX\angelic_Ring.mp3"
-    0AC1: 3@ = load_audiostream_with_3d_support "DWS\mat_long.mp3"
     0AAC: 17@ = load_audiostream "DWS\AngelicSFX\angelic_Ambience3.mp3"
     0AAC: 18@ = load_audiostream "DWS\AngelicSFX\angelic_Siren.mp3" 
     0AC2: set_3d_audiostream 2@ position 381.6512 170.0081 1008.3828
@@ -35,18 +31,28 @@ return
     0AC0: loop_audiostream 17@ flag 1
     0ABC: set_audiostream 17@ volume 0.3
     
-    object.create(0@, 2927, 390.7681 174.1426 1007.5)
-    0177: set_object 0@ Z_angle_to 90.0
-    0750: set_object 0@ visibility 0
-    //trigger flags
-    19@ = 0
-    20@ = 0
-    21@ = 0
+    object.create(100@, 2927, 390.7681 174.1426 1007.5)
+    0177: set_object 100@ Z_angle_to 90.0
+    0750: set_object 100@ visibility 0
     
-    // TEARGAS flag
-    40@ = 0   
-    //TIMER flag
-    42@ = 0 
+    00AB: put_car $111 at 351.7985 217.2335 1038.3828
+    0175: set_car $111 Z_angle_to 0.0
+    0508: car $111 close_all_doors
+    
+    0@ = 0 // floors visited
+    2@ = 0 // progress on floor 2 (0 - haven't visited, 1 - entrance flag, 2 - visit flag)
+    3@ = 0
+    4@ = 0    
+    40@ = 0 // TEARGAS flag      
+    42@ = 0 //TIMER flag
+    43@ = 0 // TARDIS visibility changed flag
+    0AB3: var 62 = 1
+    wait 100
+    0AB3: var 62 = 0
+    
+    run "angel.cs" 1 361.9845 175.6133 1008.3828 270.0 2.0 1 0 18803
+    run "angel.cs" 2 368.0279 177.8101 1008.3828 195.0 2.0 1 0 18803
+    run "angel.cs" 3 361.3163 168.5254 1008.3828 320.0 2.0 1 0 18803
 return
 
 :MISSION
@@ -58,159 +64,105 @@ $ONMISSION = 1
 04F9: set_extra_colours 1 fade 0
 0581: enable_radar 0 
 0826: enable_hud 0
-0AB3: var 62 = 1
-
-1@ = 0 //counter
 Camera.OnPed($PLAYER_ACTOR, 45, 2)
-wait 5000
-0AB3: var 62 = 0
-audiostream.PerformAction(2@, play)
-0AC0: loop_audiostream 2@ flag 1
 wait 1000
-0ACE: show_formatted_text_box "Answer the call"
 
 repeat
-    wait 100
-    1@ += 1
-    if 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 381.6512 170.0081 1008.3828 radius 1.0 1.0 1.0 on_foot
-    then
-        01B4: set_player $PLAYER_CHAR can_move 0
-        audiostream.Release(2@)
-        0AD1: show_formatted_text_highpriority "Thanks for the jumpscare, WHAT?!" time 3000
-        wait 3000
-        0AD1: show_formatted_text_highpriority "~g~UNIT Soldier:~w~ Sorry about that sir." time 1500
-        wait 1500
-        0AD1: show_formatted_text_highpriority "~g~UNIT Soldier:~w~ On our way back we witnessed ..." time 5000
-        wait 2000
-        0AD1: show_formatted_text_highpriority "~g~UNIT Soldier:~w~ a large amount of Weeping Angels coming towards your location." time 5000
-        wait 3000
-        0AD1: show_formatted_text_highpriority "~g~UNIT Soldier:~w~ Boss would like to let you be aware of that." time 3000
-        wait 4000
-        0AD1: show_formatted_text_highpriority "~g~UNIT Soldier:~w~ You may want to find your spaceship fast..." time 3000
-        wait 3000
-        01B4: set_player $PLAYER_CHAR can_move 1
-        1@ = 0
-        break
-    end
-until 1@ >= 50 
-
-1@ = 0
+    wait 0
+until 00EC:   actor $PLAYER_ACTOR sphere 0 near_point 384.838 173.8513 radius 5.0 5.0
+01B4: set_player $PLAYER_CHAR can_move 0
+0160: set_camera_point_at 361.9845 175.6133 1008.3828 switchstyle 2
+015F: set_camera_position 382.3746 174.3349 1009.3828 rotation 0.0 0.0 0.0
+0AD1: show_formatted_text_highpriority "There is no way for me to access TARDIS like this, I might have come up with an idea." 3000
+wait 3000
+01B4: set_player $PLAYER_CHAR can_move 1
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+0ACE: show_formatted_text_box "Lure all the Angels upstairs~n~Visit all floors to confuse them" 
 while true
-    wait 100
-    1@ += 1
+    wait 0
+    // 2nd floor
     if and
-        19@ == 1
-        20@ == 1
-        21@ == 1
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 365.6096 162.7712 1014.1875 radius 3.0 3.0 3.0 on_foot
+        2@ == 0
+    then
+        2@ = 1
+        0AB3: var 62 = 1
+        wait 500
+        0AB3: var 62 = 0
+        run "angel.cs" 1 378.791 159.4384 1014.1875 180.0 7.0 1 0 18803 // 2-entrance
+    end
+    if and
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 335.1969 175.1136 1014.1875 radius 5.0 5.0 1.0 on_foot
+        2@ < 2
+    then
+        2@ = 2
+        run "angel.cs" 2 365.6042 184.4137 1014.1875 0.0 7.0 1 0 18803 // 2-visit
+        run "angel.cs" 3 364.1809 160.1567 1014.1875 0.0 7.0 1 0 18803 // 2-visit
+        run "angel.cs" 4 366.7473 174.1151 1014.1875 0.0 7.0 1 0 18803 // 2-visit
+        run "angel.cs" 5 375.7052 162.4105 1014.1875 270.0 7.0 1 0 18803 // 2-block
+        0AD1: show_formatted_text_highpriority "Okay, that's enough" time 2000
+        0@ += 1
+    end
+    
+    // 3rd floor
+    if and
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 366.1826 162.3486 1019.9844 radius 3.0 3.0 1.0 on_foot
+        3@ == 0
+    then
+        3@ = 1
+        run "angel.cs" 6 378.9249 161.028 1019.9844 180.0 7.0 1 0 18803 // 3-entrance
+    end
+    if and
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 341.8022 173.4836 1019.9844 radius 5.0 5.0 1.0 on_foot
+        3@ < 2
+    then
+        3@ = 2
+        run "angel.cs" 7 366.9999 165.8896 1019.9844 90.0 7.0 1 0 // 3-visit
+        run "angel.cs" 8 370.7951 175.7223 1019.9844 270.0 7.0 1 0 18803 // 3-visit
+        run "angel.cs" 9 365.3663 182.2115 1019.9844 0.0 7.0 1 0 18803 // 3-visit
+        run "angel.cs" 10 377.9644 164.2261 1019.9844 270.0 7.0 1 0 18803 // 3-block
+        0AD1: show_formatted_text_highpriority "I wonder if they figured out what I am doing..." time 2000
+        0@ += 1
+    end
+    
+    // 4th floor
+    if and
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 367.4701 162.6652 1025.7891 radius 3.0 3.0 1.0 on_foot
+        4@ == 0
+    then
+        4@ = 1
+        run "angel.cs" 11 378.4173 162.3675 1025.7891 180.0 7.0 1 0 18803 // 4-entrance
+    end
+    if and
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 348.4447 161.9929 1025.7891 radius 5.0 5.0 1.0 on_foot
+        4@ < 2
+    then
+        4@ = 2
+        run "angel.cs" 12 364.9828 160.8558 1025.7891 270.0 7.0 1 0 // 4-visit
+        run "angel.cs" 13 363.9844 163.4078 1025.7891 270.0 7.0 1 0 // 4-visit
+        run "angel.cs" 14 368.3295 162.1503 1025.7891 270.0 7.0 1 0 18803 // 4-visit
+        run "angel.cs" 15 376.0465 163.7063 1025.7891 270.0 7.0 1 0 18803 // 4-block
+        0AD1: show_formatted_text_highpriority "Why there're so many of them..." time 2000
+        0@ += 1
+    end
+    if 0@ == 3
     then
         break
-    end
-    if
-        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 346.0175 159.0573 1014.1875 radius 6.0 6.0 1.0 on_foot
-    then
-        19@ = 1
-    end
-    if
-        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 331.4742 177.2723 1019.9912 radius 6.0 6.0 1.0 on_foot
-    then
-        20@ = 1
-    end
-    if
-        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 346.0076 162.1451 1025.7964 radius 6.0 6.0 1.0 on_foot
-    then
-        21@ = 1
-    end
-    wait 0
-    if 1@ == 100
-    then
-        run "angel.cs" 1 388.1128 174.0034 1008.3828 270.0 250.0 1 1
-        0ACE: show_formatted_text_box "The longer you take to locate the TARDIS, The more Angels will appear"
-    end
-    wait 0
-    if 1@ == 200
-    then
-        run "angel.cs" 2 359.9377 207.2128 1008.3828 225.0 250.0 1 1
-    end
-    wait 0
-    if 1@ == 300
-    then
-        run "angel.cs" 3 375.7668 163.5518 1014.1875 270.0 250.0 1 1
-    end
-    wait 0
-    if 1@ == 400
-    then
-        run "angel.cs" 4 366.981 158.0085 1019.9844 38.0 250.0 1 1
-    end
-    wait 0
-    if 1@ == 500
-    then
-        run "angel.cs" 5 349.1407 193.8107 1014.1797 90.0 250.0 1 1
-    end
-    wait 0
-    if 1@ == 600
-    then
-        run "angel.cs" 6 323.1841 186.993 1014.1875 190.0 250.0 1 1
-    end
-    wait 0
-    if 1@ == 700
-    then
-        run "angel.cs" 7 328.9005 153.6421 1014.1875 308.0 250.0 1 1
-    end
-    wait 0
-    if 1@ == 800
-    then
-        run "angel.cs" 8 347.0028 162.6632 1014.1875 355.0 250.0 1 1
-    end
-    wait 0
-    if 1@ == 900
-    then
-        run "angel.cs" 9 375.5886 163.4715 1019.9844 270.0 250.0 1 1
-    end
-    if 1@ == 1000
-    then
-        run "angel.cs" 10 369.3358 174.1136 1019.9844 280.0 250.0 1 1
-    end
-    if 1@ == 1100
-    then
-        run "angel.cs" 11 358.3291 197.3838 1019.9844 176.0 250.0 1 1
-    end
-    if 1@ == 1200
-    then
-        run "angel.cs" 12 355.3755 161.5468 1019.9844 180.0 250.0 1 1
-    end
-    if 1@ == 1300
-    then
-        run "angel.cs" 13 327.7347 178.1349 1019.9844 225.0 250.0 1 1
-    end
-    if 1@ == 1400
-    then
-        run "angel.cs" 14 374.6917 162.5793 1025.7891 270.0 250.0 1 1
-    end
-    if 1@ == 1500
-    then
-        run "angel.cs" 15 347.5998 161.947 1025.7891 270.0 250.0 1 1
     end
 end
+0AD1: show_formatted_text_highpriority "Hello from Scotland bitches" time 2000
+wait 1000
 
-0840: link_car $111 to_interior 3
-00AB: put_car $111 at 364.4674 173.8182 1007.8
-0175: set_car $111 Z_angle_to 90.0
-0ABC: set_audiostream 17@ volume 0.1 
-audiostream.PerformAction(3@, play)
-01B4: set_player $PLAYER_CHAR can_move 0
-0AB3: var 60 = 1
-0AB3: var 59 = 1
-wait 2000
-0AD1: show_formatted_text_highpriority "That is? But..." time 3000
-wait 3000
-0AD1: show_formatted_text_highpriority "Of course! This is why I couldn't find her anywhere!" time 3000
-wait 3000
-0AD1: show_formatted_text_highpriority "Because she was still in a different time!" time 2500
-wait 2500
-//play alarm
-audiostream.PerformAction(18@, play)
-0AC0: loop_audiostream 18@ flag 1
-0ABC: set_audiostream 18@ volume 0.4
+0ACE: show_formatted_text_box "Press E to trigger fire alarm"
+repeat
+    wait 0
+until 0AB0:  key_pressed 69
+0AB3: var 59 = 1 // Freeze angels
+0AAA: 31@ = thread 'ANG12' pointer
+0D2E: set_thread 31@ var 8 to 3 
+0AAA: 31@ = thread 'ANG13' pointer
+0D2E: set_thread 31@ var 8 to 3
+40@ = 1 // teargas on 
 0669: 4@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 0.0 2.0 flag 1 
 0669: 5@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 2.0 1.8 flag 1 
 0669: 6@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 -2.0 2.0 flag 1 
@@ -230,7 +182,7 @@ audiostream.PerformAction(18@, play)
 064C: make_particle 10@ visible 
 064C: make_particle 11@ visible 
 064C: make_particle 12@ visible
-0669: 22@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 0.0 2.0 flag 1 
+{0669: 22@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 0.0 2.0 flag 1 
 0669: 23@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 2.0 1.8 flag 1 
 0669: 24@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 -2.0 2.0 flag 1 
 0669: 25@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 1.0 5.0 1.5 flag 1 
@@ -247,38 +199,61 @@ audiostream.PerformAction(18@, play)
 064C: make_particle 27@ visible 
 064C: make_particle 28@ visible 
 064C: make_particle 29@ visible 
-064C: make_particle 30@ visible
-40@ = 1 // "TEARGAS" is on
-$5 = 30000
-wait 3000
-01B4: set_player $PLAYER_CHAR can_move 1
-0AB3: var 60 = 0
-0AB3: var 59 = 0
-0AD1: show_formatted_text_highpriority "Oh no, the Angels must have triggered the alarm!" time 3000
-audiostream.Release(17@)
-wait 4500
-0AD1: show_formatted_text_highpriority "I will not let them win." time 2500
-42@ = 1 // TIMER IS ACTIVE
-03C3: set_timer_to $5 type 1 GXT 'ANGELIT' // global_variable  // Time
-wait 3500
-0AD1: show_formatted_text_highpriority "NOT THIS TIME!!!" time 2500
-0ACE: show_formatted_text_box "Get into the TARDIS before Angels!"
-audiostream.Release(3@) 
-32@ = 10000
-
+064C: make_particle 30@ visible   }
+wait 1000
+gosub @place_tardis
+0AD1: show_formatted_text_highpriority "No time to wander around." time 2000
+wait 1500
+0ACE: show_formatted_text_box "Run to the 1st floor"
 repeat
-    0AB4: 41@ = var 19 // going in/out sequence
+    wait 0
+until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 372.1566 167.4693 1008.3828 radius 3.0 3.0 3.0 on_foot
+0AD1: show_formatted_text_highpriority "She was here all the time. The question is, where exactly" time 2000
+wait 2000
+
+0ACE: show_formatted_text_box "Open the door by fingerclick and listen carefully"
+while true
+    wait 0
+    095F: get_car $111 door 2 angle_to 1@
+    095F: get_car $111 door 3 angle_to 2@
+    if or
+        8043: NOT 1@ == 0.0
+        8043: NOT 2@ == 0.0
+    then
+        break
+    end
+end
+wait 1000
+run "angel.cs" 16 385.2855 173.628 1008.3828 270.0 70.0 1 1
+wait 1 
+0AAA: 1@ = thread 'ANG16' pointer
+0D2E: set_thread 1@ var 26 to 4.0
+repeat
+    wait 0
+until 82A0:   not actor $PLAYER_ACTOR stopped
+wait 500
+015F: set_camera_position 362.2249 173.4827 1008.3828 rotation 0.0 0.0 0.0
+0160: set_camera_point_at 385.2855 173.628 1009.3828 switchstyle 2
+0AD1: show_formatted_text_highpriority "Oh noooo" time 200
+015D: set_gamespeed 0.1
+wait 200
+015D: set_gamespeed 1.0
+Camera.OnPed($PLAYER_ACTOR, 45, 2)
+$5 = 4000
+03C3: set_timer_to $5 type 1 GXT 'ANGELIT' // global_variable  // Time
+32@ = 0
+repeat
+    0AB4: 4@ = var 19 // going in/out sequence
     wait 0
     if or
         $93 == 1
-        41@ == 1
+        4@ == 1
     then
         014F: stop_timer $5
         //jump to Good Ending
-        return 
+        return
     end 
-until 32@ > 30000
-
+until 32@ > 4000
 wait 0
 repeat
     wait 0    
@@ -299,19 +274,82 @@ return
 
 :MISSION_CLEANUP
 $ONMISSION = 0
+0AB3: var 59 = 0 // unfreeze angels
 model.destroy(2927)
-model.destroy(#GEN_DOORINT01)
-model.destroy(#KMB_LOCKEDDOOR)
-audiostream.Release(2@)
-audiostream.Release(3@)
 audiostream.Release(17@)
 audiostream.Release(18@)
-object.Destroy(0@)
+object.Destroy(100@)
+
+0AB3: var 62 = 1
+wait 500
+0AB3: var 62 = 0
+if 43@ == 1
+then
+    0AB3: var 12 = 0
+    0338: set_car $111 visibility 1
+    0750: set_object $95[0] visibility 1
+    0750: set_object $95[1] visibility 1 
+    0750: set_object $95[3] visibility 1
+end
 
 if 42@ == 1
 then
     014F: stop_timer $5
 end
+
+if 40@ == 1
+then
+    // stop teargas
+    0650: destroy_particle 4@
+    0650: destroy_particle 5@
+    0650: destroy_particle 6@
+    0650: destroy_particle 7@
+    0650: destroy_particle 8@
+    0650: destroy_particle 9@
+    0650: destroy_particle 10@
+    0650: destroy_particle 11@
+    0650: destroy_particle 12@
+    {0650: destroy_particle 22@
+    0650: destroy_particle 23@
+    0650: destroy_particle 24@
+    0650: destroy_particle 25@
+    0650: destroy_particle 26@
+    0650: destroy_particle 27@
+    0650: destroy_particle 28@
+    0650: destroy_particle 29@
+    0650: destroy_particle 30@}
+end
 mission_cleanup
 end_thread
+return
+
+:place_tardis
+43@ = 1
+//run "psi/doorc.cs"
+0209: 71@ = random_int_in_ranges 0 4
+if 71@ == 0
+then
+    00AB: put_car $111 at 370.052 184.2211 1008.3893
+    0175: set_car $111 Z_angle_to 0.0
+end
+if 71@ == 1
+then
+    00AB: put_car $111 at 360.3435 184.8838 1008.3828
+    0175: set_car $111 Z_angle_to 0.0
+end
+if 71@ == 2
+then
+    00AB: put_car $111 at 364.8384 162.3885 1008.3828
+    0175: set_car $111 Z_angle_to 180.0
+end
+if 71@ == 3
+then
+    00AB: put_car $111 at 359.4526 186.7343 1008.3828
+    0175: set_car $111 Z_angle_to 0.0
+end
+0AB3: var 12 = 2
+0338: set_car $111 visibility 0
+0750: set_object $95[0] visibility 0
+0750: set_object $95[1] visibility 0 
+0750: set_object $95[3] visibility 0
 return

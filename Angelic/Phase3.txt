@@ -263,6 +263,9 @@ then
     0970: teleport_in_override_restart
 else
     //0AAD: set_audiostream 18@ perform_action 0
+    0D11: set_object 19@ alpha 100 // IF and SET 
+
+    
     0750: set_object 19@ visibility 0
     0382: set_object 19@ collision_detection 0
     0D2E: set_thread 0@ var 8 to 3

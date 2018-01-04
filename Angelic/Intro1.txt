@@ -1,0 +1,257 @@
+{$CLEO .s}
+{$INCLUDE stdc}
+
+thread "dwmai1"
+
+:intro_scene
+// load objects
+04ED: load_animation  "DW"
+04ED: load_animation  "TARDIS"
+model.Load(#gun_dildo1)
+
+32@ = 0
+10@ = 0
+
+00BA: show_text_styled GXT 'MIS_01' time 1000 style 2 
+fade 0 2000
+wait 2000
+
+0AB3: var 0 = 0
+
+0AAC: 5@ = load_audiostream "dws\keypad.wav" //IF and SET
+0AAC: 6@ = load_audiostream "dws\out_fastdemat.mp3" //IF and SET
+
+20@ = object.Create(#null, 0.0, 0.0, 0.0)
+21@ = object.Create(#gun_dildo1, 0.0, 0.0, 0.0)
+0750: set_object 20@ visibility 0
+0382: set_object 20@ collision_detection 0
+0382: set_object 21@ collision_detection 0
+
+:scene
+wait 0
+if 0AB0: 32 // SPACE
+then
+    jump @end_scene
+end
+
+if and
+    32@ > 0
+    10@ == 0
+then 
+    01B4: set_player $PLAYER_CHAR can_move 0
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 6.2326 1.4306 1026.1406
+    0173: set_actor $PLAYER_ACTOR Z_angle_to 245.8379
+    015F: set_camera_position 2.4417 -0.2772 1026.1406 rotation 0.0 0.0 0.0
+    0160: set_camera_point_at 6.8077 0.8023 1026.1406 switchstyle 2   
+    02A3: enable_widescreen 1
+    0A48: enable_menu_access_in_widescreen_mode 1
+    fade 1 2000
+    10@ += 1    
+end
+
+
+if and
+    32@ > 2000
+    10@ == 1
+then 
+    0AD1: "..." time 3000
+    015F: set_camera_position 2.4417 -0.2772 1026.1406 rotation 0.0 0.0 0.0
+    0160: set_camera_point_at 6.8077 0.8023 1026.1406 switchstyle 2   
+    0460: set_camera_transverse_delay 0.0 time 20000   
+    015F: set_camera_position 6.2697 0.7277 1026.8406 rotation 0.0 0.0 0.0
+    0160: set_camera_point_at 6.8077 0.8023 1026.7406 switchstyle 1
+    10@ += 1
+end
+
+if and
+    32@ > 6000
+    10@ == 2
+then 
+    0AD1: "Run you clever boy..." time 3000
+    10@ += 1
+end
+
+if and
+    32@ > 9000
+    10@ == 3
+then 
+    0AD1: "No! It is still useless!" time 3000   
+    
+015F: set_camera_position 6.689 1.4663 1026.8806 rotation 0.0 0.0 0.0
+0160: set_camera_point_at 6.2326 1.4306 1026.8806 switchstyle 2
+0922: set_camera_zoom_from 90.0 to 70.0 timelimit 10000 smooth_transition 1
+    10@ += 1
+end
+
+if and
+    32@ > 12000
+    10@ == 4
+then 
+    0AD1: "If someone can just give me one more hint" time 4000
+    10@ += 1
+end
+
+if and
+    32@ > 16000
+    10@ == 5
+then 
+    //0AD1: "..." time 3000
+    10@ += 1
+end 
+
+
+if and
+    32@ > 20000
+    10@ == 6
+then           
+    0AD1: "Oi, what is it?" time 3000
+    
+    070A: AS_actor $PLAYER_ACTOR attach_to_object 20@ offset 0.0 0.0 0.0 on_bone 6 BONE_RIGHTHAND perform_animation "NULL" IFP_file "NULL" time 1
+    069A: attach_object 21@ to_object 20@ with_offset 0.15 0.15 -0.05 rotation 0.0 -60.0 180.0
+    015F: set_camera_position 6.8425 0.6172 1026.3406 rotation 0.0 0.0 0.0
+    0160: set_camera_point_at 6.2326 1.4306 1026.5806 switchstyle 2
+    0922: set_camera_zoom_from 70.0 to 70.0 timelimit 1 smooth_transition 0
+    0812: AS_actor $PLAYER_ACTOR perform_animation "ANGELIC_PSY" IFP "DW" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1  // versionB
+    repeat
+        wait 0
+        0613: 11@ = actor $PLAYER_ACTOR animation "ANGELIC_PSY" time
+    until 11@ >= 0.7
+    0612: set_actor $PLAYER_ACTOR animation "ANGELIC_PSY" paused 0
+    10@ += 1
+end
+
+if and
+    32@ > 24000
+    10@ == 7
+then 
+    0AD1: "Huh, look what we have here! Coordinates!" time 5000
+    10@ += 1
+end
+
+if and
+    32@ > 29000
+    10@ == 8
+then 
+    0AD1: "Doesn't this seem too convenient?" time 3000
+    10@ += 1
+end
+
+
+if and
+    32@ > 32000
+    10@ == 9
+then 
+    0AD1: "It is as if something is trying to set me up." time 4000
+    0612: set_actor $PLAYER_ACTOR animation "ANGELIC_PSY" paused 1
+    repeat
+        wait 0
+    until 8611: not  actor $PLAYER_ACTOR performing_animation "ANGELIC_PSY"
+    0682: detach_object 20@ 0.0 0.0 110.0 collision_detection 0
+    0682: detach_object 21@ 0.0 0.0 110.0 collision_detection 0    
+    10@ += 1
+end
+
+if and
+    32@ > 36000
+    10@ == 10
+then 
+    0AD1: "Wouldn't you think so too?" time 3000
+    06BA: AS_actor $PLAYER_ACTOR turn_to_and_look_at 0.0 0.0 1024.0
+    wait 500
+    015F: set_camera_position -4.717 -2.8295 1025.5156 rotation 0.0 0.0 0.0
+    0160: set_camera_point_at 6.2326 1.4306 1026.1406 switchstyle 2
+    0922: set_camera_zoom_from 105.0 to 105.0 timelimit 1 smooth_transition 0
+    10@ += 1
+end
+
+
+if and
+    32@ > 42000
+    10@ == 11
+then
+    0AD1: "Why do I keep talking like if someone else is here?" time 6000 
+    015F: set_camera_position 6.8425 0.6172 1026.3406 rotation 0.0 0.0 0.0
+    0160: set_camera_point_at 6.2326 1.4306 1026.5806 switchstyle 2
+    0922: set_camera_zoom_from 70.0 to 70.0 timelimit 1 smooth_transition 0
+    07CD: AS_actor $PLAYER_ACTOR walk_to 2.2432 5.7382 1026.1406 stop_with_angle 65.0663 within_radius 1.0
+    10@ += 1
+end
+
+if and
+    32@ > 45000
+    10@ == 12
+then 
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 1.1912 2.4141 1024.3827 
+    0173: set_actor $PLAYER_ACTOR Z_angle_to 179.7474
+    015F: set_camera_position -0.2839 1.4539 1024.875 rotation 0.0 0.0 0.0
+    0160: set_camera_point_at 0.9866 0.6833 1024.975 switchstyle 2
+    0922: set_camera_zoom_from 60.0 to 60.0 timelimit 1 smooth_transition 0
+    07CD: AS_actor $PLAYER_ACTOR walk_to 1.279 0.6929 1024.375 stop_with_angle 117.2045 within_radius 0.5
+    repeat
+        wait 0
+    until 02A0:   actor $PLAYER_ACTOR stopped
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 1.3 0.72 1024.375
+    0173: set_actor $PLAYER_ACTOR Z_angle_to 120.0
+    0812: AS_actor $PLAYER_ACTOR perform_animation "keyboard_type" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+    wait 1000
+    0AAD: set_audiostream 5@ perform_action 1 
+    10@ += 1
+end 
+
+if and
+    32@ > 50000
+    10@ == 13
+then
+    0AD1: "Was..." time 1000 
+    015F: set_camera_position 2.6202 1.0414 1025.875 rotation 0.0 0.0 0.0
+    0160: set_camera_point_at 0.0556 1.4515 1024.975 switchstyle 2
+    07CD: AS_actor $PLAYER_ACTOR walk_to 0.0556 1.4515 1024.375 stop_with_angle 180.0593 within_radius 0.5
+    0922: set_camera_zoom_from 70.0 to 70.0 timelimit 100 smooth_transition 0
+    0460: set_camera_transverse_delay 0.0 time 10000
+    repeat
+        wait 0
+    until 02A0:   actor $PLAYER_ACTOR stopped
+    09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.01 1.4 1024.375
+    05D4: AS_actor $PLAYER_ACTOR rotate_angle 180.0
+    wait 500
+    0AD1: "Here..." time 1000
+    0812: AS_actor $PLAYER_ACTOR perform_animation "throttle_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
+    0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 1
+    wait 700
+    
+    0AB3: var 0 = 1
+    0AAD: set_audiostream 6@ perform_action 1
+    015F: set_camera_position 2.6202 1.0414 1027.575 rotation 0.0 0.0 0.0
+    0160: set_camera_point_at 0.0 0.0 1028.075 switchstyle 1
+    run "audio_fade.s" 6@ 0 4000 0
+    wait 3000
+    //fade 0 2000
+    10@ += 1
+end 
+
+if 10@ == 14
+then
+    jump @end_scene
+end
+
+jump @scene
+
+:end_scene
+fade 0 2000
+wait 2000
+0687: clear_actor $PLAYER_ACTOR task
+01B4: set_player $PLAYER_CHAR can_move 1
+02A3: enable_widescreen 0
+camera.Restore()
+0AB3: var 0 = 0
+Object.Destroy(20@)
+Object.Destroy(21@)
+Model.Destroy(#GUN_DILDO1)
+audiostream.release(5@)
+audiostream.release(6@)
+04EF: release_animation "DW"
+04EF: release_animation "TARDIS"
+0AB3: var 64 = 0 // Stage++
+end_custom_thread
+
+{$INCLUDE CLEO/move_set_get}
