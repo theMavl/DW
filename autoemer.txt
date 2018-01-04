@@ -154,10 +154,8 @@ while true
     then
         continue
     end
-    0AB4: 11@ = var 50 // grabbing flag
-    if or
+    if
         $94 == 1
-        11@ == 1
     then
         call_scm_func @get_toggle 1 2 10@
         0AB4: 11@ = var 10
@@ -167,22 +165,17 @@ while true
         then
             if 11@ > 5
             then
-                
                 0574: set_car $111 keep_position 0
                 0208: 10@ = random_float_in_ranges -2999.0 2999.0
                 0208: 11@ = random_float_in_ranges -2999.0 2999.0
                 0208: 12@ = random_float_in_ranges -2999.0 2999.0
                 0208: 13@ = random_float_in_ranges 0.0 200.0
-                show_text "fly to %f %f %f" 1000 10@ 11@ 12@
                 0743: heli $111 fly_to 10@ 11@ 12@ altitude 0.0 13@
                 07BB: set_heli $111 horizontal_thrust_power 300
                 04BA: set_car $111 speed_to 300.0
                 0AB3: var 11 = 0
                 0AB4: 2@ = var 17
-                0AB4: 11@ = var 50 // grabbing
-                if and
-                    2@ == 0
-                    11@ == 0 // grabbing is off
+                if 2@ == 0
                 then
                     0A92: create_custom_thread "spin.s"
                 end
@@ -197,19 +190,16 @@ while true
             020C: create_explosion_with_radius 0 at 4@ 5@ 6@
         end
         32@ = 0
-        0AB4: 20@ = var 50
         repeat
             wait 0
-            if and
+            if
                 $94 == 0
-                20@ == 0
             then
                 break
             end
             if and
                 $94 == 0
                 $93 == 0
-                20@ == 0
             then
                 break
             end
@@ -219,7 +209,6 @@ while true
         0574: set_car $111 keep_position 1
         32@ = 0
         11@ = 0 // extra explosion between wait cycle
-        0AB4: 20@ = var 50 // grabbing
         repeat
             wait 0
             if
@@ -230,7 +219,6 @@ while true
             if and
                 $94 == 0
                 $93 == 0
-                20@ == 0
             then
                 break
             end
@@ -257,18 +245,11 @@ while true
             end    
         until 32@ >= 7500
     end
-    0AB4: 11@ = var 50 // grabbing
     if and
-        11@ == 0
         80DB: NOT  actor $PLAYER_ACTOR in_car $111
         80FE: NOT  actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 15.0 15.0 15.0
     then
-        wait 500
-        0AB4: 11@ = var 50 // grabbing
-        if 11@ == 0
-        then
-            jump @suspend
-        end
+        jump @suspend
     end
     0AB4: 11@ = var 10
     0AB4: 12@ = var 48  // suspended
