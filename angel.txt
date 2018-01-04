@@ -43,6 +43,8 @@ end_custom_thread
             5@ - Distance limit (default - 40.0)
             6@ - Follow flag (0/1)
             7@ - Kill flag (0/1)
+            8@ - Start model (can be skipped)
+            -----------------------------------------
             8@ - Script control (1 - active, 3 - end thread)           
 }
 0AAA: 17@ = thread "ANGELS" pointer
@@ -100,7 +102,7 @@ const
     Follow = 6@
     Kill = 7@
     Status = 8@
-    Model = 22@
+    aModel = 22@
     GLOBAL_DONTKILL = 20@
     GLOBAL_DONTFOLLOW = 21@
     GLOBAL_SUICIDE = 23@
@@ -117,21 +119,28 @@ var
     5@ : Float
     6@ : Int
     7@ : Int
-    8@ : Int    
+    8@ : Int
+    22@ : Model 
 end
+
+aModel = 8@
 
 Status = 1
 runSpeed = 2.5
  
 wait 0
+if aModel == #NULL
+then
+    aModel = 18812
+end
 Model.Load(#bmybe)
-Model.Load(18812)
+Model.Load(aModel)
 038B: load_requested_models
 
 
 Bitch = Actor.Create(18, #bmybe, X, Y, Z)
-Angel = Object.Create(18812, X, Y, Z)
-Model.Destroy(18812)
+Angel = Object.Create(aModel, X, Y, Z)
+Model.Destroy(aModel)
 0245: set_actor Bitch walk_style_to "MAN"
 
 0860: link_actor Bitch to_interior $ACTIVE_INTERIOR 
@@ -232,15 +241,15 @@ repeat
                 00A0: store_actor Bitch position_to X Y Z 
                 0172: ang = actor Bitch Z_angle 
                 ang -= 180.0           
-                0209: Model = random_int_in_ranges 10 13
-                Model += 18800
-                if 89CC: NOT  object Angel model_is Model
+                0209: aModel = random_int_in_ranges 10 13
+                aModel += 18800
+                if 89CC: NOT  object Angel model_is aModel
                 then
-                    Model.Load(Model)
+                    Model.Load(aModel)
                     038B: load_requested_models 
                     Object.Destroy(Angel)
-                    Object.Create(Angel, Model, 0.0, 0.0, 0.0)
-                    Model.Destroy(Model)
+                    Object.Create(Angel, aModel, 0.0, 0.0, 0.0)
+                    Model.Destroy(aModel)
                 end
                 Object.PutAt(Angel, X, Y, Z)
                 0382: set_object Angel collision_detection 1
@@ -314,33 +323,33 @@ repeat
         ang -= 180.0   
         if tmpDistance > 25.0
         then
-            Model = 3
+            aModel = 3
         end
         if and
             tmpDistance <= 25.0
             tmpDistance > 15.0
         then
-            0209: Model = random_int_in_ranges 8 10
+            0209: aModel = random_int_in_ranges 8 10
         end
         if and
             tmpDistance <= 15.0
             tmpDistance > 5.0
         then
-            0209: Model = random_int_in_ranges 4 8
+            0209: aModel = random_int_in_ranges 4 8
         end
         if
             tmpDistance <= 5.0
         then
-            0209: Model = random_int_in_ranges 10 13          
+            0209: aModel = random_int_in_ranges 10 13          
         end
-        Model += 18800
-        if 89CC: NOT  object Angel model_is Model
+        aModel += 18800
+        if 89CC: NOT  object Angel model_is aModel
         then
-            Model.Load(Model)
+            Model.Load(aModel)
             038B: load_requested_models 
             Object.Destroy(Angel)
-            Object.Create(Angel, Model, 0.0, 0.0, 0.0)
-            Model.Destroy(Model)
+            Object.Create(Angel, aModel, 0.0, 0.0, 0.0)
+            Model.Destroy(aModel)
         end
         
         if
