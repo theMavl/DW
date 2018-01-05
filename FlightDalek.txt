@@ -1,0 +1,163 @@
+{$CLEO .s}
+//-------------MAIN---------------
+
+//            (\. -- ./)
+//        O-0)))--|     \
+//          |____________|
+//           -|--|--|--|-
+//           _T~_T~_T~_T_
+//          |____________|
+//          |_o_|____|_o_|
+//       .-~/  :  |   %  \
+//.-..-~   /  :   |  %:   \
+//`-'     /   :   | %  :   \
+//       /   :    |#   :    \
+//      /    :    |     :    \
+//     /    :     |     :     \
+// . -/     :     |      :     \- .
+//|\  ~-.  :      |      :   .-~  /|
+//\ ~-.   ~ - .  _|_  . - ~   .-~ /
+//  ~-.  ~ -  . _ _ _ .  - ~  .-~
+//       ~ -  . _ _ _ .  - ~
+
+0000: NOP
+var
+13@: integer
+29@: integer
+end
+077E: get_active_interior_to $ACTIVE_INTERIOR
+04BB: select_interior $ACTIVE_INTERIOR
+wait 0
+0107: 0@ = create_object 18817 at 0.0 0.0 -1000.0
+0107: 23@ = create_object 18824 at 0.0 0.0 -1000.0
+0566: link_object 0@ to_interior $ACTIVE_INTERIOR 
+0566: link_object 23@ to_interior $ACTIVE_INTERIOR
+0208: 24@ = random_float_in_ranges -100.0 100.0 
+0208: 25@ = random_float_in_ranges -100.0 100.0
+0208: 29@ = random_float_in_ranges 75.0 150.0
+04C4: store_coords_to 27@ 28@ 29@ from_actor $PLAYER_ACTOR with_offset 24@ 25@ 29@
+1@ = Car.Create(#HUNTER, 27@, 28@, 29@)
+0840: link_car 1@ to_interior $ACTIVE_INTERIOR
+04BA: set_car 1@ speed_to 7.5   
+0129: 31@ = create_actor_pedtype 4 model #ARMY in_car 1@ driverseat
+0860: link_actor 31@ to_interior $ACTIVE_INTERIOR
+0337: set_actor 31@ visibility 0
+0332: set_actor 31@ bleeding 0     
+0338: set_car 1@ visibility 0  
+0681: attach_object 0@ to_car 1@ with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0
+0681: attach_object 23@ to_car 1@ with_offset 0.0 0.0 0.0 rotation 0.0 0.0 0.0
+02AC: set_car 1@ immunities BP 1 FP 0 EP 0 CP 1 MP 1
+0A1C: set_helicopter 1@ play_engine_sounds 1 
+model.Destroy(#HUNTER)
+0AC1: 20@ = load_audiostream_with_3d_support "DWS\Dalek_Flight.mp3"
+29@ = 0
+13@ = 0
+jump @target_select
+
+:target_select
+wait 0
+0209: 9@ = random_int_in_ranges 0 3
+if 9@ == 0
+then
+    0AB5: store_actor 31@ closest_vehicle_to 9@ closest_ped_to 10@
+end
+jump @dalek_main
+
+:dalek_main
+wait 0
+While True
+    wait 10
+    13@ += 1 
+    if 056D: actor 10@ defined 
+    then
+        if 0118: actor 10@ dead
+        then
+            jump @target_select
+        end
+        if  
+            00DF:   actor 10@ driving
+        then 
+            03C0: 11@ = actor 10@ car
+            if 
+                0137:   car 11@ model == #RCCAM
+            then
+                jump @target_select
+            else 
+                0726: heli 1@ follow_actor 10@ follow_car 11@ radius 25.0 
+            end 
+        else
+            0726: heli 1@ follow_actor 10@ follow_car -1 radius 25.0 
+        end
+    else
+        0724: heli 1@ follow_and_attack_player $PLAYER_CHAR radius 25.0
+    end
+    wait 0
+    if and
+        0202: actor $PLAYER_ACTOR near_car 1@ radius 350.0 350.0 flag 0
+        8118: not actor 31@ dead 
+    then
+        010D: set_player $PLAYER_CHAR wanted_level_to 0
+        if and
+            13@ >= 29@
+            $93 == 0
+        then
+            0AAE: release_audiostream 20@
+            0209: 29@ = random_int_in_ranges 0 8
+            if or 
+                29@ == 0
+                29@ == 1
+                29@ == 2
+                29@ == 3
+            then 
+                0AC1: 20@ = load_audiostream_with_3d_support "DWS\Dalek_Flight.mp3"
+            else
+                if 29@ == 4
+                then
+                    0AC1: 20@ = load_audiostream_with_3d_support "DWS\Dalek_deny.mp3"
+                else
+                    if 29@ == 5
+                    then
+                        0AC1: 20@ = load_audiostream_with_3d_support "DWS\Dalek_useless.mp3"
+                    else
+                        if 29@ == 6
+                        then
+                            0AC1: 20@ = load_audiostream_with_3d_support "DWS\Dalek_resist.mp3"
+                        else
+                            0AC1: 20@ = load_audiostream_with_3d_support "DWS\Dalek_fight.mp3"
+                        end
+                    end
+                end
+            end
+            0AC5: link_3d_audiostream 20@ to_vehicle 1@
+            0AAD: set_audiostream 20@ perform_action 1
+            0209: 29@ = random_int_in_ranges 500 750
+            13@ = 0
+        end
+    else
+        if
+            0202: actor $PLAYER_ACTOR near_car 1@ radius 350.0 350.0 flag 0
+        then
+        wait 0
+            object.Destroy(23@)
+            099A: set_car 1@ collision_detection 0
+            0682: detach_object 0@ 0.0 0.0 0.0 collision_detection 1
+            0392: make_object 0@ moveable 1   
+            actor.DestroyInstantly(31@)
+            car.Destroy(1@) 
+            0AAE: release_audiostream 20@
+            0A93: end_custom_thread
+        else
+            if
+                $93 == 0
+            then
+                object.Destroy(0@)
+                object.Destroy(23@)
+                actor.DestroyInstantly(31@)
+                car.Destroy(1@)
+                car.RemoveReferences(1@)
+                0A93: end_custom_thread
+            end
+        end
+    end
+end
+004E: end_thread

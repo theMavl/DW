@@ -1,0 +1,656 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+
+//          -___________-
+//         (/     _     \)
+//         /_____(O)_____\
+//         // / / | \ \ \\
+//        =================
+//        // / | | | | \ \\    - EXTERMINATE! EXTERMINATE!
+//       ===================
+//      //// || || || || \\\\
+//      |||| || || || || ||||
+//     /---___-----------,---\
+//     |  /   \         -o-  |
+//     /  \___/          '   \
+//     +---------------------+
+//    /_   __    ___    __   _\
+//   (__) (__)  (___)  (__) (__)
+//   |_    __    ___    __    _|                   #     Open the
+//  (__)  (__)  (___)  (__)  (__)               ------- /doors,
+//  /_    ___    ___    ___    _\               |-----|  Doctor, I
+// (__)  (___)  (___)  (___)  (__)              |II|II|  think there's
+// |_     ___    ___    ___     _|              |II|II|  someone
+//(__)   (___)  (___)  (___)   (__)             |II|II|  there....
+///_______________________________\             |II|II|
+
+0000: NOP
+var
+14@: integer
+13@: integer
+4@: float
+5@: float
+6@: float
+7@: float
+8@: integer
+15@: integer
+16@: integer
+20@: integer
+end
+model.Load(#HUNTER)
+model.Load(#ARMY)
+model.Load(#RHINO)
+model.Load(#SWATVAN)
+model.Load(#RCCAM)
+model.Load(#ROCKETLA)
+model.Load(#GRENADE)
+model.Load(#M4)
+model.Load(#MINIGUN)
+model.Load(18817)
+model.Load(18824)
+038B: load_requested_models
+0A8C: write_memory 7187944 size 1 value 235 virtual_protect 1 //no more
+0A8C: write_memory 6812264 size 1 value 235 virtual_protect 1 //height limit
+0A8C: write_memory 7153181 size 1 value 235 virtual_protect 1 //mother fucker
+06C8: enable_riot 1
+15@ = 600
+16@ = 600
+20@ = 900
+repeat
+    wait 0
+until Model.Available(18824)
+repeat
+    wait 0
+until $ONMISSION == 0
+wait 3000
+jump @daleks_zones
+
+:daleks_zones
+wait 0
+While True
+    wait 100
+    //02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1 //remove
+    15@ += 1
+    16@ += 1
+    20@ += 1
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point -1755.6813 928.1588 radius 200.0 200.0 //valet
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at -1755.6813 928.1588 0.0
+        5@ = -1755.6813
+        6@ = 928.1588
+        jump @daleks_spawner
+    end 
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point 2057.7976 1622.2605 radius 200.0 200.0 //caligula
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at 2057.7976 1622.2605 0.0
+        5@ = 2057.7976
+        6@ = 1622.2605
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point 2716.7026 2293.7378 radius 200.0 200.0 //highway las vegas
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at 2716.7026 2293.7378 0.0
+        5@ = 2716.7026 
+        6@ = 2293.7378
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point 2477.0259 -1666.9475 radius 200.0 200.0 //groove street
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at 2477.0259 -1666.9475 0.0
+        5@ = 2477.0259 
+        6@ = -1666.9475
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point 1045.46 -1801.68 radius 200.0 200.0 //verona beach
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at 1045.46 -1801.68 0.0
+        5@ = 1045.46 
+        6@ = -1801.68
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point 1170.5 -2037.88 radius 200.0 200.0 //Verdant Bluffs
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at 1170.5 -2037.88 0.0
+        5@ = 1170.5 
+        6@ = -2037.88
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point -299.885 1078.96 radius 200.0 200.0 //cowboy town
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at -299.885 1078.96 0.0
+        5@ = -299.885 
+        6@ = 1078.96
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point 1474.5461 -2223.0364 radius 200.0 200.0 //airport entrance
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at 1474.5461 -2223.0364 0.0
+        5@ = 1474.5461 
+        6@ = -2223.0364
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point 1605.5835 -1509.7963 radius 200.0 200.0 //highway crossing
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at 1605.5835 -1509.7963 0.0
+        5@ = 1605.5835 
+        6@ = -1509.7963
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point -2681.41 1214.81 radius 200.0 200.0 //gant bridge front
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at -2681.41 1214.81 0.0
+        5@ = -2681.41 
+        6@ = 1214.81
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point -2698.03 2226.61 radius 200.0 200.0 //gant bridge back
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at -2698.03 2226.61 0.0
+        5@ = -2698.03 
+        6@ = 2226.61
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point -1695.85 516.221 radius 200.0 200.0 //garver bridge front
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at -1695.85 516.221 0.0
+        5@ = -1695.85 
+        6@ = 516.221
+        jump @daleks_spawner
+    end
+    if 00EC:   actor $PLAYER_ACTOR 0 near_point -1084.78 1174.78 radius 200.0 200.0 //garver bridge back
+    then
+        0570: 0@ = create_asset_radar_marker_with_icon 19 at -1084.78 1174.78 0.0
+        5@ = -1084.78 
+        6@ = 1174.78
+        jump @daleks_spawner
+    end
+    wait 0
+    077E: get_active_interior_to $ACTIVE_INTERIOR
+    if
+        $ACTIVE_INTERIOR == 0
+    then
+        if 20@ >= 900
+        then
+            0209: 14@ = random_int_in_ranges 1 6
+            if 14@ == 1
+            then
+                01B6: set_weather 7
+            else
+                if 14@ == 2
+                then
+                    01B6: set_weather 8
+                else
+                    if 14@ == 3
+                    then
+                        01B6: set_weather 9
+                    else
+                        if 14@ == 4
+                        then
+                            01B6: set_weather 19
+                        else
+                            if 14@ == 5
+                            then
+                                01B6: set_weather 16
+                            end
+                        end
+                    end
+                end
+            end
+            20@ = 0
+            //01B7: release_weather  
+        end
+    end
+    jump @daleks_fly
+end
+0A93: end_custom_thread
+
+:daleks_fly
+wait 0
+0AB5: store_actor $PLAYER_ACTOR closest_vehicle_to 1@ closest_ped_to 2@
+077E: get_active_interior_to $ACTIVE_INTERIOR
+0209: 14@ = random_int_in_ranges 0 3
+if or 
+    $ACTIVE_INTERIOR == 0
+    $ACTIVE_INTERIOR == 6
+jf @daleks_zones
+if and
+    056D:   actor 2@ defined
+    $ACTIVE_INTERIOR == 0
+then
+    if and
+    0029: 15@ >= 600
+    14@ == 1
+    jf @daleks_ground
+else
+    if
+    0029: 15@ >= 600
+    jf @daleks_ground
+end
+wait 0
+15@ = 0
+13@ = 0
+0209: 14@ = random_int_in_ranges 2 4  
+while true
+    wait 500
+    if
+        13@ == 14@
+    then
+        break
+    else
+        0A92: create_custom_thread "FlightDalek.s"
+        13@ += 1
+    end
+end
+jump @daleks_ground
+
+:daleks_ground
+wait 0
+0AB5: store_actor $PLAYER_ACTOR closest_vehicle_to 1@ closest_ped_to 2@
+077E: get_active_interior_to $ACTIVE_INTERIOR
+0209: 14@ = random_int_in_ranges 0 3
+if and
+    056D:   actor 2@ defined
+    $ACTIVE_INTERIOR == 0
+    0029: 16@ >= 600
+    14@ == 0
+jf @daleks_zones
+wait 0
+16@ = 0
+13@ = 0
+0209: 14@ = random_int_in_ranges 1 4
+actor.StorePos($PLAYER_ACTOR, 1@, 2@, 3@)
+1@ += 50.0
+2@ += 50.0  
+while true
+    wait 500
+    if
+        13@ == 14@
+    then
+        break
+    else
+        04D3: get_nearest_car_path_coords_from 1@ 2@ 3@ type 2 store_to 17@ 18@ 19@ 
+        run "DalekTW.s" 0.0 17@ 18@ 19@
+        1@ -= 15.0
+        2@ -= 15.0
+        13@ += 1
+    end
+end
+jump @daleks_zones
+
+:daleks_spawner
+wait 0
+077E: get_active_interior_to $ACTIVE_INTERIOR
+if $ACTIVE_INTERIOR == 0
+jf @daleks_zones
+5@ -= 25.0
+6@ -= 25.0
+7@ = 5@
+4@ = 6@
+5@ += 50.0
+6@ += 50.0 
+0209: 8@ = random_int_in_ranges 5 8
+13@ = 0 
+repeat
+wait 500
+0208: 1@ = random_float_in_ranges 7@ 5@
+0208: 2@ = random_float_in_ranges 4@ 6@
+run "DalekTW.s" 0.0 1@ 2@ -100.0
+13@ += 1
+until 8@ == 13@
+0209: 8@ = random_int_in_ranges 0 3
+if or
+8@ == 0
+8@ == 1
+then
+01EB: set_traffic_density_multiplier_to 0.0
+0208: 1@ = random_float_in_ranges 7@ 5@
+0208: 2@ = random_float_in_ranges 4@ 6@
+run "DalekClassic.s" 0.0 1@ 2@ -100.0
+end
+
+0208: 1@ = random_float_in_ranges 7@ 5@
+0208: 2@ = random_float_in_ranges 4@ 6@
+run "DalekPara.s" 2 1@ 2@ 3@
+
+0209: 8@ = random_int_in_ranges 1 5
+if or
+    8@ == 1
+    8@ == 2
+    8@ == 4
+then
+    0209: 8@ = random_int_in_ranges 0 2
+    if 8@ == 1
+    then
+    0208: 1@ = random_float_in_ranges 7@ 5@
+    0208: 2@ = random_float_in_ranges 4@ 6@
+    00A5: 25@ = create_car #RHINO at 1@ 2@ -100.0
+    020A: set_car 25@ door_status_to 1
+    car.RemoveReferences(25@)
+    end 
+    0209: 8@ = random_int_in_ranges 1 3
+    13@ = 0
+    repeat
+    wait 0
+    13@ += 1
+    1@ -= 15.0
+    2@ += 15.0
+    00A5: 25@ = create_car #SWATVAN at 1@ 2@ -100.0
+    020A: set_car 25@ door_status_to 1 
+    until 13@ == 8@
+    0208: 1@ = random_float_in_ranges 7@ 5@
+    0208: 2@ = random_float_in_ranges 4@ 6@
+    009A: 9@ = create_actor_pedtype 4 model #ARMY at 1@ 2@ -100.0
+    0223: set_actor 9@ health_to 1000 
+    0209: 8@ = random_int_in_ranges 0 4
+    if 8@ == 0
+    then
+        01B2: give_actor 9@ weapon 35 ammo 9999 
+    else
+        if 8@ == 1
+        then
+            01B2: give_actor 9@ weapon 16 ammo 9999
+        else
+            if 8@ == 2
+            then
+                01B2: give_actor 9@ weapon 31 ammo 9999
+            else
+                01B2: give_actor 9@ weapon 38 ammo 9999
+            end
+        end
+    end
+    0208: 1@ = random_float_in_ranges 7@ 5@
+    0208: 2@ = random_float_in_ranges 4@ 6@
+    009A: 21@ = create_actor_pedtype 4 model #ARMY at 1@ 2@ -100.0
+    0223: set_actor 21@ health_to 1000
+    0209: 8@ = random_int_in_ranges 0 4
+    if 8@ == 0
+    then
+        01B2: give_actor 21@ weapon 35 ammo 9999 
+    else
+        if 8@ == 1
+        then
+            01B2: give_actor 21@ weapon 16 ammo 9999
+        else
+            if 8@ == 2
+            then
+                01B2: give_actor 21@ weapon 31 ammo 9999
+            else
+                01B2: give_actor 21@ weapon 38 ammo 9999
+            end
+        end
+    end
+    0208: 1@ = random_float_in_ranges 7@ 5@
+    0208: 2@ = random_float_in_ranges 4@ 6@
+    009A: 22@ = create_actor_pedtype 4 model #ARMY at 1@ 2@ -100.0
+    0223: set_actor 22@ health_to 1000
+    0209: 8@ = random_int_in_ranges 0 4
+    if 8@ == 0
+    then
+        01B2: give_actor 22@ weapon 35 ammo 9999 
+    else
+        if 8@ == 1
+        then
+            01B2: give_actor 22@ weapon 16 ammo 9999
+        else
+            if 8@ == 2
+            then
+                01B2: give_actor 22@ weapon 31 ammo 9999
+            else
+                01B2: give_actor 22@ weapon 38 ammo 9999
+            end
+        end
+    end
+    0208: 1@ = random_float_in_ranges 7@ 5@
+    0208: 2@ = random_float_in_ranges 4@ 6@
+    009A: 23@ = create_actor_pedtype 4 model #ARMY at 1@ 2@ -100.0
+    0223: set_actor 23@ health_to 1000
+    0209: 8@ = random_int_in_ranges 0 4
+    if 8@ == 0
+    then
+        01B2: give_actor 23@ weapon 35 ammo 9999 
+    else
+        if 8@ == 1
+        then
+            01B2: give_actor 23@ weapon 16 ammo 9999
+        else
+            if 8@ == 2
+            then
+                01B2: give_actor 23@ weapon 31 ammo 9999
+            else
+                01B2: give_actor 23@ weapon 38 ammo 9999
+            end
+        end
+    end
+    0208: 1@ = random_float_in_ranges 7@ 5@
+    0208: 2@ = random_float_in_ranges 4@ 6@
+    009A: 24@ = create_actor_pedtype 4 model #ARMY at 1@ 2@ -100.0
+    0223: set_actor 24@ health_to 1000
+    0209: 8@ = random_int_in_ranges 0 4
+    if 8@ == 0
+    then
+        01B2: give_actor 24@ weapon 35 ammo 9999 
+    else
+        if 8@ == 1
+        then
+            01B2: give_actor 24@ weapon 16 ammo 9999
+        else
+            if 8@ == 2
+            then
+                01B2: give_actor 24@ weapon 31 ammo 9999
+            else
+                01B2: give_actor 24@ weapon 38 ammo 9999
+            end
+        end
+    end
+end    
+5@ -= 25.0
+6@ -= 25.0
+Actor.StorePos($PLAYER_ACTOR, 1@, 2@, 3@)
+repeat
+wait 10
+if 8118: not actor 9@ dead
+then
+00A0: store_actor 9@ position_to 5@ 6@ 3@ 
+if 056E:   car 26@ defined
+then
+    if or
+        8202:  not actor 9@ near_car 26@ radius 25.0 25.0 flag 0 
+        0119:  car 26@ wrecked
+    then 
+        0AE2: 26@ = random_vehicle_near_point 5@ 6@ 3@ in_radius 25.0 find_next 0 pass_wrecked 1 //IF and SET
+        if 056E:   car 26@ defined
+        then
+            if 0137:   car 26@ model == #RCCAM
+            then
+                0672: AS_actor 9@ attack_car 26@
+            else
+                05DE: AS_actor 9@ walk_around_ped_path
+            end
+        else
+            05DE: AS_actor 9@ walk_around_ped_path 
+        end
+    end
+else
+    0AE2: 26@ = random_vehicle_near_point 5@ 6@ 3@ in_radius 25.0 find_next 0 pass_wrecked 1 //IF and SET
+    if 056E:   car 26@ defined
+    then
+        if 0137:   car 26@ model == #RCCAM
+        then
+            0672: AS_actor 9@ attack_car 26@
+        else
+            05DE: AS_actor 9@ walk_around_ped_path
+        end
+    else
+        05DE: AS_actor 9@ walk_around_ped_path 
+    end
+end
+end 
+//
+if 8118: not actor 21@ dead
+then
+00A0: store_actor 21@ position_to 5@ 6@ 3@ 
+if 056E:   car 27@ defined
+then
+    if or
+        8202:  not actor 21@ near_car 27@ radius 25.0 25.0 flag 0 
+        0119:  car 27@ wrecked
+    then  
+        0AE2: 27@ = random_vehicle_near_point 5@ 6@ 3@ in_radius 25.0 find_next 0 pass_wrecked 1 //IF and SET
+        if 056E:   car 27@ defined
+        then
+            if 0137:   car 27@ model == #RCCAM
+            then
+                0672: AS_actor 21@ attack_car 27@
+            else
+                05DE: AS_actor 21@ walk_around_ped_path
+            end
+        else
+            05DE: AS_actor 21@ walk_around_ped_path 
+        end
+    end
+else
+    0AE2: 27@ = random_vehicle_near_point 5@ 6@ 3@ in_radius 25.0 find_next 0 pass_wrecked 1 //IF and SET
+    if 056E:   car 27@ defined
+    then
+        if 0137:   car 27@ model == #RCCAM
+        then
+            0672: AS_actor 21@ attack_car 27@
+        else
+            05DE: AS_actor 21@ walk_around_ped_path
+        end
+    else
+        05DE: AS_actor 21@ walk_around_ped_path 
+    end
+end
+end
+//
+if 8118: not actor 22@ dead
+then
+00A0: store_actor 22@ position_to 5@ 6@ 3@ 
+if 056E:   car 28@ defined
+then
+    if or
+        8202:  not actor 22@ near_car 28@ radius 25.0 25.0 flag 0 
+        0119:  car 28@ wrecked
+    then  
+        0AE2: 28@ = random_vehicle_near_point 5@ 6@ 3@ in_radius 25.0 find_next 0 pass_wrecked 1 //IF and SET
+        if 056E:   car 28@ defined
+        then
+            if 0137:   car 28@ model == #RCCAM
+            then
+                0672: AS_actor 22@ attack_car 28@
+            else
+                05DE: AS_actor 22@ walk_around_ped_path
+            end
+        else
+            05DE: AS_actor 22@ walk_around_ped_path 
+        end
+    end
+else
+    0AE2: 28@ = random_vehicle_near_point 5@ 6@ 3@ in_radius 25.0 find_next 0 pass_wrecked 1 //IF and SET
+    if 056E:   car 28@ defined
+    then
+        if 0137:   car 28@ model == #RCCAM
+        then
+            0672: AS_actor 22@ attack_car 28@
+        else
+            05DE: AS_actor 22@ walk_around_ped_path
+        end
+    else
+        05DE: AS_actor 22@ walk_around_ped_path 
+    end
+end
+end
+//
+if 8118: not actor 23@ dead
+then 
+00A0: store_actor 23@ position_to 5@ 6@ 3@
+if 056E:   car 29@ defined
+then
+    if or
+        8202:  not actor 23@ near_car 29@ radius 25.0 25.0 flag 0 
+        0119:  car 29@ wrecked
+    then 
+        0AE2: 29@ = random_vehicle_near_point 5@ 6@ 3@ in_radius 25.0 find_next 0 pass_wrecked 1 //IF and SET
+        if 056E:   car 29@ defined
+        then
+            if 0137:   car 29@ model == #RCCAM
+            then
+                0672: AS_actor 23@ attack_car 29@
+            else
+                05DE: AS_actor 23@ walk_around_ped_path
+            end
+        else
+            05DE: AS_actor 23@ walk_around_ped_path 
+        end
+    end
+else
+    0AE2: 29@ = random_vehicle_near_point 5@ 6@ 3@ in_radius 25.0 find_next 0 pass_wrecked 1 //IF and SET
+    if 056E:   car 29@ defined
+    then
+        if 0137:   car 29@ model == #RCCAM
+        then
+            0672: AS_actor 23@ attack_car 29@
+        else
+            05DE: AS_actor 23@ walk_around_ped_path
+        end
+    else
+        05DE: AS_actor 23@ walk_around_ped_path 
+    end
+end
+end
+//
+if 8118: not actor 24@ dead
+then
+00A0: store_actor 24@ position_to 5@ 6@ 3@ 
+if 056E:   car 30@ defined
+then
+    if or
+        8202:  not actor 24@ near_car 30@ radius 25.0 25.0 flag 0 
+        0119:  car 30@ wrecked
+    then 
+        0AE2: 30@ = random_vehicle_near_point 5@ 6@ 3@ in_radius 25.0 find_next 0 pass_wrecked 1 //IF and SET
+        if 056E:   car 30@ defined
+        then
+            if 0137:   car 30@ model == #RCCAM
+            then
+                0672: AS_actor 24@ attack_car 30@
+            else
+                05DE: AS_actor 24@ walk_around_ped_path
+            end
+        else
+            05DE: AS_actor 24@ walk_around_ped_path 
+        end
+    end
+else
+    0AE2: 30@ = random_vehicle_near_point 5@ 6@ 3@ in_radius 25.0 find_next 0 pass_wrecked 1 //IF and SET
+    if 056E:   car 30@ defined
+    then
+        if 0137:   car 30@ model == #RCCAM
+        then
+            0672: AS_actor 24@ attack_car 30@
+        else
+            05DE: AS_actor 24@ walk_around_ped_path
+        end
+    else
+        05DE: AS_actor 24@ walk_around_ped_path 
+    end
+end
+end 
+until 80EC: not actor $PLAYER_ACTOR 0 near_point 5@ 6@ radius 250.0 250.0
+0164: disable_marker 0@
+01EB: set_traffic_density_multiplier_to 1.0
+actor.DestroyInstantly(9@)
+actor.DestroyInstantly(21@)
+actor.DestroyInstantly(22@)
+actor.DestroyInstantly(23@)
+actor.DestroyInstantly(24@)
+actor.RemoveReferences(9@)
+actor.RemoveReferences(21@)
+actor.RemoveReferences(22@)
+actor.RemoveReferences(23@)
+actor.RemoveReferences(24@)
+car.Destroy(25@)
+car.RemoveReferences(25@)
+jump @daleks_zones
+004E: end_thread 

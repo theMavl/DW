@@ -1,0 +1,679 @@
+{$CLEO .s}
+//-------------MAIN---------------
+
+thread 'Dalek_Classic'
+//                        Exterminate!
+//                       /
+//                  ___
+//          D>=G==='   '.
+//                |======|
+//                |======|
+//            )--/]IIIIII]
+//               |_______|
+//               C O O O D
+//              C O  O  O D
+//             C  O  O  O  D
+//             C__O__O__O__D
+//   Tommy    [_____________]
+
+const
+X = 11@
+Y = 12@
+Z = 13@
+X2 = 14@
+Y2 = 15@
+Z2 = 16@
+TEMP = 17@
+QT = 18@
+TEMP2 = 19@
+end
+
+:dalek_spawn
+wait 0
+0000: NOP        
+Model.Load(#RCCAM)
+Model.Load(#MISSILE)
+Model.Load(#rocketla)
+Model.Load(#ARMY) //laser guy
+Model.Load(18821) //body
+Model.Load(18822) //head
+Model.Load(18823) //gun
+038B: load_requested_models
+repeat
+    wait 0
+until Model.Available(18823)
+//04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 10.0 0.0 //remove
+4@ = Car.Create(#RCCAM, 1@, 2@, 3@)
+0338: set_car 4@ visibility 0
+0107: 5@ = create_object 18821 at 0.0 0.0 -100.0
+0107: 6@ = create_object 18822 at 0.0 0.0 -100.0
+0107: 7@ = create_object 18823 at 0.0 0.0 -100.0
+0681: attach_object 5@ to_car 4@ with_offset 0.0 0.0 0.2 rotation 0.0 0.0 0.0
+0681: attach_object 6@ to_car 4@ with_offset 0.0 0.0 0.2 rotation 0.0 0.0 0.0
+0681: attach_object 7@ to_car 4@ with_offset -0.196 0.395 0.506 rotation 0.0 0.0 0.0
+09CA: set_object 5@ immunities BP 1 FP 1 EP 0 CP 0 MP 1 
+09CA: set_object 6@ immunities BP 1 FP 1 EP 0 CP 0 MP 1 
+09CA: set_object 7@ immunities BP 1 FP 1 EP 0 CP 0 MP 1
+067F: set_car 4@ lights 1
+00AD: set_car 4@ max_speed_to 10.0  
+02AC: set_car 4@ immunities BP 1 FP 1 EP 0 CP 0 MP 1
+Car.Health(4@) = 3000.0 
+0560: create_random_actor_in_car 4@ handle_as 8@ 
+0332: set_actor 8@ bleeding 0
+Actor.Health(8@) = 1E38
+0A09: set_actor 8@ muted 1
+0337: set_actor 8@ visibility 0
+0619: enable_actor 8@ collision_detection 0
+0423: set_car 4@ improved_handling_to 2.0 // (float)
+00A8: set_car 4@ to_psycho_driver
+00AE: unknown_set_car 4@ to_ignore_traffic_lights  2 
+054A: set_actor 8@ can_be_shot_in_a_car 0
+053F: set_car 4@ tires_vulnerability 0
+09C4: set_car 4@ gas_tank_explosion_enabled 0
+0852: set_car 4@ damages_visible 0
+0526: set_actor 8@ stay_in_car_when_jacked 1
+0982: set_actor 8@ stay_in_car_when_dead 1
+03CC: enable_car 4@ stuck_check_distance_to 0.5 time_to 3000
+0918: enable_car 4@ engine_sound 1
+0AC1: 27@ = load_audiostream_with_3d_support "DWS\dalek_Eggs.mp3" //IF and SET
+0AC1: 28@ = load_audiostream_with_3d_support "DWS\dalek_Gun.mp3" //IF and SET
+25@ = 0.0
+31@ = 0.0
+jump @target_select 
+
+:target_select
+wait 0
+Actor.StorePos($PLAYER_ACTOR, 1@, 2@, 3@)
+if
+    81AD: not car 4@ sphere 0 near_point 1@ 2@ radius 200.0 200.0
+then
+    Object.Destroy(5@)
+    Object.Destroy(6@)
+    Object.Destroy(7@)
+    009B: destroy_actor 8@
+    Car.Destroy(4@)
+    Actor.RemoveReferences(8@)
+    Car.RemoveReferences(4@)
+    0A93: end_custom_thread
+end
+0209: 9@ = random_int_in_ranges 0 2
+if and
+056D:   actor 8@ defined 
+9@ == 0
+then
+    0AB5: store_actor 8@ closest_vehicle_to 9@ closest_ped_to 10@
+else
+    0085: 10@ = $PLAYER_ACTOR
+end
+jump @dalek_main
+
+:dalek_main
+wait 0
+While True
+    wait 10 
+    9@ = 0
+    if 056D: actor 10@ defined 
+    then
+        if
+            00DF:   actor 10@ driving
+        then 
+            03C0: 24@ = actor 10@ car
+            if 
+                0137:   car 24@ model == #RCCAM
+            then
+                0085: 10@ = $PLAYER_ACTOR
+                00A0: store_actor 10@ position_to 1@ 2@ 3@
+            else 
+                Car.StorePos(24@, 1@, 2@, 3@)
+            end 
+        else
+            00A0: store_actor 10@ position_to 1@ 2@ 3@
+        end
+    else
+        jump @target_select
+    end
+    wait 0
+    if
+    0118: actor 10@ dead
+    then
+    jump @target_select
+    end
+    00A7: car 4@ drive_to 1@ 2@ 3@
+    gosub @head_math
+    //exterminate!!!
+    if 0035: 30@ >= 31@
+    then
+        0AAE: release_audiostream 27@
+        0AC1: 27@ = load_audiostream_with_3d_support "DWS\dalek_Eggs.mp3" //IF and SET
+        0AC3: link_3d_audiostream 27@ to_object 5@
+        0AAD: set_audiostream 27@ perform_action 1
+        30@ = 0.0
+        repeat
+        wait 10
+        30@ += 1.0
+        0400: store_coords_to X Y Z from_object 6@ with_offset -0.245 0.0 0.93  
+        04D5: create_corona_at X Y Z radius 0.1 type 0 flare 0 RGB 245 215 135
+        0400: store_coords_to X Y Z from_object 6@ with_offset 0.245 0.0 0.93 
+        04D5: create_corona_at X Y Z radius 0.1 type 0 flare 0 RGB 245 215 135
+        until 30@ >= 80.0
+        0208: 31@ = random_float_in_ranges 7.5 30.0   
+        30@ = 0.0
+    else
+        30@ += 1.0
+    end
+    //stuff
+    if
+    81AD: not car 4@ sphere 0 near_point 1@ 2@ radius 25.0 25.0  
+    then
+    jump @target_select
+    else
+        010D: set_player $PLAYER_CHAR wanted_level_to 0
+        if 01AD: car 4@ sphere 0 near_point 1@ 2@ radius 7.5 7.5
+        then
+        00A8: set_car 4@ to_psycho_driver
+        end
+    end
+    //pew!
+    wait 0
+    {if 09ED:   actor 10@ is_within_field_of_view_actor 8@
+    then
+    0AAE: release_audiostream 28@
+    0AC1: 28@ = load_audiostream_with_3d_support "DWS\dalek_Gun.mp3" //IF and SET
+    0AC3: link_3d_audiostream 28@ to_object 7@
+    0AAD: set_audiostream 28@ perform_action 1}
+    gosub @gun_math
+    //end
+    wait 0
+    if 9@ == 1
+    then
+    gosub @extermination
+    end
+    //stuck check
+    wait 0
+    02E3: 24@ = car 4@ speed 
+    if and
+    24@ >= 3.0 
+    03CE:   car 4@ stuck
+    then 
+    20@ = Car.Angle(4@)
+    0087: 21@ = 20@
+    0209: 9@ = random_int_in_ranges 0 2
+    if 9@ == 0
+    then
+        21@ += 180.0
+        repeat
+        wait 10
+        20@ += 1.0
+        Car.Angle(4@) = 20@
+        until 0035: 20@ >= 21@
+    else
+        21@ -= 180.0
+        repeat
+        wait 10
+        20@ -= 1.0
+        Car.Angle(4@) = 20@
+        until 8035: not 20@ >= 21@
+    end
+    end
+    //death to the daleks!
+    wait 0
+    Car.StorePos(4@, X, Y, Z)
+    X -= 3.0
+    0087: X2 = X //CORNER A X
+    Y -= 3.0
+    0087: Y2 = Y //CORNER A Y
+    X += 3.0 //CORNER B X
+    Y += 3.0 //CORNER B Y
+    Z -= 3.0
+    0087: Z2 = Z
+    Z2 += 6.0
+    if
+        0356:   explosion_type -1 in_cube_cornerA X Y Z cornerB X2 Y2 Z2
+    then
+        0209: 9@ = random_int_in_ranges 0 3
+        if or
+        9@ == 0
+        9@ == 2
+        then
+        20@ = Car.Angle(4@)
+        21@ = Object.Angle(6@)
+        0208: 22@ = random_float_in_ranges 1080.0 1800.0
+        0AC1: 29@ = load_audiostream_with_3d_support "DWS\dalek_Scream.mp3" //IF and SET
+        0AC3: link_3d_audiostream 29@ to_object 5@
+        0AAD: set_audiostream 29@ perform_action 1  
+        repeat
+        wait 10
+        20@ += 15.0
+        21@ += 15.0
+        0681: attach_object 5@ to_car 4@ with_offset 0.0 0.0 0.2 rotation 0.0 0.0 20@
+        069A: attach_object 7@ to_object 5@ with_offset -0.196 0.395 0.306 rotation 0.0 0.0 0.0
+        0681: attach_object 6@ to_car 4@ with_offset 0.0 0.0 0.2 rotation 0.0 0.0 21@
+        until 0035: 20@ >= 22@
+        end    
+        0682: detach_object 5@ 0.0 0.0 0.0 collision_detection 1 
+        0682: detach_object 6@ 0.0 0.0 0.0 collision_detection 1
+        0682: detach_object 7@ 0.0 0.0 0.0 collision_detection 1 
+        020B: explode_car 4@ // versionA 
+        wait 10000
+        Object.RemoveReferences(5@)
+        Object.RemoveReferences(6@)
+        Object.RemoveReferences(7@)
+        Car.RemoveReferences(4@)
+        0A93: end_custom_thread
+    end 
+end
+
+:head_math
+if 056D:   actor 10@ defined
+jf @target_select
+Object.StorePos(6@, X, Y, Z)
+0087: X2 = X //CORNER A X
+Y += 40.0
+0087: Y2 = Y //CORNER A Y
+X += 40.0 //CORNER B X
+Y -= 40.0 //CORNER B Y
+if 
+00A3:   actor 10@ sphere 0 in_rectangle_cornerA X2 Y2 cornerB X Y
+then
+    QT = 1
+else
+    Object.StorePos(6@, X, Y, Z)
+    X -= 40.0
+    0087: X2 = X //CORNER A X
+    Y += 40.0
+    0087: Y2 = Y //CORNER A Y
+    X += 40.0 //CORNER B X
+    Y -= 40.0 //CORNER B Y
+    if 
+    00A3:   actor 10@ sphere 0 in_rectangle_cornerA X2 Y2 cornerB X Y
+    then
+        QT = 2
+    else
+        Object.StorePos(6@, X, Y, Z)
+        X -= 40.0
+        0087: X2 = X //CORNER A X
+        //Y += 40.0
+        0087: Y2 = Y //CORNER A Y
+        X += 40.0 //CORNER B X
+        Y -= 40.0 //CORNER B Y
+        if 
+        00A3:   actor 10@ sphere 0 in_rectangle_cornerA X2 Y2 cornerB X Y
+        then
+            QT = 3
+        else
+            Object.StorePos(6@, X, Y, Z)
+            //X -= 40.0
+            0087: X2 = X //CORNER A X
+            //Y += 40.0
+            0087: Y2 = Y //CORNER A Y
+            X += 40.0 //CORNER B X
+            Y -= 40.0 //CORNER B Y
+            if 
+            00A3:   actor 10@ sphere 0 in_rectangle_cornerA X2 Y2 cornerB X Y
+            then
+                QT = 4
+            else
+                //0AD1: show_formatted_text_highpriority "[Dalek]: Impossible error (#OFA)" time 1000        
+            end    
+        end     
+    end 
+end
+Object.StorePos(6@, X, Y, Z)
+0509: Z = distance_between_XY X Y and_XY 1@ 2@ //√»œŒ“≈Õ”«¿
+0509: TEMP2 = distance_between_XY X Y and_XY 1@ Y //œ–»À≈∆¿Ÿ»…  ¿“≈“ À≈∆¿Ÿ»… Õ¿ ’
+if Z < 0
+then
+    Z *= -1.0
+end
+if TEMP2 < 0
+then
+    TEMP2 *= -1.0
+end
+0073: TEMP2 /= Z 
+0AA5: call 0x48DE40 num_params 1 pop 1 _value TEMP2 // acos 
+0AE9: pop_float TEMP2
+TEMP2 *= 57.296
+20@ = Car.Angle(4@)
+21@ = 0.0
+22@ = 1.0
+if and
+0020: 20@ > 45.0
+8020: not 20@ > 135.0
+then
+    if QT == 1
+    then
+    21@ = 270.0
+    22@ = -1.0
+    QT = 4
+    else
+        if QT == 2
+        then
+        21@ = 90.0
+        22@ = -1.0
+        QT = 1
+        else
+            if QT == 3
+            then
+            21@ = 270.0
+            22@ = -1.0
+            QT = 2
+            else
+                if QT == 4
+                then
+                21@ = 90.0
+                22@ = -1.0
+                QT = 3
+                end
+            end
+        end
+    end
+else
+if and
+0020: 20@ > 135.0
+8020: not 20@ > 225.0
+then
+    if QT == 1
+    then
+    QT = 3
+    else
+        if QT == 2
+        then
+        QT = 4
+        else
+            if QT == 3
+            then
+            QT = 1
+            else
+                if QT == 4
+                then
+                QT = 2
+                end
+            end
+        end
+    end
+else
+if and
+0020: 20@ > 225.0
+8020: not 20@ > 315.0
+then
+    if QT == 1
+    then
+    21@ = -90.0
+    22@ = -1.0
+    QT = 2
+    else
+        if QT == 2
+        then
+        21@ = -270.0
+        22@ = -1.0
+        QT = 3
+        else
+            if QT == 3
+            then
+            21@ = -90.0
+            22@ = -1.0
+            QT = 4
+            else
+                if QT == 4
+                then
+                21@ = -270.0
+                22@ = -1.0
+                QT = 1
+                end
+            end
+        end
+    end
+end
+end
+end 
+if QT == 1
+then
+    2@ = 90.0
+    0063: 2@ -= TEMP2
+    2@ *= -1.0
+    005B: 2@ += 21@ // (float)
+    006B: 2@ *= 22@     
+    0681: attach_object 6@ to_car 4@ with_offset 0.0 0.0 0.2 rotation 0.0 0.0 2@
+    //0AD1: show_formatted_text_highpriority "[Dalek]: Q1." time 1000
+    9@ = 1 
+else
+    if QT == 2
+    then
+        TEMP2 += 270.0
+        TEMP2 *= -1.0
+        005B: TEMP2 += 21@ // (float)
+        006B: TEMP2 *= 22@  
+        0681: attach_object 6@ to_car 4@ with_offset 0.0 0.0 0.2 rotation 0.0 0.0 TEMP2
+        //0AD1: show_formatted_text_highpriority "[Dalek]: Q2." time 1000
+        9@ = 1
+    {else
+        if QT == 3
+        then
+            2@ = 90.0
+            0063: 2@ -= TEMP2
+            2@ += 180.0
+            2@ *= -1.0 
+            005B: 2@ += 21@ // (float)
+            006B: 2@ *= 22@
+            0681: attach_object 6@ to_car 4@ with_offset 0.0 0.0 0.2 rotation 0.0 0.0 2@
+            0AD1: show_formatted_text_highpriority "[Dalek]: Q3." time 1000
+        else
+            if QT == 4
+            then
+                TEMP2 += 90.0
+                TEMP2 *= -1.0
+                005B: TEMP2 += 21@ // (float)
+                006B: TEMP2 *= 22@ 
+                0681: attach_object 6@ to_car 4@ with_offset 0.0 0.0 0.2 rotation 0.0 0.0 TEMP2
+                0AD1: show_formatted_text_highpriority "[Dalek]: Q4." time 1000               
+            end    
+        end}    
+    end    
+end
+return
+
+:gun_math
+if 056D:   actor 10@ defined
+jf @target_select
+Object.StorePos(7@, X, Y, Z)
+0087: X2 = X //CORNER A X
+Y += 40.0
+0087: Y2 = Y //CORNER A Y
+X += 40.0 //CORNER B X
+Y -= 40.0 //CORNER B Y
+if 
+00A3:   actor 10@ sphere 0 in_rectangle_cornerA X2 Y2 cornerB X Y
+then
+    QT = 1
+else
+    Object.StorePos(7@, X, Y, Z)
+    X -= 40.0
+    0087: X2 = X //CORNER A X
+    Y += 40.0
+    0087: Y2 = Y //CORNER A Y
+    X += 40.0 //CORNER B X
+    Y -= 40.0 //CORNER B Y
+    if 
+    00A3:   actor 10@ sphere 0 in_rectangle_cornerA X2 Y2 cornerB X Y
+    then
+        QT = 2
+    else
+        Object.StorePos(7@, X, Y, Z)
+        X -= 40.0
+        0087: X2 = X //CORNER A X
+        //Y += 40.0
+        0087: Y2 = Y //CORNER A Y
+        X += 40.0 //CORNER B X
+        Y -= 40.0 //CORNER B Y
+        if 
+        00A3:   actor 10@ sphere 0 in_rectangle_cornerA X2 Y2 cornerB X Y
+        then
+            QT = 3
+        else
+            Object.StorePos(7@, X, Y, Z)
+            //X -= 40.0
+            0087: X2 = X //CORNER A X
+            //Y += 40.0
+            0087: Y2 = Y //CORNER A Y
+            X += 40.0 //CORNER B X
+            Y -= 40.0 //CORNER B Y
+            if 
+            00A3:   actor 10@ sphere 0 in_rectangle_cornerA X2 Y2 cornerB X Y
+            then
+                QT = 4
+            else
+                //0AD1: show_formatted_text_highpriority "[Dalek]: Impossible error (#OFA)" time 1000        
+            end    
+        end     
+    end 
+end
+Object.StorePos(7@, X, Y, Z)
+0509: Z = distance_between_XY X Y and_XY 1@ 2@ //√»œŒ“≈Õ”«¿
+0509: TEMP2 = distance_between_XY X Y and_XY 1@ Y //œ–»À≈∆¿Ÿ»…  ¿“≈“ À≈∆¿Ÿ»… Õ¿ ’
+if Z < 0
+then
+    Z *= -1.0
+end
+if TEMP2 < 0
+then
+    TEMP2 *= -1.0
+end
+0073: TEMP2 /= Z 
+0AA5: call 0x48DE40 num_params 1 pop 1 _value TEMP2 // acos 
+0AE9: pop_float TEMP2
+TEMP2 *= 57.296
+20@ = Car.Angle(4@)
+21@ = 0.0
+22@ = 1.0
+if and
+0020: 20@ > 45.0
+8020: not 20@ > 135.0
+then
+    if QT == 1
+    then
+    21@ = 270.0
+    22@ = -1.0
+    QT = 4
+    else
+        if QT == 2
+        then
+        21@ = 90.0
+        22@ = -1.0
+        QT = 1
+        else
+            if QT == 3
+            then
+            21@ = 270.0
+            22@ = -1.0
+            QT = 2
+            else
+                if QT == 4
+                then
+                21@ = 90.0
+                22@ = -1.0
+                QT = 3
+                end
+            end
+        end
+    end
+else
+if and
+0020: 20@ > 135.0
+8020: not 20@ > 225.0
+then
+    if QT == 1
+    then
+    QT = 3
+    else
+        if QT == 2
+        then
+        QT = 4
+        else
+            if QT == 3
+            then
+            QT = 1
+            else
+                if QT == 4
+                then
+                QT = 2
+                end
+            end
+        end
+    end
+else
+if and
+0020: 20@ > 225.0
+8020: not 20@ > 315.0
+then
+    if QT == 1
+    then
+    21@ = -90.0
+    22@ = -1.0
+    QT = 2
+    else
+        if QT == 2
+        then
+        21@ = -270.0
+        22@ = -1.0
+        QT = 3
+        else
+            if QT == 3
+            then
+            21@ = -90.0
+            22@ = -1.0
+            QT = 4
+            else
+                if QT == 4
+                then
+                21@ = -270.0
+                22@ = -1.0
+                QT = 1
+                end
+            end
+        end
+    end
+end
+end
+end 
+if QT == 1
+then
+    2@ = 90.0
+    0063: 2@ -= TEMP2
+    2@ *= -1.0
+    005B: 2@ += 21@ // (float)
+    006B: 2@ *= 22@    
+    0208: 23@ = random_float_in_ranges 0.0 10.0
+    0208: 24@ = random_float_in_ranges -10.0 0.0 
+    0681: attach_object 7@ to_car 4@ with_offset -0.196 0.395 0.506 rotation 23@ 0.0 24@
+    //0AD1: show_formatted_text_highpriority "[gun]: Q1." time 1000 
+else
+    if QT == 2
+    then
+        TEMP2 += 270.0
+        TEMP2 *= -1.0
+        005B: TEMP2 += 21@ // (float)
+        006B: TEMP2 *= 22@
+        0208: 23@ = random_float_in_ranges 0.0 10.0
+        0208: 24@ = random_float_in_ranges 0.0 10.0   
+        0681: attach_object 7@ to_car 4@ with_offset -0.196 0.395 0.506 rotation 23@ 0.0 24@
+        //0AD1: show_formatted_text_highpriority "[gun]: Q2." time 1000  
+    end    
+end
+return
+
+:extermination
+wait 0
+0407: store_coords_to X Y Z from_car 4@ with_offset 0.0 3.5 -1.35 
+009A: 26@ = create_actor_pedtype 4 model #ARMY at X Y Z 
+0332: set_actor 26@ bleeding 0
+Actor.Health(26@) = 1E38
+0A09: set_actor 26@ muted 1
+0337: set_actor 26@ visibility 0
+0446: set_actor 26@ immune_to_headshots 0 
+0619: enable_actor 26@ collision_detection 0
+01B2: give_actor 26@ weapon 35 ammo 1
+0668: AS_actor 26@ rotate_and_shoot_at 1@ 2@ 3@ 250 ms
+wait 500
+009B: destroy_actor 26@   
+return
+0A93: end_custom_thread
