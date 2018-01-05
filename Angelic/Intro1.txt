@@ -56,7 +56,9 @@ if and
 then 
     0AD1: "..." time 3000
     015F: set_camera_position 2.4417 -0.2772 1026.1406 rotation 0.0 0.0 0.0
-    0160: set_camera_point_at 6.8077 0.8023 1026.1406 switchstyle 2   
+    0160: set_camera_point_at 6.8077 0.8023 1026.1406 switchstyle 2
+    wait 1000
+       
     0460: set_camera_transverse_delay 0.0 time 20000   
     015F: set_camera_position 6.2697 0.7277 1026.8406 rotation 0.0 0.0 0.0
     0160: set_camera_point_at 6.8077 0.8023 1026.7406 switchstyle 1
@@ -185,7 +187,7 @@ then
     0173: set_actor $PLAYER_ACTOR Z_angle_to 179.7474
     015F: set_camera_position -0.2839 1.4539 1024.875 rotation 0.0 0.0 0.0
     0160: set_camera_point_at 0.9866 0.6833 1024.975 switchstyle 2
-    0922: set_camera_zoom_from 60.0 to 60.0 timelimit 1 smooth_transition 0
+    0922: set_camera_zoom_from 70.0 to 60.0 timelimit 5000 smooth_transition 0
     07CD: AS_actor $PLAYER_ACTOR walk_to 1.279 0.6929 1024.375 stop_with_angle 117.2045 within_radius 0.5
     repeat
         wait 0
