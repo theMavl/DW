@@ -1,0 +1,256 @@
+{$CLEO .s}
+thread "dwmaifb"
+//---------------------Load------------------------
+Model.Load(#WMYVA2)
+model.Load(18798)
+model.Load(18799)
+model.Load(#DW_Universe)
+model.Load(#DW_Sun)
+038B: load_requested_models
+
+fade 0 1000
+wait 1000
+04ED: load_animation  "cop_ambient"
+0AAC: 0@ = load_audiostream "DWS\ang_hijack.mp3"
+0AAC: 12@ = load_audiostream "DWS\do.mp3"
+0AAC: 13@ = load_audiostream "DWS\tardis_decompr.mp3"
+10@ = Actor.Create(4, #WMYVA2, 0.3146, -4.8657, 1024.5703)
+
+0615: define_AS_pack_begin 15@
+    07CD: AS_actor -1 walk_to 0.9054 -2.4164 1024.3827 stop_with_angle 294.1028 within_radius 1.0
+    0812: AS_actor -1 perform_animation "IDLE_tired" IFP "PED" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1  // versionB
+0616: define_AS_pack_end 15@
+0615: define_AS_pack_begin 16@
+    05D3: AS_actor -1 goto_point 1.9187 1.5831 1024.375 mode 6 time 3000 ms // versionA
+    05D4: AS_actor -1 rotate_angle 69.65
+0616: define_AS_pack_end 16@
+0615: define_AS_pack_begin 17@
+    05D3: AS_actor -1 goto_point -0.0497 -1.8905 1024.375 mode 6 time 6000 ms // versionA
+    05D4: AS_actor -1 rotate_angle 0.0
+    0812: AS_actor -1 perform_animation "copbrowse_in" IFP "cop_ambient" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1  // versionB
+    0812: AS_actor -1 perform_animation "copbrowse_shake" IFP "cop_ambient" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1  // versionB
+    0812: AS_actor -1 perform_animation "copbrowse_out" IFP "cop_ambient" framedelta 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1  // versionB
+0616: define_AS_pack_end 17@
+
+29@ = Object.Create(18798, 0.0, 0.0, 0.0)
+1@ = Object.Create(18799, 0.0, 0.0, 0.0)
+2@ = Object.Create(#DW_Universe, 0.0, 0.0, 0.0)
+3@ = Object.Create(#DW_Sun, 0.0, 0.0, 0.0)
+Object.PutAt(29@, 0.549, -6.574, 1024.745)
+Object.PutAt(1@, -0.57, -6.574, 1024.745)
+Object.PutAt(2@, 0.0, 0.0, 1024.0)
+Object.PutAt(3@, 0.0, -50.0, 960.0)
+08D2: object 2@ scale_model 0.4
+08D2: object 3@ scale_model 2.3
+0382: set_object 29@ collision_detection 0
+0382: set_object 1@ collision_detection 0
+0382: set_object 2@ collision_detection 0
+0177: set_object 29@ Z_angle_to -85.0
+0177: set_object 1@ Z_angle_to 85.0
+0177: set_object 2@ Z_angle_to 85.0
+0177: set_object 3@ Z_angle_to 180.0
+0750: set_object 29@ visibility 0
+0750: set_object 1@ visibility 0
+
+18@ = 0 // Doors opened ?
+19@ = -1 // Sun part stage
+20@ = 0 // Gravitation changed
+
+0AB3: var 62 = 1
+wait 500
+0AB3: var 62 = 0
+
+0922: set_camera_zoom_in_factor 85.0 out_factor 85.0 timelimit 100 mode 1
+0931: camera_persist_fov 1  
+04F9: set_extra_colours 11 fade 0
+//---------------------Scene------------------------
+:scene_begin
+0707: start_scene_skip_to @scene_end
+0826: enable_hud 0
+0581: enable_radar 0
+02A3: enable_widescreen 1
+0A48: enable_menu_access_in_widescreen_mode 1
+0575: set_actor $PLAYER_ACTOR pinned_position 1
+//01B4: set_player $PLAYER_CHAR can_move 0
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.0 0.0 1030.0
+0AB3: var 42 = 0 // top lig status
+09BC: set_char_coordinates_dont_warp_gang_no_offset 10@ to 0.3146 -4.8657 1024.5703
+015F: set_camera_position -0.4788 -0.5501 1025.0 rotation 0.0 0.0 0.0
+0160: set_camera_point_at 0.3293 -3.2033 1024.4766 switchstyle 2
+fade 1 1000
+0618: assign_actor 10@ to_AS_pack 15@
+0AD1: show_formatted_text_highpriority "Finally, it's over." time 4000
+
+repeat
+    wait 0
+until 02A0:   actor 10@ stopped
+run "angel.cs" 1 -0.0213 1.8975 1024.375 0.0 0.01 0 0 18808
+015F: set_camera_position -0.4788 -0.5501 1025.0 rotation 0.0 0.0 0.0
+0160: set_camera_point_at 0.3293 -3.2033 1024.4766 switchstyle 2
+wait 1000
+015F: set_camera_position 1.9789 -3.0975 1025.0 rotation 0.0 0.0 0.0
+0160: set_camera_point_at 0.1338 2.3736 1024.375 switchstyle 2
+wait 1500
+0AAD: set_mp3 0@ perform_action 1
+0AB3: var 0 = 13
+064B: 22@ = create_particle "explosion_door" at -0.6564 -0.0496 1025.5684 type 1
+064F: remove_references_to_particle 22@
+0AD1: show_formatted_text_highpriority "What?!" time 1000
+wait 1000
+05D4: AS_actor 10@ rotate_angle 24.2417
+0AD1: show_formatted_text_highpriority "HOW?!" time 1000
+wait 1000 
+064B: 22@ = create_particle "prt_spark_2" at 0.0 0.0 1024.0 type 1
+064B: 23@ = create_particle "explosion_door" at -0.4452 1.2627 1024.0 type 1
+064B: 24@ = create_particle "tank_fire" at -0.4452 1.2627 1024.0 type 1
+064C: make_particle 22@ visible
+064C: make_particle 24@ visible            
+0003: shake_camera 500
+052C: set_player $PLAYER_CHAR drunk_visuals 1700
+0AD1: show_formatted_text_highpriority "WHAT ARE YOU DOING?!" time 3000
+wait 1000
+015F: set_camera_position 4.4719 -0.6908 1024.7266 rotation 0.0 0.0 0.0
+0160: set_camera_point_at 0.0 0.0 1026.0 switchstyle 1
+0618: assign_actor 10@ to_AS_pack 16@
+wait 2000
+0AD1: show_formatted_text_highpriority "No... No! Not this time." time 3000
+0003: shake_camera 700
+0618: assign_actor 10@ to_AS_pack 17@
+015F: set_camera_position -3.8175 5.0202 1027.1406 rotation 0.0 0.0 0.0
+0160: set_camera_point_at 0.0 0.0 1025.0 switchstyle 1
+0460: set_camera_transverse_delay 0.0 time 7000
+wait 2000
+0AD1: show_formatted_text_highpriority "I will stop you!" time 3000
+0003: shake_camera 700
+wait 3000
+0AD1: show_formatted_text_highpriority "Almost there..." time 3000
+0003: shake_camera 1000
+015F: set_camera_position -1.3921 -4.4534 1025.3827 rotation 0.0 0.0 0.0
+0160: set_camera_point_at 0.0 0.0 1025.0 switchstyle 1
+0460: set_camera_transverse_delay 0.0 time 9000
+wait 7000 
+0AD1: show_formatted_text_highpriority "What did you do?!" time 3000
+0AB3: var 0 = 0
+0650: destroy_particle 22@
+0650: destroy_particle 24@
+064F: remove_references_to_particle 23@
+wait 2000
+0AB3: var 0 = 10
+052C: set_player $PLAYER_CHAR drunk_visuals 0
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 0.0 0.0 900.0
+wait 1000
+0AD1: show_formatted_text_highpriority "Is it too complicated for you? Well, it's the TARDIS, the most..." time 4000
+wait 3000
+03B6: replace_model_at 0.7502 1.8923 1024.375 radius 20.0 from #tar_doors to #NULL
+0750: set_object 29@ visibility 1
+0750: set_object 1@ visibility 1
+18@ = 1
+0AAD: set_mp3 12@ perform_action 1
+0AAD: set_mp3 13@ perform_action 1
+
+32@ = 0
+19@ = -2
+repeat
+    wait 0
+    09E5: create_flash_light_at 0.0 -10.0 1024.5703 RGB_mask 252 237 38 radius 200.0
+    09E5: create_flash_light_at 0.0 -10.0 1024.5703 RGB_mask 252 237 38 radius 200.0
+    09E5: create_flash_light_at 0.0 -10.0 1024.5703 RGB_mask 252 237 38 radius 200.0
+    09E5: create_flash_light_at 0.0 -10.0 1024.5703 RGB_mask 252 237 38 radius 200.0
+    024F: create_corona_with_radius 20.0 type 3 lensflares 1 with_color 252 237 38 at 0.0 -15.0 1020.0
+    if and
+        32@ > 1000
+        19@ == -2
+    then
+        0AD1: show_formatted_text_highpriority "Oh, this is not good" time 3000
+        19@ = -1
+    end
+    if and
+        32@ > 3000
+        19@ == -1
+    then
+        00A1: put_actor 10@ at 0.0 -1.4536 1023.4
+        0173: set_actor 10@ Z_angle_to 0.0        
+        015F: set_camera_position -2.1908 4.7104 1025.875 rotation 0.0 0.0 0.0
+        0160: set_camera_point_at 0.0 -5.0 1024.8 switchstyle 2
+        0922: set_camera_zoom_from 70.0 to 40.0 timelimit 10000 smooth_transition 1
+        0AD1: show_formatted_text_highpriority "Life support... Gravity... Failing" time 3000
+        19@ = 0
+    end
+    if and
+        32@ > 5000
+        19@ == 0
+    then
+        0A8C: write_memory 8796548 size 4 value 0.00001 virtual_protect 1
+        088D: set_objects_in_sphere 0.3723 -1.6945 1024.375 radius 40.5 with_model #TAR_SHELL collision_detection 0
+        088D: set_objects_in_sphere 0.3723 -1.6945 1024.375 radius 40.5 with_model #TAR_BASE collision_detection 0
+        20@ = 1        
+        00A1: put_actor 10@ at 0.0 -1.4536 1023.4
+        0173: set_actor 10@ Z_angle_to 0.0
+        19@ = 1
+    end
+    if and
+        32@ > 6000
+        19@ == 1
+    then       
+        083C: set_actor 10@ velocity_in_direction_XYZ 0.0 0.0 0.5 
+        083C: set_actor 10@ velocity_in_direction_XYZ 0.0 -15.0 0.0
+        0AD1: show_formatted_text_highpriority "-Capaldi scream sfx-" time 3000
+        19@ = 2
+    end
+    if 
+        32@ > 9000
+    then
+        break
+    end
+until false
+:scene_end
+fade 0 1000
+wait 1000
+
+//---------------------Cleanup------------------------
+
+0AB3: var 62 = 1
+wait 500
+0AB3: var 62 = 0
+0AB3: var 42 = 1 // top lig status
+0AB3: var 0 = 0
+if 18@ == 1
+then
+    03B6: replace_model_at 0.7502 1.8923 1024.375 radius 20.0 from #NULL to #tar_doors
+end
+if 20@ == 1
+then
+    088D: set_objects_in_sphere 0.3723 -1.6945 1024.375 radius 40.5 with_model #TAR_SHELL collision_detection 1
+    088D: set_objects_in_sphere 0.3723 -1.6945 1024.375 radius 40.5 with_model #TAR_BASE collision_detection 1
+    0A8C: write_memory 8796548 size 4 value 0.009 virtual_protect 1
+end
+ 
+audiostream.Release(0@)
+actor.DestroyInstantly(10@)
+object.Destroy(29@)
+object.Destroy(1@)
+object.Destroy(2@)
+object.Destroy(3@)
+audiostream.Release(12@)
+audiostream.Release(13@)
+Model.Destroy(#WMYVA2)
+model.Destroy(18798)
+model.Destroy(18799)
+model.Destroy(#DW_Universe)
+model.Destroy(#DW_Sun)
+04EF: release_animation "cop_ambient"
+061B: remove_references_to_AS_pack 15@
+061B: remove_references_to_AS_pack 16@
+061B: remove_references_to_AS_pack 17@
+0826: enable_hud 1
+0581: enable_radar 0
+02A3: enable_widescreen 0
+09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 6.2531 1.1072 1026.1406
+0173: set_actor $PLAYER_ACTOR Z_angle_to 269.4919
+//01B4: set_player $PLAYER_CHAR can_move 1
+0575: set_actor $PLAYER_ACTOR pinned_position 0
+0922: set_camera_zoom_from 85.0 to 85.0 timelimit 1 smooth_transition 1
+0924: enable_screen_darkness 1 with_value 0
+Camera.Restore_WithJumpCut()
+fade 1 1000
+end_custom_thread
