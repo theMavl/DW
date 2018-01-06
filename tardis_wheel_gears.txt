@@ -77,7 +77,7 @@ while true
                         if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 15.0 15.0 15.0
                         then
                             04E4: refresh_game_renderer_at 0.0 0.0
-                            wait 500
+                            wait 0
                             0836: set_object 0@ animation "tar_gear_wheels" at 0.0 times_normal_rate  // no movement before
                         end 
                     end
