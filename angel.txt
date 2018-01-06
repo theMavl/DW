@@ -156,7 +156,11 @@ Actor.PutAt(Bitch, X, Y, Z)
 0337: set_actor Bitch visibility 0 
 04F4: put_actor Bitch into_turret_on_object Angel offset_from_object_origin 0.0 0.0 0.0 orientation 0 both_side_angle_limit 180.0 lock_weapon 1                                                                
 
-Camera.OnPed($PLAYER_ACTOR, 45, 2)
+// Set camera on first person only if player is within angel's area
+if 0104:   actor Bitch near_actor $PLAYER_ACTOR radius Distance Distance Distance sphere 0
+then
+    Camera.OnPed($PLAYER_ACTOR, 45, 2)
+end
 repeat
     wait 0
     
