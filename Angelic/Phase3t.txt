@@ -487,6 +487,6 @@ end
 
 04EF: release_animation "DW"
 08E7: disable_entrance_markers 0
-mission_cleanup
+//mission_cleanup
 end_thread
 return

@@ -69,6 +69,7 @@ $ONMISSION = 1
 0826: enable_hud 0
 Camera.OnPed($PLAYER_ACTOR, 45, 2)
 016E: override_restart at 0.0 0.0 1024.0 angle 141.8709
+0922: set_camera_zoom_from 70.0 to 70.0 timelimit 1 smooth_transition 1
 //------------------------Part 1-------------------------
 if 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2553.0591 -1287.6471 1060.9844 radius 5.0 5.0 2.0 on_foot 
 then
@@ -458,10 +459,10 @@ end
 0159: camera_on_ped $PLAYER_ACTOR 15 2
 01B4: set_player $PLAYER_CHAR can_move 0
 wait 5000
-repeat
-    wait 0
-    0AB4: 30@ = var 0
-until 30@ == 0
+//repeat
+//    wait 0
+//    0AB4: 30@ = var 0
+//until 30@ == 0
 0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 1
 0AB3: var 0 = 12 // lock TARDIS door
 Camera.Restore()
@@ -506,7 +507,7 @@ model.Destroy(14843)
 model.Destroy(#CELLPHONE)
 04EF: release_animation "TARDIS"
 04EF: release_animation "DW"
-mission_cleanup
+//mission_cleanup
 end_thread
 return
 

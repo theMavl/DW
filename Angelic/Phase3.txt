@@ -397,7 +397,7 @@ Actor.DestroyInstantly(5@)
 Actor.DestroyInstantly(10@)
 04EF: release_animation "TARDIS"
 04EF: release_animation "DW"
-mission_cleanup
+//mission_cleanup
 end_thread
 return
 

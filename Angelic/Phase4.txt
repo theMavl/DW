@@ -16,7 +16,10 @@ gosub @MISSION_CLEANUP
 :MISSION_START
     gosub @LOAD
     gosub @MISSION
-    gosub @MISSION_PASSED
+    if 200@ == 1  // Stage passed
+    then
+        gosub @MISSION_PASSED
+    end        
 return
 
 :LOAD
@@ -70,6 +73,7 @@ wait 1000
 repeat
     wait 0
 until 00EC:   actor $PLAYER_ACTOR sphere 0 near_point 384.838 173.8513 radius 5.0 5.0
+jump @debug_point
 01B4: set_player $PLAYER_CHAR can_move 0
 0160: set_camera_point_at 361.9845 175.6133 1008.3828 switchstyle 2
 015F: set_camera_position 382.3746 174.3349 1009.3828 rotation 0.0 0.0 0.0
@@ -162,6 +166,7 @@ until 0AB0:  key_pressed 69
 0D2E: set_thread 31@ var 8 to 3 
 0AAA: 31@ = thread 'ANG13' pointer
 0D2E: set_thread 31@ var 8 to 3
+:debug_point
 40@ = 1 // teargas on 
 0669: 4@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 0.0 2.0 flag 1 
 0669: 5@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 2.0 1.8 flag 1 
@@ -182,7 +187,7 @@ until 0AB0:  key_pressed 69
 064C: make_particle 10@ visible 
 064C: make_particle 11@ visible 
 064C: make_particle 12@ visible
-{0669: 22@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 0.0 2.0 flag 1 
+0669: 22@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 0.0 2.0 flag 1 
 0669: 23@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 2.0 1.8 flag 1 
 0669: 24@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 -2.0 2.0 flag 1 
 0669: 25@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 1.0 5.0 1.5 flag 1 
@@ -199,7 +204,7 @@ until 0AB0:  key_pressed 69
 064C: make_particle 27@ visible 
 064C: make_particle 28@ visible 
 064C: make_particle 29@ visible 
-064C: make_particle 30@ visible   }
+064C: make_particle 30@ visible   
 wait 1000
 gosub @place_tardis
 0AD1: show_formatted_text_highpriority "No time to wander around." time 2000
@@ -239,50 +244,50 @@ wait 500
 wait 200
 015D: set_gamespeed 1.0
 Camera.OnPed($PLAYER_ACTOR, 45, 2)
-$5 = 4000
+$5 = 3000
 03C3: set_timer_to $5 type 1 GXT 'ANGELIT' // global_variable  // Time
 32@ = 0
+0AB3: var 15 = 2 // blind en/ex trigger for cutscene purpose
+200@ = 0 // Stage passed?
 repeat
-    0AB4: 4@ = var 19 // going in/out sequence
     wait 0
-    if or
-        $93 == 1
-        4@ == 1
+    if and
+        32@ < 3000
+        00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 87@ 88@ 89@ radius 0.5 0.5 0.5 // On en/ex pickup
     then
         014F: stop_timer $5
+        run "Angelic/Finale_good.cm"
+        wait 100
+        200@ = 1
+        0AB3: var 62 = 1
+        wait 500
+        0AB3: var 62 = 0
         //jump to Good Ending
         return
     end 
-until 32@ > 4000
+until 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 87@ 88@ 89@ radius 0.5 0.5 0.5 // On en/ex pickup
 wait 0
-repeat
-    wait 0    
-until $93 == 1
 //jump to Bad Ending
-0970: teleport_in_override_restart
+run "Angelic/Finale_bad.s"
+wait 100
 return
 
 :MISSION_PASSED
-01E3: text_1number_styled 'M_PASSD' 0 5000 ms 1
-0394: play_music 1 
+//01E3: text_1number_styled 'M_PASSD' 0 5000 ms 1
+//0394: play_music 1 
 0AB3: var 64 = 999 // Progress ++
 return
 
 :MISSION_FAILED
-00BA: text_styled 'M_FAIL' 5000 ms 1
+//00BA: text_styled 'M_FAIL' 5000 ms 1
 return
 
 :MISSION_CLEANUP
-$ONMISSION = 0
 0AB3: var 59 = 0 // unfreeze angels
 model.destroy(2927)
 audiostream.Release(17@)
 audiostream.Release(18@)
 object.Destroy(100@)
-
-0AB3: var 62 = 1
-wait 500
-0AB3: var 62 = 0
 if 43@ == 1
 then
     0AB3: var 12 = 0
@@ -309,7 +314,7 @@ then
     0650: destroy_particle 10@
     0650: destroy_particle 11@
     0650: destroy_particle 12@
-    {0650: destroy_particle 22@
+    0650: destroy_particle 22@
     0650: destroy_particle 23@
     0650: destroy_particle 24@
     0650: destroy_particle 25@
@@ -317,36 +322,67 @@ then
     0650: destroy_particle 27@
     0650: destroy_particle 28@
     0650: destroy_particle 29@
-    0650: destroy_particle 30@}
+    0650: destroy_particle 30@
 end
-mission_cleanup
+
+repeat
+    wait 0
+    0AAA: 4@ = thread 'DWMAIFG' pointer
+    0AAA: 5@ = thread 'DWMAIFB' pointer
+    if and
+        4@ == 0x0
+        5@ == 0x0
+    then
+        break
+    end    
+until false
+0AB3: var 15 = 0 // unblind en/ex trigger
+0AB3: var 62 = 1
+wait 500
+0AB3: var 62 = 0
+//mission_cleanup
+$ONMISSION = 0
 end_thread
 return
 
 :place_tardis
 43@ = 1
 //run "psi/doorc.cs"
+87@ = 0.0
+88@ = 0.0
+89@ = 0.0
+90@ = 0.0
 0209: 71@ = random_int_in_ranges 0 4
 if 71@ == 0
 then
-    00AB: put_car $111 at 370.052 184.2211 1008.3893
-    0175: set_car $111 Z_angle_to 0.0
+    87@ = 370.052
+    88@ = 184.2211
+    89@ = 1008.3893
+    90@ = 0.0
 end
 if 71@ == 1
 then
-    00AB: put_car $111 at 360.3435 184.8838 1008.3828
-    0175: set_car $111 Z_angle_to 0.0
+    87@ = 360.3435
+    88@ = 184.8838
+    89@ = 1008.3828
+    90@ = 0.0
 end
 if 71@ == 2
 then
-    00AB: put_car $111 at 364.8384 162.3885 1008.3828
-    0175: set_car $111 Z_angle_to 180.0
+    87@ = 364.8384
+    88@ = 162.3885
+    89@ = 1008.3828
+    90@ = 180.0 
 end
 if 71@ == 3
 then
-    00AB: put_car $111 at 359.4526 186.7343 1008.3828
-    0175: set_car $111 Z_angle_to 0.0
+    87@ = 359.4526
+    88@ = 186.7343
+    89@ = 1008.3828
+    90@ = 0.0
 end
+00AB: put_car $111 at 87@ 88@ 89@   
+0175: set_car $111 Z_angle_to 90@
 0AB3: var 12 = 2
 0338: set_car $111 visibility 0
 0750: set_object $95[0] visibility 0

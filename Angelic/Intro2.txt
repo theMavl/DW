@@ -1,7 +1,7 @@
 {$CLEO .s}
 {$INCLUDE stdc}
 
-thread "dwmai2"
+thread "dwmaii2"
 
 0AB3: var 0 = 1
 0AAC: 5@ = load_audiostream "dws\out_fastmat_short.mp3" //IF and SET
@@ -12,6 +12,7 @@ thread "dwmai2"
 01B4: set_player $PLAYER_CHAR can_move 0
 09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2553.5947 -1298.348 1062.0068
 0338: set_car $111 visibility 0
+0922: set_camera_zoom_from 70.0 to 70.0 timelimit 1 smooth_transition 1
 
 run "fade.s" 7
 wait 500

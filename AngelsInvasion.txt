@@ -28,8 +28,8 @@ while true
     then
         if 0AB0: 69 // E
         then
-            0AB3: var 64 = 6 // -1
-            CURRENT_STAGE = 6 // -1
+            0AB3: var 64 = 3
+            CURRENT_STAGE = 3
             gosub @launcher
         end    
     end
@@ -278,6 +278,7 @@ then
             fade 1 1000
         else
             // Mission completed
+            mission_cleanup
             0581: enable_radar 0 
             0826: enable_hud 0 
             04BB: select_interior 3 
@@ -292,10 +293,13 @@ then
             0AB3: var 62 = 1 // kill all angels
             wait 500
             0AB3: var 62 = 0
-            
             // Return to the beginning
             0AB3: var 64 = 0
             CURRENT_STAGE = 0
+            fade 1 2000
+            wait 1000
+            01E3: text_1number_styled 'M_PASSD' 0 5000 ms 1
+            0394: play_music 1 
             break
         end
     end
@@ -310,11 +314,13 @@ until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 0.0 0.0 1024.0 radius 50.0 
 0826: enable_hud 0 
 04BB: select_interior 3 
 0860: link_actor $PLAYER_ACTOR to_interior 3
+0924: enable_screen_darkness 1 with_value 0
 09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 6.2531 1.1072 1026.1406
 0173: set_actor $PLAYER_ACTOR Z_angle_to 269.4919
+camera.Restore_WithJumpCut()
 0373: set_camera_directly_behind_player 
 032A: set_behind_camera_mode_to 0
-0922: set_camera_zoom_in_factor 70.0 out_factor 85.0 timelimit 100 mode 1
+0922: set_camera_zoom_in_factor 85.0 out_factor 85.0 timelimit 1 mode 1
 0931: camera_persist_fov 1  
 04F9: set_extra_colours 11 fade 0
 01B4: set_player $PLAYER_CHAR can_move 0
@@ -341,6 +347,7 @@ repeat
         0AB3: var 6 = LAST_ANG  // angle
         0840: link_car $111 to_interior LAST_INT
         0AB3: var 24 = 1 // request refreshing coordinates
+        mission_cleanup
         return
     end
 until 0ab0: 89 // Y
