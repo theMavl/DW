@@ -1,0 +1,310 @@
+{$CLEO .cs}
+//-------------MAIN---------------
+0000: NOP
+model.Load(#MAVERICK)
+model.Load(#ROCKETLA)
+model.Load(#GRENADE)
+model.Load(#M4)
+model.Load(#MINIGUN)
+model.Load(#ARMY)
+model.Load(#CELLPHONE)
+038B: load_requested_models
+var
+20@: integer
+end
+20@ = 0
+jump @unit
+
+:unit
+wait 0
+077E: get_active_interior_to $ACTIVE_INTERIOR
+if and
+    8965:   not actor $PLAYER_ACTOR swimming  
+    Actor.Defined($PLAYER_ACTOR)
+    $ACTIVE_INTERIOR == 0
+    0AB0:  key_pressed 66 //B 
+jf @unit
+//02AB: set_actor $PLAYER_ACTOR immunities BP 1 FP 1 EP 1 CP 1 MP 1 //remove
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
+0729: AS_actor $PLAYER_ACTOR hold_cellphone 1 
+wait 3500
+0729: AS_actor $PLAYER_ACTOR hold_cellphone 0
+0ACE: show_formatted_text_box "UNIT Backups Incoming"
+04C4: store_coords_to 17@ 18@ 19@ from_actor $PLAYER_ACTOR with_offset 0.0 -300.0 100.0
+00A5: 0@ = create_heli #MAVERICK at 17@ 18@ 19@
+0825: set_helicopter 0@ instant_rotor_start
+02AC: set_car 0@ immunities BP 1 FP 1 EP 1 CP 1 MP 1
+0129: 1@ = create_actor_pedtype 23 model #ARMY in_heli 0@ pilotseat 
+01C8: 2@ = create_actor_pedtype 23 model #ARMY in_heli 0@ passenger_seat 0 
+01C8: 3@ = create_actor_pedtype 23 model #ARMY in_heli 0@ passenger_seat 1
+01C8: 4@ = create_actor_pedtype 23 model #ARMY in_heli 0@ passenger_seat 2
+repeat
+    wait 100 
+    0726: heli 0@ follow_actor $PLAYER_ACTOR follow_car -1 radius 15.0   
+until 0205:   actor $PLAYER_ACTOR near_car 0@ radius 17.5 17.5 17.5 flag 0
+car.StorePos(0@, 29@, 30@, 31@)
+04DF: set_heli 0@ lean_and_thrust_limiter 0
+07BB: set_heli 0@ horizontal_thrust_power 0 
+0743: heli 0@ fly_to 29@ 30@ 31@ altitude 15.0 15.0   
+wait 2000
+0657: car 0@ open_componentA 2 
+0657: car 0@ open_componentA 3 
+0657: car 0@ open_componentA 4 
+0657: car 0@ open_componentA 5
+wait 1000 
+009B: destroy_actor 2@ 
+009B: destroy_actor 3@ 
+009B: destroy_actor 4@
+actor.RemoveReferences(2@)
+actor.RemoveReferences(3@)
+actor.RemoveReferences(4@)  
+0407: store_coords_to 29@ 30@ 31@ from_car 0@ with_offset -1.0 2.0 -1.5
+0503: create_actor_on_rope_with_pedtype 6 model #ARMY at 29@ 30@ 31@ handle_as 9@ 
+0209: 8@ = random_int_in_ranges 0 2
+if 8@ == 0
+then
+    01B2: give_actor 9@ weapon 35 ammo 9999 
+else
+    01B2: give_actor 9@ weapon 16 ammo 9999
+end 
+0407: store_coords_to 29@ 30@ 31@ from_car 0@ with_offset 1.0 2.0 -1.5 
+0503: create_actor_on_rope_with_pedtype 6 model #ARMY at 29@ 30@ 31@ handle_as 10@ 
+0209: 8@ = random_int_in_ranges 0 2
+if 8@ == 0
+then
+    01B2: give_actor 10@ weapon 35 ammo 9999 
+else
+    01B2: give_actor 10@ weapon 16 ammo 9999
+end               
+0407: store_coords_to 29@ 30@ 31@ from_car 0@ with_offset 1.0 -1.0 -1.5
+0503: create_actor_on_rope_with_pedtype 6 model #ARMY at 29@ 30@ 31@ handle_as 11@ 
+0209: 8@ = random_int_in_ranges 0 2
+if 8@ == 0
+then
+    01B2: give_actor 11@ weapon 35 ammo 9999 
+else
+    01B2: give_actor 11@ weapon 16 ammo 9999
+end 
+0407: store_coords_to 29@ 30@ 31@ from_car 0@ with_offset -1.0 -1.0 -1.5
+0503: create_actor_on_rope_with_pedtype 6 model #ARMY at 29@ 30@ 31@ handle_as 12@ 
+0209: 8@ = random_int_in_ranges 0 2
+if 8@ == 0
+then
+    01B2: give_actor 12@ weapon 35 ammo 9999 
+else
+    01B2: give_actor 12@ weapon 16 ammo 9999
+end
+0223: set_actor 9@ health_to 1000 
+0223: set_actor 10@ health_to 1000 
+0223: set_actor 11@ health_to 1000 
+0223: set_actor 12@ health_to 1000
+wait 3000
+04DF: set_heli 0@ lean_and_thrust_limiter 1
+07BB: set_heli 0@ horizontal_thrust_power 10   
+0743: heli 0@ fly_to 267.786 1882.43 150.0 altitude 50.0 300.0
+02AC: set_car 0@ immunities BP 0 FP 0 EP 0 CP 0 MP 0 
+jump @unit_backup
+
+:unit_backup  
+while true
+wait 10
+00A0: store_actor 9@ position_to 17@ 18@ 19@ 
+if 056E:   car 13@ defined
+then
+    if or
+        8202:  not actor 9@ near_car 13@ radius 20.0 20.0 flag 0 
+        0119:  car 13@ wrecked
+    then  
+        0AE2: 13@ = random_vehicle_near_point 17@ 18@ 19@ in_radius 20.0 find_next 0 pass_wrecked 1 //IF and SET
+        if 056E:   car 13@ defined
+        then
+            if 0137:   car 13@ model == 594
+            then 
+                0672: AS_actor 9@ attack_car 13@
+            else
+                0850: AS_actor 9@ follow_actor $PLAYER_ACTOR 
+            end
+        else
+            0850: AS_actor 9@ follow_actor $PLAYER_ACTOR  
+        end
+    end
+else
+    0AE2: 13@ = random_vehicle_near_point 17@ 18@ 19@ in_radius 20.0 find_next 0 pass_wrecked 1 //IF and SET
+    if 056E:   car 13@ defined
+    then
+        if 0137:   car 13@ model == 594
+        then
+            0672: AS_actor 9@ attack_car 13@
+        else
+            0850: AS_actor 9@ follow_actor $PLAYER_ACTOR 
+        end
+    else
+        0850: AS_actor 9@ follow_actor $PLAYER_ACTOR  
+    end
+end
+//
+00A0: store_actor 10@ position_to 17@ 18@ 19@ 
+if 056E:   car 14@ defined
+then
+    if or
+        8202:  not actor 10@ near_car 14@ radius 20.0 20.0 flag 0 
+        0119:  car 14@ wrecked
+    then 
+        0AE2: 14@ = random_vehicle_near_point 17@ 18@ 19@ in_radius 20.0 find_next 0 pass_wrecked 1 //IF and SET
+        if 056E:   car 14@ defined
+        then
+            if 0137:   car 14@ model == 594
+            then
+                0672: AS_actor 10@ attack_car 14@
+            else
+                0850: AS_actor 10@ follow_actor $PLAYER_ACTOR 
+            end
+        else
+            0850: AS_actor 10@ follow_actor $PLAYER_ACTOR  
+        end
+    end
+else
+    0AE2: 14@ = random_vehicle_near_point 17@ 18@ 19@ in_radius 20.0 find_next 0 pass_wrecked 1 //IF and SET
+    if 056E:   car 14@ defined
+    then
+        if 0137:   car 14@ model == 594
+        then
+            0672: AS_actor 10@ attack_car 14@
+        else
+            0850: AS_actor 10@ follow_actor $PLAYER_ACTOR 
+        end
+    else
+        0850: AS_actor 10@ follow_actor $PLAYER_ACTOR  
+    end
+end
+//
+00A0: store_actor 11@ position_to 17@ 18@ 19@ 
+if 056E:   car 15@ defined
+then
+    if or
+        8202:  not actor 11@ near_car 15@ radius 20.0 20.0 flag 0 
+        0119:  car 15@ wrecked
+    then 
+        0AE2: 15@ = random_vehicle_near_point 17@ 18@ 19@ in_radius 20.0 find_next 0 pass_wrecked 1 //IF and SET
+        if 056E:   car 15@ defined
+        then
+            if 0137:   car 15@ model == 594
+            then
+                0672: AS_actor 11@ attack_car 15@
+            else
+                0850: AS_actor 11@ follow_actor $PLAYER_ACTOR 
+            end
+        else
+            0850: AS_actor 11@ follow_actor $PLAYER_ACTOR  
+        end
+    end
+else
+    0AE2: 15@ = random_vehicle_near_point 17@ 18@ 19@ in_radius 20.0 find_next 0 pass_wrecked 1 //IF and SET
+    if 056E:   car 15@ defined
+    then
+        if 0137:   car 15@ model == 594
+        then
+            0672: AS_actor 11@ attack_car 15@
+        else
+            0850: AS_actor 11@ follow_actor $PLAYER_ACTOR 
+        end
+    else
+        0850: AS_actor 11@ follow_actor $PLAYER_ACTOR  
+    end
+end
+//
+00A0: store_actor 12@ position_to 17@ 18@ 19@ 
+if 056E:   car 16@ defined
+then
+    if or
+        8202:  not actor 12@ near_car 16@ radius 20.0 20.0 flag 0 
+        0119:  car 16@ wrecked
+    then 
+        0AE2: 16@ = random_vehicle_near_point 17@ 18@ 19@ in_radius 20.0 find_next 0 pass_wrecked 1 //IF and SET
+        if 056E:   car 16@ defined
+        then
+            if 0137:   car 16@ model == 594
+            then
+                0672: AS_actor 12@ attack_car 16@
+            else
+                0850: AS_actor 12@ follow_actor $PLAYER_ACTOR 
+            end
+        else
+            0850: AS_actor 12@ follow_actor $PLAYER_ACTOR  
+        end
+    end
+else
+    0AE2: 16@ = random_vehicle_near_point 17@ 18@ 19@ in_radius 20.0 find_next 0 pass_wrecked 1 //IF and SET
+    if 056E:   car 16@ defined
+    then
+        if 0137:   car 16@ model == 594
+        then
+            0672: AS_actor 12@ attack_car 16@
+        else
+            0850: AS_actor 12@ follow_actor $PLAYER_ACTOR 
+        end
+    else
+        0850: AS_actor 12@ follow_actor $PLAYER_ACTOR  
+    end
+end
+//
+if 056E:   car 0@ defined
+then
+    if 8202: not actor $PLAYER_ACTOR near_car 0@ radius 200.0 200.0 flag 0 
+    then
+        00A6: destroy_car 0@
+        car.RemoveReferences(0@)
+    end 
+end 
+if and
+    0118:   actor 9@ dead 
+    0118:   actor 10@ dead 
+    0118:   actor 11@ dead 
+    0118:   actor 12@ dead
+then
+    actor.RemoveReferences(9@)
+    actor.RemoveReferences(10@)
+    actor.RemoveReferences(11@)
+    actor.RemoveReferences(12@)
+    if 056E:   car 0@ defined
+    then
+        00A6: destroy_car 0@
+        car.RemoveReferences(0@)
+    end
+    repeat
+        wait 100
+        20@ += 1
+    until 20@ >= 600
+    20@ = 0
+    0ACE: show_formatted_text_box "UNIT Backups Available"
+    jump @unit
+end
+if and
+    80F3: not actor 9@ near_actor $PLAYER_ACTOR radius 100.0 100.0 0 on_foot
+    80F3: not actor 10@ near_actor $PLAYER_ACTOR radius 100.0 100.0 0 on_foot
+    80F3: not actor 11@ near_actor $PLAYER_ACTOR radius 100.0 100.0 0 on_foot
+    80F3: not actor 12@ near_actor $PLAYER_ACTOR radius 100.0 100.0 0 on_foot  
+then
+    009B: destroy_actor 9@ 
+    009B: destroy_actor 10@ 
+    009B: destroy_actor 11@
+    009B: destroy_actor 12@
+    actor.RemoveReferences(9@)
+    actor.RemoveReferences(10@)
+    actor.RemoveReferences(11@)
+    actor.RemoveReferences(12@)
+    if 056E:   car 0@ defined
+    then
+        00A6: destroy_car 0@
+        car.RemoveReferences(0@)
+    end
+    repeat
+        wait 100
+        20@ += 1
+    until 20@ >= 600
+    20@ = 0
+    0ACE: show_formatted_text_box "UNIT Backups Available"
+    jump @unit
+end 
+end
+004E: end_thread
