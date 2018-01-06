@@ -66,6 +66,8 @@ wait 0
 0AB3: Var 61 = 0 //- Active angels counter
 0AB3: Var 62 = 0 //- End all angel threads
 0AB3: Var 63 = 0 //- Global darkness flag
+0AB3: Var 64 = 0 //- Angels Invasion mission stage
+0AB3: Var 65 = 0 //- TARDIS summon and cheatcode block
 
 $94 = 0
 $93 = 0
@@ -295,7 +297,8 @@ while true
     jf continue
      
     0AB4: 0@ = var 0
-    0AB4: 1@ = var 19 
+    0AB4: 1@ = var 19
+    0AB4: 2@ = var 65 // Summon block 
     if and 
         00E1: key_pressed 0 6
         0AB0:  key_pressed 84
@@ -307,12 +310,16 @@ while true
         $93 == 0
         1@ == 0 // fade flag
     then
-        jump @TSPAWN_57
+        if  2@ == 0 // Summon is not blocked
+        then
+            jump @TSPAWN_57
+        end
     end
     
     if and 
         0ADC:   test_cheat "givemebluebox"
         80DB:  NOT actor $PLAYER_ACTOR in_car $111
+        2@ == 0 // Summon is not blocked
         //0185: car $111 health > 400
     then
         jump @TSPAWN2_57
