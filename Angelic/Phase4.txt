@@ -53,9 +53,9 @@ return
     wait 100
     0AB3: var 62 = 0
     
-    run "angel.cs" 1 361.9845 175.6133 1008.3828 270.0 2.0 1 0 18803
-    run "angel.cs" 2 368.0279 177.8101 1008.3828 195.0 2.0 1 0 18803
-    run "angel.cs" 3 361.3163 168.5254 1008.3828 320.0 2.0 1 0 18803
+    run "angel.cs" 1 361.9845 175.6133 1008.3828 270.0 2.0 1 1 18803
+    run "angel.cs" 2 368.0279 177.8101 1008.3828 195.0 2.0 1 1 18803
+    run "angel.cs" 3 361.3163 168.5254 1008.3828 320.0 2.0 1 1 18803
 return
 
 :MISSION
@@ -93,17 +93,17 @@ while true
         0AB3: var 62 = 1
         wait 500
         0AB3: var 62 = 0
-        run "angel.cs" 1 378.791 159.4384 1014.1875 180.0 7.0 1 0 18803 // 2-entrance
+        run "angel.cs" 1 378.791 159.4384 1014.1875 180.0 7.0 1 1 18803 // 2-entrance
     end
     if and
         00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 335.1969 175.1136 1014.1875 radius 5.0 5.0 1.0 on_foot
         2@ < 2
     then
         2@ = 2
-        run "angel.cs" 2 365.6042 184.4137 1014.1875 0.0 7.0 1 0 18803 // 2-visit
-        run "angel.cs" 3 364.1809 160.1567 1014.1875 0.0 7.0 1 0 18803 // 2-visit
-        run "angel.cs" 4 366.7473 174.1151 1014.1875 0.0 7.0 1 0 18803 // 2-visit
-        run "angel.cs" 5 375.7052 162.4105 1014.1875 270.0 7.0 1 0 18803 // 2-block
+        run "angel.cs" 2 365.6042 184.4137 1014.1875 0.0 7.0 1 1 18803 // 2-visit
+        run "angel.cs" 3 364.1809 160.1567 1014.1875 0.0 7.0 1 1 18803 // 2-visit
+        run "angel.cs" 4 366.7473 174.1151 1014.1875 0.0 7.0 1 1 18803 // 2-visit
+        run "angel.cs" 5 375.7052 162.4105 1014.1875 270.0 7.0 1 1 18803 // 2-block
         0AD1: show_formatted_text_highpriority "Okay, that's enough" time 2000
         0@ += 1
     end
@@ -114,17 +114,17 @@ while true
         3@ == 0
     then
         3@ = 1
-        run "angel.cs" 6 378.9249 161.028 1019.9844 180.0 7.0 1 0 18803 // 3-entrance
+        run "angel.cs" 6 378.9249 161.028 1019.9844 180.0 7.0 1 1 18803 // 3-entrance
     end
     if and
         00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 341.8022 173.4836 1019.9844 radius 5.0 5.0 1.0 on_foot
         3@ < 2
     then
         3@ = 2
-        run "angel.cs" 7 366.9999 165.8896 1019.9844 90.0 7.0 1 0 // 3-visit
-        run "angel.cs" 8 370.7951 175.7223 1019.9844 270.0 7.0 1 0 18803 // 3-visit
-        run "angel.cs" 9 365.3663 182.2115 1019.9844 0.0 7.0 1 0 18803 // 3-visit
-        run "angel.cs" 10 377.9644 164.2261 1019.9844 270.0 7.0 1 0 18803 // 3-block
+        run "angel.cs" 7 366.9999 165.8896 1019.9844 90.0 7.0 1 1 // 3-visit
+        run "angel.cs" 8 370.7951 175.7223 1019.9844 270.0 7.0 1 1 18803 // 3-visit
+        run "angel.cs" 9 365.3663 182.2115 1019.9844 0.0 7.0 1 1 18803 // 3-visit
+        run "angel.cs" 10 377.9644 164.2261 1019.9844 270.0 7.0 1 1 18803 // 3-block
         0AD1: show_formatted_text_highpriority "I wonder if they figured out what I am doing..." time 2000
         0@ += 1
     end
@@ -142,10 +142,10 @@ while true
         4@ < 2
     then
         4@ = 2
-        run "angel.cs" 12 364.9828 160.8558 1025.7891 270.0 7.0 1 0 // 4-visit
-        run "angel.cs" 13 363.9844 163.4078 1025.7891 270.0 7.0 1 0 // 4-visit
-        run "angel.cs" 14 368.3295 162.1503 1025.7891 270.0 7.0 1 0 18803 // 4-visit
-        run "angel.cs" 15 376.0465 163.7063 1025.7891 270.0 7.0 1 0 18803 // 4-block
+        run "angel.cs" 12 364.9828 160.8558 1025.7891 270.0 7.0 1 1 // 4-visit
+        run "angel.cs" 13 363.9844 163.4078 1025.7891 270.0 7.0 1 1 // 4-visit
+        run "angel.cs" 14 368.3295 162.1503 1025.7891 270.0 7.0 1 1 18803 // 4-visit
+        run "angel.cs" 15 376.0465 163.7063 1025.7891 270.0 7.0 1 1 18803 // 4-block
         0AD1: show_formatted_text_highpriority "Why there're so many of them..." time 2000
         0@ += 1
     end
