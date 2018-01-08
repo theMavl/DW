@@ -4,9 +4,12 @@
 thread "dwmaii2"
 
 0AB3: var 0 = 1
-0AAC: 5@ = load_audiostream "dws\out_fastmat_short.mp3" //IF and SET
-0AC1: 6@ = load_audiostream_with_3d_support "do.mp3" //IF and SET
-0AC1: 7@ = load_audiostream_with_3d_support "dc.mp3" //IF and SET
+0AC1: 5@ = load_audiostream_with_3d_support "dws\out_fastmat_short.mp3" //IF and SET
+0AC1: 6@ = load_audiostream_with_3d_support "DWS/do.mp3" //IF and SET
+0AC1: 7@ = load_audiostream_with_3d_support "DWS/dc.mp3" //IF and SET
+0AC5: link_3d_audiostream 5@ to_vehicle $111
+0AC5: link_3d_audiostream 6@ to_vehicle $111
+0AC5: link_3d_audiostream 7@ to_vehicle $111
 0AAD: set_audiostream 5@ perform_action 1
 
 01B4: set_player $PLAYER_CHAR can_move 0
@@ -23,16 +26,14 @@ fade 1 2000
 wait 3000
 
 0AB3: var 0 = 0
+0AAD: set_audiostream 6@ perform_action 1
 0AD0: show_formatted_text_lowpriority "Sometimes the only choices you have are bad ones" time 3000   
 wait 1000
-0AC2: set_3d_audiostream 6@ position 2550.7249 -1292.9563 1060.9844
-0AC2: set_3d_audiostream 7@ position 2550.7249 -1292.9563 1060.9844
 09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2550.7249 -1292.9563 1060.9844
 0173: set_actor $PLAYER_ACTOR Z_angle_to 0
-0AAD: set_audiostream 6@ perform_action 1
-wait 700
+wait 500
 0AAD: set_audiostream 7@ perform_action 1
-wait 700
+wait 1000
 015F: set_camera_position 2550.8457 -1291.7606 1060.9844 rotation 0.0 0.0 0.0
 0160: set_camera_point_at 2550.7249 -1292.9563 1061.9844 switchstyle 2
 0AD0: show_formatted_text_lowpriority "but you still have to choose." time 3000   
