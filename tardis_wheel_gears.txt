@@ -43,6 +43,10 @@ wait 5000
 6@ = -1
 while true
     wait 19
+    if $ONMISSION == 1
+    then
+        continue
+    end
     0AB4: 1@ = var 0
     if or
         1@ == 0
@@ -68,8 +72,7 @@ while true
                 then
                     Audiostream.PerformAction(8@, 0)
                     Audiostream.PerformAction(9@, 1)
-                    gosub @smooth_stop_r
-                    
+                    gosub @smooth_stop_r                    
                     6@ = -1
                 else
                     if 6@ == -1
