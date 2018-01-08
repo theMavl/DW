@@ -27,7 +27,7 @@ return
     038B: load_requested_models
     
     0AAC: 17@ = load_audiostream "DWS\AngelicSFX\angelic_Ambience3.mp3"
-    0AAC: 18@ = load_audiostream "DWS\AngelicSFX\angelic_Siren.mp3" 
+    03CF: load_wav 3401 as 3 
     0AC2: set_3d_audiostream 2@ position 381.6512 170.0081 1008.3828
     0AC2: set_3d_audiostream 3@ position 364.4674 173.8182 1008.0
     audiostream.PerformAction(17@, play)
@@ -204,7 +204,8 @@ until 0AB0:  key_pressed 69
 064C: make_particle 27@ visible 
 064C: make_particle 28@ visible 
 064C: make_particle 29@ visible 
-064C: make_particle 30@ visible   
+064C: make_particle 30@ visible 
+03D1: play_wav 3  
 wait 1000
 gosub @place_tardis
 0AD1: show_formatted_text_highpriority "No time to wander around." time 2000
@@ -255,6 +256,9 @@ repeat
         32@ < 3000
         00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 87@ 88@ 89@ radius 0.5 0.5 0.5 // On en/ex pickup
     then
+        0AB3: var 62 = 1
+        wait 100
+        0AB3: var 62 = 0
         014F: stop_timer $5
         run "Angelic/Finale_good.cm"
         wait 100
@@ -283,10 +287,10 @@ return
 return
 
 :MISSION_CLEANUP
+040D: unload_wav 3
 0AB3: var 59 = 0 // unfreeze angels
 model.destroy(2927)
 audiostream.Release(17@)
-audiostream.Release(18@)
 object.Destroy(100@)
 if 43@ == 1
 then
@@ -324,7 +328,7 @@ then
     0650: destroy_particle 29@
     0650: destroy_particle 30@
 end
-
+08FD: enable_heat_visuals 0
 repeat
     wait 0
     0AAA: 4@ = thread 'DWMAIFG' pointer
