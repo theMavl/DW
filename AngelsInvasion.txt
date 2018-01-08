@@ -57,6 +57,7 @@ then
 //    0AB1: call_scm_func @move_toggle 2 move_toggle 4 to 0
 //    0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 1
 //    0AB1: call_scm_func @move_toggle 2 move_toggle 2 to 0
+    0AB3: var 65 = 1 // Block TARDIS summon
     run "Angelic/Intro1.s"
     repeat
         wait 0
@@ -300,6 +301,7 @@ then
             wait 1000
             01E3: text_1number_styled 'M_PASSD' 0 5000 ms 1
             0394: play_music 1 
+            0AB3: var 65 = 0 // unlock TARDIS summon
             break
         end
     end
@@ -347,6 +349,7 @@ repeat
         0AB3: var 6 = LAST_ANG  // angle
         0840: link_car $111 to_interior LAST_INT
         0AB3: var 24 = 1 // request refreshing coordinates
+        0AB3: var 65 = 0 // unlock TARDIS summon
         mission_cleanup
         return
     end
