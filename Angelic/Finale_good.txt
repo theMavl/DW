@@ -21,7 +21,7 @@ var
     5@: float
 end
 
-fade 0 1000
+fade 0 500
 wait 1000
 01F0: set_max_wanted_level_to 0
 //0970: teleport_in_override_restart // 016Eh

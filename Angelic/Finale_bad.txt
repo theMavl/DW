@@ -8,7 +8,7 @@ model.Load(#DW_Universe)
 model.Load(#DW_Sun)
 038B: load_requested_models
 
-fade 0 1000
+fade 0 500
 wait 1000
 04ED: load_animation  "cop_ambient"
 0AAC: 0@ = load_audiostream "DWS\ang_hijack.mp3"

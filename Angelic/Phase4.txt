@@ -23,10 +23,13 @@ gosub @MISSION_CLEANUP
 return
 
 :LOAD
+    0110: clear_player $PLAYER_CHAR wanted_level
+
     model.load(2927)
     038B: load_requested_models
     
     0AAC: 17@ = load_audiostream "DWS\AngelicSFX\angelic_Ambience3.mp3"
+    0AAC: 18@ = load_audiostream "DWS\sgl_loop.mp3"
     03CF: load_wav 3401 as 3 
     0AC2: set_3d_audiostream 2@ position 381.6512 170.0081 1008.3828
     0AC2: set_3d_audiostream 3@ position 364.4674 173.8182 1008.0
@@ -73,7 +76,7 @@ wait 1000
 repeat
     wait 0
 until 00EC:   actor $PLAYER_ACTOR sphere 0 near_point 384.838 173.8513 radius 5.0 5.0
-jump @debug_point
+//jump @debug_point
 01B4: set_player $PLAYER_CHAR can_move 0
 0160: set_camera_point_at 361.9845 175.6133 1008.3828 switchstyle 2
 015F: set_camera_position 382.3746 174.3349 1009.3828 rotation 0.0 0.0 0.0
@@ -161,6 +164,8 @@ wait 1000
 repeat
     wait 0
 until 0AB0:  key_pressed 69
+audiostream.PerformAction(18@, play)
+wait 2000
 0AB3: var 59 = 1 // Freeze angels
 0AAA: 31@ = thread 'ANG12' pointer
 0D2E: set_thread 31@ var 8 to 3 
@@ -260,6 +265,10 @@ repeat
         wait 100
         0AB3: var 62 = 0
         014F: stop_timer $5
+        0AB3: var 19 = 1 // allow doorc (going in sequence flag)       
+        0A92: create_custom_thread "psi\doorc.cs"
+        wait 100
+        0AB3: var 19 = 0
         run "Angelic/Finale_good.cm"
         wait 100
         200@ = 1
@@ -273,6 +282,10 @@ until 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 87@ 88@ 89@ radius 0.5 0.5 
 wait 0
 //jump to Bad Ending
 run "Angelic/Finale_bad.s"
+0AB3: var 19 = 1 // allow doorc (going in sequence flag)       
+0A92: create_custom_thread "psi\doorc.cs"
+wait 100
+0AB3: var 19 = 0
 wait 100
 return
 
@@ -291,6 +304,7 @@ return
 0AB3: var 59 = 0 // unfreeze angels
 model.destroy(2927)
 audiostream.Release(17@)
+audiostream.Release(18@)
 object.Destroy(100@)
 if 43@ == 1
 then

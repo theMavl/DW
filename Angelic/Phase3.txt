@@ -291,7 +291,7 @@ wait 3000
 repeat
     wait 0
 until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2233.9465 -1188.7262 1029.7969 radius 1.5 1.5 1.0 on_foot
-
+0850: AS_actor 5@ follow_actor $PLAYER_ACTOR 
 0AD1: show_formatted_text_highpriority "So how did the new unprofessional Leader of SA UNIT ended up here?" time 5000
 run "angel.cs" 21 2215.4592 -1152.0072 1025.7969 250.0 40.0 1 1
 run "angel.cs" 22 2215.4563 -1149.0697 1025.7969 310.0 40.0 1 1
@@ -380,7 +380,8 @@ Model.Destroy(#BRASSKNUCKLE)
 0AAE: release_audiostream 2@
 0AAE: release_audiostream 17@
 0AAE: release_audiostream 22@
-0AAE: release_audiostream 23@
+//0AAE: release_audiostream 23@
+run "audio_fade.s" 23@ 0 30000 1
 0AAE: release_audiostream 18@
 Object.Destroy(8@)
 Object.Destroy(6@)

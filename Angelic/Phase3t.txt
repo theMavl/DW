@@ -434,7 +434,7 @@ camera.Restore()
 wait 3000
 018A: 60@ = create_checkpoint_at 2413.9224 1123.777 10.8203
 03BC: 61@ = create_sphere_at 2413.9224 1123.777 10.8203 radius 2.0
-0ACE: show_formatted_text_box "Enter the Planning Departament" 
+0ACE: show_formatted_text_box "Enter the ~y~Planning Departament" 
 07FB: set_interior 'PAPER' access 1  // Planning Departament
 020A: set_car 8@ door_status_to 2
 04A2: set_heli 8@ fly_to 159.0 1838.0 500.0 altitude_between 0.0 and 550.0
@@ -467,6 +467,7 @@ return
 return
 
 :MISSION_CLEANUP
+01F0: set_max_wanted_level_to 0
 $ONMISSION = 0
 model.Destroy(#BUCCANEE)
 model.Destroy(#WMYVA2)

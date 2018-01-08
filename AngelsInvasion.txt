@@ -28,8 +28,8 @@ while true
     then
         if 0AB0: 69 // E
         then
-            0AB3: var 64 = 3
-            CURRENT_STAGE = 3
+            0AB3: var 64 = -1
+            CURRENT_STAGE = -1
             gosub @launcher
         end    
     end
