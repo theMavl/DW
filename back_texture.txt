@@ -12,8 +12,14 @@ while true
         0@ == 0
         0@ == 2
     then
-        095F: get_car $111 door 2 angle_to 1@
-        095F: get_car $111 door 3 angle_to 2@
+        if 0119:   car $111 wrecked
+        then
+            1@ = 0.0
+            2@ = 0.0
+        else
+            095F: get_car $111 door 2 angle_to 1@
+            095F: get_car $111 door 3 angle_to 2@
+        end
         if or
         8043: NOT 1@ == 0.0
         8043: NOT 2@ == 0.0
@@ -21,8 +27,14 @@ while true
             0750: set_object $95[4] visibility 1
             while true
                 wait 0
-                095F: get_car $111 door 2 angle_to 1@
-                095F: get_car $111 door 3 angle_to 2@
+                if 0119:   car $111 wrecked
+                then
+                    1@ = 0.0
+                    2@ = 0.0
+                else
+                    095F: get_car $111 door 2 angle_to 1@
+                    095F: get_car $111 door 3 angle_to 2@
+                end
                 if and
                 0043: 1@ == 0.0
                 0043: 2@ == 0.0
