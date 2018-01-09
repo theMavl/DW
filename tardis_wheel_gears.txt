@@ -43,7 +43,10 @@ wait 5000
 6@ = -1
 while true
     wait 19
-    if $ONMISSION == 1
+    0AB4: 1@ = var 65 // TARDIS summon block
+    if or
+        $ONMISSION == 1
+        1@ == 1 // If summon block is enabled, then TARDIS is not supposed to move anywhere, thus wheel gears are not needed
     then
         continue
     end
