@@ -70,6 +70,15 @@ then
     0840: link_car $111 to_interior 2
     00AB: put_car $111 at 2550.7527 -1294.0162 1058.8
     0175: set_car $111 Z_angle_to 180.0
+    0508: car $111 close_all_doors
+    // set exterior coords
+    0AB3: var 21 = 2550.7527   // x
+    0AB3: var 22 = -1294.0162   // y
+    0AB3: var 23 = 1058.8   // z
+    0AB3: var 20 = 2  // interior
+    0AB3: var 6 = 180.0  // angle
+    0AB3: var 36 = 0  // time
+    0AB3: var 24 = 1  // refreshing coords flag
     09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 2553.5947 -1298.348 1062.0068
     04E4: refresh_game_renderer_at 2550.7527 -1294.0162
 
@@ -246,7 +255,9 @@ then
         end
     end
 end
-if CURRENT_STAGE == 6
+if or
+    CURRENT_STAGE == 6
+    CURRENT_STAGE == 7
 then
     0A94: start_custom_mission 'Angelic/Phase4'
     wait 1000
@@ -256,8 +267,9 @@ then
             wait 0
             0AB4: CURRENT_STAGE = var 64
         until $ONMISSION == 0
-        if
+        if or
             CURRENT_STAGE == 6
+            CURRENT_STAGE == 7
         then
             gosub @retry
             if MISSION_ABORT == 1
@@ -268,8 +280,14 @@ then
             04BB: select_interior 3 
             04F9: set_extra_colours 1 fade 0 
             0860: link_actor $PLAYER_ACTOR to_interior 3
-            09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 388.1753 173.9903 1008.3828
-            0173: set_actor $PLAYER_ACTOR Z_angle_to 90.0
+            if CURRENT_STAGE == 6
+            then            
+                09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 388.1753 173.9903 1008.3828
+                0173: set_actor $PLAYER_ACTOR Z_angle_to 90.0
+            else
+                09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 372.1566 167.4693 1008.3828
+                0173: set_actor $PLAYER_ACTOR Z_angle_to 0.0
+            end
             0373: set_camera_directly_behind_player 
             01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0 
             0992: set_player $PLAYER_CHAR weapons_scrollable 0
@@ -350,6 +368,7 @@ repeat
         0840: link_car $111 to_interior LAST_INT
         0AB3: var 24 = 1 // request refreshing coordinates
         0AB3: var 65 = 0 // unlock TARDIS summon
+        00BA: text_styled 'M_FAIL' 5000 ms 1
         mission_cleanup
         return
     end
