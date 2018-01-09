@@ -30,6 +30,7 @@ return
     
     0AAC: 17@ = load_audiostream "DWS\AngelicSFX\angelic_Ambience3.mp3"
     0AAC: 18@ = load_audiostream "DWS\sgl_loop.mp3"
+    0AAC: 19@ = load_audiostream "DWS\AngelicSFX\angelic_FlashLC.mp3"
     03CF: load_wav 3401 as 3 
     0AC2: set_3d_audiostream 2@ position 381.6512 170.0081 1008.3828
     0AC2: set_3d_audiostream 3@ position 364.4674 173.8182 1008.0
@@ -52,13 +53,10 @@ return
     40@ = 0 // TEARGAS flag      
     42@ = 0 //TIMER flag
     43@ = 0 // TARDIS visibility changed flag
+    44@ = 0 // After alarm straight
     0AB3: var 62 = 1
     wait 100
     0AB3: var 62 = 0
-    
-    run "angel.cs" 1 361.9845 175.6133 1008.3828 270.0 2.0 1 1 18803
-    run "angel.cs" 2 368.0279 177.8101 1008.3828 195.0 2.0 1 1 18803
-    run "angel.cs" 3 361.3163 168.5254 1008.3828 320.0 2.0 1 1 18803
 return
 
 :MISSION
@@ -71,6 +69,17 @@ $ONMISSION = 1
 0581: enable_radar 0 
 0826: enable_hud 0
 Camera.OnPed($PLAYER_ACTOR, 45, 2)
+
+if 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 372.1566 167.4693 1008.3828 radius 3.0 3.0 3.0 on_foot
+then
+    44@ = 1
+    jump @after_alarm
+end
+
+//--------------------------------Before alarm--------------------------------
+run "angel.cs" 1 361.9845 175.6133 1008.3828 270.0 2.0 1 1 18803
+run "angel.cs" 2 368.0279 177.8101 1008.3828 195.0 2.0 1 1 18803
+run "angel.cs" 3 361.3163 168.5254 1008.3828 320.0 2.0 1 1 18803
 wait 1000
 
 repeat
@@ -80,8 +89,15 @@ until 00EC:   actor $PLAYER_ACTOR sphere 0 near_point 384.838 173.8513 radius 5.
 01B4: set_player $PLAYER_CHAR can_move 0
 0160: set_camera_point_at 361.9845 175.6133 1008.3828 switchstyle 2
 015F: set_camera_position 382.3746 174.3349 1009.3828 rotation 0.0 0.0 0.0
-0AD1: show_formatted_text_highpriority "There is no way for me to access TARDIS like this, I might have come up with an idea." 3000
+0707: start_scene_skip_to @self_talk_ends
+0AD1: show_formatted_text_highpriority "The TARDIS should be right in front of their eyes" 3000
 wait 3000
+0AD1: show_formatted_text_highpriority "Shame for them to be too blind to see since I turned on cloaking." 4000
+wait 4000
+0AD1: show_formatted_text_highpriority "But there is no way for me to access TARDIS like this, I might have come up with an idea." 5000
+wait 5000
+0701: end_scene_skip
+:self_talk_ends
 01B4: set_player $PLAYER_CHAR can_move 1
 Camera.OnPed($PLAYER_ACTOR, 45, 2)
 0ACE: show_formatted_text_box "Lure all the Angels upstairs~n~Visit all floors to confuse them" 
@@ -99,7 +115,7 @@ while true
         run "angel.cs" 1 378.791 159.4384 1014.1875 180.0 7.0 1 1 18803 // 2-entrance
     end
     if and
-        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 335.1969 175.1136 1014.1875 radius 5.0 5.0 1.0 on_foot
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 335.1969 175.1136 1014.1875 radius 12.0 12.0 1.0 on_foot
         2@ < 2
     then
         2@ = 2
@@ -120,7 +136,7 @@ while true
         run "angel.cs" 6 378.9249 161.028 1019.9844 180.0 7.0 1 1 18803 // 3-entrance
     end
     if and
-        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 341.8022 173.4836 1019.9844 radius 5.0 5.0 1.0 on_foot
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 341.8022 173.4836 1019.9844 radius 12.0 12.0 1.0 on_foot
         3@ < 2
     then
         3@ = 2
@@ -128,7 +144,7 @@ while true
         run "angel.cs" 8 370.7951 175.7223 1019.9844 270.0 7.0 1 1 18803 // 3-visit
         run "angel.cs" 9 365.3663 182.2115 1019.9844 0.0 7.0 1 1 18803 // 3-visit
         run "angel.cs" 10 377.9644 164.2261 1019.9844 270.0 7.0 1 1 18803 // 3-block
-        0AD1: show_formatted_text_highpriority "I wonder if they figured out what I am doing..." time 2000
+        0AD1: show_formatted_text_highpriority "I hope Daleks won't come invading Earth again if I just die right here" time 6000
         0@ += 1
     end
     
@@ -141,7 +157,7 @@ while true
         run "angel.cs" 11 378.4173 162.3675 1025.7891 180.0 7.0 1 0 18803 // 4-entrance
     end
     if and
-        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 348.4447 161.9929 1025.7891 radius 5.0 5.0 1.0 on_foot
+        00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 348.4447 161.9929 1025.7891 radius 12.0 12.0 1.0 on_foot
         4@ < 2
     then
         4@ = 2
@@ -157,7 +173,7 @@ while true
         break
     end
 end
-0AD1: show_formatted_text_highpriority "Hello from Scotland bitches" time 2000
+0AD1: show_formatted_text_highpriority "Hello, Sweaty" time 2000
 wait 1000
 
 0ACE: show_formatted_text_box "Press E to trigger fire alarm"
@@ -166,12 +182,10 @@ repeat
 until 0AB0:  key_pressed 69
 audiostream.PerformAction(18@, play)
 wait 2000
-0AB3: var 59 = 1 // Freeze angels
-0AAA: 31@ = thread 'ANG12' pointer
-0D2E: set_thread 31@ var 8 to 3 
-0AAA: 31@ = thread 'ANG13' pointer
-0D2E: set_thread 31@ var 8 to 3
-:debug_point
+
+:after_alarm
+32@ = 0
+//--------------------------------After alarm--------------------------------
 40@ = 1 // teargas on 
 0669: 4@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 0.0 2.0 flag 1 
 0669: 5@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 2.0 1.8 flag 1 
@@ -192,7 +206,7 @@ wait 2000
 064C: make_particle 10@ visible 
 064C: make_particle 11@ visible 
 064C: make_particle 12@ visible
-0669: 22@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 0.0 2.0 flag 1 
+{0669: 22@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 0.0 2.0 flag 1 
 0669: 23@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 2.0 1.8 flag 1 
 0669: 24@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 0.0 -2.0 2.0 flag 1 
 0669: 25@ = attach_particle "TEARGAS" to_actor $PLAYER_ACTOR with_offset 1.0 5.0 1.5 flag 1 
@@ -209,20 +223,55 @@ wait 2000
 064C: make_particle 27@ visible 
 064C: make_particle 28@ visible 
 064C: make_particle 29@ visible 
-064C: make_particle 30@ visible 
-03D1: play_wav 3  
-wait 1000
+064C: make_particle 30@ visible }
+03D1: play_wav 3
+wait 500
+if 44@ == 0
+then
+    audiostream.PerformAction(19@, play)
+    0924: enable_screen_darkness 1 with_value 255
+    0AB3: var 59 = 1 // Freeze angels
+    0AAA: 31@ = thread 'ANG12' pointer
+    0D2E: set_thread 31@ var 8 to 3 
+    0AAA: 31@ = thread 'ANG13' pointer
+    0D2E: set_thread 31@ var 8 to 3
+    wait 500
+    0924: enable_screen_darkness 1 with_value 127
+else  
+    wait 500
+end
 gosub @place_tardis
-0AD1: show_formatted_text_highpriority "No time to wander around." time 2000
-wait 1500
-0ACE: show_formatted_text_box "Run to the 1st floor"
+if 44@ == 0
+then
+    0AD1: show_formatted_text_highpriority "No time to wander around." time 2000
+    wait 1500
+    0ACE: show_formatted_text_box "Run to the 1st floor"
+end
 repeat
     wait 0
+    if 32@ > 30000
+    then
+        040D: unload_wav 3
+        064E: stop_particle 4@
+        064E: stop_particle 5@
+        064E: stop_particle 6@
+        064E: stop_particle 7@
+        064E: stop_particle 8@
+        064E: stop_particle 9@
+        064E: stop_particle 10@
+        064E: stop_particle 11@
+        064E: stop_particle 12@
+        wait 500
+        0AD1: show_formatted_text_highpriority "Angels must have overrided the alarm control" time 3000
+        0AB3: var 59 = 0 // unfreeze angels
+    end
 until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 372.1566 167.4693 1008.3828 radius 3.0 3.0 3.0 on_foot
+0AB3: var 64 = 7 // Progress ++
+0AB3: var 15 = 2 // block finger click (set self-repair flag to smth /= 0. this is sufficient to block finger flick and afterwards - en/ex trigger)
 0AD1: show_formatted_text_highpriority "She was here all the time. The question is, where exactly" time 2000
 wait 2000
-
 0ACE: show_formatted_text_box "Open the door by fingerclick and listen carefully"
+0AB3: var 15 = 0 // unblock finger click
 while true
     wait 0
     095F: get_car $111 door 2 angle_to 1@
@@ -231,6 +280,7 @@ while true
         8043: NOT 1@ == 0.0
         8043: NOT 2@ == 0.0
     then
+        0AB3: var 15 = 2 // blind en/ex trigger for cutscene purpose
         break
     end
 end
@@ -249,11 +299,11 @@ wait 500
 015D: set_gamespeed 0.1
 wait 200
 015D: set_gamespeed 1.0
+0AB3: var 59 = 0 // unfreeze angels
 Camera.OnPed($PLAYER_ACTOR, 45, 2)
 $5 = 3000
 03C3: set_timer_to $5 type 1 GXT 'ANGELIT' // global_variable  // Time
 32@ = 0
-0AB3: var 15 = 2 // blind en/ex trigger for cutscene purpose
 200@ = 0 // Stage passed?
 repeat
     wait 0
@@ -305,6 +355,7 @@ return
 model.destroy(2927)
 audiostream.Release(17@)
 audiostream.Release(18@)
+audiostream.Release(19@)
 object.Destroy(100@)
 if 43@ == 1
 then
@@ -332,7 +383,7 @@ then
     0650: destroy_particle 10@
     0650: destroy_particle 11@
     0650: destroy_particle 12@
-    0650: destroy_particle 22@
+    {0650: destroy_particle 22@
     0650: destroy_particle 23@
     0650: destroy_particle 24@
     0650: destroy_particle 25@
@@ -340,7 +391,7 @@ then
     0650: destroy_particle 27@
     0650: destroy_particle 28@
     0650: destroy_particle 29@
-    0650: destroy_particle 30@
+    0650: destroy_particle 30@ }
 end
 08FD: enable_heat_visuals 0
 repeat
