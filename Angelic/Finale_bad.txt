@@ -10,11 +10,16 @@ model.Load(#DW_Sun)
 
 fade 0 500
 wait 1000
+0924: enable_screen_darkness 1 with_value 0
 04ED: load_animation  "cop_ambient"
 0AAC: 0@ = load_audiostream "DWS\ang_hijack.mp3"
-0AAC: 12@ = load_audiostream "DWS\do.mp3"
+0AC1: 12@ = load_audiostream_with_3d_support "DWS\do.mp3"
 0AAC: 13@ = load_audiostream "DWS\tardis_decompr.mp3"
+0AC1: 30@ = load_audiostream_with_3d_support "DWS\AngelicSFX\I_let_you_go.mp3"
 10@ = Actor.Create(4, #WMYVA2, 0.3146, -4.8657, 1024.5703)
+0AC4: link_3d_audiostream 30@ to_actor 10@
+0AC2: set_3d_audiostream 12@ position 0.3351 -5.9561 1024.5703
+
 
 0615: define_AS_pack_begin 15@
     07CD: AS_actor -1 walk_to 0.9054 -2.4164 1024.3827 stop_with_angle 294.1028 within_radius 1.0
@@ -194,7 +199,7 @@ repeat
     then       
         083C: set_actor 10@ velocity_in_direction_XYZ 0.0 0.0 0.5 
         083C: set_actor 10@ velocity_in_direction_XYZ 0.0 -15.0 0.0
-        0AD1: show_formatted_text_highpriority "-Capaldi scream sfx-" time 3000
+        0AAD: set_mp3 30@ perform_action 1
         19@ = 2
     end
     if 
@@ -224,8 +229,9 @@ then
     088D: set_objects_in_sphere 0.3723 -1.6945 1024.375 radius 40.5 with_model #TAR_BASE collision_detection 1
     0A8C: write_memory 8796548 size 4 value 0.009 virtual_protect 1
 end
- 
+052C: set_player $PLAYER_CHAR drunk_visuals 0 
 audiostream.Release(0@)
+audiostream.Release(30@)
 actor.DestroyInstantly(10@)
 object.Destroy(29@)
 object.Destroy(1@)
