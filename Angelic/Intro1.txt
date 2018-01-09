@@ -7,12 +7,12 @@ thread "dwmaii1"
 // load objects
 04ED: load_animation  "DW"
 04ED: load_animation  "TARDIS"
-model.Load(#gun_dildo1)
+Model.Load(#gun_dildo1)
+038B: load_requested_models
 
 32@ = 0
 10@ = 0
 
-00BA: show_text_styled GXT 'MIS_01' time 1000 style 2 
 fade 0 2000
 wait 2000
 
@@ -24,7 +24,7 @@ wait 2000
 20@ = object.Create(#null, 0.0, 0.0, 0.0)
 21@ = object.Create(#gun_dildo1, 0.0, 0.0, 0.0)
 0750: set_object 20@ visibility 0
-0382: set_object 20@ collision_detection 0
+0382: set_object 20@ collision_detection 0                
 0382: set_object 21@ collision_detection 0
 
 :scene
@@ -37,7 +37,7 @@ end
 if and
     32@ > 0
     10@ == 0
-then 
+then                 
     01B4: set_player $PLAYER_CHAR can_move 0
     09BC: set_char_coordinates_dont_warp_gang_no_offset $PLAYER_ACTOR to 6.2326 1.4306 1026.1406
     0173: set_actor $PLAYER_ACTOR Z_angle_to 245.8379
@@ -219,8 +219,7 @@ then
     0AD1: "Here..." time 1000
     0812: AS_actor $PLAYER_ACTOR perform_animation "throttle_Off" IFP_file "TARDIS" 4.0 loopA 0 lockX 0 lockY 0 lockF 0 time -1
     0AB1: call_scm_func @move_toggle 2 move_toggle 1 to 1
-    wait 700
-    
+    wait 700    
     0AB3: var 0 = 1
     0AAD: set_audiostream 6@ perform_action 1
     015F: set_camera_position 2.6202 1.0414 1027.575 rotation 0.0 0.0 0.0
