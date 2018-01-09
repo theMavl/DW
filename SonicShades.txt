@@ -35,6 +35,7 @@ if and
     0AB0:   key_pressed 53
     02D8:   actor $PLAYER_ACTOR current_weapon == 0 
     8611:   not actor $PLAYER_ACTOR performing_animation "Wearable_Tech"
+    $ONMISSION == 0
 then
     if
         03CA:   object 0@ exists
