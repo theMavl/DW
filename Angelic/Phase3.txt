@@ -290,6 +290,12 @@ wait 3000
 0382: set_object 8@ collision_detection 0
 repeat
     wait 0
+    if 0118:   actor 5@ dead
+    then
+        0AD1: show_formatted_text_highpriority "~r~Claude is dead" time 5000
+        0970: teleport_in_override_restart // 016Eh
+        return
+    end
 until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2233.9465 -1188.7262 1029.7969 radius 1.5 1.5 1.0 on_foot
 0850: AS_actor 5@ follow_actor $PLAYER_ACTOR 
 0AD1: show_formatted_text_highpriority "So how did the new unprofessional Leader of SA UNIT ended up here?" time 5000
@@ -302,6 +308,12 @@ wait 7500
 0AD1: show_formatted_text_highpriority "Anyway, you are very much welcome." time 3000
 repeat
     wait 0
+    if 0118:   actor 5@ dead
+    then
+        0AD1: show_formatted_text_highpriority "~r~Claude is dead" time 5000
+        0970: teleport_in_override_restart // 016Eh
+        return
+    end
 until 00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2227.4714 -1150.5691 1029.7969 radius 1.0 1.0 1.0 on_foot
 wait 250
 01B4: set_player $PLAYER_CHAR can_move 0
