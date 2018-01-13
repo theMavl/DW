@@ -27,6 +27,7 @@ return
     Model.Load(#CELLPHONE)
     Model.Load(18797)
     Model.Load(#gun_para)
+    Model.Load(#golfclub)
     023C: load_special_actor 'CLAUDE' as 1
     038B: load_requested_models
     
@@ -62,7 +63,7 @@ return
 increment_mission_attempts
 $ONMISSION = 1
 016E: override_restart at 0.0 0.0 1024.0 angle 355.2978
-0924: enable_screen_darkness 1 with_value 127
+0924: enable_screen_darkness 1 with_value 0
 00C0: set_current_time_hours_to 0 minutes_to 0 
 0581: enable_radar 0 
 0826: enable_hud 0
@@ -111,6 +112,7 @@ wait 1000
 018A: 60@ = create_checkpoint_at 2363.3198 -648.8942 127.8815
 03BC: 61@ = create_sphere_at 2363.3198 -648.8942 127.8815 radius 5.0 
 0ACE: show_formatted_text_box "Hold X to accelerate the car"
+01B2: give_actor $PLAYER_ACTOR weapon 2 ammo 1
 29@ = 0
 12@ = 0 // just for camera
 camera.Restore()
@@ -179,7 +181,9 @@ repeat
         0970: teleport_in_override_restart // 016Eh
         return
     end 
-    if 01F4:   car 24@ flipped
+    if and
+        01F4:   car 24@ flipped
+        01C1:   car 24@ stopped
     then
         0AD1: show_formatted_text_highpriority "~r~You broke unbreakable UNIT vehicle!" time 5000
         0970: teleport_in_override_restart // 016Eh
@@ -201,6 +205,7 @@ wait 1000
 50@ = 1 // CUTSCENE STARTED
 09C7: change_player $PLAYER_CHAR model_to #WMYVA2
 0430: put_actor $PLAYER_ACTOR into_car 24@ passenger_seat 0 
+01B9: set_actor $PLAYER_ACTOR armed_weapon_to 0
 Actor.Create(26@, 7, #SPECIAL01, 0.0, 0.0, 0.0)
 072A: put_actor 26@ into_car 24@ driverseat 
 Car.PutAt(24@, 2363.3198, -648.8942, 127.8815)
@@ -472,13 +477,13 @@ while $ACTIVE_INTERIOR == 0
 end
 03BD: destroy_sphere 61@
 marker.Disable(60@)
-0581: enable_radar 0   
+0581: enable_radar 0
+0AB3: var 64 = 6 // Progress ++   
 return
 
 :MISSION_PASSED
 //01E3: text_1number_styled 'M_PASSD' 0 5000 ms 1
-0AB3: var 64 = 6 // Progress ++
-return
+return                 
 
 :MISSION_FAILED
 00BA: text_styled 'M_FAIL' 5000 ms 1
@@ -486,7 +491,7 @@ return
 
 :MISSION_CLEANUP
 01F0: set_max_wanted_level_to 0
-$ONMISSION = 0
+//$ONMISSION = 0
 model.Destroy(#BUCCANEE)
 model.Destroy(#WMYVA2)
 Model.Destroy(#MAVERICK)
@@ -501,6 +506,7 @@ if 50@ == 1
 then
     Actor.DestroyInstantly(21@)
     Car.Destroy(8@)
+    marker.Disable(60@)
     03BD: destroy_sphere 61@ 
 end
 

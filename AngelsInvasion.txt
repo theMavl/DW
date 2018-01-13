@@ -28,8 +28,8 @@ while true
     then
         if 0AB0: 69 // E
         then
-            0AB3: var 64 = -1
-            CURRENT_STAGE = -1
+            0AB3: var 64 = 6
+            CURRENT_STAGE = 6
             gosub @launcher
         end    
     end
@@ -223,7 +223,8 @@ then
         repeat
             wait 0
             0AB4: CURRENT_STAGE = var 64
-        until $ONMISSION == 0
+            0AAA: MISSION_POINTER = thread 'AMY_3t' pointer
+        until  MISSION_POINTER == 0x0 // Wanted level bugfix
         if
             CURRENT_STAGE == 5
         then
@@ -266,6 +267,7 @@ then
         repeat
             wait 0
             0AB4: CURRENT_STAGE = var 64
+            
         until $ONMISSION == 0
         if or
             CURRENT_STAGE == 6
@@ -317,6 +319,7 @@ then
             CURRENT_STAGE = 0
             fade 1 2000
             wait 1000
+            $ONMISSION = 0
             01E3: text_1number_styled 'M_PASSD' 0 5000 ms 1
             0394: play_music 1 
             0AB3: var 65 = 0 // unlock TARDIS summon
@@ -369,6 +372,7 @@ repeat
         0AB3: var 24 = 1 // request refreshing coordinates
         0AB3: var 65 = 0 // unlock TARDIS summon
         00BA: text_styled 'M_FAIL' 5000 ms 1
+        $ONMISSION = 0
         mission_cleanup
         return
     end
